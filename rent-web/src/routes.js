@@ -16,12 +16,6 @@ if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
   // Address
   require('./modules/App/pages/WelcomePage');
-  require('./modules/Address/pages/DistrictListPage');
-  require('./modules/Address/pages/DistrictEditPage');
-  require('./modules/Address/pages/BuildingMaterialListPage');
-  require('./modules/Address/pages/BuildingMaterialEditPage');
-  require('./modules/Address/pages/BuildingTypeLivabilityListPage');
-  require('./modules/Address/pages/BuildingTypeLivabilityEditPage');
   require('./modules/Address/pages/StreetTypeListPage');
   require('./modules/Address/pages/StreetTypeEditPage');
   require('./modules/Address/pages/StreetListPage');
@@ -91,54 +85,6 @@ export default (
     />
 
     { /* Address */ }
-    <Route
-      path={AddressPath.DISTRICT_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/DistrictListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.DISTRICT_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/DistrictEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={AddressPath.BUILDING_MATERIAL_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingMaterialListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.BUILDING_MATERIAL_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingMaterialEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={AddressPath.BUILDING_TYPE_LIVABILITY_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingTypeLivabilityListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.BUILDING_TYPE_LIVABILITY_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingTypeLivabilityEditPage').default);
-        });
-      }}
-    />
     <Route
       path={AddressPath.STREET_TYPE_LIST}
       getComponent={(nextState, cb) => {

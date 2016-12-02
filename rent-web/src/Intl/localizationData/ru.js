@@ -30,12 +30,6 @@ export default {
     contractorFieldBankIdentificationCode: 'БИК',
 
     addressTitle: 'Адресная часть',
-    districtTitle: 'Районы',
-    districtFieldName: 'Район',
-    buildingMaterialTitle: 'Материалы строений',
-    buildingMaterialFieldName: 'Материал строения',
-    buildingsTypesLivabilityTitle: 'Типы благоустроенности строений',
-    buildingsTypesLivabilityFieldName: 'Тип благоустроенности',
     streetTypeTitle: 'Типы улиц',
     streetTypeFieldName: 'Тип улицы',
     streetTypeFieldNameShort: 'Тип улицы кратко',

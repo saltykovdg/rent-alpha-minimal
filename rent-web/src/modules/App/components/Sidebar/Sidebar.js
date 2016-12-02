@@ -45,22 +45,6 @@ function Sidebar() {
           </Item>
         </SubMenu>
         <SubMenu key="sidebarAddress" title={<FormattedMessage id="addressTitle" />}>
-          <Item key={AddressPath.DISTRICT_LIST}>
-            <Link to={AddressPath.DISTRICT_LIST}>
-              <FormattedMessage id="districtTitle" />
-            </Link>
-          </Item>
-          <Item key={AddressPath.BUILDING_MATERIAL_LIST}>
-            <Link to={AddressPath.BUILDING_MATERIAL_LIST}>
-              <FormattedMessage id="buildingMaterialTitle" />
-            </Link>
-          </Item>
-          <Item key={AddressPath.BUILDING_TYPE_LIVABILITY_LIST}>
-            <Link to={AddressPath.BUILDING_TYPE_LIVABILITY_LIST}>
-              <FormattedMessage id="buildingsTypesLivabilityTitle" />
-            </Link>
-          </Item>
-          <Menu.Divider />
           <Item key={AddressPath.STREET_TYPE_LIST}>
             <Link to={AddressPath.STREET_TYPE_LIST}>
               <FormattedMessage id="streetTypeTitle" />

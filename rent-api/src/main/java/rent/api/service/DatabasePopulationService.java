@@ -18,20 +18,17 @@ public class DatabasePopulationService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final DistrictRepository districtRepository;
     private final StreetTypeRepository streetTypeRepository;
     private final StreetRepository streetRepository;
     private final BuildingRepository buildingRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
-                                     PasswordEncoder passwordEncoder, DistrictRepository districtRepository,
-                                     StreetTypeRepository streetTypeRepository, StreetRepository streetRepository,
-                                     BuildingRepository buildingRepository) {
+                                     PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
+                                     StreetRepository streetRepository, BuildingRepository buildingRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.districtRepository = districtRepository;
         this.streetTypeRepository = streetTypeRepository;
         this.streetRepository = streetRepository;
         this.buildingRepository = buildingRepository;
@@ -42,7 +39,6 @@ public class DatabasePopulationService {
         log.info("Start population database");
         createRoles();
         createUsers();
-        createDistricts();
         createStreetTypes();
         createStreets();
         createBuildings();
@@ -79,16 +75,6 @@ public class DatabasePopulationService {
             user.setPassword(passwordEncoder.encode(password));
             user.setRole(role);
             userRepository.save(user);
-        }
-    }
-
-    private void createDistricts() {
-        if (districtRepository.count() < 10) {
-            for (int i = 0; i < 100; i++) {
-                DistrictEntity districtEntity = new DistrictEntity();
-                districtEntity.setName(String.format("Test district %d", i));
-                districtRepository.save(districtEntity);
-            }
         }
     }
 
