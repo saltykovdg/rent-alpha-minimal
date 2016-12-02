@@ -2,6 +2,7 @@
 .vscode/
 .settings/
 .history/
+lib/
 target/
 node_modules/
 build/
