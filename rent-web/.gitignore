@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 .settings/
+.history/
 target/
 node_modules/
 build/
