@@ -1,0 +1,102 @@
+// import { root<%= helpers.pascalCase(name) %>Saga } from './sagas/<%= helpers.pascalCase(name) %>Saga';
+
+import { takeLatest } from 'redux-saga';
+import { call, put, fork } from 'redux-saga/effects';
+import { browserHistory } from 'react-router';
+
+import * as <%= helpers.pascalCase(name) %>Action from './../actions/<%= helpers.pascalCase(name) %>Action';
+import * as <%= helpers.pascalCase(name) %>Api from './../api/<%= helpers.pascalCase(name) %>Api';
+import * as <%= helpers.pascalCase(name) %>Path from './../paths/<%= helpers.pascalCase(name) %>Path';
+import * as ApiCaller from '../../../util/ApiCaller';
+
+export function* get<%= helpers.pascalCase(name) %>s(action) {
+  const response = yield call(<%= helpers.pascalCase(name) %>Api.get<%= helpers.pascalCase(name) %>s, action.page);
+  if (response && !response.error && !response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>sSuccess(response));
+  } else if (!response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>sFailed());
+  }
+}
+
+export function* watchGet<%= helpers.pascalCase(name) %>s() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S, get<%= helpers.pascalCase(name) %>s);
+}
+
+export function* get<%= helpers.pascalCase(name) %>(action) {
+  const response = yield call(<%= helpers.pascalCase(name) %>Api.get<%= helpers.pascalCase(name) %>, action.id);
+  if (response && !response.error && !response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>Success(response));
+  } else if (!response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>Failed(action.id));
+  }
+}
+
+export function* watchGet<%= helpers.pascalCase(name) %>() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>, get<%= helpers.pascalCase(name) %>);
+}
+
+export function* save<%= helpers.pascalCase(name) %>(action) {
+  const response = yield call(<%= helpers.pascalCase(name) %>Api.save<%= helpers.pascalCase(name) %>, action.object);
+  if (response && !response.error && !response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.save<%= helpers.pascalCase(name) %>Success(response));
+    yield call(browserHistory.push, <%= helpers.pascalCase(name) %>Path.<%= helpers.constantCase(name) %>_LIST);
+  } else if (!response.canceled) {
+    const data = {
+      httpStatus: response.status,
+      object: action.object,
+    };
+    yield put(<%= helpers.pascalCase(name) %>Action.save<%= helpers.pascalCase(name) %>Failed(data));
+  }
+}
+
+export function* watchSave<%= helpers.pascalCase(name) %>() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>, save<%= helpers.pascalCase(name) %>);
+}
+
+export function* delete<%= helpers.pascalCase(name) %>(action) {
+  const response = yield call(<%= helpers.pascalCase(name) %>Api.delete<%= helpers.pascalCase(name) %>, action.object);
+  if (response === '') {
+    yield put(<%= helpers.pascalCase(name) %>Action.delete<%= helpers.pascalCase(name) %>Success(action.object));
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>s());
+  } else if (!response.canceled) {
+    const data = {
+      httpStatus: response.status,
+      object: action.object,
+    };
+    yield put(<%= helpers.pascalCase(name) %>Action.delete<%= helpers.pascalCase(name) %>Failed(data));
+  }
+}
+
+export function* watchDelete<%= helpers.pascalCase(name) %>() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>, delete<%= helpers.pascalCase(name) %>);
+}
+
+export function* new<%= helpers.pascalCase(name) %>() {
+  yield call(ApiCaller.cancelAllRequests);
+}
+
+export function* watchNew<%= helpers.pascalCase(name) %>() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.NEW_<%= helpers.constantCase(name) %>, new<%= helpers.pascalCase(name) %>);
+}
+
+export function* find<%= helpers.pascalCase(name) %>sByName(action) {
+  const response = yield call(<%= helpers.pascalCase(name) %>Api.find<%= helpers.pascalCase(name) %>sByName, action.name);
+  if (response && !response.error && !response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>sSuccess(response));
+  } else if (!response.canceled) {
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>sFailed());
+  }
+}
+
+export function* watchFind<%= helpers.pascalCase(name) %>sByName() {
+  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME, find<%= helpers.pascalCase(name) %>sByName);
+}
+
+export const root<%= helpers.pascalCase(name) %>Saga = [
+  fork(watchGet<%= helpers.pascalCase(name) %>s),
+  fork(watchGet<%= helpers.pascalCase(name) %>),
+  fork(watchSave<%= helpers.pascalCase(name) %>),
+  fork(watchDelete<%= helpers.pascalCase(name) %>),
+  fork(watchNew<%= helpers.pascalCase(name) %>),
+  fork(watchFind<%= helpers.pascalCase(name) %>sByName),
+];

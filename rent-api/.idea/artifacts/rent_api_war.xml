@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rent-api:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="rent-api-3.0.war">
+      <element id="artifact" artifact-name="rent-api:war exploded" />
+    </root>
+  </artifact>
+</component>

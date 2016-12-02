@@ -1,0 +1,6 @@
+.idea
+target
+node_modules
+npm-debug.log
+src/main/resources/static
+*.iml

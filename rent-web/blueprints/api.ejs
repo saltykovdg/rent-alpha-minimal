@@ -1,0 +1,21 @@
+import * as ApiCaller from '../../../util/ApiCaller';
+
+export function get<%= helpers.pascalCase(name) %>s(page = 0) {
+  return ApiCaller.callApi(`<%= helpers.paramCase(name) %>?page=${page}&sort=name`);
+}
+
+export function get<%= helpers.pascalCase(name) %>(id) {
+  return ApiCaller.callApi(`<%= helpers.paramCase(name) %>/${id}?projection=<%= helpers.camelCase(name) %>Basic`);
+}
+
+export function save<%= helpers.pascalCase(name) %>(object) {
+  return ApiCaller.callApi('<%= helpers.paramCase(name) %>', 'post', object);
+}
+
+export function delete<%= helpers.pascalCase(name) %>(object) {
+  return ApiCaller.callApi(`<%= helpers.paramCase(name) %>/${object.id}`, 'delete');
+}
+
+export function find<%= helpers.pascalCase(name) %>sByName(name = '') {
+  return ApiCaller.callApi(`<%= helpers.paramCase(name) %>/search/findByNameContainingOrderByName?name=${name}`);
+}

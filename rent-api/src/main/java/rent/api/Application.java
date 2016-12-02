@@ -1,0 +1,65 @@
+package rent.api;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.filter.CorsFilter;
+
+@Configuration
+@ComponentScan(basePackages = {"rent.api", "rent.common"})
+@EnableAspectJAutoProxy
+@EnableAutoConfiguration
+public class Application extends SpringBootServletInitializer {
+    private static Class<Application> applicationClass = Application.class;
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(applicationClass);
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.POST);
+        config.addAllowedMethod(HttpMethod.PATCH);
+        config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.DELETE);
+        config.addAllowedMethod(HttpMethod.OPTIONS);
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
+    @Bean
+    public CommonsRequestLoggingFilter commonLogFilter() {
+        CommonsRequestLoggingFilter commonsRequestLoggingFilter = new CommonsRequestLoggingFilter();
+        commonsRequestLoggingFilter.setIncludeQueryString(true);
+        commonsRequestLoggingFilter.setIncludePayload(true);
+        commonsRequestLoggingFilter.setIncludeHeaders(true);
+        commonsRequestLoggingFilter.setIncludeClientInfo(true);
+        commonsRequestLoggingFilter.setMaxPayloadLength(5120);
+        return commonsRequestLoggingFilter;
+    }
+
+//    @Bean
+//    public LogFilter logFilter() {
+//        return new LogFilter();
+//    }
+}

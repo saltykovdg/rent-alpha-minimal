@@ -1,0 +1,86 @@
+// Generated code for <%= helpers.pascalCase(parent) %>Reducer
+/*
+import {
+  <%= helpers.camelCase(name) %>Reducer,
+  get<%= helpers.pascalCase(name) %>IsLoading,
+  get<%= helpers.pascalCase(name) %>IsRequestError,
+} from './reducers/<%= helpers.pascalCase(name) %>Reducer';
+
+const initialState = {
+  <%= helpers.camelCase(name) %>: data,
+};
+
+const <%= helpers.camelCase(name) %>Reducer = (state = initialState, action) => {
+  return {
+    <%= helpers.camelCase(name) %>: <%= helpers.camelCase(name) %>Reducer(state, action),
+  };
+};
+
+export const getIsRequestError = state => get<%= helpers.pascalCase(name) %>IsRequestError(state);
+export const getIsLoading = state => get<%= helpers.pascalCase(name) %>IsLoading(state);
+*/
+
+import * as <%= helpers.pascalCase(name) %>Action from './../actions/<%= helpers.pascalCase(name) %>Action';
+import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+
+const emptyEditData = {
+  id: '',
+  name: '',
+};
+
+export const <%= helpers.camelCase(name) %>Reducer = (state, action) => {
+  switch (action.type) {
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>:
+    case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>: {
+      return prepareEdit(state.<%= helpers.camelCase(name) %>.edit.data, true, false, false, false);
+    }
+    case <%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME:
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S:
+    case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>: {
+      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, true, false, false, false);
+    }
+
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>_SUCCESS: {
+      return prepareEdit(action.data, false, false, false, false);
+    }
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S_SUCCESS: {
+      return prepareList(action.data, emptyEditData, false, false, false, false);
+    }
+
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>_FAILED: {
+      return prepareEdit(emptyEditData, false, true, false, false);
+    }
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S_FAILED: {
+      return prepareList(null, emptyEditData, false, true, false, false);
+    }
+
+    case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>_SUCCESS: {
+      return prepareList(null, emptyEditData, false, false, true, false);
+    }
+    case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>_SUCCESS: {
+      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, false, false, false, true);
+    }
+
+    case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>_FAILED: {
+      return prepareEdit(state.<%= helpers.camelCase(name) %>.edit.data, false, true, false, false);
+    }
+    case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>_FAILED: {
+      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, false, true, false, false);
+    }
+
+    case <%= helpers.pascalCase(name) %>Action.NEW_<%= helpers.constantCase(name) %>: {
+      return prepareEdit(emptyEditData, false, false, false, false);
+    }
+
+    default:
+      return prepareDefault(state.<%= helpers.camelCase(name) %>.list, emptyEditData);
+  }
+};
+
+/* Selectors */
+export const get<%= helpers.pascalCase(name) %>EditData = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.edit.data;
+export const get<%= helpers.pascalCase(name) %>ListData = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.list.data;
+export const get<%= helpers.pascalCase(name) %>IsLoading = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.list.isLoading || state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.edit.isLoading;
+export const get<%= helpers.pascalCase(name) %>IsRequestError = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.list.isRequestError || state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.edit.isRequestError;
+export const get<%= helpers.pascalCase(name) %>IsSaved = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.isSaved;
+export const get<%= helpers.pascalCase(name) %>IsDeleted = state => state.<%= helpers.lowerCase(parent) %>.<%= helpers.camelCase(name) %>.isDeleted;

@@ -1,0 +1,14 @@
+.idea/
+.vscode/
+.settings/
+target/
+node_modules/
+build/
+coverage/
+jsconfig.json
+.classpath
+.project
+*.lck
+*.iml
+*.log
+*.lock

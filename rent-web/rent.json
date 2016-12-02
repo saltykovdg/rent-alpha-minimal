@@ -1,0 +1,179 @@
+{
+  "blueprints": [
+    {
+      "name": "module",
+      "description": "Generates a new module",
+      "usage": "module [module-name]",
+      "files": [
+        {
+          "blueprint-path": "blueprints/module/module-reducer.ejs",
+          "target-path": "src/modules/<%= helpers.pascalCase(name) %>/<%= helpers.pascalCase(name) %>Reducer.js"
+        },
+        {
+          "blueprint-path": "blueprints/module/module-saga.ejs",
+          "target-path": "src/modules/<%= helpers.pascalCase(name) %>/<%= helpers.pascalCase(name) %>Saga.js"
+        }
+      ]
+    },
+    {
+      "name": "module-component",
+      "description": "Generates a new module component",
+      "usage": "module-component <module-name>/<component-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/path.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "paths/<%= helpers.pascalCase(name) %>Path.js"
+        },
+        {
+          "blueprint-path": "blueprints/api.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "api/<%= helpers.pascalCase(name) %>Api.js"
+        },
+        {
+          "blueprint-path": "blueprints/action.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "actions/<%= helpers.pascalCase(name) %>Action.js"
+        },
+        {
+          "blueprint-path": "blueprints/saga.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "sagas/<%= helpers.pascalCase(name) %>Saga.js"
+        },
+        {
+          "blueprint-path": "blueprints/reducer.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "reducers/<%= helpers.pascalCase(name) %>Reducer.js"
+        },
+        {
+          "blueprint-path": "blueprints/component-edit.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "components/<%= helpers.pascalCase(name) %>Edit.js"
+        },
+        {
+          "blueprint-path": "blueprints/component-list.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "components/<%= helpers.pascalCase(name) %>List.js"
+        },
+        {
+          "blueprint-path": "blueprints/page-edit.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "pages/<%= helpers.pascalCase(name) %>EditPage.js"
+        },
+        {
+          "blueprint-path": "blueprints/page-list.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "pages/<%= helpers.pascalCase(name) %>ListPage.js"
+        }
+      ]
+    },
+    {
+      "name": "action-m",
+      "description": "Generates actions and action creators in a module directory",
+      "usage": "action-m <module-name>/<action-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/action.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "actions/<%= helpers.pascalCase(name) %>Action.js"
+        }
+      ]
+    },
+    {
+      "name": "saga-m",
+      "description": "Generates saga in a module directory",
+      "usage": "saga-m <module-name>/<saga-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/saga.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "sagas/<%= helpers.pascalCase(name) %>Saga.js"
+        }
+      ]
+    },
+    {
+      "name": "api-m",
+      "description": "Generates api in a module directory",
+      "usage": "api-m <module-name>/<api-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/api.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "api/<%= helpers.pascalCase(name) %>Api.js"
+        }
+      ]
+    },
+    {
+      "name": "path-m",
+      "description": "Generates path in a module directory",
+      "usage": "path-m <module-name>/<path-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/path.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "paths/<%= helpers.pascalCase(name) %>Path.js"
+        }
+      ]
+    },
+    {
+      "name": "reducer-m",
+      "description": "Generates reducer in a module directory",
+      "usage": "reducer-m <module-name>/<reducer-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/reducer.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "reducers/<%= helpers.pascalCase(name) %>Reducer.js"
+        }
+      ]
+    },
+    {
+      "name": "component-edit-m",
+      "description": "Generates component-edit in a module directory",
+      "usage": "component-edit-m <module-name>/<component-edit-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/component-edit.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "components/<%= helpers.pascalCase(name) %>Edit.js"
+        }
+      ]
+    },
+    {
+      "name": "component-list-m",
+      "description": "Generates component-list in a module directory",
+      "usage": "component-list-m <module-name>/<component-list-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/component-list.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "components/<%= helpers.pascalCase(name) %>List.js"
+        }
+      ]
+    },
+    {
+      "name": "page-edit-m",
+      "description": "Generates page-edit in a module directory",
+      "usage": "page-edit-m <module-name>/<page-edit-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/page-edit.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "pages/<%= helpers.pascalCase(name) %>EditPage.js"
+        }
+      ]
+    },
+    {
+      "name": "page-list-m",
+      "description": "Generates page-list in a module directory",
+      "usage": "page-list-m <module-name>/<page-list-name>",
+      "files": [
+        {
+          "blueprint-path": "blueprints/page-list.ejs",
+          "parent-path": "src/modules/<%= helpers.pascalCase(parent) %>",
+          "target-path": "pages/<%= helpers.pascalCase(name) %>ListPage.js"
+        }
+      ]
+    }
+  ]
+}

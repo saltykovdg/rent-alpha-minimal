@@ -1,0 +1,6 @@
+rent\api\service\DatabasePopulationService.class
+rent\api\service\CustomUserDetailsService.class
+rent\api\Application.class
+rent\api\config\SecurityConfig.class
+rent\api\config\DBConfiguration.class
+rent\api\filter\LogFilter.class

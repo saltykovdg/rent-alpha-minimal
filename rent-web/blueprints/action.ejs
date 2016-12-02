@@ -1,0 +1,110 @@
+export const GET_<%= helpers.constantCase(name) %>S = 'GET_<%= helpers.constantCase(name) %>S';
+export const GET_<%= helpers.constantCase(name) %>S_SUCCESS = 'GET_<%= helpers.constantCase(name) %>S_SUCCESS';
+export const GET_<%= helpers.constantCase(name) %>S_FAILED = 'GET_<%= helpers.constantCase(name) %>S_FAILED';
+export const GET_<%= helpers.constantCase(name) %> = 'GET_<%= helpers.constantCase(name) %>';
+export const GET_<%= helpers.constantCase(name) %>_SUCCESS = 'GET_<%= helpers.constantCase(name) %>_SUCCESS';
+export const GET_<%= helpers.constantCase(name) %>_FAILED = 'GET_<%= helpers.constantCase(name) %>_FAILED';
+export const SAVE_<%= helpers.constantCase(name) %> = 'SAVE_<%= helpers.constantCase(name) %>';
+export const SAVE_<%= helpers.constantCase(name) %>_SUCCESS = 'SAVE_<%= helpers.constantCase(name) %>_SUCCESS';
+export const SAVE_<%= helpers.constantCase(name) %>_FAILED = 'SAVE_<%= helpers.constantCase(name) %>_FAILED';
+export const DELETE_<%= helpers.constantCase(name) %> = 'DELETE_<%= helpers.constantCase(name) %>';
+export const DELETE_<%= helpers.constantCase(name) %>_SUCCESS = 'DELETE_<%= helpers.constantCase(name) %>_SUCCESS';
+export const DELETE_<%= helpers.constantCase(name) %>_FAILED = 'DELETE_<%= helpers.constantCase(name) %>_FAILED';
+export const NEW_<%= helpers.constantCase(name) %> = 'NEW_<%= helpers.constantCase(name) %>';
+export const FIND_<%= helpers.constantCase(name) %>S_BY_NAME = 'FIND_<%= helpers.constantCase(name) %>S_BY_NAME';
+
+export const get<%= helpers.pascalCase(name) %>s = (page = 0) => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>S,
+    page,
+  };
+};
+
+export const get<%= helpers.pascalCase(name) %>sSuccess = (data) => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>S_SUCCESS,
+    data,
+  };
+};
+
+export const get<%= helpers.pascalCase(name) %>sFailed = () => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>S_FAILED,
+  };
+};
+
+export const get<%= helpers.pascalCase(name) %> = (id) => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>,
+    id,
+  };
+};
+
+export const get<%= helpers.pascalCase(name) %>Success = (data) => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>_SUCCESS,
+    data,
+  };
+};
+
+export const get<%= helpers.pascalCase(name) %>Failed = (id) => {
+  return {
+    type: GET_<%= helpers.constantCase(name) %>_FAILED,
+    id,
+  };
+};
+
+export const save<%= helpers.pascalCase(name) %> = (object) => {
+  return {
+    type: SAVE_<%= helpers.constantCase(name) %>,
+    object,
+  };
+};
+
+export const save<%= helpers.pascalCase(name) %>Success = (data) => {
+  return {
+    type: SAVE_<%= helpers.constantCase(name) %>_SUCCESS,
+    data,
+  };
+};
+
+export const save<%= helpers.pascalCase(name) %>Failed = (data) => {
+  return {
+    type: SAVE_<%= helpers.constantCase(name) %>_FAILED,
+    data,
+  };
+};
+
+export const delete<%= helpers.pascalCase(name) %> = (object) => {
+  return {
+    type: DELETE_<%= helpers.constantCase(name) %>,
+    object,
+  };
+};
+
+export const delete<%= helpers.pascalCase(name) %>Success = (object) => {
+  return {
+    type: DELETE_<%= helpers.constantCase(name) %>_SUCCESS,
+    object,
+  };
+};
+
+export const delete<%= helpers.pascalCase(name) %>Failed = (data) => {
+  return {
+    type: DELETE_<%= helpers.constantCase(name) %>_FAILED,
+    data,
+  };
+};
+
+export const new<%= helpers.pascalCase(name) %> = () => {
+  return {
+    type: NEW_<%= helpers.constantCase(name) %>,
+  };
+};
+
+export const find<%= helpers.pascalCase(name) %>sByName = (name = '') => {
+  return {
+    type: FIND_<%= helpers.constantCase(name) %>S_BY_NAME,
+    name,
+  };
+};

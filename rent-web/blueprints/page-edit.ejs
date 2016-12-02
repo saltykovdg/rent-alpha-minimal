@@ -1,0 +1,57 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
+
+// Import Components
+import <%= helpers.pascalCase(name) %>Edit from './../components/<%= helpers.pascalCase(name) %>Edit';
+
+// Import Actions
+import * as <%= helpers.pascalCase(name) %>Action from './../actions/<%= helpers.pascalCase(name) %>Action';
+
+// Import Selectors
+import {
+  get<%= helpers.pascalCase(name) %>EditData,
+  get<%= helpers.pascalCase(name) %>IsLoading,
+  get<%= helpers.pascalCase(name) %>IsRequestError,
+  get<%= helpers.pascalCase(name) %>IsSaved,
+} from './../reducers/<%= helpers.pascalCase(name) %>Reducer';
+
+class <%= helpers.pascalCase(name) %>EditPage extends ExtendedComponentPage {
+  componentWillMount() {
+    super.componentWillMount();
+    const id = this.props.params.id;
+    if (id) {
+      this.props.dispatch(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>(id));
+    } else {
+      this.props.dispatch(<%= helpers.pascalCase(name) %>Action.new<%= helpers.pascalCase(name) %>());
+    }
+  }
+  onSave = (object) => {
+    this.props.dispatch(<%= helpers.pascalCase(name) %>Action.save<%= helpers.pascalCase(name) %>(object));
+  };
+  render() {
+    return (
+      <<%= helpers.pascalCase(name) %>Edit
+        data={this.props.data}
+        id={this.props.id}
+        isLoading={this.props.isLoading}
+        isRequestError={this.props.isRequestError}
+        onSave={this.onSave}
+      />
+    );
+  }
+}
+
+// Retrieve data from store as props
+function mapStateToProps(state, props) {
+  return {
+    data: get<%= helpers.pascalCase(name) %>EditData(state),
+    isLoading: get<%= helpers.pascalCase(name) %>IsLoading(state),
+    isRequestError: get<%= helpers.pascalCase(name) %>IsRequestError(state),
+    isSaved: get<%= helpers.pascalCase(name) %>IsSaved(state),
+    id: props.params.id,
+  };
+}
+
+export default connect(mapStateToProps)(injectIntl(<%= helpers.pascalCase(name) %>EditPage));

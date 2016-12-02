@@ -1,0 +1,34 @@
+// import <%= helpers.pascalCase(name) %> from './modules/<%= helpers.pascalCase(name) %>/<%= helpers.pascalCase(name) %>Reducer';
+// import tempReducer from './reducers/TempReducer';
+
+// Initial State
+const data = {
+  list: {
+    data: null,
+    isLoading: false,
+    isRequestError: false,
+  },
+  edit: {
+    data: null,
+    isLoading: false,
+    isRequestError: false,
+  },
+  isSaved: false,
+  isDeleted: false,
+};
+
+const initialState = {
+  tempReducer: data,
+};
+
+const <%= helpers.pascalCase(name) %>Reducer = (state = initialState, action) => {
+  return {
+    tempReducer: null,
+  };
+};
+
+/* Selectors */
+
+
+// Export Reducer
+export default <%= helpers.pascalCase(name) %>Reducer;
