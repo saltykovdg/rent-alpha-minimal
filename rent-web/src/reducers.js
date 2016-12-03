@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 // Import Reducers
 import address from './modules/Address/AddressReducer';
 import organization from './modules/Organization/OrganizationReducer';
-import service from './modules/Service/ServiceReducer';
+import services from './modules/Services/ServicesReducer';
 import constants from './modules/Constants/ConstantsReducer';
 import intl from './modules/Intl/IntlReducer';
 
@@ -14,7 +14,7 @@ import intl from './modules/Intl/IntlReducer';
 export default combineReducers({
   address,
   organization,
-  service,
+  services,
   constants,
   intl,
 });

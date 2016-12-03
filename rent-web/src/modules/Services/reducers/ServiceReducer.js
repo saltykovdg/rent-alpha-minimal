@@ -56,9 +56,9 @@ export const serviceReducer = (state, action) => {
 };
 
 /* Selectors */
-export const getServiceEditData = state => state.service.service.edit.data;
-export const getServiceListData = state => state.service.service.list.data;
-export const getServiceIsLoading = state => state.service.service.list.isLoading || state.service.service.edit.isLoading;
-export const getServiceIsRequestError = state => state.service.service.list.isRequestError || state.service.service.edit.isRequestError;
-export const getServiceIsSaved = state => state.service.service.isSaved;
-export const getServiceIsDeleted = state => state.service.service.isDeleted;
+export const getServiceEditData = state => state.services.service.edit.data;
+export const getServiceListData = state => state.services.service.list.data;
+export const getServiceIsLoading = state => state.services.service.list.isLoading || state.services.service.edit.isLoading;
+export const getServiceIsRequestError = state => state.services.service.list.isRequestError || state.services.service.edit.isRequestError;
+export const getServiceIsSaved = state => state.services.service.isSaved;
+export const getServiceIsDeleted = state => state.services.service.isDeleted;

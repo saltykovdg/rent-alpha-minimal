@@ -18,7 +18,7 @@ class ServiceTypeList extends ListComponent {
           <Breadcrumb.Item>
             <Link to="/"><Icon type="home" /></Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item><FormattedMessage id="serviceTitle" /></Breadcrumb.Item>
+          <Breadcrumb.Item><FormattedMessage id="servicesTitle" /></Breadcrumb.Item>
           <Breadcrumb.Item><FormattedMessage id="serviceTypeTitle" /></Breadcrumb.Item>
         </Breadcrumb>
         <h1>

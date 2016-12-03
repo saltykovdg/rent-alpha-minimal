@@ -19,11 +19,11 @@ class ServiceList extends ListComponent {
           <Breadcrumb.Item>
             <Link to="/"><Icon type="home" /></Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item><FormattedMessage id="serviceTitle" /></Breadcrumb.Item>
-          <Breadcrumb.Item><FormattedMessage id="serviceTitle" /></Breadcrumb.Item>
+          <Breadcrumb.Item><FormattedMessage id="servicesTitle" /></Breadcrumb.Item>
+          <Breadcrumb.Item><FormattedMessage id="servicesTitle" /></Breadcrumb.Item>
         </Breadcrumb>
         <h1>
-          <FormattedMessage id="serviceTitle" />
+          <FormattedMessage id="servicesTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(ServicePath.SERVICE_EDIT)}>
           <FormattedMessage id="buttonAddNewRecord" />

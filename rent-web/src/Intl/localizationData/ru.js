@@ -56,7 +56,7 @@ export default {
     apartmentFieldRoomsNumber: 'Кол-во комнат',
 
     // services
-    serviceTitle: 'Услуги',
+    servicesTitle: 'Услуги',
     serviceTypeTitle: 'Типы услуг',
     serviceTypeFieldName: 'Тип услуги',
     serviceFieldName: 'Услуга',

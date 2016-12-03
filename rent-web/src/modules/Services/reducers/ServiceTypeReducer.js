@@ -56,9 +56,9 @@ export const serviceTypeReducer = (state, action) => {
 };
 
 /* Selectors */
-export const getServiceTypeEditData = state => state.service.serviceType.edit.data;
-export const getServiceTypeListData = state => state.service.serviceType.list.data;
-export const getServiceTypeIsLoading = state => state.service.serviceType.list.isLoading || state.service.serviceType.edit.isLoading;
-export const getServiceTypeIsRequestError = state => state.service.serviceType.list.isRequestError || state.service.serviceType.edit.isRequestError;
-export const getServiceTypeIsSaved = state => state.service.serviceType.isSaved;
-export const getServiceTypeIsDeleted = state => state.service.serviceType.isDeleted;
+export const getServiceTypeEditData = state => state.services.serviceType.edit.data;
+export const getServiceTypeListData = state => state.services.serviceType.list.data;
+export const getServiceTypeIsLoading = state => state.services.serviceType.list.isLoading || state.services.serviceType.edit.isLoading;
+export const getServiceTypeIsRequestError = state => state.services.serviceType.list.isRequestError || state.services.serviceType.edit.isRequestError;
+export const getServiceTypeIsSaved = state => state.services.serviceType.isSaved;
+export const getServiceTypeIsDeleted = state => state.services.serviceType.isDeleted;

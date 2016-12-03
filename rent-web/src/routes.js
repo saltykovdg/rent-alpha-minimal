@@ -5,8 +5,8 @@ import App from './modules/App/App';
 
 import * as AddressPath from './modules/Address/AddressPaths';
 import * as OrganizationPath from './modules/Organization/OrganizationPaths';
-import * as ServiceTypePath from './modules/Service/paths/ServiceTypePath';
-import * as ServicePath from './modules/Service/paths/ServicePath';
+import * as ServiceTypePath from './modules/Services/paths/ServiceTypePath';
+import * as ServicePath from './modules/Services/paths/ServicePath';
 import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
 
@@ -33,11 +33,11 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Organization/pages/ContractorListPage');
   require('./modules/Organization/pages/ContractorEditPage');
 
-  // Service
-  require('./modules/Service/pages/ServiceTypeListPage');
-  require('./modules/Service/pages/ServiceTypeEditPage');
-  require('./modules/Service/pages/ServiceListPage');
-  require('./modules/Service/pages/ServiceEditPage');
+  // Services
+  require('./modules/Services/pages/ServiceTypeListPage');
+  require('./modules/Services/pages/ServiceTypeEditPage');
+  require('./modules/Services/pages/ServiceListPage');
+  require('./modules/Services/pages/ServiceEditPage');
 
   // Constants
   require('./modules/Constants/pages/CalculationTypeListPage');
@@ -163,7 +163,7 @@ export default (
       path={ServiceTypePath.SERVICE_TYPE_LIST}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('./modules/Service/pages/ServiceTypeListPage').default);
+          cb(null, require('./modules/Services/pages/ServiceTypeListPage').default);
         });
       }}
     />
@@ -171,7 +171,7 @@ export default (
       path={`${ServiceTypePath.SERVICE_TYPE_EDIT}(/:id)`}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('./modules/Service/pages/ServiceTypeEditPage').default);
+          cb(null, require('./modules/Services/pages/ServiceTypeEditPage').default);
         });
       }}
     />
@@ -179,7 +179,7 @@ export default (
       path={ServicePath.SERVICE_LIST}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('./modules/Service/pages/ServiceListPage').default);
+          cb(null, require('./modules/Services/pages/ServiceListPage').default);
         });
       }}
     />
@@ -187,7 +187,7 @@ export default (
       path={`${ServicePath.SERVICE_EDIT}(/:id)`}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('./modules/Service/pages/ServiceEditPage').default);
+          cb(null, require('./modules/Services/pages/ServiceEditPage').default);
         });
       }}
     />

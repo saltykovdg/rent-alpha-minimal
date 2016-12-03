@@ -7,8 +7,8 @@ import './Sidebar.less';
 
 import * as AddressPath from '../../../Address/AddressPaths';
 import * as OrganizationPath from '../../../Organization/OrganizationPaths';
-import * as ServiceTypePath from '../../../Service/paths/ServiceTypePath';
-import * as ServicePath from '../../../Service/paths/ServicePath';
+import * as ServiceTypePath from '../../../Services/paths/ServiceTypePath';
+import * as ServicePath from '../../../Services/paths/ServicePath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
 
@@ -23,7 +23,7 @@ function Sidebar() {
     defaultOpenKey = 'sidebarAddress';
   } else if (location.indexOf('/organization/') !== -1) {
     defaultOpenKey = 'sidebarOrganizations';
-  } else if (location.indexOf('/service/') !== -1) {
+  } else if (location.indexOf('/services/') !== -1) {
     defaultOpenKey = 'sidebarServices';
   } else if (location.indexOf('/constants/') !== -1) {
     defaultOpenKey = 'sidebarConstants';
@@ -82,7 +82,7 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
-        <SubMenu key="sidebarServices" title={<FormattedMessage id="serviceTitle" />}>
+        <SubMenu key="sidebarServices" title={<FormattedMessage id="servicesTitle" />}>
           <Item key={ServiceTypePath.SERVICE_TYPE_LIST}>
             <Link to={ServiceTypePath.SERVICE_TYPE_LIST}>
               <FormattedMessage id="serviceTypeTitle" />
@@ -90,7 +90,7 @@ function Sidebar() {
           </Item>
           <Item key={ServicePath.SERVICE_LIST}>
             <Link to={ServicePath.SERVICE_LIST}>
-              <FormattedMessage id="serviceTitle" />
+              <FormattedMessage id="servicesTitle" />
             </Link>
           </Item>
         </SubMenu>

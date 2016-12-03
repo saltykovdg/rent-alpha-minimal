@@ -25,8 +25,8 @@ class ServiceEdit extends EditComponent {
           <Breadcrumb.Item>
             <Link to="/"><Icon type="home" /></Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item><FormattedMessage id="serviceTitle" /></Breadcrumb.Item>
-          <Breadcrumb.Item><Link to={ServicePath.SERVICE_LIST}><FormattedMessage id="serviceTitle" /></Link></Breadcrumb.Item>
+          <Breadcrumb.Item><FormattedMessage id="servicesTitle" /></Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={ServicePath.SERVICE_LIST}><FormattedMessage id="servicesTitle" /></Link></Breadcrumb.Item>
           <Breadcrumb.Item>{titleItem}</Breadcrumb.Item>
         </Breadcrumb>
         <h1>{titleItem}</h1>

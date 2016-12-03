@@ -19,7 +19,7 @@ class ServiceTypeEdit extends EditComponent {
           <Breadcrumb.Item>
             <Link to="/"><Icon type="home" /></Link>
           </Breadcrumb.Item>
-          <Breadcrumb.Item><FormattedMessage id="serviceTitle" /></Breadcrumb.Item>
+          <Breadcrumb.Item><FormattedMessage id="servicesTitle" /></Breadcrumb.Item>
           <Breadcrumb.Item><Link to={ServiceTypePath.SERVICE_TYPE_LIST}><FormattedMessage id="serviceTypeTitle" /></Link></Breadcrumb.Item>
           <Breadcrumb.Item>{titleItem}</Breadcrumb.Item>
         </Breadcrumb>
