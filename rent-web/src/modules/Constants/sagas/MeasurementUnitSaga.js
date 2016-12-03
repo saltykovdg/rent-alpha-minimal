@@ -26,7 +26,6 @@ export function* getMeasurementUnit(action) {
     yield put(MeasurementUnitAction.getMeasurementUnitSuccess(response));
   } else if (!response.canceled) {
     yield put(MeasurementUnitAction.getMeasurementUnitFailed(action.id));
-    yield call(browserHistory.push, MeasurementUnitPath.MEASUREMENT_UNIT_LIST);
   }
 }
 

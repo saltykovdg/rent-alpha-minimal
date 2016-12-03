@@ -68,7 +68,6 @@ export default {
     calculationTypeFieldNameOrigin: 'Вид расчета (значение по умолчанию)',
     measurementUnitTitle: 'Единицы измерения',
     measurementUnitFieldName: 'Единица измерения',
-    measurementUnitFieldNameOrigin: 'Единица измерения (значение по умолчанию)',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',

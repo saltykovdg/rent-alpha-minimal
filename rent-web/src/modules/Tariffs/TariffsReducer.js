@@ -1,5 +1,5 @@
-// Generated code for Root Reducer
-// import <%= helpers.camelCase(name) %> from './modules/<%= helpers.pascalCase(name) %>/<%= helpers.pascalCase(name) %>Reducer';
+// import Tariffs from './modules/Tariffs/TariffsReducer';
+// import tempReducer from './reducers/TempReducer';
 
 // Initial State
 const data = {
@@ -21,7 +21,7 @@ const initialState = {
   tempReducer: data,
 };
 
-const <%= helpers.pascalCase(name) %>Reducer = (state = initialState, action) => {
+const TariffsReducer = (state = initialState, action) => {
   return {
     tempReducer: null,
   };
@@ -31,4 +31,4 @@ const <%= helpers.pascalCase(name) %>Reducer = (state = initialState, action) =>
 
 
 // Export Reducer
-export default <%= helpers.pascalCase(name) %>Reducer;
+export default TariffsReducer;

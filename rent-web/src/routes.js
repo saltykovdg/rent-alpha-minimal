@@ -9,6 +9,7 @@ import * as ServiceTypePath from './modules/Services/paths/ServiceTypePath';
 import * as ServicePath from './modules/Services/paths/ServicePath';
 import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
+import * as AccountPath from './modules/Accounts/paths/AccountPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -44,6 +45,10 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Constants/pages/CalculationTypeEditPage');
   require('./modules/Constants/pages/MeasurementUnitListPage');
   require('./modules/Constants/pages/MeasurementUnitEditPage');
+
+  // Accounts
+  require('./modules/Accounts/pages/AccountListPage');
+  require('./modules/Accounts/pages/AccountEditPage');
 }
 
 // react-router setup with code-splitting
@@ -218,10 +223,28 @@ export default (
       }}
     />
     <Route
-      path={`${MeasurementUnitPath.MEASUREMENT_UNIT_EDIT}/:id`}
+      path={`${MeasurementUnitPath.MEASUREMENT_UNIT_EDIT}(/:id)`}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Constants/pages/MeasurementUnitEditPage').default);
+        });
+      }}
+    />
+
+    { /* Accounts */ }
+    <Route
+      path={AccountPath.ACCOUNT_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Accounts/pages/AccountListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${AccountPath.ACCOUNT_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Accounts/pages/AccountEditPage').default);
         });
       }}
     />

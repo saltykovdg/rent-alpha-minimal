@@ -2,6 +2,8 @@ import { rootAddressSaga } from './modules/Address/AddressSaga';
 import { rootOrganizationSaga } from './modules/Organization/OrganizationSaga';
 import rootServicesSaga from './modules/Services/ServicesSaga';
 import rootConstantsSaga from './modules/Constants/ConstantsSaga';
+import rootTariffsSaga from './modules/Tariffs/TariffsSaga';
+import rootAccountsSaga from './modules/Accounts/AccountsSaga';
 
 export default function* rootSaga() {
   yield [
@@ -9,5 +11,7 @@ export default function* rootSaga() {
     ...rootOrganizationSaga,
     ...rootServicesSaga,
     ...rootConstantsSaga,
+    ...rootTariffsSaga,
+    ...rootAccountsSaga,
   ];
 }

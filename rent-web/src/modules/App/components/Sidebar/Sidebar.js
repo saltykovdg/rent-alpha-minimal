@@ -11,6 +11,7 @@ import * as ServiceTypePath from '../../../Services/paths/ServiceTypePath';
 import * as ServicePath from '../../../Services/paths/ServicePath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
+import * as AccountPath from '../../../Accounts/paths/AccountPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -36,6 +37,11 @@ function Sidebar() {
         defaultOpenKeys={[defaultOpenKey]}
         selectedKeys={[location]}
       >
+        <Item key={AccountPath.ACCOUNT_LIST}>
+          <Link to={AccountPath.ACCOUNT_LIST}>
+            <FormattedMessage id="accountsTitle" />
+          </Link>
+        </Item>
         <SubMenu key="sidebarOrganizations" title={<FormattedMessage id="organizationTitle" />}>
           <Item key={OrganizationPath.CONTRACTOR_TYPE_LIST}>
             <Link to={OrganizationPath.CONTRACTOR_TYPE_LIST}>
@@ -70,11 +76,6 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
-        <Item key="sidebarAccounts">
-          <Link to="/account/list">
-            <FormattedMessage id="accountsTitle" />
-          </Link>
-        </Item>
         <SubMenu key="sidebarNorms" title={<FormattedMessage id="normsTitle" />}>
           <Item key="sidebarNormsGroupsNorms">
             <Link to="/norms/group/list">

@@ -15,17 +15,10 @@ public class MeasurementUnitEntity extends AbstractEntity {
 
     public interface Columns extends AbstractEntity.Columns {
         String NAME = "name";
-        String NAME_ORIGIN = "name_origin";
     }
 
     @Column(name = Columns.NAME)
     private String name;
-
-    /**
-     * Предустановленное исходное название
-     */
-    @Column(name = Columns.NAME_ORIGIN)
-    private String nameOrigin;
 
     public String getName() {
         return name;
@@ -33,13 +26,5 @@ public class MeasurementUnitEntity extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNameOrigin() {
-        return nameOrigin;
-    }
-
-    public void setNameOrigin(String nameOrigin) {
-        this.nameOrigin = nameOrigin;
     }
 }
