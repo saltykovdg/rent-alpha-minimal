@@ -18,9 +18,18 @@ class ListComponent extends ExtendedComponent {
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: name };
   }
-  getActionColumn = (editPath) => {
+  getActionColumn = (editPath, useButtonDelete = true) => {
     const messages = this.props.intl.messages;
     const onDelete = this.props.onDelete;
+    const buttonDelete = (record) => {
+      return (
+        <div>
+          <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+            <Link><FormattedMessage id="buttonDelete" /></Link>
+          </Popconfirm>
+        </div>
+      );
+    };
     return {
       title: this.props.intl.messages.tableColumnActions,
       key: 'action',
@@ -28,10 +37,7 @@ class ListComponent extends ExtendedComponent {
         return (
           <span>
             <Link to={`${editPath}/${record.id}`}><FormattedMessage id="buttonEdit" /></Link>
-            <span className="ant-divider" />
-            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
-              <Link><FormattedMessage id="buttonDelete" /></Link>
-            </Popconfirm>
+            { useButtonDelete ? buttonDelete(record) : null }
           </span>
         );
       },

@@ -9,6 +9,8 @@ import * as AddressPath from '../../../Address/AddressPaths';
 import * as OrganizationPath from '../../../Organization/OrganizationPaths';
 import * as ServiceTypePath from '../../../Service/paths/ServiceTypePath';
 import * as ServicePath from '../../../Service/paths/ServicePath';
+import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
+import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -23,6 +25,8 @@ function Sidebar() {
     defaultOpenKey = 'sidebarOrganizations';
   } else if (location.indexOf('/service/') !== -1) {
     defaultOpenKey = 'sidebarServices';
+  } else if (location.indexOf('/constants/') !== -1) {
+    defaultOpenKey = 'sidebarConstants';
   }
 
   return (
@@ -90,10 +94,15 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
-        <SubMenu key="sidebarOther" title={<FormattedMessage id="otherTitle" />}>
-          <Item key="sidebarOtherTypePlate">
-            <Link to="/other/plate/type/list">
-              <FormattedMessage id="otherTypePlateTitle" />
+        <SubMenu key="sidebarConstants" title={<FormattedMessage id="constantsTitle" />}>
+          <Item key={CalculationTypePath.CALCULATION_TYPE_LIST}>
+            <Link to={CalculationTypePath.CALCULATION_TYPE_LIST}>
+              <FormattedMessage id="calculationTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>
+            <Link to={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>
+              <FormattedMessage id="measurementUnitTitle" />
             </Link>
           </Item>
         </SubMenu>

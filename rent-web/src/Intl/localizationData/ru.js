@@ -4,6 +4,11 @@ export default {
     headerTitle: 'Квартплата 1.0',
     headerMenuLogout: 'Выйти',
 
+    accountsTitle: 'Лицевые счета',
+    normsTitle: 'Нормативы',
+    normsGroupsNormsTitle: 'Группы нормативов',
+
+    // organizations
     dictionariesTitle: 'Справочники',
     organizationTitle: 'Организации',
     contractorTypeTitle: 'Типы контрагентов',
@@ -29,6 +34,7 @@ export default {
     contractorFieldCorrespondentAccount: 'Корреспондентский счет',
     contractorFieldBankIdentificationCode: 'БИК',
 
+    // address
     addressTitle: 'Адресная часть',
     streetTypeTitle: 'Типы улиц',
     streetTypeFieldName: 'Тип улицы',
@@ -49,16 +55,20 @@ export default {
     apartmentFieldLivingArea: 'Жилая площадь',
     apartmentFieldRoomsNumber: 'Кол-во комнат',
 
+    // services
     serviceTitle: 'Услуги',
     serviceTypeTitle: 'Типы услуг',
     serviceTypeFieldName: 'Тип услуги',
     serviceFieldName: 'Услуга',
 
-    accountsTitle: 'Лицевые счета',
-    normsTitle: 'Нормативы',
-    normsGroupsNormsTitle: 'Группы нормативов',
-    otherTitle: 'Прочее',
-    otherTypePlateTitle: 'Типы плит',
+    // constants
+    constantsTitle: 'Константы',
+    calculationTypeTitle: 'Виды расчета',
+    calculationTypeFieldName: 'Вид расчета',
+    calculationTypeFieldNameOrigin: 'Вид расчета (значение по умолчанию)',
+    measurementUnitTitle: 'Единицы измерения',
+    measurementUnitFieldName: 'Единица измерения',
+    measurementUnitFieldNameOrigin: 'Единица измерения (значение по умолчанию)',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
@@ -84,15 +94,5 @@ export default {
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',
-
-    switchLanguage: 'Переключить язык:',
-    messageCreateWidgetSendButton: 'Отправить',
-    messageListHeader: 'Сообщения',
-    sendingMessage: 'Отправка сообщения...',
-    sendMessageFailed: 'Отправить сообщение не удалось.',
-    gettingMessages: 'Получение сообщений...',
-    getMessagesFailed: 'Получить сообщения не удалось.',
-    linkMain: 'Главная',
-    linkMessages: 'Сообщения',
   },
 };

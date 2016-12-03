@@ -14,14 +14,14 @@ class EditComponent extends ExtendedComponent {
     fields.push(this.getBaseFormField('version', object.version, <Input key="version" type="hidden" />));
     return fields;
   };
-  getInputField = (name, value, required = true) => {
+  getInputField = (name, value, required = true, disabled = false) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value,
       rules: [{
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(<Input />);
+    })(!disabled ? <Input /> : <Input disabled />);
   };
   getInputNumberField = (name, value, step = 1, required = true) => {
     return this.props.form.getFieldDecorator(name, {

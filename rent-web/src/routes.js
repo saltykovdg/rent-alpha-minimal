@@ -7,6 +7,8 @@ import * as AddressPath from './modules/Address/AddressPaths';
 import * as OrganizationPath from './modules/Organization/OrganizationPaths';
 import * as ServiceTypePath from './modules/Service/paths/ServiceTypePath';
 import * as ServicePath from './modules/Service/paths/ServicePath';
+import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
+import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -36,6 +38,12 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Service/pages/ServiceTypeEditPage');
   require('./modules/Service/pages/ServiceListPage');
   require('./modules/Service/pages/ServiceEditPage');
+
+  // Constants
+  require('./modules/Constants/pages/CalculationTypeListPage');
+  require('./modules/Constants/pages/CalculationTypeEditPage');
+  require('./modules/Constants/pages/MeasurementUnitListPage');
+  require('./modules/Constants/pages/MeasurementUnitEditPage');
 }
 
 // react-router setup with code-splitting
@@ -180,6 +188,40 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Service/pages/ServiceEditPage').default);
+        });
+      }}
+    />
+
+    { /* Constants */ }
+    <Route
+      path={CalculationTypePath.CALCULATION_TYPE_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/CalculationTypeListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${CalculationTypePath.CALCULATION_TYPE_EDIT}/:id`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/CalculationTypeEditPage').default);
+        });
+      }}
+    />
+    <Route
+      path={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/MeasurementUnitListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${MeasurementUnitPath.MEASUREMENT_UNIT_EDIT}/:id`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/MeasurementUnitEditPage').default);
         });
       }}
     />

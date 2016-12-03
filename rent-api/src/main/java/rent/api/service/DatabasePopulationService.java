@@ -21,17 +21,22 @@ public class DatabasePopulationService {
     private final StreetTypeRepository streetTypeRepository;
     private final StreetRepository streetRepository;
     private final BuildingRepository buildingRepository;
+    private final CalculationTypeRepository calculationTypeRepository;
+    private final MeasurementUnitRepository measurementUnitRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
-                                     StreetRepository streetRepository, BuildingRepository buildingRepository) {
+                                     StreetRepository streetRepository, BuildingRepository buildingRepository,
+                                     CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.streetTypeRepository = streetTypeRepository;
         this.streetRepository = streetRepository;
         this.buildingRepository = buildingRepository;
+        this.calculationTypeRepository = calculationTypeRepository;
+        this.measurementUnitRepository = measurementUnitRepository;
     }
 
     @PostConstruct
@@ -39,6 +44,8 @@ public class DatabasePopulationService {
         log.info("Start population database");
         createRoles();
         createUsers();
+        createCalculationTypes();
+        createMeasurementUnit();
         createStreetTypes();
         createStreets();
         createBuildings();
@@ -76,6 +83,14 @@ public class DatabasePopulationService {
             user.setRole(role);
             userRepository.save(user);
         }
+    }
+
+    private void createCalculationTypes() {
+
+    }
+
+    private void createMeasurementUnit() {
+
     }
 
     private void createStreetTypes() {
