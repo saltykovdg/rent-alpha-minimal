@@ -3,7 +3,21 @@ import { prepareEdit, prepareList, prepareDefault } from './../../../util/Reduce
 
 const emptyEditData = {
   id: '',
-  name: '',
+  accountNumber: '',
+  dateOpen: null,
+  dateClose: null,
+  contractor: {
+    id: '',
+  },
+  apartment: {
+    id: '',
+    building: {
+      id: '',
+      street: {
+        id: '',
+      },
+    },
+  },
 };
 
 export const accountReducer = (state, action) => {

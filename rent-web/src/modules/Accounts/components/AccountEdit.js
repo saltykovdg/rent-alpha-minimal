@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Breadcrumb, Icon, Button, Form, Spin } from 'antd';
+import moment from 'moment';
 
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
