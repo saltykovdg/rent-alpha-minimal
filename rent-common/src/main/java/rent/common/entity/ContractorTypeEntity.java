@@ -6,7 +6,10 @@ import javax.persistence.*;
  * Тип контрагента
  */
 @Entity
-@Table(name = ContractorTypeEntity.TABLE_NAME, indexes = {@Index(columnList = ContractorTypeEntity.Columns.NAME)})
+@Table(name = ContractorTypeEntity.TABLE_NAME, indexes = {
+        @Index(columnList = ContractorTypeEntity.Columns.ID),
+        @Index(columnList = ContractorTypeEntity.Columns.NAME)
+})
 public class ContractorTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "organization_contractors_types";
 

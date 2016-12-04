@@ -9,7 +9,7 @@ import { ListComponent } from './../../../components/ListComponent';
 class AccountList extends ListComponent {
   render() {
     const columns = [
-      this.getColumn(this.props.intl.messages.accountFieldName, 'name'),
+      this.getColumn(this.props.intl.messages.accountFieldAccountNumber, 'accountNumber'),
       this.getActionColumn(AccountPath.ACCOUNT_EDIT),
     ];
     return (

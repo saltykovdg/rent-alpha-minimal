@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccounts(page = 0) {
-  return ApiCaller.callApi(`account?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account?page=${page}&sort=accountNumber`);
 }
 
 export function getAccount(id) {
@@ -16,6 +16,6 @@ export function deleteAccount(object) {
   return ApiCaller.callApi(`account/${object.id}`, 'delete');
 }
 
-export function findAccountsByName(name = '') {
-  return ApiCaller.callApi(`account/search/findByNameContainingOrderByName?name=${name}`);
+export function findAccountsByName(accountNumber = '') {
+  return ApiCaller.callApi(`account/search/findByAccountNumberContainingOrderByAccountNumber?accountNumber=${accountNumber}`);
 }

@@ -9,7 +9,10 @@ import javax.persistence.Table;
  * Единица измерения
  */
 @Entity
-@Table(name = MeasurementUnitEntity.TABLE_NAME, indexes = {@Index(columnList = MeasurementUnitEntity.Columns.NAME)})
+@Table(name = MeasurementUnitEntity.TABLE_NAME, indexes = {
+        @Index(columnList = MeasurementUnitEntity.Columns.ID),
+        @Index(columnList = MeasurementUnitEntity.Columns.NAME)
+})
 public class MeasurementUnitEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_measurement_units";
 

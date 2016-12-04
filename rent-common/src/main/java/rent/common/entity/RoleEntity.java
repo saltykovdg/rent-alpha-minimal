@@ -6,7 +6,10 @@ import javax.persistence.*;
  * Роль
  */
 @Entity
-@Table(name = RoleEntity.TABLE_NAME, indexes = {@Index(columnList = RoleEntity.Columns.NAME)})
+@Table(name = RoleEntity.TABLE_NAME, indexes = {
+        @Index(columnList = RoleEntity.Columns.ID),
+        @Index(columnList = RoleEntity.Columns.NAME)
+})
 public class RoleEntity extends AbstractEntity {
     public static final String TABLE_NAME = "security_roles";
 

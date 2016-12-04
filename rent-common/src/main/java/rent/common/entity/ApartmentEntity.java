@@ -7,6 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = ApartmentEntity.TABLE_NAME, indexes = {
+        @Index(columnList = ApartmentEntity.Columns.ID),
         @Index(columnList = ApartmentEntity.Columns.BUILDING),
         @Index(columnList = ApartmentEntity.Columns.APARTMENT)})
 public class ApartmentEntity extends AbstractEntity {

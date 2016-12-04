@@ -10,7 +10,10 @@ import org.springframework.util.StringUtils;
  */
 @Entity
 @Table(name = UserEntity.TABLE_NAME, indexes = {
-        @Index(columnList = UserEntity.Columns.LOGIN)})
+        @Index(columnList = UserEntity.Columns.ID),
+        @Index(columnList = UserEntity.Columns.LOGIN),
+        @Index(columnList = UserEntity.Columns.ROLE)
+})
 public class UserEntity extends AbstractEntity {
     public static final String TABLE_NAME = "security_users";
 

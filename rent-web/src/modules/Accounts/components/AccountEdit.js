@@ -26,8 +26,8 @@ class AccountEdit extends EditComponent {
         <Spin spinning={this.props.isLoading}>
           <Form vertical onSubmit={this.handleSubmit}>
             {baseFields}
-            <FormItem label={this.props.intl.messages.accountFieldName}>
-              {this.getInputField('name', object.name)}
+            <FormItem label={this.props.intl.messages.accountFieldAccountNumber}>
+              {this.getInputField('accountNumber', object.accountNumber)}
             </FormItem>
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>

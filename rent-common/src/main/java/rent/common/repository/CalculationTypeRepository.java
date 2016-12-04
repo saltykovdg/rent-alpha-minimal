@@ -14,5 +14,7 @@ import java.util.List;
         itemResourceRel = "calculation-type",
         excerptProjection = CalculationTypeBasic.class)
 public interface CalculationTypeRepository extends PagingAndSortingRepository<CalculationTypeEntity, String> {
+    CalculationTypeEntity findByCode(@Param("code") String code);
+
     List<CalculationTypeEntity> findByNameContainingOrderByName(@Param("name") String name);
 }

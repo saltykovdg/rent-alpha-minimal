@@ -5,6 +5,10 @@ export default {
     headerMenuLogout: 'Выйти',
 
     accountsTitle: 'Лицевые счета',
+    accountFieldAccountNumber: 'Лицевой счет',
+    accountFieldDateOpen: 'Дата открытия',
+    accountFieldDateClose: 'Дата закрытия',
+
     normsTitle: 'Нормативы',
     normsGroupsNormsTitle: 'Группы нормативов',
 

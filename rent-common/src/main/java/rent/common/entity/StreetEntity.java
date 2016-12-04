@@ -7,6 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = StreetEntity.TABLE_NAME, indexes = {
+        @Index(columnList = StreetEntity.Columns.ID),
         @Index(columnList = StreetEntity.Columns.NAME),
         @Index(columnList = StreetEntity.Columns.STREET_TYPE)
 })

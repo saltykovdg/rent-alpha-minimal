@@ -7,6 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = ServiceEntity.TABLE_NAME, indexes = {
+        @Index(columnList = ServiceEntity.Columns.ID),
         @Index(columnList = ServiceEntity.Columns.NAME),
         @Index(columnList = ServiceEntity.Columns.SERVICE_TYPE)
 })
