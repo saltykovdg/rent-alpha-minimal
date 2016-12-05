@@ -67,6 +67,7 @@ export const FIND_STREET_TYPES_BY_NAME = 'FIND_STREET_TYPES_BY_NAME';
 export const FIND_STREETS_BY_NAME = 'FIND_STREETS_BY_NAME';
 export const FIND_BUILDINGS_BY_STREET_ID = 'FIND_BUILDINGS_BY_STREET_ID';
 export const FIND_BUILDINGS_BY_STREET_NAME = 'FIND_BUILDINGS_BY_STREET_NAME';
+export const FIND_APARTMENTS_BY_BUILDING_ID = 'FIND_APARTMENTS_BY_BUILDING_ID';
 export const FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME = 'FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME';
 
 // get lists action creator
@@ -423,6 +424,12 @@ export const findBuildingsByStreetName = (streetName = '', page = 0) => {
     type: FIND_BUILDINGS_BY_STREET_NAME,
     streetName,
     page,
+  };
+};
+export const findApartmentsByBuildingId = (buildingId = '') => {
+  return {
+    type: FIND_APARTMENTS_BY_BUILDING_ID,
+    buildingId,
   };
 };
 export const findApartmentsByStreetNameAndBuildingName = (streetName = '', buildingName = '', page = 0) => {

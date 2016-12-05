@@ -16,6 +16,7 @@ export function deleteAccount(object) {
   return ApiCaller.callApi(`account/${object.id}`, 'delete');
 }
 
-export function findAccountsByName(accountNumber = '') {
-  return ApiCaller.callApi(`account/search/findByAccountNumberContainingOrderByAccountNumber?accountNumber=${accountNumber}`);
+export function findAccountsByAccountNumber(accountNumber = '', page = 0) {
+  const sort = '&sort=accountNumber';
+  return ApiCaller.callApi(`account/search/findByAccountNumber?accountNumber=${accountNumber}&page=${page}${sort}`);
 }

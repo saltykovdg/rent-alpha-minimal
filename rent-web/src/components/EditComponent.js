@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { Input, InputNumber, Select } from 'antd';
+import { Input, InputNumber, Select, DatePicker } from 'antd';
+import moment from 'moment';
 import { ExtendedComponent } from './ExtendedComponent';
 
 class EditComponent extends ExtendedComponent {
@@ -32,6 +33,16 @@ class EditComponent extends ExtendedComponent {
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
     })(<InputNumber min={0} step={step} />);
+  };
+  getDateField = (name, value, required = true, disabled = false) => {
+    return this.props.form.getFieldDecorator(name, {
+      initialValue: value ? moment(value) : null,
+      rules: [{
+        type: 'object',
+        required,
+        message: this.props.intl.messages.fieldIsEmptyError,
+      }],
+    })(!disabled ? <DatePicker /> : <DatePicker disabled />);
   };
   getLink = (object) => {
     let link = '';

@@ -64,6 +64,9 @@ export function findBuildingsByStreetId(streetId = '') {
 export function findBuildingsByStreetName(streetName = '', page = 0) {
   return ApiCaller.callApi(`building/search/findByStreetName?streetName=${streetName}&page=${page}&sort=street.name&sort=house`);
 }
+export function findApartmentsByBuildingId(buildingId = '') {
+  return ApiCaller.callApi(`apartment/search/findByBuildingId?buildingId=${buildingId}`);
+}
 export function findApartmentsByStreetNameAndBuildingName(streetName = '', buildingName = '', page = 0) {
   const sort = '&sort=building.street.name&sort=building.house&sort=apartment';
   return ApiCaller.callApi(`apartment/search/findByStreetNameAndBuildingName?streetName=${streetName}&buildingName=${buildingName}&page=${page}${sort}`);

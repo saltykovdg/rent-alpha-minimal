@@ -8,6 +8,8 @@ export default {
     accountFieldAccountNumber: 'Лицевой счет',
     accountFieldDateOpen: 'Дата открытия',
     accountFieldDateClose: 'Дата закрытия',
+    accountGroupOrganization: 'Управляющая компания',
+    accountGroupAdress: 'Адрес',
 
     normsTitle: 'Нормативы',
     normsGroupsNormsTitle: 'Группы нормативов',
@@ -94,6 +96,7 @@ export default {
     findPlaceholder: 'Начните вводить текст для поиска',
     findByStreetNamePlaceholder: 'Начните вводить название улицы для поиска',
     findByBuildingNamePlaceholder: 'Начните вводить номер дома для поиска',
+    findByAccountNumberPlaceholder: 'Начните вводить номер лицевого счета для поиска',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

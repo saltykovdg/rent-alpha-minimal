@@ -2,9 +2,11 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import { Popconfirm, Input, Table } from 'antd';
+import moment from 'moment';
 
 import { ExtendedComponent } from './ExtendedComponent';
 
+const dateFormat = 'YYYY-MM-DD';
 const Search = Input.Search;
 
 class ListComponent extends ExtendedComponent {
@@ -17,6 +19,15 @@ class ListComponent extends ExtendedComponent {
   }
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: name };
+  }
+  getDateColumn = (title, name) => {
+    return {
+      title,
+      key: name,
+      render(text, record) {
+        return record[name] ? moment(record[name]).format(dateFormat) : '';
+      },
+    };
   }
   getActionColumn = (editPath, useButtonDelete = true) => {
     const messages = this.props.intl.messages;

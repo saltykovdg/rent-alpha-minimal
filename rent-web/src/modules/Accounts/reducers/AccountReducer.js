@@ -1,10 +1,12 @@
+import moment from 'moment';
+
 import * as AccountAction from './../actions/AccountAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
   accountNumber: '',
-  dateOpen: null,
+  dateOpen: moment(),
   dateClose: null,
   contractor: {
     id: '',
@@ -26,7 +28,7 @@ export const accountReducer = (state, action) => {
     case AccountAction.SAVE_ACCOUNT: {
       return prepareEdit(state.account.edit.data, true, false, false, false);
     }
-    case AccountAction.FIND_ACCOUNTS_BY_NAME:
+    case AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER:
     case AccountAction.GET_ACCOUNTS:
     case AccountAction.DELETE_ACCOUNT: {
       return prepareList(state.account.list.data, emptyEditData, true, false, false, false);

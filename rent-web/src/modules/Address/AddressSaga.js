@@ -293,6 +293,8 @@ export function* findStreetsByName(action) {
 export function* findBuildingsByStreetId(action) {
   const response = yield call(AddressApi.findBuildingsByStreetId, action.streetId);
   if (response && !response.error && !response.canceled) {
+    yield put(AddressAction.findApartmentsByBuildingId());
+    yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
     yield put(AddressAction.getBuildingsSuccess(response));
   } else if (!response.canceled) {
     yield put(AddressAction.getBuildingsFailed());
@@ -304,6 +306,14 @@ export function* findBuildingsByStreetName(action) {
     yield put(AddressAction.getBuildingsSuccess(response));
   } else if (!response.canceled) {
     yield put(AddressAction.getBuildingsFailed());
+  }
+}
+export function* findApartmentsByBuildingId(action) {
+  const response = yield call(AddressApi.findApartmentsByBuildingId, action.buildingId);
+  if (response && !response.error && !response.canceled) {
+    yield put(AddressAction.getApartmentsSuccess(response));
+  } else if (!response.canceled) {
+    yield put(AddressAction.getApartmentsFailed());
   }
 }
 export function* findApartmentsByStreetNameAndBuildingName(action) {
@@ -326,6 +336,9 @@ export function* watchFindBuildingsByStreetId() {
 }
 export function* watchFindBuildingsByStreetName() {
   yield call(takeLatest, AddressAction.FIND_BUILDINGS_BY_STREET_NAME, findBuildingsByStreetName);
+}
+export function* watchFindApartmentsByBuildingId() {
+  yield call(takeLatest, AddressAction.FIND_APARTMENTS_BY_BUILDING_ID, findApartmentsByBuildingId);
 }
 export function* watchFindApartmentsByStreetNameAndBuildingName() {
   yield call(takeLatest, AddressAction.FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME, findApartmentsByStreetNameAndBuildingName);
@@ -367,5 +380,6 @@ export const rootAddressSaga = [
   fork(watchFindStreetsByName),
   fork(watchFindBuildingsByStreetId),
   fork(watchFindBuildingsByStreetName),
+  fork(watchFindApartmentsByBuildingId),
   fork(watchFindApartmentsByStreetNameAndBuildingName),
 ];

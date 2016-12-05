@@ -1,7 +1,9 @@
 import { takeLatest } from 'redux-saga';
-import { call, put, fork } from 'redux-saga/effects';
+import { call, put, fork, take } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
+import * as OrganizationAction from './../../Organization/OrganizationActions';
+import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
@@ -23,6 +25,14 @@ export function* watchGetAccounts() {
 export function* getAccount(action) {
   const response = yield call(AccountApi.getAccount, action.id);
   if (response && !response.error && !response.canceled) {
+    yield put(OrganizationAction.findContractorsByName());
+    yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED]);
+    yield put(AddressAction.findStreetsByName());
+    yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED]);
+    yield put(AddressAction.findBuildingsByStreetId(response.apartment.building.street.id));
+    yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED]);
+    yield put(AddressAction.findApartmentsByBuildingId(response.apartment.building.id));
+    yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
     yield put(AccountAction.getAccountSuccess(response));
   } else if (!response.canceled) {
     yield put(AccountAction.getAccountFailed(action.id));
@@ -71,14 +81,21 @@ export function* watchDeleteAccount() {
 
 export function* newAccount() {
   yield call(ApiCaller.cancelAllRequests);
+  yield put(OrganizationAction.findContractorsByName());
+  yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED]);
+  yield put(AddressAction.findStreetsByName());
+  yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED]);
+  yield put(AddressAction.findBuildingsByStreetId());
+  yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED]);
+  yield put(AddressAction.findApartmentsByBuildingId());
 }
 
 export function* watchNewAccount() {
   yield call(takeLatest, AccountAction.NEW_ACCOUNT, newAccount);
 }
 
-export function* findAccountsByName(action) {
-  const response = yield call(AccountApi.findAccountsByName, action.name);
+export function* findAccountsByAccountNumber(action) {
+  const response = yield call(AccountApi.findAccountsByAccountNumber, action.accountNumber, action.page);
   if (response && !response.error && !response.canceled) {
     yield put(AccountAction.getAccountsSuccess(response));
   } else if (!response.canceled) {
@@ -86,8 +103,8 @@ export function* findAccountsByName(action) {
   }
 }
 
-export function* watchFindAccountsByName() {
-  yield call(takeLatest, AccountAction.FIND_ACCOUNTS_BY_NAME, findAccountsByName);
+export function* watchFindAccountsByAccountNumber() {
+  yield call(takeLatest, AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER, findAccountsByAccountNumber);
 }
 
 export const rootAccountSaga = [
@@ -96,5 +113,5 @@ export const rootAccountSaga = [
   fork(watchSaveAccount),
   fork(watchDeleteAccount),
   fork(watchNewAccount),
-  fork(watchFindAccountsByName),
+  fork(watchFindAccountsByAccountNumber),
 ];
