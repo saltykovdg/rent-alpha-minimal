@@ -45,8 +45,10 @@ export function* getContractor(action) {
   const response = yield call(OrganizationApi.getContractor, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(OrganizationAction.findContractorTypesByName());
-    yield take([OrganizationAction.GET_CONTRACTOR_TYPES_SUCCESS, OrganizationAction.GET_CONTRACTOR_TYPES_FAILED]);
-    yield put(OrganizationAction.getContractorSuccess(response));
+    const sagaAction = yield take([OrganizationAction.GET_CONTRACTOR_TYPES_SUCCESS, OrganizationAction.GET_CONTRACTOR_TYPES_FAILED, OrganizationAction.NEW_CONTRACTOR]);
+    if (sagaAction.type !== OrganizationAction.NEW_CONTRACTOR) {
+      yield put(OrganizationAction.getContractorSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(OrganizationAction.getContractorFailed(action.id));
   }

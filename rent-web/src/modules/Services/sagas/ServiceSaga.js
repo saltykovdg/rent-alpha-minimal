@@ -25,8 +25,10 @@ export function* getService(action) {
   const response = yield call(ServiceApi.getService, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(ServiceTypeAction.findServiceTypesByName());
-    yield take([ServiceTypeAction.GET_SERVICE_TYPES_SUCCESS, ServiceTypeAction.GET_SERVICE_TYPES_FAILED]);
-    yield put(ServiceAction.getServiceSuccess(response));
+    const sagaAction = yield take([ServiceTypeAction.GET_SERVICE_TYPES_SUCCESS, ServiceTypeAction.GET_SERVICE_TYPES_FAILED, ServiceTypeAction.NEW_SERVICE]);
+    if (sagaAction.type !== ServiceTypeAction.NEW_SERVICE) {
+      yield put(ServiceAction.getServiceSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(ServiceAction.getServiceFailed(action.id));
   }

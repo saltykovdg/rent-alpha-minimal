@@ -25,15 +25,24 @@ export function* watchGetAccounts() {
 export function* getAccount(action) {
   const response = yield call(AccountApi.getAccount, action.id);
   if (response && !response.error && !response.canceled) {
+    let sagaAction;
     yield put(OrganizationAction.findContractorsByName());
-    yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED]);
-    yield put(AddressAction.findStreetsByName());
-    yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED]);
-    yield put(AddressAction.findBuildingsByStreetId(response.apartment.building.street.id));
-    yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED]);
-    yield put(AddressAction.findApartmentsByBuildingId(response.apartment.building.id));
-    yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
-    yield put(AccountAction.getAccountSuccess(response));
+    sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, AccountAction.NEW_ACCOUNT]);
+    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+      yield put(AddressAction.findStreetsByName());
+      sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AccountAction.NEW_ACCOUNT]);
+    }
+    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+      yield put(AddressAction.findBuildingsByStreetId(response.apartment.building.street.id));
+      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AccountAction.NEW_ACCOUNT]);
+    }
+    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+      yield put(AddressAction.findApartmentsByBuildingId(response.apartment.building.id));
+      sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, AccountAction.NEW_ACCOUNT]);
+    }
+    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+      yield put(AccountAction.getAccountSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(AccountAction.getAccountFailed(action.id));
   }
@@ -81,11 +90,21 @@ export function* watchDeleteAccount() {
 
 export function* newAccount() {
   yield call(ApiCaller.cancelAllRequests);
+  let sagaAction;
   yield put(OrganizationAction.findContractorsByName());
-  yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED]);
-  yield put(AddressAction.findStreetsByName());
-  yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED]);
-  yield put(AddressAction.findBuildingsByStreetId());
+  sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, AccountAction.GET_ACCOUNT]);
+  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+    yield put(AddressAction.findStreetsByName());
+    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED, AccountAction.GET_ACCOUNT]);
+  }
+  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+    yield put(AddressAction.findBuildingsByStreetId());
+    sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AccountAction.GET_ACCOUNT]);
+  }
+  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+    yield put(AddressAction.findApartmentsByBuildingId());
+    sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
+  }
 }
 
 export function* watchNewAccount() {

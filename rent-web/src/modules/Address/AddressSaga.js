@@ -67,8 +67,10 @@ export function* getStreet(action) {
   const response = yield call(AddressApi.getStreet, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.findStreetTypesByName());
-    yield take([AddressAction.GET_STREET_TYPES_SUCCESS, AddressAction.GET_STREET_TYPES_FAILED]);
-    yield put(AddressAction.getStreetSuccess(response));
+    const sagaAction = yield take([AddressAction.GET_STREET_TYPES_SUCCESS, AddressAction.GET_STREET_TYPES_FAILED, AddressAction.NEW_STREET]);
+    if (sagaAction.type !== AddressAction.NEW_STREET) {
+      yield put(AddressAction.getStreetSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(AddressAction.getStreetFailed(action.id));
   }
@@ -77,8 +79,10 @@ export function* getBuilding(action) {
   const response = yield call(AddressApi.getBuilding, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.findStreetsByName());
-    yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED]);
-    yield put(AddressAction.getBuildingSuccess(response));
+    const sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AddressAction.NEW_BUILDING]);
+    if (sagaAction.type !== AddressAction.NEW_BUILDING) {
+      yield put(AddressAction.getBuildingSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(AddressAction.getBuildingFailed(action.id));
   }
@@ -86,11 +90,16 @@ export function* getBuilding(action) {
 export function* getApartment(action) {
   const response = yield call(AddressApi.getApartment, action.id);
   if (response && !response.error && !response.canceled) {
+    let sagaAction;
     yield put(AddressAction.findStreetsByName());
-    yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED]);
-    yield put(AddressAction.findBuildingsByStreetId(response.building.street.id));
-    yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED]);
-    yield put(AddressAction.getApartmentSuccess(response));
+    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AddressAction.NEW_APARTMENT]);
+    if (sagaAction.type !== AddressAction.NEW_APARTMENT) {
+      yield put(AddressAction.findBuildingsByStreetId(response.building.street.id));
+      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AddressAction.NEW_APARTMENT]);
+    }
+    if (sagaAction.type !== AddressAction.NEW_APARTMENT) {
+      yield put(AddressAction.getApartmentSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(AddressAction.getApartmentFailed(action.id));
   }
@@ -293,8 +302,6 @@ export function* findStreetsByName(action) {
 export function* findBuildingsByStreetId(action) {
   const response = yield call(AddressApi.findBuildingsByStreetId, action.streetId);
   if (response && !response.error && !response.canceled) {
-    yield put(AddressAction.findApartmentsByBuildingId());
-    yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
     yield put(AddressAction.getBuildingsSuccess(response));
   } else if (!response.canceled) {
     yield put(AddressAction.getBuildingsFailed());
