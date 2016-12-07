@@ -128,7 +128,7 @@ class AccountEdit extends EditComponent {
               </Col>
             </Row>
             <h2>{this.props.intl.messages.parametersTitle}</h2>
-            <Button size="small" style={{ 'margin-bottom': '5px' }}>Добавить параметр [Общая площадь]</Button>
+            <Button size="small" style={{ marginBottom: '5px' }}>Добавить параметр [Общая площадь]</Button>
             <Table
               dataSource={dataSource}
               columns={columns}
