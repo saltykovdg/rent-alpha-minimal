@@ -86,8 +86,6 @@ export function* newAccount() {
   yield put(AddressAction.findStreetsByName());
   yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED]);
   yield put(AddressAction.findBuildingsByStreetId());
-  yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED]);
-  yield put(AddressAction.findApartmentsByBuildingId());
 }
 
 export function* watchNewAccount() {
