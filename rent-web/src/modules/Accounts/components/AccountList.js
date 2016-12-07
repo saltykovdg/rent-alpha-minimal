@@ -12,7 +12,7 @@ class AccountList extends ListComponent {
   }
   render() {
     const columns = [
-      this.getColumn(this.props.intl.messages.accountGroupOrganization, 'contractor.name'),
+      this.getColumn(this.props.intl.messages.managementCompanyTitle, 'contractor.name'),
       this.getColumn(this.props.intl.messages.accountFieldAccountNumber, 'accountNumber'),
       this.getDateColumn(this.props.intl.messages.accountFieldDateOpen, 'dateOpen'),
       this.getDateColumn(this.props.intl.messages.accountFieldDateClose, 'dateClose'),

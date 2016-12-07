@@ -41,6 +41,7 @@ class ContractorTypeListPage extends ExtendedComponentPage {
         data={this.props.data}
         isLoading={this.props.isLoading}
         isRequestError={this.props.isRequestError}
+        isDeleted={this.props.isDeleted}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}
       />

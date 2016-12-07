@@ -4,12 +4,11 @@ export default {
     headerTitle: 'Квартплата 1.0',
     headerMenuLogout: 'Выйти',
 
+    // accounts
     accountsTitle: 'Лицевые счета',
     accountFieldAccountNumber: 'Лицевой счет',
     accountFieldDateOpen: 'Дата открытия',
     accountFieldDateClose: 'Дата закрытия',
-    accountGroupOrganization: 'Управляющая компания',
-    accountGroupAdress: 'Адрес',
 
     normsTitle: 'Нормативы',
     normsGroupsNormsTitle: 'Группы нормативов',
@@ -97,6 +96,9 @@ export default {
     findByStreetNamePlaceholder: 'Начните вводить название улицы для поиска',
     findByBuildingNamePlaceholder: 'Начните вводить номер дома для поиска',
     findByAccountNumberPlaceholder: 'Начните вводить номер лицевого счета для поиска',
+    parametersTitle: 'Параметры',
+    managementCompanyTitle: 'Управляющая компания',
+    addressShortTitle: 'Адрес',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

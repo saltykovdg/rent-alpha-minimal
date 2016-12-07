@@ -49,6 +49,7 @@ class AccountListPage extends ExtendedComponentPage {
         data={this.props.data}
         isLoading={this.props.isLoading}
         isRequestError={this.props.isRequestError}
+        isDeleted={this.props.isDeleted}
         onSearch={this.onSearch}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Form, Spin, Select, Row, Col } from 'antd';
+import { Breadcrumb, Icon, Button, Form, Spin, Select, Row, Col, Table } from 'antd';
 
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
@@ -49,6 +49,32 @@ class AccountEdit extends EditComponent {
         <Select.Option key={apartment.id} value={this.getLink(apartment)}>{apartment.apartment}</Select.Option>
       ));
     }
+    const dataSource = [{
+      key: '1',
+      param: 'Общая площадь',
+      paramValue: '53.6',
+      dateStart: '01.05.2016',
+      dateEnd: '',
+    }];
+    const columns = [{
+      title: 'Параметр',
+      dataIndex: 'param',
+      key: 'param',
+    }, {
+      title: 'Значение',
+      dataIndex: 'paramValue',
+      key: 'paramValue',
+    }, {
+      title: 'Действует С',
+      dataIndex: 'dateStart',
+      key: 'dateStart',
+    }, {
+      title: 'Действует ПО',
+      dataIndex: 'dateEnd',
+      key: 'dateEnd',
+    }, {
+      title: 'Действия',
+    }];
     return (
       <div>
         <Breadcrumb>
@@ -79,11 +105,11 @@ class AccountEdit extends EditComponent {
                 </FormItem>
               </Col>
             </Row>
-            <h2>{this.props.intl.messages.accountGroupOrganization}</h2>
+            <h2>{this.props.intl.messages.managementCompanyTitle}</h2>
             <FormItem label={this.props.intl.messages.contractorFieldName}>
               {this.getSelectWithSearchField('contractor', this.getLink(object.contractor), contractorsList)}
             </FormItem>
-            <h2>{this.props.intl.messages.accountGroupAdress}</h2>
+            <h2>{this.props.intl.messages.addressShortTitle}</h2>
             <Row gutter={16}>
               <Col className="gutter-row" span={8}>
                 <FormItem label={this.props.intl.messages.streetFieldName}>
@@ -101,6 +127,15 @@ class AccountEdit extends EditComponent {
                 </FormItem>
               </Col>
             </Row>
+            <h2>{this.props.intl.messages.parametersTitle}</h2>
+            <Button size="small" style={{ 'margin-bottom': '5px' }}>Добавить параметр [Общая площадь]</Button>
+            <Table
+              dataSource={dataSource}
+              columns={columns}
+              bordered pagination={false}
+              size="small"
+            />
+            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(AccountPath.ACCOUNT_LIST)}>

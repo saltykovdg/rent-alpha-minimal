@@ -62,6 +62,7 @@ class AccountEditPage extends ExtendedComponentPage {
         id={this.props.id}
         isLoading={this.props.isLoading}
         isRequestError={this.props.isRequestError}
+        isSaved={this.props.isSaved}
         onSave={this.onSave}
         onStreetChange={this.onStreetChange}
         onBuildingChange={this.onBuildingChange}
