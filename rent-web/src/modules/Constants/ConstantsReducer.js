@@ -10,6 +10,12 @@ import {
   getMeasurementUnitIsRequestError,
 } from './reducers/MeasurementUnitReducer';
 
+import {
+  parameterTypeReducer,
+  getParameterTypeIsLoading,
+  getParameterTypeIsRequestError,
+} from './reducers/ParameterTypeReducer';
+
 // Initial State
 const data = {
   list: {
@@ -29,18 +35,27 @@ const data = {
 const initialState = {
   calculationType: data,
   measurementUnit: data,
+  parameterType: data,
 };
 
 const ConstantsReducer = (state = initialState, action) => {
   return {
     calculationType: calculationTypeReducer(state, action),
     measurementUnit: measurementUnitReducer(state, action),
+    parameterType: parameterTypeReducer(state, action),
   };
 };
 
 /* Selectors */
-export const getIsRequestError = state => getCalculationTypeIsRequestError(state) || getMeasurementUnitIsRequestError(state);
-export const getIsLoading = state => getCalculationTypeIsLoading(state) || getMeasurementUnitIsLoading(state);
+export const getIsRequestError = state =>
+  getCalculationTypeIsRequestError(state) ||
+  getMeasurementUnitIsRequestError(state) ||
+  getParameterTypeIsRequestError(state);
+
+export const getIsLoading = state =>
+  getCalculationTypeIsLoading(state) ||
+  getMeasurementUnitIsLoading(state) ||
+  getParameterTypeIsLoading(state);
 
 // Export Reducer
 export default ConstantsReducer;

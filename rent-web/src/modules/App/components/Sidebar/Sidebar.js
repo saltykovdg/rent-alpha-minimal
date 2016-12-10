@@ -11,6 +11,7 @@ import * as ServiceTypePath from '../../../Services/paths/ServiceTypePath';
 import * as ServicePath from '../../../Services/paths/ServicePath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
+import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 
 const SubMenu = Menu.SubMenu;
@@ -99,6 +100,11 @@ function Sidebar() {
           <Item key={CalculationTypePath.CALCULATION_TYPE_LIST}>
             <Link to={CalculationTypePath.CALCULATION_TYPE_LIST}>
               <FormattedMessage id="calculationTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={ParameterTypePath.PARAMETER_TYPE_LIST}>
+            <Link to={ParameterTypePath.PARAMETER_TYPE_LIST}>
+              <FormattedMessage id="parameterTypeTitle" />
             </Link>
           </Item>
           <Item key={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>

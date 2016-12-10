@@ -73,6 +73,9 @@ export default {
     calculationTypeFieldNameOrigin: 'Вид расчета (значение по умолчанию)',
     measurementUnitTitle: 'Единицы измерения',
     measurementUnitFieldName: 'Единица измерения',
+    parameterTypeTitle: 'Виды параметров',
+    parameterTypeFieldName: 'Параметр',
+    parameterTypeFieldNameOrigin: 'Параметр (значение по умолчанию)',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
