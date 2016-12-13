@@ -1,12 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Form, Spin, Select, Row, Col, Table } from 'antd';
+import {
+  Breadcrumb, Icon, Button, Form, Spin,
+  Select, Row, Col, Table, Popconfirm,
+} from 'antd';
+import moment from 'moment';
 
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
+
+const defaultInitParameter = {
+  id: '',
+  parameterType: {
+    id: '',
+    name: '',
+  },
+  value: 0,
+  dateStart: moment(),
+  dateEnd: null,
+};
 
 class AccountEdit extends EditComponent {
   onStreetChange = (value) => {
@@ -17,6 +32,32 @@ class AccountEdit extends EditComponent {
   onBuildingChange = (value) => {
     this.props.form.setFieldsValue({ apartment: '' });
     this.props.onBuildingChange(value);
+  }
+  onDeleteParameter = (record) => {
+    console.log(record);
+  };
+  getActionColumn = () => {
+    const messages = this.props.intl.messages;
+    const onEditParameter = this.onEditParameter;
+    const onDeleteParameter = this.onDeleteParameter;
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      render(text, record) {
+        return (
+          <span>
+            <Link onClick={() => onEditParameter(record)}><FormattedMessage id="buttonEdit" /></Link>
+            <span className="ant-divider" />
+            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDeleteParameter(record)} >
+              <Link><FormattedMessage id="buttonDelete" /></Link>
+            </Popconfirm>
+          </span>
+        );
+      },
+    };
+  };
+  onEditParameter = (parameter = defaultInitParameter) => {
+    this.props.showFormParameterEdit(parameter);
   }
   render() {
     const object = this.props.data;
@@ -50,31 +91,32 @@ class AccountEdit extends EditComponent {
       ));
     }
     const dataSource = [{
-      key: '1',
-      param: 'Общая площадь',
-      paramValue: '53.6',
+      key: '0',
+      id: '0',
+      parameter: 'Общая площадь',
+      value: '53.6',
       dateStart: '01.05.2016',
       dateEnd: '',
     }];
     const columns = [{
-      title: 'Параметр',
-      dataIndex: 'param',
-      key: 'param',
+      title: this.props.intl.messages.parameterTypeFieldName,
+      dataIndex: 'parameter',
+      key: 'parameter',
     }, {
-      title: 'Значение',
-      dataIndex: 'paramValue',
-      key: 'paramValue',
+      title: this.props.intl.messages.parameterFieldValue,
+      dataIndex: 'value',
+      key: 'value',
     }, {
-      title: 'Действует С',
+      title: this.props.intl.messages.parameterFieldDateStart,
       dataIndex: 'dateStart',
       key: 'dateStart',
     }, {
-      title: 'Действует ПО',
+      title: this.props.intl.messages.parameterFieldDateEnd,
       dataIndex: 'dateEnd',
       key: 'dateEnd',
-    }, {
-      title: 'Действия',
-    }];
+    },
+      this.getActionColumn(),
+    ];
     return (
       <div>
         <Breadcrumb>
@@ -127,8 +169,10 @@ class AccountEdit extends EditComponent {
                 </FormItem>
               </Col>
             </Row>
-            <h2>{this.props.intl.messages.parametersTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }}>Добавить параметр [Общая площадь]</Button>
+            <h2>{this.props.intl.messages.parameterTitle}</h2>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.onEditParameter()}>
+              <FormattedMessage id="buttonAddNewParameter" />
+            </Button>
             <Table
               dataSource={dataSource}
               columns={columns}

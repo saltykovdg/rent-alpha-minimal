@@ -76,9 +76,14 @@ export default {
     parameterTypeTitle: 'Виды параметров',
     parameterTypeFieldName: 'Параметр',
     parameterTypeFieldNameOrigin: 'Параметр (значение по умолчанию)',
+    parameterTitle: 'Параметры',
+    parameterFieldValue: 'Значение',
+    parameterFieldDateStart: 'Действует С',
+    parameterFieldDateEnd: 'Действует ПО',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
+    buttonAddNewParameter: 'Добавить новый параметр',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
     confirmDelete: 'Подтвердите удаление записи.',
@@ -99,7 +104,6 @@ export default {
     findByStreetNamePlaceholder: 'Начните вводить название улицы для поиска',
     findByBuildingNamePlaceholder: 'Начните вводить номер дома для поиска',
     findByAccountNumberPlaceholder: 'Начните вводить номер лицевого счета для поиска',
-    parametersTitle: 'Параметры',
     managementCompanyTitle: 'Управляющая компания',
     addressShortTitle: 'Адрес',
 

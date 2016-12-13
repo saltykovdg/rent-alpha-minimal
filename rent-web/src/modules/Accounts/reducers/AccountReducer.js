@@ -20,6 +20,18 @@ const emptyEditData = {
       },
     },
   },
+  parameters: [
+    {
+      id: '0',
+      parameterType: {
+        id: '',
+        name: '',
+      },
+      value: 0,
+      dateStart: moment(),
+      dateEnd: null,
+    },
+  ],
 };
 
 export const accountReducer = (state, action) => {

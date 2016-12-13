@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import moment from 'moment';
 import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 
 // Import Components
 import AccountEdit from './../components/AccountEdit';
+import AccountEditParameterForm from './../components/AccountEditParameterForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -32,6 +34,17 @@ import {
   getContractorIsRequestError,
 } from './../../Organization/OrganizationReducer';
 
+const defaultInitParameter = {
+  id: '',
+  parameterType: {
+    id: '',
+    name: '',
+  },
+  value: 0,
+  dateStart: moment(),
+  dateEnd: null,
+};
+
 class AccountEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -41,6 +54,10 @@ class AccountEditPage extends ExtendedComponentPage {
     } else {
       this.props.dispatch(AccountAction.newAccount());
     }
+    this.setState({
+      formParameterEditVisible: false,
+      parameter: defaultInitParameter,
+    });
   }
   onSave = (object) => {
     this.props.dispatch(AccountAction.saveAccount(object));
@@ -51,22 +68,44 @@ class AccountEditPage extends ExtendedComponentPage {
   onBuildingChange = (buildingId) => {
     this.props.dispatch(AddressAction.findApartmentsByBuildingId(buildingId));
   };
+  showFormParameterEdit = (parameter) => {
+    this.setState({ formParameterEditVisible: true, parameter });
+  };
+  onOkFormParameterEdit = (parameter) => {
+    this.setState({ formParameterEditVisible: false, parameter });
+  }
+  onCancelFormParameterEdit = () => {
+    this.setState({
+      formParameterEditVisible: false,
+      parameter: defaultInitParameter,
+    });
+  }
   render() {
     return (
-      <AccountEdit
-        data={this.props.data}
-        contractors={this.props.contractors}
-        streets={this.props.streets}
-        buildings={this.props.buildings}
-        apartments={this.props.apartments}
-        id={this.props.id}
-        isLoading={this.props.isLoading}
-        isRequestError={this.props.isRequestError}
-        isSaved={this.props.isSaved}
-        onSave={this.onSave}
-        onStreetChange={this.onStreetChange}
-        onBuildingChange={this.onBuildingChange}
-      />
+      <div>
+        <AccountEdit
+          data={this.props.data}
+          contractors={this.props.contractors}
+          streets={this.props.streets}
+          buildings={this.props.buildings}
+          apartments={this.props.apartments}
+          id={this.props.id}
+          isLoading={this.props.isLoading}
+          isRequestError={this.props.isRequestError}
+          isSaved={this.props.isSaved}
+          onSave={this.onSave}
+          onStreetChange={this.onStreetChange}
+          onBuildingChange={this.onBuildingChange}
+          showFormParameterEdit={this.showFormParameterEdit}
+        />
+        <AccountEditParameterForm
+          parameter={this.state.parameter}
+          formParameterEditVisible={this.state.formParameterEditVisible}
+          onSave={() => {}}
+          onOkFormParameterEdit={this.onOkFormParameterEdit}
+          onCancelFormParameterEdit={this.onCancelFormParameterEdit}
+        />
+      </div>
     );
   }
 }
