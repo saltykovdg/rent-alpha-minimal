@@ -94,7 +94,7 @@ class AccountEdit extends EditComponent {
       key: '0',
       id: '0',
       parameter: 'Общая площадь',
-      value: '53.6',
+      value: 53.6,
       dateStart: '01.05.2016',
       dateEnd: '',
     }];

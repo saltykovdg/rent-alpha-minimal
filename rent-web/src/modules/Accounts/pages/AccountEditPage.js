@@ -34,6 +34,12 @@ import {
   getContractorIsRequestError,
 } from './../../Organization/OrganizationReducer';
 
+import {
+  getParameterTypeListData,
+  getParameterTypeIsLoading,
+  getParameterTypeIsRequestError,
+} from './../../Constants/reducers/ParameterTypeReducer';
+
 const defaultInitParameter = {
   id: '',
   parameterType: {
@@ -99,6 +105,7 @@ class AccountEditPage extends ExtendedComponentPage {
           showFormParameterEdit={this.showFormParameterEdit}
         />
         <AccountEditParameterForm
+          parameterTypes={this.props.parameterTypes}
           parameter={this.state.parameter}
           formParameterEditVisible={this.state.formParameterEditVisible}
           onSave={() => {}}
@@ -118,8 +125,9 @@ function mapStateToProps(state, props) {
     streets: getStreetListData(state),
     buildings: getBuildingListData(state),
     apartments: getApartmentListData(state),
-    isLoading: getAccountIsLoading(state) || getIsLoadingAddress(state) || getContractorIsLoading(state),
-    isRequestError: getAccountIsRequestError(state) || getIsRequestErrorAddress(state) || getContractorIsRequestError(state),
+    parameterTypes: getParameterTypeListData(state),
+    isLoading: getAccountIsLoading(state) || getIsLoadingAddress(state) || getContractorIsLoading(state) || getParameterTypeIsLoading(state),
+    isRequestError: getAccountIsRequestError(state) || getIsRequestErrorAddress(state) || getContractorIsRequestError(state) || getParameterTypeIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

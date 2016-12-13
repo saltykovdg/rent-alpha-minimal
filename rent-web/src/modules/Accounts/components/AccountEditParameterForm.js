@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Form, Input, Modal, Select } from 'antd';
+import { Form, Modal, Select, Row, Col } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 
@@ -10,13 +10,11 @@ class AccountEditParameterForm extends EditComponent {
   onOkFormParameterEdit = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
-        this.props.form.resetFields();
         this.props.onOkFormParameterEdit(values);
       }
     });
   };
   onCancelFormParameterEdit = () => {
-    this.props.form.resetFields();
     this.props.onCancelFormParameterEdit();
   };
   render() {
@@ -28,6 +26,9 @@ class AccountEditParameterForm extends EditComponent {
       parameterTypeList = this.props.parameterTypes.content.map(parameterType => (
         <Select.Option key={parameterType.id} value={this.getLink(parameterType)}>{parameterType.name}</Select.Option>
       ));
+      if (!this.props.id) {
+        object.parameterType = this.props.parameterTypes.content[0];
+      }
     }
     return (
       <Modal
@@ -47,12 +48,18 @@ class AccountEditParameterForm extends EditComponent {
           <FormItem label={this.props.intl.messages.parameterFieldValue}>
             {this.getInputNumberField('value', object.value, 0.1)}
           </FormItem>
-          <FormItem label={this.props.intl.messages.parameterFieldDateStart}>
-            {this.getDateField('dateStart', object.dateStart)}
-          </FormItem>
-          <FormItem label={this.props.intl.messages.parameterFieldDateEnd}>
-            {this.getDateField('dateEnd', object.dateEnd, false)}
-          </FormItem>
+          <Row gutter={16}>
+            <Col className="gutter-row" span={12}>
+              <FormItem label={this.props.intl.messages.parameterFieldDateStart}>
+                {this.getDateField('dateStart', object.dateStart)}
+              </FormItem>
+            </Col>
+            <Col className="gutter-row" span={12}>
+              <FormItem label={this.props.intl.messages.parameterFieldDateEnd}>
+                {this.getDateField('dateEnd', object.dateEnd, false)}
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     );

@@ -6,6 +6,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import * as OrganizationAction from './../../Organization/OrganizationActions';
 import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
+import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
 import * as ApiCaller from '../../../util/ApiCaller';
@@ -40,6 +41,10 @@ export function* getAccount(action) {
     if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findApartmentsByBuildingId(response.apartment.building.id));
       sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, LOCATION_CHANGE]);
+    }
+    if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(ParameterTypeAction.findParameterTypesByName());
+      sagaAction = yield take([ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS, ParameterTypeAction.GET_PARAMETER_TYPES_FAILED, LOCATION_CHANGE]);
     }
     if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountAction.getAccountSuccess(response));
@@ -105,6 +110,10 @@ export function* newAccount() {
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findApartmentsByBuildingId());
     sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, LOCATION_CHANGE]);
+  }
+  if (sagaAction.type !== LOCATION_CHANGE) {
+    yield put(ParameterTypeAction.findParameterTypesByName());
+    sagaAction = yield take([ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS, ParameterTypeAction.GET_PARAMETER_TYPES_FAILED, LOCATION_CHANGE]);
   }
 }
 
