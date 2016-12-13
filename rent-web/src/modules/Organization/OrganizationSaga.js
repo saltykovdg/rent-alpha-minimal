@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, fork, take } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as OrganizationAction from './OrganizationActions';
 import * as OrganizationApi from './OrganizationApi';
@@ -45,8 +46,8 @@ export function* getContractor(action) {
   const response = yield call(OrganizationApi.getContractor, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(OrganizationAction.findContractorTypesByName());
-    const sagaAction = yield take([OrganizationAction.GET_CONTRACTOR_TYPES_SUCCESS, OrganizationAction.GET_CONTRACTOR_TYPES_FAILED, OrganizationAction.NEW_CONTRACTOR]);
-    if (sagaAction.type !== OrganizationAction.NEW_CONTRACTOR) {
+    const sagaAction = yield take([OrganizationAction.GET_CONTRACTOR_TYPES_SUCCESS, OrganizationAction.GET_CONTRACTOR_TYPES_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(OrganizationAction.getContractorSuccess(response));
     }
   } else if (!response.canceled) {

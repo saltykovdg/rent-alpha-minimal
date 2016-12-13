@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, fork, take } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as ServiceTypeAction from './../actions/ServiceTypeAction';
 import * as ServiceAction from './../actions/ServiceAction';
@@ -25,8 +26,8 @@ export function* getService(action) {
   const response = yield call(ServiceApi.getService, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(ServiceTypeAction.findServiceTypesByName());
-    const sagaAction = yield take([ServiceTypeAction.GET_SERVICE_TYPES_SUCCESS, ServiceTypeAction.GET_SERVICE_TYPES_FAILED, ServiceTypeAction.NEW_SERVICE]);
-    if (sagaAction.type !== ServiceTypeAction.NEW_SERVICE) {
+    const sagaAction = yield take([ServiceTypeAction.GET_SERVICE_TYPES_SUCCESS, ServiceTypeAction.GET_SERVICE_TYPES_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(ServiceAction.getServiceSuccess(response));
     }
   } else if (!response.canceled) {

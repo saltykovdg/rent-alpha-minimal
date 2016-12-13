@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, fork, take } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as AddressAction from './AddressActions';
 import * as AddressApi from './AddressApi';
@@ -67,8 +68,8 @@ export function* getStreet(action) {
   const response = yield call(AddressApi.getStreet, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.findStreetTypesByName());
-    const sagaAction = yield take([AddressAction.GET_STREET_TYPES_SUCCESS, AddressAction.GET_STREET_TYPES_FAILED, AddressAction.NEW_STREET]);
-    if (sagaAction.type !== AddressAction.NEW_STREET) {
+    const sagaAction = yield take([AddressAction.GET_STREET_TYPES_SUCCESS, AddressAction.GET_STREET_TYPES_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.getStreetSuccess(response));
     }
   } else if (!response.canceled) {
@@ -79,8 +80,8 @@ export function* getBuilding(action) {
   const response = yield call(AddressApi.getBuilding, action.id);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.findStreetsByName());
-    const sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AddressAction.NEW_BUILDING]);
-    if (sagaAction.type !== AddressAction.NEW_BUILDING) {
+    const sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.getBuildingSuccess(response));
     }
   } else if (!response.canceled) {
@@ -92,12 +93,12 @@ export function* getApartment(action) {
   if (response && !response.error && !response.canceled) {
     let sagaAction;
     yield put(AddressAction.findStreetsByName());
-    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AddressAction.NEW_APARTMENT]);
-    if (sagaAction.type !== AddressAction.NEW_APARTMENT) {
+    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findBuildingsByStreetId(response.building.street.id));
-      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AddressAction.NEW_APARTMENT]);
+      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, LOCATION_CHANGE]);
     }
-    if (sagaAction.type !== AddressAction.NEW_APARTMENT) {
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.getApartmentSuccess(response));
     }
   } else if (!response.canceled) {

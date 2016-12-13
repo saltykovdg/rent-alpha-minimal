@@ -1,6 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, fork, take } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as OrganizationAction from './../../Organization/OrganizationActions';
 import * as AddressAction from './../../Address/AddressActions';
@@ -27,20 +28,20 @@ export function* getAccount(action) {
   if (response && !response.error && !response.canceled) {
     let sagaAction;
     yield put(OrganizationAction.findContractorsByName());
-    sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, AccountAction.NEW_ACCOUNT]);
-    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+    sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findStreetsByName());
-      sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, AccountAction.NEW_ACCOUNT]);
+      sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
     }
-    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findBuildingsByStreetId(response.apartment.building.street.id));
-      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AccountAction.NEW_ACCOUNT]);
+      sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, LOCATION_CHANGE]);
     }
-    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findApartmentsByBuildingId(response.apartment.building.id));
-      sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, AccountAction.NEW_ACCOUNT]);
+      sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, LOCATION_CHANGE]);
     }
-    if (sagaAction.type !== AccountAction.NEW_ACCOUNT) {
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountAction.getAccountSuccess(response));
     }
   } else if (!response.canceled) {
@@ -92,18 +93,18 @@ export function* newAccount() {
   yield call(ApiCaller.cancelAllRequests);
   let sagaAction;
   yield put(OrganizationAction.findContractorsByName());
-  sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, AccountAction.GET_ACCOUNT]);
-  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+  sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
+  if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findStreetsByName());
-    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED, AccountAction.GET_ACCOUNT]);
+    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
   }
-  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+  if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findBuildingsByStreetId());
-    sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, AccountAction.GET_ACCOUNT]);
+    sagaAction = yield take([AddressAction.GET_BUILDINGS_SUCCESS, AddressAction.GET_BUILDINGS_FAILED, LOCATION_CHANGE]);
   }
-  if (sagaAction.type !== AccountAction.GET_ACCOUNT) {
+  if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findApartmentsByBuildingId());
-    sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED]);
+    sagaAction = yield take([AddressAction.GET_APARTMENTS_SUCCESS, AddressAction.GET_APARTMENTS_FAILED, LOCATION_CHANGE]);
   }
 }
 
