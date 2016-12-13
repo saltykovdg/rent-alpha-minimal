@@ -2,6 +2,7 @@
  * Root Reducer
  */
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
 // Import Reducers
 import address from './modules/Address/AddressReducer';
@@ -14,6 +15,7 @@ import accounts from './modules/Accounts/AccountsReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
+  routing: routerReducer,
   intl,
   organization,
   address,
