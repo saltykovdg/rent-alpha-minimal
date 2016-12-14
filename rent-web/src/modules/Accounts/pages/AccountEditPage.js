@@ -108,7 +108,6 @@ class AccountEditPage extends ExtendedComponentPage {
           parameterTypes={this.props.parameterTypes}
           parameter={this.state.parameter}
           formParameterEditVisible={this.state.formParameterEditVisible}
-          onSave={() => {}}
           onOkFormParameterEdit={this.onOkFormParameterEdit}
           onCancelFormParameterEdit={this.onCancelFormParameterEdit}
         />

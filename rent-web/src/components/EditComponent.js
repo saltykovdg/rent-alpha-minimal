@@ -93,7 +93,7 @@ EditComponent.propTypes = {
   intl: PropTypes.objectOf(PropTypes.shape),
   form: PropTypes.objectOf(PropTypes.shape),
   isLoading: PropTypes.bool,
-  onSave: PropTypes.func.isRequired,
+  onSave: PropTypes.func,
 };
 
 EditComponent.contextTypes = {
