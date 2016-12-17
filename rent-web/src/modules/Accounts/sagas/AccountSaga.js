@@ -63,27 +63,38 @@ export function* watchGetAccount() {
 export function* saveAccount(action) {
   const parameters = action.object.parameters;
   const parametersLinks = [];
+  let sagaAction = null;
   for (let i = 0; i < parameters.length; i += 1) {
     const newItem = JSON.parse(JSON.stringify(parameters[i]));
     newItem.parameterType = ObjectUtil.getLink(parameters[i].parameterType);
     yield put(AccountParameterAction.saveAccountParameter(newItem));
-    const sagaAction = yield take([AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS, AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED]);
+    sagaAction = yield take([AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS, AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED]);
     if (sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS) {
       parametersLinks.push(ObjectUtil.getLink(sagaAction.data));
+    } else {
+      break;
     }
   }
-  const objectAccount = JSON.parse(JSON.stringify(action.object));
-  objectAccount.parameters = parametersLinks;
-  const response = yield call(AccountApi.saveAccount, objectAccount);
-  if (response && !response.error && !response.canceled) {
-    yield put(AccountAction.saveAccountSuccess(objectAccount));
-    yield call(browserHistory.push, AccountPath.ACCOUNT_LIST);
-  } else if (!response.canceled) {
+  if (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS) {
+    const objectAccount = JSON.parse(JSON.stringify(action.object));
+    objectAccount.parameters = parametersLinks;
+    const response = yield call(AccountApi.saveAccount, objectAccount);
+    if (response && !response.error && !response.canceled) {
+      yield put(AccountAction.saveAccountSuccess(objectAccount));
+      yield call(browserHistory.push, AccountPath.ACCOUNT_LIST);
+    } else if (!response.canceled) {
+      const data = {
+        httpStatus: response.status,
+        object: action.object,
+      };
+      yield put(AccountAction.saveAccountFailed(data));
+    }
+  } else if (sagaAction) {
     const data = {
-      httpStatus: response.status,
+      httpStatus: sagaAction.data.httpStatus,
       object: action.object,
     };
-    yield put(AccountAction.saveAccountFailed(data));
+    yield put(AccountAction.saveAccountFailed(data, false));
   }
 }
 

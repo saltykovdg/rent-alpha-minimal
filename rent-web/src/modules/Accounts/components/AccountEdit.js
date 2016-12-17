@@ -92,7 +92,9 @@ class AccountEdit extends EditComponent {
     }
     let parametersDataSource = [];
     if (object && object.parameters && object.parameters.length > 0) {
-      parametersDataSource = object.parameters;
+      parametersDataSource = object.parameters.sort((a, b) => {
+        return moment(b.dateStart).unix() - moment(a.dateStart).unix();
+      });
     }
     const columns = [{
       title: this.props.intl.messages.parameterTypeFieldName,

@@ -50,7 +50,7 @@ class AccountEditParameterForm extends EditComponent {
             {this.getSelectWithSearchField('parameterType', this.getLink(object.parameterType), parameterTypeList)}
           </FormItem>
           <FormItem label={this.props.intl.messages.parameterFieldValue}>
-            {this.getInputNumberField('value', object.value, 0.1)}
+            {this.getInputNumberField('value', parseFloat(object.value), 0.1)}
           </FormItem>
           <Row gutter={16}>
             <Col className="gutter-row" span={12}>

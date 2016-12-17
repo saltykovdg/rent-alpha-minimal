@@ -71,7 +71,7 @@ export const accountReducer = (state, action) => {
     }
 
     case AccountAction.SAVE_ACCOUNT_FAILED: {
-      return prepareEdit(state.account.edit.data, false, true, false, false);
+      return prepareEdit(state.account.edit.data, false, action.showError, false, false);
     }
     case AccountAction.DELETE_ACCOUNT_FAILED: {
       return prepareList(state.account.list.data, emptyEditData, false, true, false, false);

@@ -72,10 +72,11 @@ export const saveAccountSuccess = (data) => {
   };
 };
 
-export const saveAccountFailed = (data) => {
+export const saveAccountFailed = (data, showError = true) => {
   return {
     type: SAVE_ACCOUNT_FAILED,
     data,
+    showError,
   };
 };
 
