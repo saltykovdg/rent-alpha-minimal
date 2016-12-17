@@ -58,6 +58,7 @@ module.exports = {
       filename: 'common.js',
     }),
     new HtmlWebpackPlugin({
+      favicon: './src/favicon.ico',
       template: './src/index.html',
       title: 'Rent 1.0'
     }),
