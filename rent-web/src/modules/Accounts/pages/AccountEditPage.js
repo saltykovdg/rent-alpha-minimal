@@ -15,10 +15,14 @@ import * as AddressAction from './../../Address/AddressActions';
 // Import Selectors
 import {
   getAccountEditData,
-  getAccountIsLoading,
-  getAccountIsRequestError,
   getAccountIsSaved,
+  getDefaultParameter,
 } from './../reducers/AccountReducer';
+
+import {
+  getIsLoading as getIsLoadingAccounts,
+  getIsRequestError as getIsRequestErrorAccounts,
+} from './../AccountsReducer';
 
 import {
   getStreetListData,
@@ -40,17 +44,6 @@ import {
   getParameterTypeIsRequestError,
 } from './../../Constants/reducers/ParameterTypeReducer';
 
-const defaultInitParameter = {
-  id: '',
-  parameterType: {
-    id: '',
-    name: '',
-  },
-  value: 0,
-  dateStart: moment(),
-  dateEnd: null,
-};
-
 class AccountEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -60,13 +53,17 @@ class AccountEditPage extends ExtendedComponentPage {
     } else {
       this.props.dispatch(AccountAction.newAccount());
     }
+    this.initFormParameter(false);
+  }
+  initFormParameter = (visible, parameter = getDefaultParameter()) => {
     this.setState({
-      formParameterEditVisible: false,
-      parameter: defaultInitParameter,
+      formParameterEditVisible: visible, parameter,
     });
   }
   onSave = (object) => {
-    this.props.dispatch(AccountAction.saveAccount(object));
+    const newObject = object;
+    newObject.parameters = this.props.data.parameters;
+    this.props.dispatch(AccountAction.saveAccount(newObject));
   };
   onStreetChange = (streetId) => {
     this.props.dispatch(AddressAction.findBuildingsByStreetId(streetId));
@@ -74,17 +71,25 @@ class AccountEditPage extends ExtendedComponentPage {
   onBuildingChange = (buildingId) => {
     this.props.dispatch(AddressAction.findApartmentsByBuildingId(buildingId));
   };
-  showFormParameterEdit = (parameter) => {
-    this.setState({ formParameterEditVisible: true, parameter });
+  showFormParameterEdit = (parameter = getDefaultParameter()) => {
+    this.initFormParameter(true, parameter);
   };
-  onOkFormParameterEdit = (parameter) => {
-    this.setState({ formParameterEditVisible: false, parameter });
+  onOkFormParameterEdit = (parameter = getDefaultParameter()) => {
+    this.initFormParameter(false);
+    if (parameter.id) {
+      this.props.dispatch(AccountAction.newEditParameterInAccount(parameter));
+    } else {
+      const newParam = parameter;
+      newParam.id = moment().unix();
+      this.props.dispatch(AccountAction.newAddNewParameterToAccount(newParam));
+    }
   }
   onCancelFormParameterEdit = () => {
-    this.setState({
-      formParameterEditVisible: false,
-      parameter: defaultInitParameter,
-    });
+    this.initFormParameter(false);
+  }
+  onDeleteParameter = (parameter) => {
+    this.props.dispatch(AccountAction.newRemoveParameterFromAccount(parameter));
+    this.forceUpdate();
   }
   render() {
     return (
@@ -103,6 +108,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onStreetChange={this.onStreetChange}
           onBuildingChange={this.onBuildingChange}
           showFormParameterEdit={this.showFormParameterEdit}
+          onDeleteParameter={this.onDeleteParameter}
         />
         <AccountEditParameterForm
           parameterTypes={this.props.parameterTypes}
@@ -125,8 +131,8 @@ function mapStateToProps(state, props) {
     buildings: getBuildingListData(state),
     apartments: getApartmentListData(state),
     parameterTypes: getParameterTypeListData(state),
-    isLoading: getAccountIsLoading(state) || getIsLoadingAddress(state) || getContractorIsLoading(state) || getParameterTypeIsLoading(state),
-    isRequestError: getAccountIsRequestError(state) || getIsRequestErrorAddress(state) || getContractorIsRequestError(state) || getParameterTypeIsRequestError(state),
+    isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) || getContractorIsLoading(state) || getParameterTypeIsLoading(state),
+    isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) || getContractorIsRequestError(state) || getParameterTypeIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

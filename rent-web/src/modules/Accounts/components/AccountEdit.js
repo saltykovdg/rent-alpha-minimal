@@ -7,21 +7,12 @@ import {
 } from 'antd';
 import moment from 'moment';
 
+import { getDefaultParameter } from './../reducers/AccountReducer';
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
-
-const defaultInitParameter = {
-  id: '',
-  parameterType: {
-    id: '',
-    name: '',
-  },
-  value: 0,
-  dateStart: moment(),
-  dateEnd: null,
-};
+const dateFormat = 'YYYY-MM-DD';
 
 class AccountEdit extends EditComponent {
   onStreetChange = (value) => {
@@ -34,8 +25,17 @@ class AccountEdit extends EditComponent {
     this.props.onBuildingChange(value);
   }
   onDeleteParameter = (record) => {
-    console.log(record);
+    this.props.onDeleteParameter(record);
   };
+  getDateColumn = (title, name) => {
+    return {
+      title,
+      key: name,
+      render(text, record) {
+        return record[name] ? moment(record[name]).format(dateFormat) : '';
+      },
+    };
+  }
   getActionColumn = () => {
     const messages = this.props.intl.messages;
     const onEditParameter = this.onEditParameter;
@@ -56,7 +56,7 @@ class AccountEdit extends EditComponent {
       },
     };
   };
-  onEditParameter = (parameter = defaultInitParameter) => {
+  onEditParameter = (parameter = getDefaultParameter()) => {
     this.props.showFormParameterEdit(parameter);
   }
   render() {
@@ -90,31 +90,21 @@ class AccountEdit extends EditComponent {
         <Select.Option key={apartment.id} value={this.getLink(apartment)}>{apartment.apartment}</Select.Option>
       ));
     }
-    const dataSource = [{
-      key: '0',
-      id: '0',
-      parameter: 'Общая площадь',
-      value: 53.6,
-      dateStart: '01.05.2016',
-      dateEnd: '',
-    }];
+    let parametersDataSource = [];
+    if (object && object.parameters && object.parameters.length > 0) {
+      parametersDataSource = object.parameters;
+    }
     const columns = [{
       title: this.props.intl.messages.parameterTypeFieldName,
-      dataIndex: 'parameter',
-      key: 'parameter',
+      dataIndex: 'parameterType.name',
+      key: 'parameterType.name',
     }, {
       title: this.props.intl.messages.parameterFieldValue,
       dataIndex: 'value',
       key: 'value',
-    }, {
-      title: this.props.intl.messages.parameterFieldDateStart,
-      dataIndex: 'dateStart',
-      key: 'dateStart',
-    }, {
-      title: this.props.intl.messages.parameterFieldDateEnd,
-      dataIndex: 'dateEnd',
-      key: 'dateEnd',
     },
+      this.getDateColumn(this.props.intl.messages.parameterFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.parameterFieldDateEnd, 'dateEnd'),
       this.getActionColumn(),
     ];
     return (
@@ -174,7 +164,7 @@ class AccountEdit extends EditComponent {
               <FormattedMessage id="buttonAddNewParameter" />
             </Button>
             <Table
-              dataSource={dataSource}
+              dataSource={parametersDataSource}
               columns={columns}
               bordered pagination={false}
               size="small"

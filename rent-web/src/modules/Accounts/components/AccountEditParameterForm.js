@@ -10,11 +10,15 @@ class AccountEditParameterForm extends EditComponent {
   onOkFormParameterEdit = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
-        this.props.onOkFormParameterEdit(values);
+        const newValues = values;
+        newValues.parameterType = this.props.parameterTypes.content.filter(parameterType => this.getLink(parameterType) === values.parameterType)[0];
+        this.props.onOkFormParameterEdit(newValues);
+        this.props.form.resetFields();
       }
     });
   };
   onCancelFormParameterEdit = () => {
+    this.props.form.resetFields();
     this.props.onCancelFormParameterEdit();
   };
   render() {

@@ -1,7 +1,21 @@
 import moment from 'moment';
 
 import * as AccountAction from './../actions/AccountAction';
+import * as AccountParameterAction from './../actions/AccountParameterAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+
+export const getDefaultParameter = () => {
+  return {
+    id: '',
+    parameterType: {
+      id: '',
+      name: '',
+    },
+    value: 0,
+    dateStart: moment(),
+    dateEnd: null,
+  };
+};
 
 const emptyEditData = {
   id: '',
@@ -20,18 +34,7 @@ const emptyEditData = {
       },
     },
   },
-  parameters: [
-    {
-      id: '0',
-      parameterType: {
-        id: '',
-        name: '',
-      },
-      value: 0,
-      dateStart: moment(),
-      dateEnd: null,
-    },
-  ],
+  parameters: [],
 };
 
 export const accountReducer = (state, action) => {
@@ -76,6 +79,31 @@ export const accountReducer = (state, action) => {
 
     case AccountAction.NEW_ACCOUNT: {
       return prepareEdit(emptyEditData, false, false, false, false);
+    }
+
+    case AccountAction.ADD_NEW_PARAMETER_TO_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.parameters.push(action.parameter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.EDIT_PARAMETER_IN_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
+      newObj.parameters.push(action.parameter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.REMOVE_PARAMETER_FROM_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
+    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
+    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED: {
+      return state.account;
     }
 
     default:

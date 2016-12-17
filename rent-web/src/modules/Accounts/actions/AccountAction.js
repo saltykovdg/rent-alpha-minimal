@@ -13,6 +13,10 @@ export const DELETE_ACCOUNT_FAILED = 'DELETE_ACCOUNT_FAILED';
 export const NEW_ACCOUNT = 'NEW_ACCOUNT';
 export const FIND_ACCOUNTS_BY_ACCOUNT_NUMBER = 'FIND_ACCOUNTS_BY_ACCOUNT_NUMBER';
 
+export const ADD_NEW_PARAMETER_TO_ACCOUNT = 'ADD_NEW_PARAMETER_TO_ACCOUNT';
+export const EDIT_PARAMETER_IN_ACCOUNT = 'EDIT_PARAMETER_IN_ACCOUNT';
+export const REMOVE_PARAMETER_FROM_ACCOUNT = 'REMOVE_PARAMETER_FROM_ACCOUNT';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -107,5 +111,24 @@ export const findAccountsByAccountNumber = (accountNumber = '', page = 0) => {
     type: FIND_ACCOUNTS_BY_ACCOUNT_NUMBER,
     accountNumber,
     page,
+  };
+};
+
+export const newAddNewParameterToAccount = (parameter) => {
+  return {
+    type: ADD_NEW_PARAMETER_TO_ACCOUNT,
+    parameter,
+  };
+};
+export const newEditParameterInAccount = (parameter) => {
+  return {
+    type: EDIT_PARAMETER_IN_ACCOUNT,
+    parameter,
+  };
+};
+export const newRemoveParameterFromAccount = (parameter) => {
+  return {
+    type: REMOVE_PARAMETER_FROM_ACCOUNT,
+    parameter,
   };
 };

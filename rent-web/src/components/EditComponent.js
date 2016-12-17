@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Input, InputNumber, Select, DatePicker } from 'antd';
 import moment from 'moment';
 import { ExtendedComponent } from './ExtendedComponent';
+import * as ObjectUtil from './../util/ObjectUtil';
 
 class EditComponent extends ExtendedComponent {
   getBaseFormField = (name, value, input) => {
@@ -45,11 +46,7 @@ class EditComponent extends ExtendedComponent {
     })(!disabled ? <DatePicker /> : <DatePicker disabled />);
   };
   getLink = (object) => {
-    let link = '';
-    if (object && object.links) {
-      link = object.links[0].href.replace('{?projection}', '');
-    }
-    return link;
+    return ObjectUtil.getLink(object);
   };
   getSelectWithSearchField = (name, value, values, onChange = () => {}) => {
     return this.props.form.getFieldDecorator(name, {

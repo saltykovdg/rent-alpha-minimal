@@ -64,7 +64,7 @@ public class AccountEntity extends AbstractEntity {
      * параметры лс
      */
     @JoinColumn(name = Columns.ACCOUNT)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountParameterEntity> parameters;
 
     public String getAccountNumber() {

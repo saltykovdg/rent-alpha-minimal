@@ -6,10 +6,12 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import * as OrganizationAction from './../../Organization/OrganizationActions';
 import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
+import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
 import * as ApiCaller from '../../../util/ApiCaller';
+import * as ObjectUtil from './../../../util/ObjectUtil';
 
 export function* getAccounts(action) {
   const response = yield call(AccountApi.getAccounts, action.page);
@@ -59,9 +61,22 @@ export function* watchGetAccount() {
 }
 
 export function* saveAccount(action) {
-  const response = yield call(AccountApi.saveAccount, action.object);
+  const parameters = action.object.parameters;
+  const parametersLinks = [];
+  for (let i = 0; i < parameters.length; i += 1) {
+    const newItem = JSON.parse(JSON.stringify(parameters[i]));
+    newItem.parameterType = ObjectUtil.getLink(parameters[i].parameterType);
+    yield put(AccountParameterAction.saveAccountParameter(newItem));
+    const sagaAction = yield take([AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS, AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED]);
+    if (sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS) {
+      parametersLinks.push(ObjectUtil.getLink(sagaAction.data));
+    }
+  }
+  const objectAccount = JSON.parse(JSON.stringify(action.object));
+  objectAccount.parameters = parametersLinks;
+  const response = yield call(AccountApi.saveAccount, objectAccount);
   if (response && !response.error && !response.canceled) {
-    yield put(AccountAction.saveAccountSuccess(response));
+    yield put(AccountAction.saveAccountSuccess(objectAccount));
     yield call(browserHistory.push, AccountPath.ACCOUNT_LIST);
   } else if (!response.canceled) {
     const data = {
