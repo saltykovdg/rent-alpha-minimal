@@ -75,7 +75,7 @@ export function* saveAccount(action) {
       break;
     }
   }
-  if (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS) {
+  if (sagaAction == null || (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS)) {
     const objectAccount = JSON.parse(JSON.stringify(action.object));
     objectAccount.parameters = parametersLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);
