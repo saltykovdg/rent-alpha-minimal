@@ -17,7 +17,7 @@ export function* getParameterTypes(action) {
 }
 
 export function* watchGetParameterTypes() {
-  yield call(takeLatest, ParameterTypeAction.GET_PARAMETER_TYPES, getParameterTypes);
+  yield takeLatest(ParameterTypeAction.GET_PARAMETER_TYPES, getParameterTypes);
 }
 
 export function* getParameterType(action) {
@@ -30,7 +30,7 @@ export function* getParameterType(action) {
 }
 
 export function* watchGetParameterType() {
-  yield call(takeLatest, ParameterTypeAction.GET_PARAMETER_TYPE, getParameterType);
+  yield takeLatest(ParameterTypeAction.GET_PARAMETER_TYPE, getParameterType);
 }
 
 export function* saveParameterType(action) {
@@ -48,7 +48,7 @@ export function* saveParameterType(action) {
 }
 
 export function* watchSaveParameterType() {
-  yield call(takeLatest, ParameterTypeAction.SAVE_PARAMETER_TYPE, saveParameterType);
+  yield takeLatest(ParameterTypeAction.SAVE_PARAMETER_TYPE, saveParameterType);
 }
 
 export function* deleteParameterType(action) {
@@ -66,7 +66,7 @@ export function* deleteParameterType(action) {
 }
 
 export function* watchDeleteParameterType() {
-  yield call(takeLatest, ParameterTypeAction.DELETE_PARAMETER_TYPE, deleteParameterType);
+  yield takeLatest(ParameterTypeAction.DELETE_PARAMETER_TYPE, deleteParameterType);
 }
 
 export function* newParameterType() {
@@ -74,7 +74,7 @@ export function* newParameterType() {
 }
 
 export function* watchNewParameterType() {
-  yield call(takeLatest, ParameterTypeAction.NEW_PARAMETER_TYPE, newParameterType);
+  yield takeLatest(ParameterTypeAction.NEW_PARAMETER_TYPE, newParameterType);
 }
 
 export function* findParameterTypesByName(action) {
@@ -87,7 +87,7 @@ export function* findParameterTypesByName(action) {
 }
 
 export function* watchFindParameterTypesByName() {
-  yield call(takeLatest, ParameterTypeAction.FIND_PARAMETER_TYPES_BY_NAME, findParameterTypesByName);
+  yield takeLatest(ParameterTypeAction.FIND_PARAMETER_TYPES_BY_NAME, findParameterTypesByName);
 }
 
 export const rootParameterTypeSaga = [

@@ -17,7 +17,7 @@ export function* getServiceTypes(action) {
 }
 
 export function* watchGetServiceTypes() {
-  yield call(takeLatest, ServiceTypeAction.GET_SERVICE_TYPES, getServiceTypes);
+  yield takeLatest(ServiceTypeAction.GET_SERVICE_TYPES, getServiceTypes);
 }
 
 export function* getServiceType(action) {
@@ -30,7 +30,7 @@ export function* getServiceType(action) {
 }
 
 export function* watchGetServiceType() {
-  yield call(takeLatest, ServiceTypeAction.GET_SERVICE_TYPE, getServiceType);
+  yield takeLatest(ServiceTypeAction.GET_SERVICE_TYPE, getServiceType);
 }
 
 export function* saveServiceType(action) {
@@ -48,7 +48,7 @@ export function* saveServiceType(action) {
 }
 
 export function* watchSaveServiceType() {
-  yield call(takeLatest, ServiceTypeAction.SAVE_SERVICE_TYPE, saveServiceType);
+  yield takeLatest(ServiceTypeAction.SAVE_SERVICE_TYPE, saveServiceType);
 }
 
 export function* deleteServiceType(action) {
@@ -66,7 +66,7 @@ export function* deleteServiceType(action) {
 }
 
 export function* watchDeleteServiceType() {
-  yield call(takeLatest, ServiceTypeAction.DELETE_SERVICE_TYPE, deleteServiceType);
+  yield takeLatest(ServiceTypeAction.DELETE_SERVICE_TYPE, deleteServiceType);
 }
 
 export function* newServiceType() {
@@ -74,7 +74,7 @@ export function* newServiceType() {
 }
 
 export function* watchNewServiceType() {
-  yield call(takeLatest, ServiceTypeAction.NEW_SERVICE_TYPE, newServiceType);
+  yield takeLatest(ServiceTypeAction.NEW_SERVICE_TYPE, newServiceType);
 }
 
 export function* findServiceTypesByName(action) {
@@ -87,7 +87,7 @@ export function* findServiceTypesByName(action) {
 }
 
 export function* watchFindServiceTypesByName() {
-  yield call(takeLatest, ServiceTypeAction.FIND_SERVICE_TYPES_BY_NAME, findServiceTypesByName);
+  yield takeLatest(ServiceTypeAction.FIND_SERVICE_TYPES_BY_NAME, findServiceTypesByName);
 }
 
 export const rootServiceTypeSaga = [

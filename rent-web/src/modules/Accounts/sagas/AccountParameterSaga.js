@@ -15,7 +15,7 @@ export function* getAccountParameters(action) {
 }
 
 export function* watchGetAccountParameters() {
-  yield call(takeLatest, AccountParameterAction.GET_ACCOUNT_PARAMETERS, getAccountParameters);
+  yield takeLatest(AccountParameterAction.GET_ACCOUNT_PARAMETERS, getAccountParameters);
 }
 
 export function* getAccountParameter(action) {
@@ -28,7 +28,7 @@ export function* getAccountParameter(action) {
 }
 
 export function* watchGetAccountParameter() {
-  yield call(takeLatest, AccountParameterAction.GET_ACCOUNT_PARAMETER, getAccountParameter);
+  yield takeLatest(AccountParameterAction.GET_ACCOUNT_PARAMETER, getAccountParameter);
 }
 
 export function* saveAccountParameter(action) {
@@ -45,7 +45,7 @@ export function* saveAccountParameter(action) {
 }
 
 export function* watchSaveAccountParameter() {
-  yield call(takeLatest, AccountParameterAction.SAVE_ACCOUNT_PARAMETER, saveAccountParameter);
+  yield takeLatest(AccountParameterAction.SAVE_ACCOUNT_PARAMETER, saveAccountParameter);
 }
 
 export function* deleteAccountParameter(action) {
@@ -63,7 +63,7 @@ export function* deleteAccountParameter(action) {
 }
 
 export function* watchDeleteAccountParameter() {
-  yield call(takeLatest, AccountParameterAction.DELETE_ACCOUNT_PARAMETER, deleteAccountParameter);
+  yield takeLatest(AccountParameterAction.DELETE_ACCOUNT_PARAMETER, deleteAccountParameter);
 }
 
 export function* newAccountParameter() {
@@ -71,7 +71,7 @@ export function* newAccountParameter() {
 }
 
 export function* watchNewAccountParameter() {
-  yield call(takeLatest, AccountParameterAction.NEW_ACCOUNT_PARAMETER, newAccountParameter);
+  yield takeLatest(AccountParameterAction.NEW_ACCOUNT_PARAMETER, newAccountParameter);
 }
 
 export const rootAccountParameterSaga = [

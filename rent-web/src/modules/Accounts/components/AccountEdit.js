@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 
-import { getDefaultParameter } from './../reducers/AccountReducer';
+import { getDefaultParameter, getDefaultService } from './../reducers/AccountReducer';
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
 
@@ -59,6 +59,9 @@ class AccountEdit extends EditComponent {
   onEditParameter = (parameter = getDefaultParameter()) => {
     this.props.showFormParameterEdit(parameter);
   }
+  onEditService = (service = getDefaultService()) => {
+    this.props.showFormServiceEdit(service);
+  }
   render() {
     const object = this.props.data;
     const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
@@ -96,7 +99,7 @@ class AccountEdit extends EditComponent {
         return moment(b.dateStart).unix() - moment(a.dateStart).unix();
       });
     }
-    const columns = [{
+    const parametersColumns = [{
       title: this.props.intl.messages.parameterTypeFieldName,
       dataIndex: 'parameterType.name',
       key: 'parameterType.name',
@@ -104,6 +107,21 @@ class AccountEdit extends EditComponent {
       title: this.props.intl.messages.parameterFieldValue,
       dataIndex: 'value',
       key: 'value',
+    },
+      this.getDateColumn(this.props.intl.messages.parameterFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.parameterFieldDateEnd, 'dateEnd'),
+      this.getActionColumn(),
+    ];
+    let servicesDataSource = [];
+    if (object && object.services && object.services.length > 0) {
+      servicesDataSource = object.services.sort((a, b) => {
+        return moment(b.dateStart).unix() - moment(a.dateStart).unix();
+      });
+    }
+    const servicesColumns = [{
+      title: this.props.intl.messages.serviceFieldName,
+      dataIndex: 'service.name',
+      key: 'service.name',
     },
       this.getDateColumn(this.props.intl.messages.parameterFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.parameterFieldDateEnd, 'dateEnd'),
@@ -167,7 +185,18 @@ class AccountEdit extends EditComponent {
             </Button>
             <Table
               dataSource={parametersDataSource}
-              columns={columns}
+              columns={parametersColumns}
+              bordered pagination={false}
+              size="small"
+            />
+            <br />
+            <h2>{this.props.intl.messages.servicesTitle}</h2>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.onEditService()}>
+              <FormattedMessage id="buttonAddNewService" />
+            </Button>
+            <Table
+              dataSource={servicesDataSource}
+              columns={servicesColumns}
               bordered pagination={false}
               size="small"
             />

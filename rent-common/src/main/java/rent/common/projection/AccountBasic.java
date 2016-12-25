@@ -19,4 +19,6 @@ public interface AccountBasic extends AbstractBasic {
     ApartmentBasic getApartment();
 
     List<AccountParameterBasic> getParameters();
+
+    List<AccountServiceBasic> getServices();
 }

@@ -17,7 +17,7 @@ export function* getMeasurementUnits(action) {
 }
 
 export function* watchGetMeasurementUnits() {
-  yield call(takeLatest, MeasurementUnitAction.GET_MEASUREMENT_UNITS, getMeasurementUnits);
+  yield takeLatest(MeasurementUnitAction.GET_MEASUREMENT_UNITS, getMeasurementUnits);
 }
 
 export function* getMeasurementUnit(action) {
@@ -30,7 +30,7 @@ export function* getMeasurementUnit(action) {
 }
 
 export function* watchGetMeasurementUnit() {
-  yield call(takeLatest, MeasurementUnitAction.GET_MEASUREMENT_UNIT, getMeasurementUnit);
+  yield takeLatest(MeasurementUnitAction.GET_MEASUREMENT_UNIT, getMeasurementUnit);
 }
 
 export function* saveMeasurementUnit(action) {
@@ -48,7 +48,7 @@ export function* saveMeasurementUnit(action) {
 }
 
 export function* watchSaveMeasurementUnit() {
-  yield call(takeLatest, MeasurementUnitAction.SAVE_MEASUREMENT_UNIT, saveMeasurementUnit);
+  yield takeLatest(MeasurementUnitAction.SAVE_MEASUREMENT_UNIT, saveMeasurementUnit);
 }
 
 export function* deleteMeasurementUnit(action) {
@@ -66,7 +66,7 @@ export function* deleteMeasurementUnit(action) {
 }
 
 export function* watchDeleteMeasurementUnit() {
-  yield call(takeLatest, MeasurementUnitAction.DELETE_MEASUREMENT_UNIT, deleteMeasurementUnit);
+  yield takeLatest(MeasurementUnitAction.DELETE_MEASUREMENT_UNIT, deleteMeasurementUnit);
 }
 
 export function* newMeasurementUnit() {
@@ -74,7 +74,7 @@ export function* newMeasurementUnit() {
 }
 
 export function* watchNewMeasurementUnit() {
-  yield call(takeLatest, MeasurementUnitAction.NEW_MEASUREMENT_UNIT, newMeasurementUnit);
+  yield takeLatest(MeasurementUnitAction.NEW_MEASUREMENT_UNIT, newMeasurementUnit);
 }
 
 export function* findMeasurementUnitsByName(action) {
@@ -87,7 +87,7 @@ export function* findMeasurementUnitsByName(action) {
 }
 
 export function* watchFindMeasurementUnitsByName() {
-  yield call(takeLatest, MeasurementUnitAction.FIND_MEASUREMENT_UNITS_BY_NAME, findMeasurementUnitsByName);
+  yield takeLatest(MeasurementUnitAction.FIND_MEASUREMENT_UNITS_BY_NAME, findMeasurementUnitsByName);
 }
 
 export const rootMeasurementUnitSaga = [

@@ -7,6 +7,7 @@ import { ExtendedComponentPage } from './../../../components/ExtendedComponentPa
 // Import Components
 import AccountEdit from './../components/AccountEdit';
 import AccountEditParameterForm from './../components/AccountEditParameterForm';
+import AccountEditServiceForm from './../components/AccountEditServiceForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -17,6 +18,7 @@ import {
   getAccountEditData,
   getAccountIsSaved,
   getDefaultParameter,
+  getDefaultService,
 } from './../reducers/AccountReducer';
 
 import {
@@ -44,6 +46,12 @@ import {
   getParameterTypeIsRequestError,
 } from './../../Constants/reducers/ParameterTypeReducer';
 
+import {
+  getServiceListData,
+  getServiceIsLoading,
+  getServiceIsRequestError,
+} from './../../Services/reducers/ServiceReducer';
+
 class AccountEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -54,15 +62,22 @@ class AccountEditPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.newAccount());
     }
     this.initFormParameter(false);
+    this.initFormService(false);
   }
   initFormParameter = (visible, parameter = getDefaultParameter()) => {
     this.setState({
       formParameterEditVisible: visible, parameter,
     });
   }
+  initFormService = (visible, service = getDefaultService()) => {
+    this.setState({
+      formServiceEditVisible: visible, service,
+    });
+  }
   onSave = (object) => {
     const newObject = object;
     newObject.parameters = this.props.data.parameters;
+    newObject.services = this.props.data.services;
     this.props.dispatch(AccountAction.saveAccount(newObject));
   };
   onStreetChange = (streetId) => {
@@ -74,21 +89,41 @@ class AccountEditPage extends ExtendedComponentPage {
   showFormParameterEdit = (parameter = getDefaultParameter()) => {
     this.initFormParameter(true, parameter);
   };
+  showFormServiceEdit = (service = getDefaultService()) => {
+    this.initFormService(true, service);
+  };
   onOkFormParameterEdit = (parameter = getDefaultParameter()) => {
     this.initFormParameter(false);
     if (parameter.id) {
-      this.props.dispatch(AccountAction.newEditParameterInAccount(parameter));
+      this.props.dispatch(AccountAction.editParameterInAccount(parameter));
     } else {
       const newParam = parameter;
       newParam.id = moment().unix();
-      this.props.dispatch(AccountAction.newAddNewParameterToAccount(newParam));
+      this.props.dispatch(AccountAction.addNewParameterToAccount(newParam));
     }
   }
   onCancelFormParameterEdit = () => {
     this.initFormParameter(false);
   }
   onDeleteParameter = (parameter) => {
-    this.props.dispatch(AccountAction.newRemoveParameterFromAccount(parameter));
+    this.props.dispatch(AccountAction.removeParameterFromAccount(parameter));
+    this.forceUpdate();
+  }
+  onOkFormServiceEdit = (service = getDefaultService()) => {
+    this.initFormService(false);
+    if (service.id) {
+      this.props.dispatch(AccountAction.editServiceInAccount(service));
+    } else {
+      const newService = service;
+      newService.id = moment().unix();
+      this.props.dispatch(AccountAction.addNewServiceToAccount(newService));
+    }
+  }
+  onCancelFormServiceEdit = () => {
+    this.initFormService(false);
+  }
+  onDeleteService = (service) => {
+    this.props.dispatch(AccountAction.removeServiceFromAccount(service));
     this.forceUpdate();
   }
   render() {
@@ -109,6 +144,8 @@ class AccountEditPage extends ExtendedComponentPage {
           onBuildingChange={this.onBuildingChange}
           showFormParameterEdit={this.showFormParameterEdit}
           onDeleteParameter={this.onDeleteParameter}
+          showFormServiceEdit={this.showFormServiceEdit}
+          onDeleteService={this.onDeleteService}
         />
         <AccountEditParameterForm
           parameterTypes={this.props.parameterTypes}
@@ -116,6 +153,13 @@ class AccountEditPage extends ExtendedComponentPage {
           formParameterEditVisible={this.state.formParameterEditVisible}
           onOkFormParameterEdit={this.onOkFormParameterEdit}
           onCancelFormParameterEdit={this.onCancelFormParameterEdit}
+        />
+        <AccountEditServiceForm
+          services={this.props.services}
+          service={this.state.service}
+          formServiceEditVisible={this.state.formServiceEditVisible}
+          onOkFormServiceEdit={this.onOkFormServiceEdit}
+          onCancelFormServiceEdit={this.onCancelFormServiceEdit}
         />
       </div>
     );
@@ -131,8 +175,13 @@ function mapStateToProps(state, props) {
     buildings: getBuildingListData(state),
     apartments: getApartmentListData(state),
     parameterTypes: getParameterTypeListData(state),
-    isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) || getContractorIsLoading(state) || getParameterTypeIsLoading(state),
-    isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) || getContractorIsRequestError(state) || getParameterTypeIsRequestError(state),
+    services: getServiceListData(state),
+    isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
+               getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
+               getServiceIsLoading(state),
+    isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
+                    getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
+                    getServiceIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

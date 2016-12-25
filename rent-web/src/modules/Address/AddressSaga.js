@@ -43,16 +43,16 @@ export function* getApartments(action) {
 }
 
 export function* watchGetStreetTypes() {
-  yield call(takeLatest, AddressAction.GET_STREET_TYPES, getStreetTypes);
+  yield takeLatest(AddressAction.GET_STREET_TYPES, getStreetTypes);
 }
 export function* watchGetStreets() {
-  yield call(takeLatest, AddressAction.GET_STREETS, getStreets);
+  yield takeLatest(AddressAction.GET_STREETS, getStreets);
 }
 export function* watchGetBuildings() {
-  yield call(takeLatest, AddressAction.GET_BUILDINGS, getBuildings);
+  yield takeLatest(AddressAction.GET_BUILDINGS, getBuildings);
 }
 export function* watchGetApartments() {
-  yield call(takeLatest, AddressAction.GET_APARTMENTS, getApartments);
+  yield takeLatest(AddressAction.GET_APARTMENTS, getApartments);
 }
 
 // get by id
@@ -107,16 +107,16 @@ export function* getApartment(action) {
 }
 
 export function* watchGetStreetType() {
-  yield call(takeLatest, AddressAction.GET_STREET_TYPE, getStreetType);
+  yield takeLatest(AddressAction.GET_STREET_TYPE, getStreetType);
 }
 export function* watchGetStreet() {
-  yield call(takeLatest, AddressAction.GET_STREET, getStreet);
+  yield takeLatest(AddressAction.GET_STREET, getStreet);
 }
 export function* watchGetBuilding() {
-  yield call(takeLatest, AddressAction.GET_BUILDING, getBuilding);
+  yield takeLatest(AddressAction.GET_BUILDING, getBuilding);
 }
 export function* watchGetApartment() {
-  yield call(takeLatest, AddressAction.GET_APARTMENT, getApartment);
+  yield takeLatest(AddressAction.GET_APARTMENT, getApartment);
 }
 
 // save
@@ -174,16 +174,16 @@ export function* saveApartment(action) {
 }
 
 export function* watchSaveStreetType() {
-  yield call(takeLatest, AddressAction.SAVE_STREET_TYPE, saveStreetType);
+  yield takeLatest(AddressAction.SAVE_STREET_TYPE, saveStreetType);
 }
 export function* watchSaveStreet() {
-  yield call(takeLatest, AddressAction.SAVE_STREET, saveStreet);
+  yield takeLatest(AddressAction.SAVE_STREET, saveStreet);
 }
 export function* watchSaveBuilding() {
-  yield call(takeLatest, AddressAction.SAVE_BUILDING, saveBuilding);
+  yield takeLatest(AddressAction.SAVE_BUILDING, saveBuilding);
 }
 export function* watchSaveApartment() {
-  yield call(takeLatest, AddressAction.SAVE_APARTMENT, saveApartment);
+  yield takeLatest(AddressAction.SAVE_APARTMENT, saveApartment);
 }
 
 // delete
@@ -241,16 +241,16 @@ export function* deleteApartment(action) {
 }
 
 export function* watchDeleteStreetType() {
-  yield call(takeLatest, AddressAction.DELETE_STREET_TYPE, deleteStreetType);
+  yield takeLatest(AddressAction.DELETE_STREET_TYPE, deleteStreetType);
 }
 export function* watchDeleteStreet() {
-  yield call(takeLatest, AddressAction.DELETE_STREET, deleteStreet);
+  yield takeLatest(AddressAction.DELETE_STREET, deleteStreet);
 }
 export function* watchDeleteBuilding() {
-  yield call(takeLatest, AddressAction.DELETE_BUILDING, deleteBuilding);
+  yield takeLatest(AddressAction.DELETE_BUILDING, deleteBuilding);
 }
 export function* watchDeleteApartment() {
-  yield call(takeLatest, AddressAction.DELETE_APARTMENT, deleteApartment);
+  yield takeLatest(AddressAction.DELETE_APARTMENT, deleteApartment);
 }
 
 // new record
@@ -271,16 +271,16 @@ export function* newApartment() {
 }
 
 export function* watchNewStreetType() {
-  yield call(takeLatest, AddressAction.NEW_STREET_TYPE, newStreetType);
+  yield takeLatest(AddressAction.NEW_STREET_TYPE, newStreetType);
 }
 export function* watchNewStreet() {
-  yield call(takeLatest, AddressAction.NEW_STREET, newStreet);
+  yield takeLatest(AddressAction.NEW_STREET, newStreet);
 }
 export function* watchNewBuilding() {
-  yield call(takeLatest, AddressAction.NEW_BUILDING, newBuilding);
+  yield takeLatest(AddressAction.NEW_BUILDING, newBuilding);
 }
 export function* watchNewApartment() {
-  yield call(takeLatest, AddressAction.NEW_APARTMENT, newApartment);
+  yield takeLatest(AddressAction.NEW_APARTMENT, newApartment);
 }
 
 // find
@@ -334,22 +334,22 @@ export function* findApartmentsByStreetNameAndBuildingName(action) {
 }
 
 export function* watchFindStreetTypesByName() {
-  yield call(takeLatest, AddressAction.FIND_STREET_TYPES_BY_NAME, findStreetTypesByName);
+  yield takeLatest(AddressAction.FIND_STREET_TYPES_BY_NAME, findStreetTypesByName);
 }
 export function* watchFindStreetsByName() {
-  yield call(takeLatest, AddressAction.FIND_STREETS_BY_NAME, findStreetsByName);
+  yield takeLatest(AddressAction.FIND_STREETS_BY_NAME, findStreetsByName);
 }
 export function* watchFindBuildingsByStreetId() {
-  yield call(takeLatest, AddressAction.FIND_BUILDINGS_BY_STREET_ID, findBuildingsByStreetId);
+  yield takeLatest(AddressAction.FIND_BUILDINGS_BY_STREET_ID, findBuildingsByStreetId);
 }
 export function* watchFindBuildingsByStreetName() {
-  yield call(takeLatest, AddressAction.FIND_BUILDINGS_BY_STREET_NAME, findBuildingsByStreetName);
+  yield takeLatest(AddressAction.FIND_BUILDINGS_BY_STREET_NAME, findBuildingsByStreetName);
 }
 export function* watchFindApartmentsByBuildingId() {
-  yield call(takeLatest, AddressAction.FIND_APARTMENTS_BY_BUILDING_ID, findApartmentsByBuildingId);
+  yield takeLatest(AddressAction.FIND_APARTMENTS_BY_BUILDING_ID, findApartmentsByBuildingId);
 }
 export function* watchFindApartmentsByStreetNameAndBuildingName() {
-  yield call(takeLatest, AddressAction.FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME, findApartmentsByStreetNameAndBuildingName);
+  yield takeLatest(AddressAction.FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME, findApartmentsByStreetNameAndBuildingName);
 }
 
 export const rootAddressSaga = [

@@ -19,7 +19,7 @@ export function* getServices(action) {
 }
 
 export function* watchGetServices() {
-  yield call(takeLatest, ServiceAction.GET_SERVICES, getServices);
+  yield takeLatest(ServiceAction.GET_SERVICES, getServices);
 }
 
 export function* getService(action) {
@@ -36,7 +36,7 @@ export function* getService(action) {
 }
 
 export function* watchGetService() {
-  yield call(takeLatest, ServiceAction.GET_SERVICE, getService);
+  yield takeLatest(ServiceAction.GET_SERVICE, getService);
 }
 
 export function* saveService(action) {
@@ -54,7 +54,7 @@ export function* saveService(action) {
 }
 
 export function* watchSaveService() {
-  yield call(takeLatest, ServiceAction.SAVE_SERVICE, saveService);
+  yield takeLatest(ServiceAction.SAVE_SERVICE, saveService);
 }
 
 export function* deleteService(action) {
@@ -72,7 +72,7 @@ export function* deleteService(action) {
 }
 
 export function* watchDeleteService() {
-  yield call(takeLatest, ServiceAction.DELETE_SERVICE, deleteService);
+  yield takeLatest(ServiceAction.DELETE_SERVICE, deleteService);
 }
 
 export function* newService() {
@@ -81,7 +81,7 @@ export function* newService() {
 }
 
 export function* watchNewService() {
-  yield call(takeLatest, ServiceAction.NEW_SERVICE, newService);
+  yield takeLatest(ServiceAction.NEW_SERVICE, newService);
 }
 
 export function* findServicesByName(action) {
@@ -94,7 +94,7 @@ export function* findServicesByName(action) {
 }
 
 export function* watchFindServicesByName() {
-  yield call(takeLatest, ServiceAction.FIND_SERVICES_BY_NAME, findServicesByName);
+  yield takeLatest(ServiceAction.FIND_SERVICES_BY_NAME, findServicesByName);
 }
 
 export const rootServiceSaga = [

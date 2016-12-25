@@ -84,6 +84,7 @@ export default {
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
     buttonAddNewParameter: 'Добавить новый параметр',
+    buttonAddNewService: 'Добавить новую услугу',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
     confirmDelete: 'Подтвердите удаление записи.',

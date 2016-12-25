@@ -17,7 +17,7 @@ export function* getCalculationTypes(action) {
 }
 
 export function* watchGetCalculationTypes() {
-  yield call(takeLatest, CalculationTypeAction.GET_CALCULATION_TYPES, getCalculationTypes);
+  yield takeLatest(CalculationTypeAction.GET_CALCULATION_TYPES, getCalculationTypes);
 }
 
 export function* getCalculationType(action) {
@@ -31,7 +31,7 @@ export function* getCalculationType(action) {
 }
 
 export function* watchGetCalculationType() {
-  yield call(takeLatest, CalculationTypeAction.GET_CALCULATION_TYPE, getCalculationType);
+  yield takeLatest(CalculationTypeAction.GET_CALCULATION_TYPE, getCalculationType);
 }
 
 export function* saveCalculationType(action) {
@@ -49,7 +49,7 @@ export function* saveCalculationType(action) {
 }
 
 export function* watchSaveCalculationType() {
-  yield call(takeLatest, CalculationTypeAction.SAVE_CALCULATION_TYPE, saveCalculationType);
+  yield takeLatest(CalculationTypeAction.SAVE_CALCULATION_TYPE, saveCalculationType);
 }
 
 export function* deleteCalculationType(action) {
@@ -67,7 +67,7 @@ export function* deleteCalculationType(action) {
 }
 
 export function* watchDeleteCalculationType() {
-  yield call(takeLatest, CalculationTypeAction.DELETE_CALCULATION_TYPE, deleteCalculationType);
+  yield takeLatest(CalculationTypeAction.DELETE_CALCULATION_TYPE, deleteCalculationType);
 }
 
 export function* newCalculationType() {
@@ -75,7 +75,7 @@ export function* newCalculationType() {
 }
 
 export function* watchNewCalculationType() {
-  yield call(takeLatest, CalculationTypeAction.NEW_CALCULATION_TYPE, newCalculationType);
+  yield takeLatest(CalculationTypeAction.NEW_CALCULATION_TYPE, newCalculationType);
 }
 
 export function* findCalculationTypesByName(action) {
@@ -88,7 +88,7 @@ export function* findCalculationTypesByName(action) {
 }
 
 export function* watchFindCalculationTypesByName() {
-  yield call(takeLatest, CalculationTypeAction.FIND_CALCULATION_TYPES_BY_NAME, findCalculationTypesByName);
+  yield takeLatest(CalculationTypeAction.FIND_CALCULATION_TYPES_BY_NAME, findCalculationTypesByName);
 }
 
 export const rootCalculationTypeSaga = [

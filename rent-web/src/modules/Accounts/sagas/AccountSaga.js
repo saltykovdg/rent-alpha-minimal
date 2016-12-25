@@ -8,6 +8,7 @@ import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
+import * as ServiceAction from './../../Services/actions/ServiceAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
 import * as ApiCaller from '../../../util/ApiCaller';
@@ -23,7 +24,7 @@ export function* getAccounts(action) {
 }
 
 export function* watchGetAccounts() {
-  yield call(takeLatest, AccountAction.GET_ACCOUNTS, getAccounts);
+  yield takeLatest(AccountAction.GET_ACCOUNTS, getAccounts);
 }
 
 export function* getAccount(action) {
@@ -49,6 +50,10 @@ export function* getAccount(action) {
       sagaAction = yield take([ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS, ParameterTypeAction.GET_PARAMETER_TYPES_FAILED, LOCATION_CHANGE]);
     }
     if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(ServiceAction.findServicesByName());
+      sagaAction = yield take([ServiceAction.GET_SERVICES_SUCCESS, ServiceAction.GET_SERVICES_FAILED, LOCATION_CHANGE]);
+    }
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountAction.getAccountSuccess(response));
     }
   } else if (!response.canceled) {
@@ -57,7 +62,7 @@ export function* getAccount(action) {
 }
 
 export function* watchGetAccount() {
-  yield call(takeLatest, AccountAction.GET_ACCOUNT, getAccount);
+  yield takeLatest(AccountAction.GET_ACCOUNT, getAccount);
 }
 
 export function* saveAccount(action) {
@@ -99,7 +104,7 @@ export function* saveAccount(action) {
 }
 
 export function* watchSaveAccount() {
-  yield call(takeLatest, AccountAction.SAVE_ACCOUNT, saveAccount);
+  yield takeLatest(AccountAction.SAVE_ACCOUNT, saveAccount);
 }
 
 export function* deleteAccount(action) {
@@ -117,7 +122,7 @@ export function* deleteAccount(action) {
 }
 
 export function* watchDeleteAccount() {
-  yield call(takeLatest, AccountAction.DELETE_ACCOUNT, deleteAccount);
+  yield takeLatest(AccountAction.DELETE_ACCOUNT, deleteAccount);
 }
 
 export function* newAccount() {
@@ -141,10 +146,14 @@ export function* newAccount() {
     yield put(ParameterTypeAction.findParameterTypesByName());
     sagaAction = yield take([ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS, ParameterTypeAction.GET_PARAMETER_TYPES_FAILED, LOCATION_CHANGE]);
   }
+  if (sagaAction.type !== LOCATION_CHANGE) {
+    yield put(ServiceAction.findServicesByName());
+    sagaAction = yield take([ServiceAction.GET_SERVICES_SUCCESS, ServiceAction.GET_SERVICES_FAILED, LOCATION_CHANGE]);
+  }
 }
 
 export function* watchNewAccount() {
-  yield call(takeLatest, AccountAction.NEW_ACCOUNT, newAccount);
+  yield takeLatest(AccountAction.NEW_ACCOUNT, newAccount);
 }
 
 export function* findAccountsByAccountNumber(action) {
@@ -157,7 +166,7 @@ export function* findAccountsByAccountNumber(action) {
 }
 
 export function* watchFindAccountsByAccountNumber() {
-  yield call(takeLatest, AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER, findAccountsByAccountNumber);
+  yield takeLatest(AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER, findAccountsByAccountNumber);
 }
 
 export const rootAccountSaga = [

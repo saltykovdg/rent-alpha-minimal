@@ -27,10 +27,10 @@ export function* getContractors(action) {
 }
 
 export function* watchGetContractorTypes() {
-  yield call(takeLatest, OrganizationAction.GET_CONTRACTOR_TYPES, getContractorTypes);
+  yield takeLatest(OrganizationAction.GET_CONTRACTOR_TYPES, getContractorTypes);
 }
 export function* watchGetContractors() {
-  yield call(takeLatest, OrganizationAction.GET_CONTRACTORS, getContractors);
+  yield takeLatest(OrganizationAction.GET_CONTRACTORS, getContractors);
 }
 
 // get by id
@@ -56,10 +56,10 @@ export function* getContractor(action) {
 }
 
 export function* watchGetContractorType() {
-  yield call(takeLatest, OrganizationAction.GET_CONTRACTOR_TYPE, getContractorType);
+  yield takeLatest(OrganizationAction.GET_CONTRACTOR_TYPE, getContractorType);
 }
 export function* watchGetContractor() {
-  yield call(takeLatest, OrganizationAction.GET_CONTRACTOR, getContractor);
+  yield takeLatest(OrganizationAction.GET_CONTRACTOR, getContractor);
 }
 
 // save
@@ -91,10 +91,10 @@ export function* saveContractor(action) {
 }
 
 export function* watchSaveContractorType() {
-  yield call(takeLatest, OrganizationAction.SAVE_CONTRACTOR_TYPE, saveContractorType);
+  yield takeLatest(OrganizationAction.SAVE_CONTRACTOR_TYPE, saveContractorType);
 }
 export function* watchSaveContractor() {
-  yield call(takeLatest, OrganizationAction.SAVE_CONTRACTOR, saveContractor);
+  yield takeLatest(OrganizationAction.SAVE_CONTRACTOR, saveContractor);
 }
 
 // delete
@@ -126,10 +126,10 @@ export function* deleteContractor(action) {
 }
 
 export function* watchDeleteContractorType() {
-  yield call(takeLatest, OrganizationAction.DELETE_CONTRACTOR_TYPE, deleteContractorType);
+  yield takeLatest(OrganizationAction.DELETE_CONTRACTOR_TYPE, deleteContractorType);
 }
 export function* watchDeleteContractor() {
-  yield call(takeLatest, OrganizationAction.DELETE_CONTRACTOR, deleteContractor);
+  yield takeLatest(OrganizationAction.DELETE_CONTRACTOR, deleteContractor);
 }
 
 // new record
@@ -142,10 +142,10 @@ export function* newContractor() {
 }
 
 export function* watchNewContractorType() {
-  yield call(takeLatest, OrganizationAction.NEW_CONTRACTOR_TYPE, newContractorType);
+  yield takeLatest(OrganizationAction.NEW_CONTRACTOR_TYPE, newContractorType);
 }
 export function* watchNewContractor() {
-  yield call(takeLatest, OrganizationAction.NEW_CONTRACTOR, newContractor);
+  yield takeLatest(OrganizationAction.NEW_CONTRACTOR, newContractor);
 }
 
 // find
@@ -167,10 +167,10 @@ export function* findContractorsByName(action) {
 }
 
 export function* watchFindContractorTypesByName() {
-  yield call(takeLatest, OrganizationAction.FIND_CONTRACTOR_TYPES_BY_NAME, findContractorTypesByName);
+  yield takeLatest(OrganizationAction.FIND_CONTRACTOR_TYPES_BY_NAME, findContractorTypesByName);
 }
 export function* watchFindContractorsByName() {
-  yield call(takeLatest, OrganizationAction.FIND_CONTRACTORS_BY_NAME, findContractorsByName);
+  yield takeLatest(OrganizationAction.FIND_CONTRACTORS_BY_NAME, findContractorsByName);
 }
 
 export const rootOrganizationSaga = [

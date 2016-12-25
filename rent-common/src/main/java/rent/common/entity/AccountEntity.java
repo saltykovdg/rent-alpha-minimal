@@ -67,6 +67,13 @@ public class AccountEntity extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountParameterEntity> parameters;
 
+    /**
+     * услуги лс
+     */
+    @JoinColumn(name = Columns.ACCOUNT)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountServiceEntity> services;
+
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -113,5 +120,13 @@ public class AccountEntity extends AbstractEntity {
 
     public void setParameters(List<AccountParameterEntity> parameters) {
         this.parameters = parameters;
+    }
+
+    public List<AccountServiceEntity> getServices() {
+        return services;
+    }
+
+    public void setServices(List<AccountServiceEntity> services) {
+        this.services = services;
     }
 }

@@ -17,6 +17,18 @@ export const getDefaultParameter = () => {
   };
 };
 
+export const getDefaultService = () => {
+  return {
+    id: '',
+    service: {
+      id: '',
+      name: '',
+    },
+    dateStart: moment(),
+    dateEnd: null,
+  };
+};
+
 const emptyEditData = {
   id: '',
   accountNumber: '',
@@ -35,6 +47,7 @@ const emptyEditData = {
     },
   },
   parameters: [],
+  services: [],
 };
 
 export const accountReducer = (state, action) => {
