@@ -113,6 +113,25 @@ export const accountReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case AccountAction.ADD_NEW_SERVICE_TO_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.services.push(action.service);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.EDIT_SERVICE_IN_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.services = newObj.services.filter(service => service.id !== action.service.id);
+      newObj.services.push(action.service);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.REMOVE_SERVICE_FROM_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.services = newObj.services.filter(service => service.id !== action.service.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED: {

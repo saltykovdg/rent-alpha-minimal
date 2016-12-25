@@ -78,8 +78,6 @@ export default {
     parameterTypeFieldNameOrigin: 'Параметр (значение по умолчанию)',
     parameterTitle: 'Параметры',
     parameterFieldValue: 'Значение',
-    parameterFieldDateStart: 'Действует С',
-    parameterFieldDateEnd: 'Действует ПО',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
@@ -107,6 +105,8 @@ export default {
     findByAccountNumberPlaceholder: 'Начните вводить номер лицевого счета для поиска',
     managementCompanyTitle: 'Управляющая компания',
     addressShortTitle: 'Адрес',
+    commonFieldDateStart: 'Действует С',
+    commonFieldDateEnd: 'Действует ПО',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

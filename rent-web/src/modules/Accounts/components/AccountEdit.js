@@ -27,6 +27,9 @@ class AccountEdit extends EditComponent {
   onDeleteParameter = (record) => {
     this.props.onDeleteParameter(record);
   };
+  onDeleteService = (record) => {
+    this.props.onDeleteService(record);
+  };
   getDateColumn = (title, name) => {
     return {
       title,
@@ -36,7 +39,7 @@ class AccountEdit extends EditComponent {
       },
     };
   }
-  getActionColumn = () => {
+  getParameterActionColumn = () => {
     const messages = this.props.intl.messages;
     const onEditParameter = this.onEditParameter;
     const onDeleteParameter = this.onDeleteParameter;
@@ -49,6 +52,26 @@ class AccountEdit extends EditComponent {
             <Link onClick={() => onEditParameter(record)}><FormattedMessage id="buttonEdit" /></Link>
             <span className="ant-divider" />
             <Popconfirm title={messages.confirmDelete} onConfirm={() => onDeleteParameter(record)} >
+              <Link><FormattedMessage id="buttonDelete" /></Link>
+            </Popconfirm>
+          </span>
+        );
+      },
+    };
+  };
+  getServiceActionColumn = () => {
+    const messages = this.props.intl.messages;
+    const onEditService = this.onEditService;
+    const onDeleteService = this.onDeleteService;
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      render(text, record) {
+        return (
+          <span>
+            <Link onClick={() => onEditService(record)}><FormattedMessage id="buttonEdit" /></Link>
+            <span className="ant-divider" />
+            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDeleteService(record)} >
               <Link><FormattedMessage id="buttonDelete" /></Link>
             </Popconfirm>
           </span>
@@ -108,9 +131,9 @@ class AccountEdit extends EditComponent {
       dataIndex: 'value',
       key: 'value',
     },
-      this.getDateColumn(this.props.intl.messages.parameterFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.parameterFieldDateEnd, 'dateEnd'),
-      this.getActionColumn(),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getParameterActionColumn(),
     ];
     let servicesDataSource = [];
     if (object && object.services && object.services.length > 0) {
@@ -123,9 +146,9 @@ class AccountEdit extends EditComponent {
       dataIndex: 'service.name',
       key: 'service.name',
     },
-      this.getDateColumn(this.props.intl.messages.parameterFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.parameterFieldDateEnd, 'dateEnd'),
-      this.getActionColumn(),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getServiceActionColumn(),
     ];
     return (
       <div>

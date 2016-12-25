@@ -48,12 +48,12 @@ class AccountEditServiceForm extends EditComponent {
           </FormItem>
           <Row gutter={16}>
             <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.serviceFieldDateStart}>
+              <FormItem label={this.props.intl.messages.commonFieldDateStart}>
                 {this.getDateField('dateStart', object.dateStart)}
               </FormItem>
             </Col>
             <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.serviceFieldDateEnd}>
+              <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
                 {this.getDateField('dateEnd', object.dateEnd, false)}
               </FormItem>
             </Col>

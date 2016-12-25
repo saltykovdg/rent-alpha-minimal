@@ -7,6 +7,7 @@ import * as OrganizationAction from './../../Organization/OrganizationActions';
 import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
+import * as AccountServiceAction from './../actions/AccountServiceAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as ServiceAction from './../../Services/actions/ServiceAction';
 import * as AccountApi from './../api/AccountApi';
@@ -66,9 +67,11 @@ export function* watchGetAccount() {
 }
 
 export function* saveAccount(action) {
+  let sagaAction = null;
   const parameters = action.object.parameters;
   const parametersLinks = [];
-  let sagaAction = null;
+  const services = action.object.services;
+  const servicesLinks = [];
   for (let i = 0; i < parameters.length; i += 1) {
     const newItem = JSON.parse(JSON.stringify(parameters[i]));
     newItem.parameterType = ObjectUtil.getLink(parameters[i].parameterType);
@@ -81,8 +84,22 @@ export function* saveAccount(action) {
     }
   }
   if (sagaAction == null || (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS)) {
+    for (let i = 0; i < services.length; i += 1) {
+      const newItem = JSON.parse(JSON.stringify(services[i]));
+      newItem.service = ObjectUtil.getLink(services[i].service);
+      yield put(AccountServiceAction.saveAccountService(newItem));
+      sagaAction = yield take([AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS, AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED]);
+      if (sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS) {
+        servicesLinks.push(ObjectUtil.getLink(sagaAction.data));
+      } else {
+        break;
+      }
+    }
+  }
+  if (sagaAction == null || (sagaAction && sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS)) {
     const objectAccount = JSON.parse(JSON.stringify(action.object));
     objectAccount.parameters = parametersLinks;
+    objectAccount.services = servicesLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);
     if (response && !response.error && !response.canceled) {
       yield put(AccountAction.saveAccountSuccess(objectAccount));
