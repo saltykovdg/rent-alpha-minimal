@@ -13,6 +13,11 @@ export const DELETE_TARIFF_FAILED = 'DELETE_TARIFF_FAILED';
 export const NEW_TARIFF = 'NEW_TARIFF';
 export const FIND_TARIFFS_BY_NAME = 'FIND_TARIFFS_BY_NAME';
 
+// tariff values
+export const ADD_NEW_VALUE_TO_TARIFF = 'ADD_NEW_VALUE_TO_TARIFF';
+export const EDIT_VALUE_IN_TARIFF = 'EDIT_VALUE_IN_TARIFF';
+export const REMOVE_VALUE_FROM_TARIF = 'REMOVE_VALUE_FROM_TARIF';
+
 export const getTariffs = (page = 0) => {
   return {
     type: GET_TARIFFS,
@@ -68,10 +73,11 @@ export const saveTariffSuccess = (data) => {
   };
 };
 
-export const saveTariffFailed = (data) => {
+export const saveTariffFailed = (data, showError = true) => {
   return {
     type: SAVE_TARIFF_FAILED,
     data,
+    showError,
   };
 };
 
@@ -106,5 +112,25 @@ export const findTariffsByName = (name = '') => {
   return {
     type: FIND_TARIFFS_BY_NAME,
     name,
+  };
+};
+
+// tariff values
+export const addNewValueToTariff = (tariffValue) => {
+  return {
+    type: ADD_NEW_VALUE_TO_TARIFF,
+    tariffValue,
+  };
+};
+export const editValueInTariff = (tariffValue) => {
+  return {
+    type: EDIT_VALUE_IN_TARIFF,
+    tariffValue,
+  };
+};
+export const removeValueFromTariff = (tariffValue) => {
+  return {
+    type: REMOVE_VALUE_FROM_TARIF,
+    tariffValue,
   };
 };

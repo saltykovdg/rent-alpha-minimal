@@ -144,9 +144,8 @@ export function* watchDeleteAccount() {
 
 export function* newAccount() {
   yield call(ApiCaller.cancelAllRequests);
-  let sagaAction;
   yield put(OrganizationAction.findContractorsByName());
-  sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
+  let sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findStreetsByName());
     sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED, LOCATION_CHANGE]);

@@ -1,10 +1,8 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, fork } from 'redux-saga/effects';
-import { browserHistory } from 'react-router';
 
 import * as TariffValueAction from './../actions/TariffValueAction';
 import * as TariffValueApi from './../api/TariffValueApi';
-import * as TariffValuePath from './../paths/TariffValuePath';
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function* getTariffValues(action) {
@@ -37,7 +35,6 @@ export function* saveTariffValue(action) {
   const response = yield call(TariffValueApi.saveTariffValue, action.object);
   if (response && !response.error && !response.canceled) {
     yield put(TariffValueAction.saveTariffValueSuccess(response));
-    yield call(browserHistory.push, TariffValuePath.TARIFF_VALUE_LIST);
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

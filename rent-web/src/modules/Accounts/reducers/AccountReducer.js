@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
+import * as AccountServiceAction from './../actions/AccountServiceAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const getDefaultParameter = () => {
@@ -134,7 +135,10 @@ export const accountReducer = (state, action) => {
 
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
-    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED: {
+    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED:
+    case AccountServiceAction.SAVE_ACCOUNT_SERVICE:
+    case AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS:
+    case AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED: {
       return state.account;
     }
 

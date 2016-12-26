@@ -10,6 +10,7 @@ class TariffList extends ListComponent {
   render() {
     const columns = [
       this.getColumn(this.props.intl.messages.tariffFieldName, 'name'),
+      this.getColumn(this.props.intl.messages.serviceFieldName, 'service.name'),
       this.getActionColumn(TariffPath.TARIFF_EDIT),
     ];
     return (

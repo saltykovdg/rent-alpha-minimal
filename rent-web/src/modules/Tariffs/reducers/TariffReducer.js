@@ -1,9 +1,30 @@
+import moment from 'moment';
+
 import * as TariffAction from './../actions/TariffAction';
+import * as TariffValueAction from './../actions/TariffValueAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+
+export const getDefaultTariffValue = () => {
+  return {
+    id: '',
+    calculationType: {
+      id: '',
+      name: '',
+    },
+    measurementUnit: {
+      id: '',
+      name: '',
+    },
+    value: 0,
+    dateStart: moment(),
+    dateEnd: null,
+  };
+};
 
 const emptyEditData = {
   id: '',
   name: '',
+  values: [],
 };
 
 export const tariffReducer = (state, action) => {
@@ -40,7 +61,7 @@ export const tariffReducer = (state, action) => {
     }
 
     case TariffAction.SAVE_TARIFF_FAILED: {
-      return prepareEdit(state.tariff.edit.data, false, true, false, false);
+      return prepareEdit(state.tariff.edit.data, false, action.showError, false, false);
     }
     case TariffAction.DELETE_TARIFF_FAILED: {
       return prepareList(state.tariff.list.data, emptyEditData, false, true, false, false);
@@ -48,6 +69,31 @@ export const tariffReducer = (state, action) => {
 
     case TariffAction.NEW_TARIFF: {
       return prepareEdit(emptyEditData, false, false, false, false);
+    }
+
+    case TariffAction.ADD_NEW_VALUE_TO_TARIFF: {
+      const newObj = state.tariff.edit.data;
+      newObj.values.push(action.tariffValue);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case TariffAction.EDIT_VALUE_IN_TARIFF: {
+      const newObj = state.tariff.edit.data;
+      newObj.values = newObj.values.filter(value => value.id !== action.tariffValue.id);
+      newObj.values.push(action.tariffValue);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case TariffAction.REMOVE_VALUE_FROM_TARIF: {
+      const newObj = state.tariff.edit.data;
+      newObj.values = newObj.values.filter(value => value.id !== action.tariffValue.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case TariffValueAction.SAVE_TARIFF_VALUE:
+    case TariffValueAction.SAVE_TARIFF_VALUE_SUCCESS:
+    case TariffValueAction.SAVE_TARIFF_VALUE_FAILED: {
+      return state.tariff;
     }
 
     default:

@@ -68,6 +68,7 @@ export default {
 
     // tariffs
     tariffsTitle: 'Тарифы',
+    tariffValuesTitle: 'Значения тарифа',
     tariffFieldName: 'Наименование тарифа',
 
     // constants
