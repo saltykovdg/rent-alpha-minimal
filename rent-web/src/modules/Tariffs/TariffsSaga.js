@@ -1,7 +1,9 @@
 // Import Saga
-// import { rootTariffsSaga } from './modules/Tariffs/TariffsSaga';
-
+import { rootTariffSaga } from './sagas/TariffSaga';
+import { rootTariffValueSaga } from './sagas/TariffValueSaga';
 
 // Export Saga
 export default [
+  ...rootTariffSaga,
+  ...rootTariffValueSaga,
 ];

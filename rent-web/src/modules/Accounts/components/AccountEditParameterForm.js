@@ -49,7 +49,7 @@ class AccountEditParameterForm extends EditComponent {
           <FormItem label={this.props.intl.messages.parameterTypeFieldName}>
             {this.getSelectWithSearchField('parameterType', this.getLink(object.parameterType), parameterTypeList)}
           </FormItem>
-          <FormItem label={this.props.intl.messages.parameterFieldValue}>
+          <FormItem label={this.props.intl.messages.commonFieldValue}>
             {this.getInputNumberField('value', parseFloat(object.value), 0.1)}
           </FormItem>
           <Row gutter={16}>

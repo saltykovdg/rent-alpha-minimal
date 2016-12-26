@@ -19,7 +19,7 @@ export function* get<%= helpers.pascalCase(name) %>s(action) {
 }
 
 export function* watchGet<%= helpers.pascalCase(name) %>s() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S, get<%= helpers.pascalCase(name) %>s);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S, get<%= helpers.pascalCase(name) %>s);
 }
 
 export function* get<%= helpers.pascalCase(name) %>(action) {
@@ -32,7 +32,7 @@ export function* get<%= helpers.pascalCase(name) %>(action) {
 }
 
 export function* watchGet<%= helpers.pascalCase(name) %>() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>, get<%= helpers.pascalCase(name) %>);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>, get<%= helpers.pascalCase(name) %>);
 }
 
 export function* save<%= helpers.pascalCase(name) %>(action) {
@@ -50,7 +50,7 @@ export function* save<%= helpers.pascalCase(name) %>(action) {
 }
 
 export function* watchSave<%= helpers.pascalCase(name) %>() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>, save<%= helpers.pascalCase(name) %>);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>, save<%= helpers.pascalCase(name) %>);
 }
 
 export function* delete<%= helpers.pascalCase(name) %>(action) {
@@ -68,7 +68,7 @@ export function* delete<%= helpers.pascalCase(name) %>(action) {
 }
 
 export function* watchDelete<%= helpers.pascalCase(name) %>() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>, delete<%= helpers.pascalCase(name) %>);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>, delete<%= helpers.pascalCase(name) %>);
 }
 
 export function* new<%= helpers.pascalCase(name) %>() {
@@ -76,7 +76,7 @@ export function* new<%= helpers.pascalCase(name) %>() {
 }
 
 export function* watchNew<%= helpers.pascalCase(name) %>() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.NEW_<%= helpers.constantCase(name) %>, new<%= helpers.pascalCase(name) %>);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.NEW_<%= helpers.constantCase(name) %>, new<%= helpers.pascalCase(name) %>);
 }
 
 export function* find<%= helpers.pascalCase(name) %>sByName(action) {
@@ -89,7 +89,7 @@ export function* find<%= helpers.pascalCase(name) %>sByName(action) {
 }
 
 export function* watchFind<%= helpers.pascalCase(name) %>sByName() {
-  yield call(takeLatest, <%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME, find<%= helpers.pascalCase(name) %>sByName);
+  yield takeLatest(<%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME, find<%= helpers.pascalCase(name) %>sByName);
 }
 
 export const root<%= helpers.pascalCase(name) %>Saga = [

@@ -1,5 +1,14 @@
-// import Tariffs from './modules/Tariffs/TariffsReducer';
-// import tempReducer from './reducers/TempReducer';
+import {
+  tariffReducer,
+  getTariffIsLoading,
+  getTariffIsRequestError,
+} from './reducers/TariffReducer';
+
+import {
+  tariffValueReducer,
+  getTariffValueIsLoading,
+  getTariffValueIsRequestError,
+} from './reducers/TariffValueReducer';
 
 // Initial State
 const data = {
@@ -18,17 +27,20 @@ const data = {
 };
 
 const initialState = {
-  tempReducer: data,
+  tariff: data,
+  tariffValue: data,
 };
 
 const TariffsReducer = (state = initialState, action) => {
   return {
-    tempReducer: null,
+    tariff: tariffReducer(state, action),
+    tariffValue: tariffValueReducer(state, action),
   };
 };
 
 /* Selectors */
-
+export const getIsRequestError = state => getTariffIsRequestError(state) || getTariffValueIsRequestError(state);
+export const getIsLoading = state => getTariffIsLoading(state) || getTariffValueIsLoading(state);
 
 // Export Reducer
 export default TariffsReducer;

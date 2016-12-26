@@ -9,6 +9,7 @@ import * as AddressPath from '../../../Address/AddressPaths';
 import * as OrganizationPath from '../../../Organization/OrganizationPaths';
 import * as ServiceTypePath from '../../../Services/paths/ServiceTypePath';
 import * as ServicePath from '../../../Services/paths/ServicePath';
+import * as TariffPath from '../../../Tariffs/paths/TariffPath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
 import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
@@ -96,6 +97,11 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
+        <Item key={TariffPath.TARIFF_LIST}>
+          <Link to={TariffPath.TARIFF_LIST}>
+            <FormattedMessage id="tariffsTitle" />
+          </Link>
+        </Item>
         <SubMenu key="sidebarConstants" title={<FormattedMessage id="constantsTitle" />}>
           <Item key={CalculationTypePath.CALCULATION_TYPE_LIST}>
             <Link to={CalculationTypePath.CALCULATION_TYPE_LIST}>

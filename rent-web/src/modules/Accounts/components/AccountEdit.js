@@ -127,7 +127,7 @@ class AccountEdit extends EditComponent {
       dataIndex: 'parameterType.name',
       key: 'parameterType.name',
     }, {
-      title: this.props.intl.messages.parameterFieldValue,
+      title: this.props.intl.messages.commonFieldValue,
       dataIndex: 'value',
       key: 'value',
     },

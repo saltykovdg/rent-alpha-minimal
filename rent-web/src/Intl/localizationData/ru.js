@@ -66,6 +66,10 @@ export default {
     serviceTypeFieldName: 'Тип услуги',
     serviceFieldName: 'Услуга',
 
+    // tariffs
+    tariffsTitle: 'Тарифы',
+    tariffFieldName: 'Наименование тарифа',
+
     // constants
     constantsTitle: 'Константы',
     calculationTypeTitle: 'Виды расчета',
@@ -77,12 +81,12 @@ export default {
     parameterTypeFieldName: 'Параметр',
     parameterTypeFieldNameOrigin: 'Параметр (значение по умолчанию)',
     parameterTitle: 'Параметры',
-    parameterFieldValue: 'Значение',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
     buttonAddNewParameter: 'Добавить новый параметр',
     buttonAddNewService: 'Добавить новую услугу',
+    buttonAddNewValue: 'Добавить новое значение',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
     confirmDelete: 'Подтвердите удаление записи.',
@@ -107,6 +111,7 @@ export default {
     addressShortTitle: 'Адрес',
     commonFieldDateStart: 'Действует С',
     commonFieldDateEnd: 'Действует ПО',
+    commonFieldValue: 'Значение',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',
