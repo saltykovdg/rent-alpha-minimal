@@ -7,6 +7,10 @@ import java.util.Date;
 
 @Projection(types = {TariffValueEntity.class})
 public interface TariffValueBasic extends AbstractBasic {
+    CalculationTypeBasic getCalculationType();
+
+    MeasurementUnitBasic getMeasurementUnit();
+
     Double getValue();
 
     Date getDateStart();
