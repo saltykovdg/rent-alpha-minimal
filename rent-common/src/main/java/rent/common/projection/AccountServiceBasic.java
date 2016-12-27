@@ -12,4 +12,6 @@ public interface AccountServiceBasic extends AbstractBasic {
     Date getDateStart();
 
     Date getDateEnd();
+
+    TariffBasic getTariff();
 }

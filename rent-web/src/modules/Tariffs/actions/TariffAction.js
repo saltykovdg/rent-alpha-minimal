@@ -12,6 +12,7 @@ export const DELETE_TARIFF_SUCCESS = 'DELETE_TARIFF_SUCCESS';
 export const DELETE_TARIFF_FAILED = 'DELETE_TARIFF_FAILED';
 export const NEW_TARIFF = 'NEW_TARIFF';
 export const FIND_TARIFFS_BY_NAME = 'FIND_TARIFFS_BY_NAME';
+export const FIND_TARIFFS_BY_SERVICE_ID = 'FIND_TARIFFS_BY_SERVICE_ID';
 
 // tariff values
 export const ADD_NEW_VALUE_TO_TARIFF = 'ADD_NEW_VALUE_TO_TARIFF';
@@ -112,6 +113,12 @@ export const findTariffsByName = (name = '') => {
   return {
     type: FIND_TARIFFS_BY_NAME,
     name,
+  };
+};
+export const findTariffsByServiceId = (serviceId = '') => {
+  return {
+    type: FIND_TARIFFS_BY_SERVICE_ID,
+    serviceId,
   };
 };
 

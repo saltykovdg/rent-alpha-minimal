@@ -3,6 +3,7 @@ import moment from 'moment';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
+import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const getDefaultParameter = () => {
@@ -133,6 +134,9 @@ export const accountReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
+    case TariffAction.GET_TARIFFS_SUCCESS:
+    case TariffAction.GET_TARIFFS_FAILED:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED:

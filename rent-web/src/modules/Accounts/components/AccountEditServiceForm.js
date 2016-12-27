@@ -7,11 +7,17 @@ import { EditComponent } from './../../../components/EditComponent';
 const FormItem = Form.Item;
 
 class AccountEditServiceForm extends EditComponent {
+  onServiceChange = (value) => {
+    this.props.form.setFieldsValue({ tariff: '' });
+    const object = this.props.services.content.filter(service => this.getLink(service) === value)[0];
+    this.props.onServiceChange(object.id);
+  }
   onOkFormServiceEdit = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
         newValues.service = this.props.services.content.filter(service => this.getLink(service) === values.service)[0];
+        newValues.tariff = this.props.tariffs.content.filter(tariff => this.getLink(tariff) === values.tariff)[0];
         this.props.onOkFormServiceEdit(newValues);
         this.props.form.resetFields();
       }
@@ -31,6 +37,12 @@ class AccountEditServiceForm extends EditComponent {
         <Select.Option key={service.id} value={this.getLink(service)}>{service.name}</Select.Option>
       ));
     }
+    let tariffList = null;
+    if (this.props.tariffs && this.props.tariffs.content) {
+      tariffList = this.props.tariffs.content.map(tariff => (
+        <Select.Option key={tariff.id} value={this.getLink(tariff)}>{tariff.name}</Select.Option>
+      ));
+    }
     return (
       <Modal
         visible={this.props.formServiceEditVisible}
@@ -44,7 +56,7 @@ class AccountEditServiceForm extends EditComponent {
         <Form vertical>
           {baseFields}
           <FormItem label={this.props.intl.messages.serviceFieldName}>
-            {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList)}
+            {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList, this.onServiceChange)}
           </FormItem>
           <Row gutter={16}>
             <Col className="gutter-row" span={12}>
@@ -58,6 +70,9 @@ class AccountEditServiceForm extends EditComponent {
               </FormItem>
             </Col>
           </Row>
+          <FormItem label={this.props.intl.messages.tariffFieldName}>
+            {this.getSelectWithSearchField('tariff', this.getLink(object.tariff), tariffList)}
+          </FormItem>
         </Form>
       </Modal>
     );

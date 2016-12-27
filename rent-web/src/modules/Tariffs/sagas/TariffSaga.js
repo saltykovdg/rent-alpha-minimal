@@ -130,8 +130,17 @@ export function* watchNewTariff() {
   yield takeLatest(TariffAction.NEW_TARIFF, newTariff);
 }
 
+// find
 export function* findTariffsByName(action) {
   const response = yield call(TariffApi.findTariffsByName, action.name);
+  if (response && !response.error && !response.canceled) {
+    yield put(TariffAction.getTariffsSuccess(response));
+  } else if (!response.canceled) {
+    yield put(TariffAction.getTariffsFailed());
+  }
+}
+export function* findTariffsByServiceId(action) {
+  const response = yield call(TariffApi.findTariffsByServiceId, action.serviceId);
   if (response && !response.error && !response.canceled) {
     yield put(TariffAction.getTariffsSuccess(response));
   } else if (!response.canceled) {
@@ -142,6 +151,9 @@ export function* findTariffsByName(action) {
 export function* watchFindTariffsByName() {
   yield takeLatest(TariffAction.FIND_TARIFFS_BY_NAME, findTariffsByName);
 }
+export function* watchFindTariffsByServiceId() {
+  yield takeLatest(TariffAction.FIND_TARIFFS_BY_SERVICE_ID, findTariffsByServiceId);
+}
 
 export const rootTariffSaga = [
   fork(watchGetTariffs),
@@ -150,4 +162,5 @@ export const rootTariffSaga = [
   fork(watchDeleteTariff),
   fork(watchNewTariff),
   fork(watchFindTariffsByName),
+  fork(watchFindTariffsByServiceId),
 ];

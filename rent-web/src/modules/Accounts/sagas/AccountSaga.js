@@ -87,6 +87,7 @@ export function* saveAccount(action) {
     for (let i = 0; i < services.length; i += 1) {
       const newItem = JSON.parse(JSON.stringify(services[i]));
       newItem.service = ObjectUtil.getLink(services[i].service);
+      newItem.tariff = ObjectUtil.getLink(services[i].tariff);
       yield put(AccountServiceAction.saveAccountService(newItem));
       sagaAction = yield take([AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS, AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED]);
       if (sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS) {

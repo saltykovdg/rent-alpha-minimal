@@ -34,6 +34,7 @@ export const tariffReducer = (state, action) => {
       return prepareEdit(state.tariff.edit.data, true, false, false, false);
     }
     case TariffAction.FIND_TARIFFS_BY_NAME:
+    case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
     case TariffAction.GET_TARIFFS:
     case TariffAction.DELETE_TARIFF: {
       return prepareList(state.tariff.list.data, emptyEditData, true, false, false, false);

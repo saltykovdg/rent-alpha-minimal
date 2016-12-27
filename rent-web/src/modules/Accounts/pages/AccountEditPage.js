@@ -12,6 +12,7 @@ import AccountEditServiceForm from './../components/AccountEditServiceForm';
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
 import * as AddressAction from './../../Address/AddressActions';
+import * as TariffAction from './../../Tariffs/actions/TariffAction';
 
 // Import Selectors
 import {
@@ -52,6 +53,12 @@ import {
   getServiceIsRequestError,
 } from './../../Services/reducers/ServiceReducer';
 
+import {
+  getTariffListData,
+  getTariffIsLoading,
+  getTariffIsRequestError,
+} from './../..//Tariffs/reducers/TariffReducer';
+
 class AccountEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -86,11 +93,19 @@ class AccountEditPage extends ExtendedComponentPage {
   onBuildingChange = (buildingId) => {
     this.props.dispatch(AddressAction.findApartmentsByBuildingId(buildingId));
   };
+  onServiceChange = (serviceId = '') => {
+    this.props.dispatch(TariffAction.findTariffsByServiceId(serviceId));
+  };
   showFormParameterEdit = (parameter = getDefaultParameter()) => {
     this.initFormParameter(true, parameter);
   };
-  showFormServiceEdit = (service = getDefaultService()) => {
-    this.initFormService(true, service);
+  showFormServiceEdit = (accountService = getDefaultService()) => {
+    this.initFormService(true, accountService);
+    if (accountService && accountService.service) {
+      this.onServiceChange(accountService.service.id);
+    } else {
+      this.onServiceChange();
+    }
   };
   onOkFormParameterEdit = (parameter = getDefaultParameter()) => {
     this.initFormParameter(false);
@@ -155,8 +170,10 @@ class AccountEditPage extends ExtendedComponentPage {
           onCancelFormParameterEdit={this.onCancelFormParameterEdit}
         />
         <AccountEditServiceForm
+          tariffs={this.props.tariffs}
           services={this.props.services}
           service={this.state.service}
+          onServiceChange={this.onServiceChange}
           formServiceEditVisible={this.state.formServiceEditVisible}
           onOkFormServiceEdit={this.onOkFormServiceEdit}
           onCancelFormServiceEdit={this.onCancelFormServiceEdit}
@@ -176,12 +193,13 @@ function mapStateToProps(state, props) {
     apartments: getApartmentListData(state),
     parameterTypes: getParameterTypeListData(state),
     services: getServiceListData(state),
+    tariffs: getTariffListData(state),
     isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
                getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
-               getServiceIsLoading(state),
+               getServiceIsLoading(state) || getTariffIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
                     getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
-                    getServiceIsRequestError(state),
+                    getServiceIsRequestError(state) || getTariffIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

@@ -18,6 +18,7 @@ public class AccountServiceEntity extends AbstractEntity {
 
     public interface Columns extends AbstractEntity.Columns {
         String SERVICE = "service_id";
+        String TARIFF = "tariff_id";
         String DATE_START = "date_start";
         String DATE_END = "date_end";
     }
@@ -41,6 +42,13 @@ public class AccountServiceEntity extends AbstractEntity {
     @Column(name = Columns.DATE_END)
     private Date dateEnd;
 
+    /**
+     * тариф
+     */
+    @JoinColumn(name = Columns.TARIFF)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TariffEntity tariff;
+
     public ServiceEntity getService() {
         return service;
     }
@@ -63,5 +71,13 @@ public class AccountServiceEntity extends AbstractEntity {
 
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
+    }
+
+    public TariffEntity getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(TariffEntity tariff) {
+        this.tariff = tariff;
     }
 }

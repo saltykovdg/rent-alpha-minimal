@@ -148,6 +148,11 @@ class AccountEdit extends EditComponent {
     },
       this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+    {
+      title: this.props.intl.messages.tariffFieldName,
+      dataIndex: 'tariff.name',
+      key: 'tariff.name',
+    },
       this.getServiceActionColumn(),
     ];
     return (
