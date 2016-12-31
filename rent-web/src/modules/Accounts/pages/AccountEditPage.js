@@ -18,8 +18,8 @@ import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import {
   getAccountEditData,
   getAccountIsSaved,
-  getDefaultParameter,
-  getDefaultService,
+  emptyParameter,
+  emptyService,
 } from './../reducers/AccountReducer';
 
 import {
@@ -73,18 +73,18 @@ class AccountEditPage extends ExtendedComponentPage {
     this.initFormParameter(false);
     this.initFormService(false);
   }
-  initFormParameter = (visible, parameter = getDefaultParameter()) => {
+  initFormParameter = (visible, parameter = emptyParameter) => {
     this.setState({
-      formParameterEditVisible: visible, parameter,
+      formParameterEditVisible: visible, parameter: ObjectUtil.cloneObject(parameter),
     });
   }
-  initFormService = (visible, service = getDefaultService()) => {
+  initFormService = (visible, service = emptyService) => {
     this.setState({
       formServiceEditVisible: visible, service: ObjectUtil.cloneObject(service),
     });
   }
   onSave = (object) => {
-    const newObject = object;
+    const newObject = ObjectUtil.cloneObject(object);
     newObject.parameters = this.props.data.parameters;
     newObject.services = this.props.data.services;
     this.props.dispatch(AccountAction.saveAccount(newObject));
@@ -98,23 +98,23 @@ class AccountEditPage extends ExtendedComponentPage {
   onServiceChange = (serviceId = '') => {
     this.props.dispatch(TariffAction.findTariffsByServiceId(serviceId));
   };
-  showFormParameterEdit = (parameter = getDefaultParameter()) => {
-    this.initFormParameter(true, parameter);
+  showFormParameterEdit = (parameter = emptyParameter) => {
+    this.initFormParameter(true, ObjectUtil.cloneObject(parameter));
   };
-  showFormServiceEdit = (accountService = getDefaultService()) => {
-    this.initFormService(true, accountService);
+  showFormServiceEdit = (accountService = emptyService) => {
+    this.initFormService(true, ObjectUtil.cloneObject(accountService));
     if (accountService && accountService.service) {
       this.onServiceChange(accountService.service.id);
     } else {
       this.onServiceChange();
     }
   };
-  onOkFormParameterEdit = (parameter = getDefaultParameter()) => {
+  onOkFormParameterEdit = (parameter = emptyParameter) => {
     this.initFormParameter(false);
     if (parameter.id) {
-      this.props.dispatch(AccountAction.editParameterInAccount(parameter));
+      this.props.dispatch(AccountAction.editParameterInAccount(ObjectUtil.cloneObject(parameter)));
     } else {
-      const newParam = parameter;
+      const newParam = ObjectUtil.cloneObject(parameter);
       newParam.id = moment().unix();
       this.props.dispatch(AccountAction.addNewParameterToAccount(newParam));
     }
@@ -123,15 +123,15 @@ class AccountEditPage extends ExtendedComponentPage {
     this.initFormParameter(false);
   }
   onDeleteParameter = (parameter) => {
-    this.props.dispatch(AccountAction.removeParameterFromAccount(parameter));
+    this.props.dispatch(AccountAction.removeParameterFromAccount(ObjectUtil.cloneObject(parameter)));
     this.forceUpdate();
   }
-  onOkFormServiceEdit = (service = getDefaultService()) => {
+  onOkFormServiceEdit = (service = emptyService) => {
     this.initFormService(false);
     if (service.id) {
-      this.props.dispatch(AccountAction.editServiceInAccount(service));
+      this.props.dispatch(AccountAction.editServiceInAccount(ObjectUtil.cloneObject(service)));
     } else {
-      const newService = service;
+      const newService = ObjectUtil.cloneObject(service);
       newService.id = moment().unix();
       this.props.dispatch(AccountAction.addNewServiceToAccount(newService));
     }
@@ -140,7 +140,7 @@ class AccountEditPage extends ExtendedComponentPage {
     this.initFormService(false);
   }
   onDeleteService = (service) => {
-    this.props.dispatch(AccountAction.removeServiceFromAccount(service));
+    this.props.dispatch(AccountAction.removeServiceFromAccount(ObjectUtil.cloneObject(service)));
     this.forceUpdate();
   }
   render() {

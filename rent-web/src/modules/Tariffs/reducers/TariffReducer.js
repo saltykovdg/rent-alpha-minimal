@@ -4,21 +4,19 @@ import * as TariffAction from './../actions/TariffAction';
 import * as TariffValueAction from './../actions/TariffValueAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
-export const getDefaultTariffValue = () => {
-  return {
+export const emptyTariffValue = {
+  id: '',
+  calculationType: {
     id: '',
-    calculationType: {
-      id: '',
-      name: '',
-    },
-    measurementUnit: {
-      id: '',
-      name: '',
-    },
-    value: 0,
-    dateStart: moment(),
-    dateEnd: null,
-  };
+    name: '',
+  },
+  measurementUnit: {
+    id: '',
+    name: '',
+  },
+  value: 0,
+  dateStart: moment(),
+  dateEnd: null,
 };
 
 const emptyEditData = {

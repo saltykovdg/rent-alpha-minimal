@@ -56,7 +56,7 @@ export function* saveTariff(action) {
   const values = action.object.values;
   const valuesLinks = [];
   for (let i = 0; i < values.length; i += 1) {
-    const newItem = JSON.parse(JSON.stringify(values[i]));
+    const newItem = ObjectUtil.cloneObject(values[i]);
     newItem.calculationType = ObjectUtil.getLink(values[i].calculationType);
     newItem.measurementUnit = ObjectUtil.getLink(values[i].measurementUnit);
     yield put(TariffValueAction.saveTariffValue(newItem));
@@ -68,7 +68,7 @@ export function* saveTariff(action) {
     }
   }
   if (sagaAction == null || (sagaAction && sagaAction.type === TariffValueAction.SAVE_TARIFF_VALUE_SUCCESS)) {
-    const objectTariff = JSON.parse(JSON.stringify(action.object));
+    const objectTariff = ObjectUtil.cloneObject(action.object);
     objectTariff.values = valuesLinks;
     const response = yield call(TariffApi.saveTariff, objectTariff);
     if (response && !response.error && !response.canceled) {

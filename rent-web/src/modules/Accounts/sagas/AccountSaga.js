@@ -73,7 +73,7 @@ export function* saveAccount(action) {
   const services = action.object.services;
   const servicesLinks = [];
   for (let i = 0; i < parameters.length; i += 1) {
-    const newItem = JSON.parse(JSON.stringify(parameters[i]));
+    const newItem = ObjectUtil.cloneObject(parameters[i]);
     newItem.parameterType = ObjectUtil.getLink(parameters[i].parameterType);
     yield put(AccountParameterAction.saveAccountParameter(newItem));
     sagaAction = yield take([AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS, AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED]);
@@ -85,7 +85,7 @@ export function* saveAccount(action) {
   }
   if (sagaAction == null || (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS)) {
     for (let i = 0; i < services.length; i += 1) {
-      const newItem = JSON.parse(JSON.stringify(services[i]));
+      const newItem = ObjectUtil.cloneObject(services[i]);
       newItem.service = ObjectUtil.getLink(services[i].service);
       newItem.tariff = ObjectUtil.getLink(services[i].tariff);
       yield put(AccountServiceAction.saveAccountService(newItem));
@@ -98,7 +98,7 @@ export function* saveAccount(action) {
     }
   }
   if (sagaAction == null || (sagaAction && sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS)) {
-    const objectAccount = JSON.parse(JSON.stringify(action.object));
+    const objectAccount = ObjectUtil.cloneObject(action.object);
     objectAccount.parameters = parametersLinks;
     objectAccount.services = servicesLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);

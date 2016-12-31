@@ -7,7 +7,8 @@ import {
 } from 'antd';
 import moment from 'moment';
 
-import { getDefaultParameter, getDefaultService } from './../reducers/AccountReducer';
+import * as ObjectUtil from './../../../util/ObjectUtil';
+import { emptyParameter, emptyService } from './../reducers/AccountReducer';
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
 
@@ -79,11 +80,11 @@ class AccountEdit extends EditComponent {
       },
     };
   };
-  onEditParameter = (parameter = getDefaultParameter()) => {
-    this.props.showFormParameterEdit(parameter);
+  onEditParameter = (parameter = emptyParameter) => {
+    this.props.showFormParameterEdit(ObjectUtil.cloneObject(parameter));
   }
-  onEditService = (service = getDefaultService()) => {
-    this.props.showFormServiceEdit(service);
+  onEditService = (service = emptyService) => {
+    this.props.showFormServiceEdit(ObjectUtil.cloneObject(service));
   }
   render() {
     const object = this.props.data;

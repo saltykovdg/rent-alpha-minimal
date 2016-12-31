@@ -7,29 +7,25 @@ import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as AddressActions from './../../Address/AddressActions';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
-export const getDefaultParameter = () => {
-  return {
+export const emptyParameter = {
+  id: '',
+  parameterType: {
     id: '',
-    parameterType: {
-      id: '',
-      name: '',
-    },
-    value: 0,
-    dateStart: moment(),
-    dateEnd: null,
-  };
+    name: '',
+  },
+  value: 0,
+  dateStart: moment(),
+  dateEnd: null,
 };
 
-export const getDefaultService = () => {
-  return {
+export const emptyService = {
+  id: '',
+  service: {
     id: '',
-    service: {
-      id: '',
-      name: '',
-    },
-    dateStart: moment(),
-    dateEnd: null,
-  };
+    name: '',
+  },
+  dateStart: moment(),
+  dateEnd: null,
 };
 
 const emptyEditData = {

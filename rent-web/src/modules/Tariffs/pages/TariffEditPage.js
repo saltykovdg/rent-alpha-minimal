@@ -18,7 +18,7 @@ import {
   getTariffIsLoading,
   getTariffIsRequestError,
   getTariffIsSaved,
-  getDefaultTariffValue,
+  emptyTariffValue,
 } from './../reducers/TariffReducer';
 
 import {
@@ -39,6 +39,8 @@ import {
   getMeasurementUnitIsRequestError,
 } from './../../Constants/reducers/MeasurementUnitReducer';
 
+import * as ObjectUtil from './../../../util/ObjectUtil';
+
 class TariffEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -50,9 +52,9 @@ class TariffEditPage extends ExtendedComponentPage {
     }
     this.initFormTariffValue(false);
   }
-  initFormTariffValue = (visible, tariffValue = getDefaultTariffValue()) => {
+  initFormTariffValue = (visible, tariffValue = emptyTariffValue) => {
     this.setState({
-      formTariffValueEditVisible: visible, tariffValue,
+      formTariffValueEditVisible: visible, tariffValue: ObjectUtil.cloneObject(tariffValue),
     });
   }
   onSave = (object) => {
@@ -60,15 +62,15 @@ class TariffEditPage extends ExtendedComponentPage {
     newObject.values = this.props.data.values;
     this.props.dispatch(TariffAction.saveTariff(newObject));
   };
-  showFormTariffValueEdit = (tariffValue = getDefaultTariffValue()) => {
-    this.initFormTariffValue(true, tariffValue);
+  showFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
+    this.initFormTariffValue(true, ObjectUtil.cloneObject(tariffValue));
   };
-  onOkFormTariffValueEdit = (tariffValue = getDefaultTariffValue()) => {
+  onOkFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
     this.initFormTariffValue(false);
     if (tariffValue.id) {
-      this.props.dispatch(TariffAction.editValueInTariff(tariffValue));
+      this.props.dispatch(TariffAction.editValueInTariff(ObjectUtil.cloneObject(tariffValue)));
     } else {
-      const newTariffValue = tariffValue;
+      const newTariffValue = ObjectUtil.cloneObject(tariffValue);
       newTariffValue.id = moment().unix();
       this.props.dispatch(TariffAction.addNewValueToTariff(newTariffValue));
     }
@@ -77,7 +79,7 @@ class TariffEditPage extends ExtendedComponentPage {
     this.initFormTariffValue(false);
   }
   onDeleteTariffValue = (tariffValue) => {
-    this.props.dispatch(TariffAction.removeValueFromTariff(tariffValue));
+    this.props.dispatch(TariffAction.removeValueFromTariff(ObjectUtil.cloneObject(tariffValue)));
     this.forceUpdate();
   }
   render() {

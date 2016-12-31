@@ -4,7 +4,8 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Breadcrumb, Icon, Button, Form, Spin, Select, Table, Popconfirm } from 'antd';
 import moment from 'moment';
 
-import { getDefaultTariffValue } from './../reducers/TariffReducer';
+import * as ObjectUtil from './../../../util/ObjectUtil';
+import { emptyTariffValue } from './../reducers/TariffReducer';
 import * as TariffPath from './../paths/TariffPath';
 import { EditComponent } from './../../../components/EditComponent';
 
@@ -41,11 +42,11 @@ class TariffEdit extends EditComponent {
       },
     };
   };
-  onEditTariffValue = (tariffValue = getDefaultTariffValue()) => {
-    this.props.showFormTariffValueEdit(tariffValue);
+  onEditTariffValue = (tariffValue = emptyTariffValue) => {
+    this.props.showFormTariffValueEdit(ObjectUtil.cloneObject(tariffValue));
   }
   onDeleteTariffValue = (record) => {
-    this.props.onDeleteTariffValue(record);
+    this.props.onDeleteTariffValue(ObjectUtil.cloneObject(record));
   };
   render() {
     const object = this.props.data;
