@@ -63,7 +63,7 @@ class TariffEditPage extends ExtendedComponentPage {
     this.props.dispatch(TariffAction.saveTariff(newObject));
   };
   showFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
-    this.initFormTariffValue(true, ObjectUtil.cloneObject(tariffValue));
+    this.initFormTariffValue(true, tariffValue);
   };
   onOkFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
     this.initFormTariffValue(false);
