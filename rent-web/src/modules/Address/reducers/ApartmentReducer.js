@@ -64,6 +64,12 @@ const apartmentReducer = (state, action) => {
       return prepareEdit(emptyEditData, false, false, false, false);
     }
 
+    case AddressAction.FIND_BUILDINGS_BY_STREET_ID:
+    case AddressAction.GET_BUILDINGS_SUCCESS:
+    case AddressAction.GET_BUILDINGS_FAILED: {
+      return state.apartment;
+    }
+
     default:
       return prepareDefault(state.apartment.list, emptyEditData);
   }

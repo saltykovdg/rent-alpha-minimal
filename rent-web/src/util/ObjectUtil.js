@@ -5,3 +5,7 @@ export function getLink(object) {
   }
   return link;
 }
+
+export function cloneObject(object) {
+  return JSON.parse(JSON.stringify(object));
+}

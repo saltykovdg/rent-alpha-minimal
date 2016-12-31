@@ -1,5 +1,6 @@
+import * as ObjectUtil from './ObjectUtil';
+
 export const prepareEdit = (newData, isLoading, isRequestError, isSaved, isDeleted) => {
-  const newObjectData = JSON.parse(JSON.stringify(newData));
   return {
     list: {
       data: null,
@@ -7,7 +8,7 @@ export const prepareEdit = (newData, isLoading, isRequestError, isSaved, isDelet
       isRequestError: false,
     },
     edit: {
-      data: newObjectData,
+      data: ObjectUtil.cloneObject(newData),
       isLoading,
       isRequestError,
     },
@@ -17,16 +18,14 @@ export const prepareEdit = (newData, isLoading, isRequestError, isSaved, isDelet
 };
 
 export const prepareList = (newListData, newEditData, isLoading, isRequestError, isSaved, isDeleted) => {
-  const newObjectListData = JSON.parse(JSON.stringify(newListData));
-  const newObjectData = JSON.parse(JSON.stringify(newEditData));
   return {
     list: {
-      data: newObjectListData,
+      data: ObjectUtil.cloneObject(newListData),
       isLoading,
       isRequestError,
     },
     edit: {
-      data: newObjectData,
+      data: ObjectUtil.cloneObject(newEditData),
       isLoading: false,
       isRequestError: false,
     },
@@ -36,11 +35,10 @@ export const prepareList = (newListData, newEditData, isLoading, isRequestError,
 };
 
 export const prepareDefault = (list, newEditData) => {
-  const newObjectData = JSON.parse(JSON.stringify(newEditData));
   return {
     list,
     edit: {
-      data: newObjectData,
+      data: ObjectUtil.cloneObject(newEditData),
       isLoading: false,
       isRequestError: false,
     },

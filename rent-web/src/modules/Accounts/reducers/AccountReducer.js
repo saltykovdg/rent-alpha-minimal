@@ -4,6 +4,7 @@ import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
+import * as AddressActions from './../../Address/AddressActions';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const getDefaultParameter = () => {
@@ -134,6 +135,12 @@ export const accountReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case AddressActions.FIND_APARTMENTS_BY_BUILDING_ID:
+    case AddressActions.GET_APARTMENTS_SUCCESS:
+    case AddressActions.GET_APARTMENTS_FAILED:
+    case AddressActions.FIND_BUILDINGS_BY_STREET_ID:
+    case AddressActions.GET_BUILDINGS_SUCCESS:
+    case AddressActions.GET_BUILDINGS_FAILED:
     case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
     case TariffAction.GET_TARIFFS_SUCCESS:
     case TariffAction.GET_TARIFFS_FAILED:

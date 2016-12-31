@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Form, Modal, Select, Row, Col } from 'antd';
+import { Form, Modal, Select, Row, Col, Spin } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 
@@ -8,8 +8,10 @@ const FormItem = Form.Item;
 
 class AccountEditServiceForm extends EditComponent {
   onServiceChange = (value) => {
-    this.props.form.setFieldsValue({ tariff: '' });
     const object = this.props.services.content.filter(service => this.getLink(service) === value)[0];
+    this.props.tariffs.content = null;
+    this.props.service.tariff = null;
+    this.props.form.resetFields(['tariff']);
     this.props.onServiceChange(object.id);
   }
   onOkFormServiceEdit = () => {
@@ -38,10 +40,13 @@ class AccountEditServiceForm extends EditComponent {
       ));
     }
     let tariffList = null;
-    if (this.props.tariffs && this.props.tariffs.content) {
+    if (this.props.tariffs && this.props.tariffs.content && this.props.tariffs.content.length > 0) {
       tariffList = this.props.tariffs.content.map(tariff => (
         <Select.Option key={tariff.id} value={this.getLink(tariff)}>{tariff.name}</Select.Option>
       ));
+      if (!this.props.form.getFieldValue('tariff')) {
+        object.tariff = this.props.tariffs.content[0];
+      }
     }
     return (
       <Modal
@@ -53,27 +58,29 @@ class AccountEditServiceForm extends EditComponent {
         closable={false}
         maskClosable={false}
       >
-        <Form vertical>
-          {baseFields}
-          <FormItem label={this.props.intl.messages.serviceFieldName}>
-            {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList, this.onServiceChange)}
-          </FormItem>
-          <Row gutter={16}>
-            <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.commonFieldDateStart}>
-                {this.getDateField('dateStart', object.dateStart)}
-              </FormItem>
-            </Col>
-            <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
-                {this.getDateField('dateEnd', object.dateEnd, false)}
-              </FormItem>
-            </Col>
-          </Row>
-          <FormItem label={this.props.intl.messages.tariffFieldName}>
-            {this.getSelectWithSearchField('tariff', this.getLink(object.tariff), tariffList)}
-          </FormItem>
-        </Form>
+        <Spin spinning={this.props.isLoading}>
+          <Form vertical>
+            {baseFields}
+            <FormItem label={this.props.intl.messages.serviceFieldName}>
+              {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList, this.onServiceChange)}
+            </FormItem>
+            <Row gutter={16}>
+              <Col className="gutter-row" span={12}>
+                <FormItem label={this.props.intl.messages.commonFieldDateStart}>
+                  {this.getDateField('dateStart', object.dateStart)}
+                </FormItem>
+              </Col>
+              <Col className="gutter-row" span={12}>
+                <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
+                  {this.getDateField('dateEnd', object.dateEnd, false)}
+                </FormItem>
+              </Col>
+            </Row>
+            <FormItem label={this.props.intl.messages.tariffFieldName}>
+              {this.getSelectWithSearchField('tariff', this.getLink(object.tariff), tariffList)}
+            </FormItem>
+          </Form>
+        </Spin>
       </Modal>
     );
   }

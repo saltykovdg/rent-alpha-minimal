@@ -59,6 +59,8 @@ import {
   getTariffIsRequestError,
 } from './../..//Tariffs/reducers/TariffReducer';
 
+import * as ObjectUtil from './../../../util/ObjectUtil';
+
 class AccountEditPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -78,7 +80,7 @@ class AccountEditPage extends ExtendedComponentPage {
   }
   initFormService = (visible, service = getDefaultService()) => {
     this.setState({
-      formServiceEditVisible: visible, service,
+      formServiceEditVisible: visible, service: ObjectUtil.cloneObject(service),
     });
   }
   onSave = (object) => {
@@ -170,6 +172,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onCancelFormParameterEdit={this.onCancelFormParameterEdit}
         />
         <AccountEditServiceForm
+          isLoading={this.props.isLoadingTariff}
           tariffs={this.props.tariffs}
           services={this.props.services}
           service={this.state.service}
@@ -196,7 +199,8 @@ function mapStateToProps(state, props) {
     tariffs: getTariffListData(state),
     isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
                getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
-               getServiceIsLoading(state) || getTariffIsLoading(state),
+               getServiceIsLoading(state),
+    isLoadingTariff: getTariffIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
                     getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
                     getServiceIsRequestError(state) || getTariffIsRequestError(state),
