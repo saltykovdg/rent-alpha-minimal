@@ -21,13 +21,17 @@ class AccountEditServiceForm extends EditComponent {
         newValues.service = this.props.services.content.filter(service => this.getLink(service) === values.service)[0];
         newValues.tariff = this.props.tariffs.content.filter(tariff => this.getLink(tariff) === values.tariff)[0];
         this.props.onOkFormServiceEdit(newValues);
+        this.props.tariffs.content = null;
+        this.props.service.tariff = null;
         this.props.form.resetFields();
       }
     });
   };
   onCancelFormServiceEdit = () => {
-    this.props.form.resetFields();
     this.props.onCancelFormServiceEdit();
+    this.props.tariffs.content = null;
+    this.props.service.tariff = null;
+    this.props.form.resetFields();
   };
   render() {
     const object = this.props.service;

@@ -99,10 +99,10 @@ class AccountEditPage extends ExtendedComponentPage {
     this.props.dispatch(TariffAction.findTariffsByServiceId(serviceId));
   };
   showFormParameterEdit = (parameter = emptyParameter) => {
-    this.initFormParameter(true, ObjectUtil.cloneObject(parameter));
+    this.initFormParameter(true, parameter);
   };
   showFormServiceEdit = (accountService = emptyService) => {
-    this.initFormService(true, ObjectUtil.cloneObject(accountService));
+    this.initFormService(true, accountService);
     if (accountService && accountService.service) {
       this.onServiceChange(accountService.service.id);
     } else {
