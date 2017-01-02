@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
-import { Input, InputNumber, Select, DatePicker } from 'antd';
+import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router';
+import { Input, InputNumber, Select, DatePicker, Popconfirm } from 'antd';
 import moment from 'moment';
 import { ExtendedComponent } from './ExtendedComponent';
 import * as ObjectUtil from './../util/ObjectUtil';
@@ -83,6 +85,24 @@ class EditComponent extends ExtendedComponent {
         this.props.onSave(values);
       }
     });
+  };
+  getActionColumn = (onEdit, onDelete) => {
+    const messages = this.props.intl.messages;
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      render(text, record) {
+        return (
+          <span>
+            <Link onClick={() => onEdit(record)}><FormattedMessage id="buttonEdit" /></Link>
+            <span className="ant-divider" />
+            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+              <Link><FormattedMessage id="buttonDelete" /></Link>
+            </Popconfirm>
+          </span>
+        );
+      },
+    };
   };
 }
 

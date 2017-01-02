@@ -1,8 +1,11 @@
 import { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import { notification } from 'antd';
+import moment from 'moment';
 
 import * as HttpStatus from './../util/HttpStatus';
+
+const dateFormat = 'YYYY-MM-DD';
 
 class ExtendedComponent extends Component {
   componentDidUpdate() {
@@ -29,6 +32,18 @@ class ExtendedComponent extends Component {
         description: this.props.intl.messages.deleteRecordSuccessDescription,
       });
     }
+  }
+  getColumn = (title, name) => {
+    return { title, dataIndex: name, key: name };
+  };
+  getDateColumn = (title, name) => {
+    return {
+      title,
+      key: name,
+      render(text, record) {
+        return record[name] ? moment(record[name]).format(dateFormat) : '';
+      },
+    };
   }
   forwardTo = (url) => {
     browserHistory.push(url);

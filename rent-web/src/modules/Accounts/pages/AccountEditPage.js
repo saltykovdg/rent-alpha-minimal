@@ -101,14 +101,6 @@ class AccountEditPage extends ExtendedComponentPage {
   showFormParameterEdit = (parameter = emptyParameter) => {
     this.initFormParameter(true, parameter);
   };
-  showFormServiceEdit = (accountService = emptyService) => {
-    this.initFormService(true, accountService);
-    if (accountService && accountService.service) {
-      this.onServiceChange(accountService.service.id);
-    } else {
-      this.onServiceChange();
-    }
-  };
   onOkFormParameterEdit = (parameter = emptyParameter) => {
     this.initFormParameter(false);
     if (parameter.id) {
@@ -126,6 +118,14 @@ class AccountEditPage extends ExtendedComponentPage {
     this.props.dispatch(AccountAction.removeParameterFromAccount(ObjectUtil.cloneObject(parameter)));
     this.forceUpdate();
   }
+  showFormServiceEdit = (accountService = emptyService) => {
+    this.initFormService(true, accountService);
+    if (accountService && accountService.service) {
+      this.onServiceChange(accountService.service.id);
+    } else {
+      this.onServiceChange();
+    }
+  };
   onOkFormServiceEdit = (service = emptyService) => {
     this.initFormService(false);
     if (service.id) {

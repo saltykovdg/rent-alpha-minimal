@@ -3,17 +3,14 @@ import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import {
   Breadcrumb, Icon, Button, Form, Spin,
-  Select, Row, Col, Table, Popconfirm,
+  Select, Row, Col, Table,
 } from 'antd';
 import moment from 'moment';
 
-import * as ObjectUtil from './../../../util/ObjectUtil';
-import { emptyParameter, emptyService } from './../reducers/AccountReducer';
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
-const dateFormat = 'YYYY-MM-DD';
 
 class AccountEdit extends EditComponent {
   onStreetChange = (value) => {
@@ -24,67 +21,6 @@ class AccountEdit extends EditComponent {
   onBuildingChange = (value) => {
     this.props.form.setFieldsValue({ apartment: '' });
     this.props.onBuildingChange(value);
-  }
-  onDeleteParameter = (record) => {
-    this.props.onDeleteParameter(record);
-  };
-  onDeleteService = (record) => {
-    this.props.onDeleteService(record);
-  };
-  getDateColumn = (title, name) => {
-    return {
-      title,
-      key: name,
-      render(text, record) {
-        return record[name] ? moment(record[name]).format(dateFormat) : '';
-      },
-    };
-  }
-  getParameterActionColumn = () => {
-    const messages = this.props.intl.messages;
-    const onEditParameter = this.onEditParameter;
-    const onDeleteParameter = this.onDeleteParameter;
-    return {
-      title: this.props.intl.messages.tableColumnActions,
-      key: 'action',
-      render(text, record) {
-        return (
-          <span>
-            <Link onClick={() => onEditParameter(record)}><FormattedMessage id="buttonEdit" /></Link>
-            <span className="ant-divider" />
-            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDeleteParameter(record)} >
-              <Link><FormattedMessage id="buttonDelete" /></Link>
-            </Popconfirm>
-          </span>
-        );
-      },
-    };
-  };
-  getServiceActionColumn = () => {
-    const messages = this.props.intl.messages;
-    const onEditService = this.onEditService;
-    const onDeleteService = this.onDeleteService;
-    return {
-      title: this.props.intl.messages.tableColumnActions,
-      key: 'action',
-      render(text, record) {
-        return (
-          <span>
-            <Link onClick={() => onEditService(record)}><FormattedMessage id="buttonEdit" /></Link>
-            <span className="ant-divider" />
-            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDeleteService(record)} >
-              <Link><FormattedMessage id="buttonDelete" /></Link>
-            </Popconfirm>
-          </span>
-        );
-      },
-    };
-  };
-  onEditParameter = (parameter = emptyParameter) => {
-    this.props.showFormParameterEdit(ObjectUtil.cloneObject(parameter));
-  }
-  onEditService = (service = emptyService) => {
-    this.props.showFormServiceEdit(ObjectUtil.cloneObject(service));
   }
   render() {
     const object = this.props.data;
@@ -123,18 +59,12 @@ class AccountEdit extends EditComponent {
         return moment(b.dateStart).unix() - moment(a.dateStart).unix();
       });
     }
-    const parametersColumns = [{
-      title: this.props.intl.messages.parameterTypeFieldName,
-      dataIndex: 'parameterType.name',
-      key: 'parameterType.name',
-    }, {
-      title: this.props.intl.messages.commonFieldValue,
-      dataIndex: 'value',
-      key: 'value',
-    },
+    const parametersColumns = [
+      this.getColumn(this.props.intl.messages.parameterTypeFieldName, 'parameterType.name'),
+      this.getColumn(this.props.intl.messages.commonFieldValue, 'value'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
-      this.getParameterActionColumn(),
+      this.getActionColumn(this.props.showFormParameterEdit, this.props.onDeleteParameter),
     ];
     let servicesDataSource = [];
     if (object && object.services && object.services.length > 0) {
@@ -142,19 +72,12 @@ class AccountEdit extends EditComponent {
         return moment(b.dateStart).unix() - moment(a.dateStart).unix();
       });
     }
-    const servicesColumns = [{
-      title: this.props.intl.messages.serviceFieldName,
-      dataIndex: 'service.name',
-      key: 'service.name',
-    },
+    const servicesColumns = [
+      this.getColumn(this.props.intl.messages.serviceFieldName, 'service.name'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
-    {
-      title: this.props.intl.messages.tariffFieldName,
-      dataIndex: 'tariff.name',
-      key: 'tariff.name',
-    },
-      this.getServiceActionColumn(),
+      this.getColumn(this.props.intl.messages.tariffFieldName, 'tariff.name'),
+      this.getActionColumn(this.props.showFormServiceEdit, this.props.onDeleteService),
     ];
     return (
       <div>
@@ -209,7 +132,7 @@ class AccountEdit extends EditComponent {
               </Col>
             </Row>
             <h2>{this.props.intl.messages.parameterTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.onEditParameter()}>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormParameterEdit()}>
               <FormattedMessage id="buttonAddNewParameter" />
             </Button>
             <Table
@@ -220,7 +143,7 @@ class AccountEdit extends EditComponent {
             />
             <br />
             <h2>{this.props.intl.messages.servicesTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.onEditService()}>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormServiceEdit()}>
               <FormattedMessage id="buttonAddNewService" />
             </Button>
             <Table
