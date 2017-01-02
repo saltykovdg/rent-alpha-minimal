@@ -47,6 +47,7 @@ const emptyEditData = {
   },
   parameters: [],
   services: [],
+  owners: [],
 };
 
 export const accountReducer = (state, action) => {

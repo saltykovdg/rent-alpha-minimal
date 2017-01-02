@@ -87,6 +87,7 @@ class AccountEditPage extends ExtendedComponentPage {
     const newObject = ObjectUtil.cloneObject(object);
     newObject.parameters = this.props.data.parameters;
     newObject.services = this.props.data.services;
+    newObject.owners = this.props.data.owners;
     this.props.dispatch(AccountAction.saveAccount(newObject));
   };
   onStreetChange = (streetId) => {
@@ -165,6 +166,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteService={this.onDeleteService}
         />
         <AccountEditParameterForm
+          id={this.state.parameter.id}
           parameterTypes={this.props.parameterTypes}
           parameter={this.state.parameter}
           formParameterEditVisible={this.state.formParameterEditVisible}

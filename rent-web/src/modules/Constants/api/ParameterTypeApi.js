@@ -17,5 +17,5 @@ export function deleteParameterType(object) {
 }
 
 export function findParameterTypesByName(name = '') {
-  return ApiCaller.callApi(`parameter-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`parameter-type/search/findByNameContainingOrderByCode?name=${name}`);
 }

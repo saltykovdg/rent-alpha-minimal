@@ -97,7 +97,12 @@ public class DatabasePopulationService {
         ParameterTypeEntity parameterType;
         parameterType = parameterTypeRepository.findByCode(ParameterType.TOTAL_AREA.getCode());
         if (parameterType == null) {
-            parameterType = createParameterType(CalculationType.TOTAL_AREA.getCode(), "Общая площадь");
+            parameterType = createParameterType(ParameterType.TOTAL_AREA.getCode(), "Общая площадь");
+            parameterTypeRepository.save(parameterType);
+        }
+        parameterType = parameterTypeRepository.findByCode(ParameterType.PHONE_NUMBER.getCode());
+        if (parameterType == null) {
+            parameterType = createParameterType(ParameterType.PHONE_NUMBER.getCode(), "Номер телефона");
             parameterTypeRepository.save(parameterType);
         }
     }

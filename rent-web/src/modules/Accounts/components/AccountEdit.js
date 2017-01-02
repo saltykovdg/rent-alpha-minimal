@@ -56,7 +56,7 @@ class AccountEdit extends EditComponent {
     let parametersDataSource = [];
     if (object && object.parameters && object.parameters.length > 0) {
       parametersDataSource = object.parameters.sort((a, b) => {
-        return moment(b.dateStart).unix() - moment(a.dateStart).unix();
+        return (moment(a.dateStart).unix() * parseInt(a.code, 1)) - (moment(b.dateStart).unix() * parseInt(b.code, 1)); // && parseInt(b.code, 1) - parseInt(a.code, 1);
       });
     }
     const parametersColumns = [

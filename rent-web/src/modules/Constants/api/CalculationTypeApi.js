@@ -17,5 +17,5 @@ export function deleteCalculationType(object) {
 }
 
 export function findCalculationTypesByName(name = '') {
-  return ApiCaller.callApi(`calculation-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`calculation-type/search/findByNameContainingOrderByCode?name=${name}`);
 }

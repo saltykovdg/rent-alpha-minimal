@@ -16,5 +16,5 @@ import java.util.List;
 public interface CalculationTypeRepository extends PagingAndSortingRepository<CalculationTypeEntity, String> {
     CalculationTypeEntity findByCode(@Param("code") String code);
 
-    List<CalculationTypeEntity> findByNameContainingOrderByName(@Param("name") String name);
+    List<CalculationTypeEntity> findByNameContainingOrderByCode(@Param("name") String name);
 }

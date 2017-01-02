@@ -16,5 +16,5 @@ import java.util.List;
 public interface ParameterTypeRepository extends PagingAndSortingRepository<ParameterTypeEntity, String> {
     ParameterTypeEntity findByCode(@Param("code") String code);
 
-    List<ParameterTypeEntity> findByNameContainingOrderByName(@Param("name") String name);
+    List<ParameterTypeEntity> findByNameContainingOrderByCode(@Param("name") String name);
 }

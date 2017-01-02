@@ -84,6 +84,7 @@ export function* saveAccount(action) {
     }
   }
   if (sagaAction == null || (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS)) {
+    sagaAction = null;
     for (let i = 0; i < services.length; i += 1) {
       const newItem = ObjectUtil.cloneObject(services[i]);
       newItem.service = ObjectUtil.getLink(services[i].service);

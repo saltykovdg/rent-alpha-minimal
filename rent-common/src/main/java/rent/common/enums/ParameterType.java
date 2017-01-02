@@ -4,7 +4,12 @@ public enum ParameterType {
     /**
      * Общая площадь
      */
-    TOTAL_AREA("01");
+    TOTAL_AREA("01"),
+
+    /**
+     * Номер телефона
+     */
+    PHONE_NUMBER("02");
 
     private String code;
 
