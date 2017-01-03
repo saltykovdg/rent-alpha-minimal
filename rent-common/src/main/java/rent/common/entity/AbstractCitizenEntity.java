@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @MappedSuperclass
 public abstract class AbstractCitizenEntity extends AbstractEntity {
-    public static final String TABLE_DOCUMENTS_CITIZEN = "documents_citizen";
+    public static final String TABLE_DOCUMENTS_CITIZENS = "documents_citizens";
 
     public interface Columns extends AbstractEntity.Columns {
         String CITIZEN = "citizen_id";
@@ -84,7 +84,7 @@ public abstract class AbstractCitizenEntity extends AbstractEntity {
      * документ устанавливающий право - прикреплённые файлы
      */
     @ElementCollection
-    @CollectionTable(name = TABLE_DOCUMENTS_CITIZEN, joinColumns = @JoinColumn(name = Columns.CITIZEN))
+    @CollectionTable(name = TABLE_DOCUMENTS_CITIZENS, joinColumns = @JoinColumn(name = Columns.CITIZEN))
     @Column(name = Columns.URL_LINK)
     private Set<String> documentCitizenAttachedFiles;
 

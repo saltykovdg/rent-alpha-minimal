@@ -13,7 +13,7 @@ import java.util.Set;
 })
 public class OwnerEntity extends AbstractCitizenEntity {
     public static final String TABLE_NAME = "accounts_owners";
-    public static final String TABLE_DOCUMENTS_ESTABLISHES_RIGHT = "documents_establishes_right";
+    public static final String TABLE_DOCUMENTS_ESTABLISHES_RIGHTS = "documents_establishes_rights";
 
     public interface Columns extends AbstractCitizenEntity.Columns {
         String ACCOUNT_OWNER = "account_owner_id";
@@ -54,7 +54,7 @@ public class OwnerEntity extends AbstractCitizenEntity {
      * документ устанавливающий право - прикреплённые файлы
      */
     @ElementCollection
-    @CollectionTable(name = TABLE_DOCUMENTS_ESTABLISHES_RIGHT, joinColumns = @JoinColumn(name = Columns.ACCOUNT_OWNER))
+    @CollectionTable(name = TABLE_DOCUMENTS_ESTABLISHES_RIGHTS, joinColumns = @JoinColumn(name = Columns.ACCOUNT_OWNER))
     @Column(name = Columns.URL_LINK)
     private Set<String> documentEstablishesRightAttachedFiles;
 
