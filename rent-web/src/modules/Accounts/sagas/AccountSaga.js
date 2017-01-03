@@ -1,5 +1,4 @@
-import { takeLatest } from 'redux-saga';
-import { call, put, fork, take } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
