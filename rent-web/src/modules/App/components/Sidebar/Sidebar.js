@@ -13,6 +13,7 @@ import * as TariffPath from '../../../Tariffs/paths/TariffPath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
 import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
+import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 
 const SubMenu = Menu.SubMenu;
@@ -116,6 +117,11 @@ function Sidebar() {
           <Item key={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>
             <Link to={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>
               <FormattedMessage id="measurementUnitTitle" />
+            </Link>
+          </Item>
+          <Item key={DocumentTypePath.DOCUMENT_TYPE_LIST}>
+            <Link to={DocumentTypePath.DOCUMENT_TYPE_LIST}>
+              <FormattedMessage id="documentTypeTitle" />
             </Link>
           </Item>
         </SubMenu>

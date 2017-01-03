@@ -10,6 +10,7 @@ import * as ServicePath from './modules/Services/paths/ServicePath';
 import * as TariffPath from './modules/Tariffs/paths/TariffPath';
 import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
+import * as DocumentTypePath from './modules/Constants/paths/DocumentTypePath';
 import * as ParameterTypePath from './modules/Constants/paths/ParameterTypePath';
 import * as AccountPath from './modules/Accounts/paths/AccountPath';
 
@@ -53,6 +54,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Constants/pages/MeasurementUnitEditPage');
   require('./modules/Constants/pages/ParameterTypeListPage');
   require('./modules/Constants/pages/ParameterTypeEditPage');
+  require('./modules/Constants/pages/DocumentTypeListPage');
+  require('./modules/Constants/pages/DocumentTypeEditPage');
 
   // Accounts
   require('./modules/Accounts/pages/AccountListPage');
@@ -269,6 +272,22 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Constants/pages/MeasurementUnitEditPage').default);
+        });
+      }}
+    />
+    <Route
+      path={DocumentTypePath.DOCUMENT_TYPE_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/DocumentTypeListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${DocumentTypePath.DOCUMENT_TYPE_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/DocumentTypeEditPage').default);
         });
       }}
     />

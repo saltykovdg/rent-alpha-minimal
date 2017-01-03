@@ -82,6 +82,8 @@ export default {
     parameterTypeFieldName: 'Параметр',
     parameterTypeFieldNameOrigin: 'Параметр (значение по умолчанию)',
     parameterTitle: 'Параметры',
+    documentTypeTitle: 'Виды документов',
+    documentTypeFieldName: 'Вид документа',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',

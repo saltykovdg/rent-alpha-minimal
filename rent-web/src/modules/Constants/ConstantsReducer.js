@@ -16,6 +16,12 @@ import {
   getParameterTypeIsRequestError,
 } from './reducers/ParameterTypeReducer';
 
+import {
+  documentTypeReducer,
+  getDocumentTypeIsLoading,
+  getDocumentTypeIsRequestError,
+} from './reducers/DocumentTypeReducer';
+
 // Initial State
 const data = {
   list: {
@@ -36,6 +42,7 @@ const initialState = {
   calculationType: data,
   measurementUnit: data,
   parameterType: data,
+  documentType: data,
 };
 
 const ConstantsReducer = (state = initialState, action) => {
@@ -43,6 +50,7 @@ const ConstantsReducer = (state = initialState, action) => {
     calculationType: calculationTypeReducer(state, action),
     measurementUnit: measurementUnitReducer(state, action),
     parameterType: parameterTypeReducer(state, action),
+    documentType: documentTypeReducer(state, action),
   };
 };
 
@@ -50,12 +58,14 @@ const ConstantsReducer = (state = initialState, action) => {
 export const getIsRequestError = state =>
   getCalculationTypeIsRequestError(state) ||
   getMeasurementUnitIsRequestError(state) ||
-  getParameterTypeIsRequestError(state);
+  getParameterTypeIsRequestError(state) ||
+  getDocumentTypeIsRequestError(state);
 
 export const getIsLoading = state =>
   getCalculationTypeIsLoading(state) ||
   getMeasurementUnitIsLoading(state) ||
-  getParameterTypeIsLoading(state);
+  getParameterTypeIsLoading(state) ||
+  getDocumentTypeIsLoading(state);
 
 // Export Reducer
 export default ConstantsReducer;
