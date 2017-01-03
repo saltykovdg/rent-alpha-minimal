@@ -3,6 +3,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Form, Modal, Select, Row, Col } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
+import * as ParameterType from './../../../util/ParameterType';
 
 const FormItem = Form.Item;
 
@@ -19,6 +20,11 @@ class AccountEditParameterForm extends EditComponent {
       if (!error && !this.props.isLoading) {
         const newValues = values;
         newValues.parameterType = this.getParameterTypeByLink(values.parameterType);
+        if (newValues.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
+          newValues.value = newValues.value_float;
+        } else {
+          newValues.value = newValues.value_text;
+        }
         this.props.onOkFormParameterEdit(newValues);
         this.props.form.resetFields();
       }
@@ -29,10 +35,11 @@ class AccountEditParameterForm extends EditComponent {
     this.props.onCancelFormParameterEdit();
   };
   onParameterTypeChange = (value) => {
-    if (this.getParameterTypeByLink(value).code === '01') {
-      this.props.form.setFieldsValue({ value: 0 });
+    this.props.parameter.parameterType = this.getParameterTypeByLink(value);
+    if (this.props.parameter.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
+      this.props.parameter.value = 0;
     } else {
-      this.props.form.setFieldsValue({ value: '' });
+      this.props.parameter.value = '';
     }
   }
   render() {
@@ -44,16 +51,13 @@ class AccountEditParameterForm extends EditComponent {
       parameterTypeList = this.props.parameterTypes.content.map(parameterType => (
         <Select.Option key={parameterType.id} value={this.getLink(parameterType)}>{parameterType.name}</Select.Option>
       ));
-      if (!this.props.id) {
+      if (!this.props.id && !object.parameterType.id) {
         object.parameterType = this.props.parameterTypes.content[0];
       }
     }
-    let fieldValue = this.getInputNumberField('value', parseFloat(object.value), 0.1);
-    if (this.props.form.getFieldValue('parameterType')) {
-      if (this.getParameterTypeByLink(this.props.form.getFieldValue('parameterType')).code !== '01') {
-        fieldValue = this.getInputNumberField('value', parseInt(object.value, 1));
-      }
-    }
+    const fieldInputNumberValue = this.getInputNumberField('value_float', object.value ? parseFloat(object.value) : 0, 0.1);
+    const fieldInputValue = this.getInputField('value_text', object.value === 0 ? '-' : object.value);
+    const fieldValue = object.parameterType.code === ParameterType.TOTAL_AREA_CODE ? fieldInputNumberValue : fieldInputValue;
     return (
       <Modal
         visible={this.props.formParameterEditVisible}

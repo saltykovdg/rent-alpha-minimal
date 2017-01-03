@@ -5,7 +5,6 @@ import {
   Breadcrumb, Icon, Button, Form, Spin,
   Select, Row, Col, Table,
 } from 'antd';
-import moment from 'moment';
 
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
@@ -56,7 +55,9 @@ class AccountEdit extends EditComponent {
     let parametersDataSource = [];
     if (object && object.parameters && object.parameters.length > 0) {
       parametersDataSource = object.parameters.sort((a, b) => {
-        return (moment(a.dateStart).unix() * parseInt(a.code, 1)) - (moment(b.dateStart).unix() * parseInt(b.code, 1)); // && parseInt(b.code, 1) - parseInt(a.code, 1);
+        const sort1 = a.parameterType.code - b.parameterType.code;
+        const sort2 = new Date(b.dateStart) - new Date(a.dateStart);
+        return sort1 || sort2;
       });
     }
     const parametersColumns = [
@@ -69,7 +70,9 @@ class AccountEdit extends EditComponent {
     let servicesDataSource = [];
     if (object && object.services && object.services.length > 0) {
       servicesDataSource = object.services.sort((a, b) => {
-        return moment(b.dateStart).unix() - moment(a.dateStart).unix();
+        const sort1 = a.service.name.localeCompare(b.service.name);
+        const sort2 = new Date(b.dateStart) - new Date(a.dateStart);
+        return sort1 || sort2;
       });
     }
     const servicesColumns = [

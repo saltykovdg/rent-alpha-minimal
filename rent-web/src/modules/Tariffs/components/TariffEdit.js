@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Breadcrumb, Icon, Button, Form, Spin, Select, Table } from 'antd';
-import moment from 'moment';
 
 import * as TariffPath from './../paths/TariffPath';
 import { EditComponent } from './../../../components/EditComponent';
@@ -23,7 +22,7 @@ class TariffEdit extends EditComponent {
     let tariffValuesDataSource = [];
     if (object && object.values && object.values.length > 0) {
       tariffValuesDataSource = object.values.sort((a, b) => {
-        return moment(b.dateStart).unix() - moment(a.dateStart).unix();
+        return new Date(b.dateStart) - new Date(a.dateStart);
       });
     }
     const tariffValuesColumns = [
