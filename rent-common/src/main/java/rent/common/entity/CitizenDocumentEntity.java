@@ -5,23 +5,22 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Собственник ЛС
+ * Документ гражданина
  */
 @Entity
-@Table(name = OwnerEntity.TABLE_NAME, indexes = {
-        @Index(columnList = OwnerEntity.Columns.ID),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_TYPE),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_SERIES),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_NUMBER),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_DATE_ISSUE)
+@Table(name = CitizenDocumentEntity.TABLE_NAME, indexes = {
+        @Index(columnList = CitizenDocumentEntity.Columns.ID),
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_TYPE),
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_SERIES),
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_NUMBER),
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_DATE_ISSUE)
 })
-public class OwnerEntity extends AbstractEntity {
-    public static final String TABLE_NAME = "accounts_owners";
+public class CitizenDocumentEntity extends AbstractEntity {
+    public static final String TABLE_NAME = "citizens_documents";
 
     public interface Columns extends AbstractEntity.Columns {
-        String CITIZEN = "citizen_id";
-        String ACCOUNT_OWNER = "account_owner_id";
+        String CITIZEN_DOCUMENT = "citizen_document_id";
         String DOCUMENT_TYPE = "document_type_id";
         String DOCUMENT_SERIES = "document_series";
         String DOCUMENT_NUMBER = "document_number";
@@ -30,13 +29,6 @@ public class OwnerEntity extends AbstractEntity {
         String DATE_START = "date_start";
         String DATE_END = "date_end";
     }
-
-    /**
-     * гражданин
-     */
-    @JoinColumn(name = Columns.CITIZEN)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private CitizenEntity citizen;
 
     /**
      * вид документа
@@ -72,9 +64,9 @@ public class OwnerEntity extends AbstractEntity {
     /**
      * прикреплённые документы
      */
-    @JoinColumn(name = Columns.ACCOUNT_OWNER)
+    @JoinColumn(name = Columns.CITIZEN_DOCUMENT)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OwnerDocumentAttachmentEntity> documentAttachments;
+    private List<CitizenDocumentAttachmentEntity> documentAttachments;
 
     /**
      * дата начала
@@ -87,14 +79,6 @@ public class OwnerEntity extends AbstractEntity {
      */
     @Column(name = Columns.DATE_END)
     private Date dateEnd;
-
-    public CitizenEntity getCitizen() {
-        return citizen;
-    }
-
-    public void setCitizen(CitizenEntity citizen) {
-        this.citizen = citizen;
-    }
 
     public DocumentTypeEntity getDocumentType() {
         return documentType;
@@ -136,11 +120,11 @@ public class OwnerEntity extends AbstractEntity {
         this.documentDateIssue = documentDateIssue;
     }
 
-    public List<OwnerDocumentAttachmentEntity> getDocumentAttachments() {
+    public List<CitizenDocumentAttachmentEntity> getDocumentAttachments() {
         return documentAttachments;
     }
 
-    public void setDocumentAttachments(List<OwnerDocumentAttachmentEntity> documentAttachments) {
+    public void setDocumentAttachments(List<CitizenDocumentAttachmentEntity> documentAttachments) {
         this.documentAttachments = documentAttachments;
     }
 
