@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = CitizenEntity.TABLE_NAME, indexes = {
         @Index(columnList = CitizenEntity.Columns.ID),
-        @Index(columnList = CitizenEntity.Columns.GENDER),
+        @Index(columnList = CitizenEntity.Columns.GENDER_TYPE),
         @Index(columnList = CitizenEntity.Columns.FIRST_NAME),
         @Index(columnList = CitizenEntity.Columns.LAST_NAME),
         @Index(columnList = CitizenEntity.Columns.FATHER_NAME)
@@ -20,7 +20,7 @@ public class CitizenEntity extends AbstractEntity {
 
     public interface Columns extends AbstractEntity.Columns {
         String CITIZEN = "citizen_id";
-        String GENDER = "gender_id";
+        String GENDER_TYPE = "gender_type_id";
         String FIRST_NAME = "first_name";
         String LAST_NAME = "last_name";
         String FATHER_NAME = "father_name";
@@ -30,9 +30,9 @@ public class CitizenEntity extends AbstractEntity {
     /**
      * пол
      */
-    @JoinColumn(name = Columns.GENDER)
+    @JoinColumn(name = Columns.GENDER_TYPE)
     @ManyToOne(fetch = FetchType.LAZY)
-    private GenderEntity gender;
+    private GenderTypeEntity genderType;
 
     /**
      * имя
@@ -65,12 +65,12 @@ public class CitizenEntity extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CitizenDocumentEntity> documents;
 
-    public GenderEntity getGender() {
-        return gender;
+    public GenderTypeEntity getGenderType() {
+        return genderType;
     }
 
-    public void setGender(GenderEntity gender) {
-        this.gender = gender;
+    public void setGenderType(GenderTypeEntity genderType) {
+        this.genderType = genderType;
     }
 
     public String getFirstName() {

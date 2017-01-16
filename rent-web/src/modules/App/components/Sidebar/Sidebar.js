@@ -13,6 +13,7 @@ import * as TariffPath from '../../../Tariffs/paths/TariffPath';
 import * as CalculationTypePath from '../../../Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPath';
 import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
+import * as GenderTypePath from '../../../Constants/paths/GenderTypePath';
 import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 
@@ -112,6 +113,11 @@ function Sidebar() {
           <Item key={ParameterTypePath.PARAMETER_TYPE_LIST}>
             <Link to={ParameterTypePath.PARAMETER_TYPE_LIST}>
               <FormattedMessage id="parameterTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={GenderTypePath.GENDER_TYPE_LIST}>
+            <Link to={GenderTypePath.GENDER_TYPE_LIST}>
+              <FormattedMessage id="genderTypeTitle" />
             </Link>
           </Item>
           <Item key={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}>

@@ -84,6 +84,9 @@ export default {
     parameterTitle: 'Параметры',
     documentTypeTitle: 'Виды документов',
     documentTypeFieldName: 'Вид документа',
+    genderTypeTitle: 'Виды пола',
+    genderTypeFieldName: 'Пол',
+    genderTypeFieldNameOrigin: 'Пол (значение по умолчанию)',
 
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',

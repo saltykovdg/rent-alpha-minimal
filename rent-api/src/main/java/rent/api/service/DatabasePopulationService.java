@@ -27,13 +27,15 @@ public class DatabasePopulationService {
     private final MeasurementUnitRepository measurementUnitRepository;
     private final ParameterTypeRepository parameterTypeRepository;
     private final CommonRepository commonRepository;
+    private final GenderTypeRepository genderTypeRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
                                      CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository,
-                                     ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository) {
+                                     ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository,
+                                     GenderTypeRepository genderTypeRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -44,6 +46,7 @@ public class DatabasePopulationService {
         this.measurementUnitRepository = measurementUnitRepository;
         this.parameterTypeRepository = parameterTypeRepository;
         this.commonRepository = commonRepository;
+        this.genderTypeRepository = genderTypeRepository;
     }
 
     @PostConstruct
@@ -54,6 +57,7 @@ public class DatabasePopulationService {
         createParameterTypes();
         createCalculationTypes();
         createMeasurementUnit();
+        createGenderTypes();
 //        createStreetTypes();
 //        createStreets();
 //        createBuildings();
@@ -144,6 +148,20 @@ public class DatabasePopulationService {
 
     private void createMeasurementUnit() {
 
+    }
+
+    private void createGenderTypes() {
+        if (genderTypeRepository.count() == 0) {
+            createGenderType("Мужской");
+            createGenderType("Женский");
+        }
+    }
+
+    private void createGenderType(String name) {
+        GenderTypeEntity genderType = new GenderTypeEntity();
+        genderType.setName(name);
+        genderType.setNameOrigin(name);
+        genderTypeRepository.save(genderType);
     }
 
 //    private void createStreetTypes() {
