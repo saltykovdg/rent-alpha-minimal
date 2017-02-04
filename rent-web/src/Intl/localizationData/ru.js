@@ -10,6 +10,14 @@ export default {
     accountFieldDateOpen: 'Дата открытия',
     accountFieldDateClose: 'Дата закрытия',
 
+    // citizens
+    citizensTitle: 'Люди',
+    citizenFieldGenderType: 'Пол',
+    citizenFieldFirstName: 'Имя',
+    citizenFieldLastName: 'Фамилия',
+    citizenFieldFatherName: 'Отчество',
+    citizenFieldBirthday: 'Дата рождения',
+
     normsTitle: 'Нормативы',
     normsGroupsNormsTitle: 'Группы нормативов',
 
@@ -88,11 +96,19 @@ export default {
     genderTypeFieldName: 'Пол',
     genderTypeFieldNameOrigin: 'Пол (значение по умолчанию)',
 
+    // documents
+    documentTitle: 'Документы',
+    documentFieldSeries: 'Серия',
+    documentFieldNumber: 'Номер',
+    documentFieldIssuingAuthority: 'Кем выдан',
+    documentFieldDateIssue: 'Дата выдачи',
+
     // commmon
     buttonAddNewRecord: 'Добавить новую запись',
     buttonAddNewParameter: 'Добавить новый параметр',
     buttonAddNewService: 'Добавить новую услугу',
     buttonAddNewValue: 'Добавить новое значение',
+    buttonAddNewDocument: 'Добавить новый документ',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
     confirmDelete: 'Подтвердите удаление записи.',

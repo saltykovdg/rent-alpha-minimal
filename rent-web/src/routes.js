@@ -14,6 +14,7 @@ import * as DocumentTypePath from './modules/Constants/paths/DocumentTypePath';
 import * as ParameterTypePath from './modules/Constants/paths/ParameterTypePath';
 import * as GenderTypePath from './modules/Constants/paths/GenderTypePath';
 import * as AccountPath from './modules/Accounts/paths/AccountPath';
+import * as CitizenPath from './modules/Citizens/paths/CitizenPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -63,6 +64,10 @@ if (process.env.NODE_ENV !== 'production') {
   // Accounts
   require('./modules/Accounts/pages/AccountListPage');
   require('./modules/Accounts/pages/AccountEditPage');
+
+  // Citizens
+  require('./modules/Citizens/pages/CitizenListPage');
+  require('./modules/Citizens/pages/CitizenEditPage');
 }
 
 // react-router setup with code-splitting
@@ -325,6 +330,24 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Accounts/pages/AccountEditPage').default);
+        });
+      }}
+    />
+
+    { /* Citizens */ }
+    <Route
+      path={CitizenPath.CITIZEN_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Citizens/pages/CitizenListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${CitizenPath.CITIZEN_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Citizens/pages/CitizenEditPage').default);
         });
       }}
     />

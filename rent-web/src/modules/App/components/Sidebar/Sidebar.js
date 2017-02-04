@@ -16,6 +16,7 @@ import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
 import * as GenderTypePath from '../../../Constants/paths/GenderTypePath';
 import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
+import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -44,6 +45,11 @@ function Sidebar() {
         <Item key={AccountPath.ACCOUNT_LIST}>
           <Link to={AccountPath.ACCOUNT_LIST}>
             <FormattedMessage id="accountsTitle" />
+          </Link>
+        </Item>
+        <Item key={CitizenPath.CITIZEN_LIST}>
+          <Link to={CitizenPath.CITIZEN_LIST}>
+            <FormattedMessage id="citizensTitle" />
           </Link>
         </Item>
         <SubMenu key="sidebarOrganizations" title={<FormattedMessage id="organizationTitle" />}>

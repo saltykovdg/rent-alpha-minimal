@@ -30,9 +30,8 @@ export function* watchGetAccounts() {
 export function* getAccount(action) {
   const response = yield call(AccountApi.getAccount, action.id);
   if (response && !response.error && !response.canceled) {
-    let sagaAction;
     yield put(OrganizationAction.findContractorsByName());
-    sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
+    let sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
     if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AddressAction.findStreetsByName());
       sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
