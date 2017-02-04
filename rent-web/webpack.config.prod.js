@@ -10,33 +10,43 @@ module.exports = {
   },
   output: {
     path: './build',
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[chunkhash].bundle.js',
     publicPath: '/'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components|build)/,
-        loader: 'babel'
+        loader: 'babel-loader'
       }, {
-        test: /\.css?$/,
-        loaders : [
+        test: /\.css$/,
+        use: [
           'style-loader',
           'css-loader'
         ]
       }, {
-        test: /\.less?$/,
-        loaders : [
+        test: /\.less$/,
+        use: [
           'style-loader',
           'css-loader',
-          'less-loader?{"sourceMap":true}'
-        ],
-        include: __dirname
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: false
+            }
+          }
+        ]
       }, {
         test: /\.(jpe?g|png|gif|svg)$/,
-        loader: 'url',
-        query: {limit: 10240}
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10240
+            }
+          }
+        ]
       }
     ]
   },
@@ -53,9 +63,9 @@ module.exports = {
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
+      name: 'commons',
       minChunks: Infinity,
-      filename: 'common.js',
+      filename: 'commons.js',
     }),
     new HtmlWebpackPlugin({
       favicon: './src/favicon.ico',
@@ -70,5 +80,8 @@ module.exports = {
         warnings: false
       }
     }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
+    })
   ]
 };
