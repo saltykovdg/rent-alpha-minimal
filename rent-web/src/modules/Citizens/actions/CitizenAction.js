@@ -11,7 +11,7 @@ export const DELETE_CITIZEN = 'DELETE_CITIZEN';
 export const DELETE_CITIZEN_SUCCESS = 'DELETE_CITIZEN_SUCCESS';
 export const DELETE_CITIZEN_FAILED = 'DELETE_CITIZEN_FAILED';
 export const NEW_CITIZEN = 'NEW_CITIZEN';
-export const FIND_CITIZENS_BY_NAME = 'FIND_CITIZENS_BY_NAME';
+export const FIND_CITIZENS = 'FIND_CITIZENS';
 
 // citizen documents
 export const ADD_NEW_DOCUMENT_TO_CITIZEN = 'ADD_NEW_DOCUMENT_TO_CITIZEN';
@@ -107,10 +107,15 @@ export const newCitizen = () => {
   };
 };
 
-export const findCitizensByName = (name = '') => {
+export const findCitizens = (firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0) => {
   return {
-    type: FIND_CITIZENS_BY_NAME,
-    name,
+    type: FIND_CITIZENS,
+    firstName,
+    lastName,
+    fatherName,
+    documentSeries,
+    documentNumber,
+    page,
   };
 };
 

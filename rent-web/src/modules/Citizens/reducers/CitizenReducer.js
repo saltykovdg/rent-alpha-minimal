@@ -37,7 +37,7 @@ export const citizenReducer = (state, action) => {
     case CitizenAction.SAVE_CITIZEN: {
       return prepareEdit(state.citizen.edit.data, true, false, false, false);
     }
-    case CitizenAction.FIND_CITIZENS_BY_NAME:
+    case CitizenAction.FIND_CITIZENS:
     case CitizenAction.GET_CITIZENS:
     case CitizenAction.DELETE_CITIZEN: {
       return prepareList(state.citizen.list.data, emptyEditData, true, false, false, false);

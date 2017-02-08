@@ -23,14 +23,42 @@ class CitizenListPage extends ExtendedComponentPage {
     const page = context.router.location.query.page;
     this.state = {
       page: page ? page - 1 : 0,
+      searchFieldFirstName: '',
+      searchFieldLastName: '',
+      searchFieldFatherName: '',
+      searchFieldDocumentSeries: '',
+      searchFieldDocumentNumber: '',
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(CitizenAction.getCitizens(this.state.page));
+    this.props.dispatch(CitizenAction.findCitizens(
+      this.state.searchFieldFirstName,
+      this.state.searchFieldLastName,
+      this.state.searchFieldFatherName,
+      this.state.searchFieldDocumentSeries,
+      this.state.searchFieldDocumentNumber,
+      this.state.page));
+  }
+  onSearch = (firstName, lastName, fatherName, documentSeries, documentNumber) => {
+    this.setState({
+      page: 0,
+      searchFieldFirstName: firstName,
+      searchFieldLastName: lastName,
+      searchFieldFatherName: fatherName,
+      searchFieldDocumentSeries: documentSeries,
+      searchFieldDocumentNumber: documentNumber,
+    });
+    this.props.dispatch(CitizenAction.findCitizens(firstName, lastName, fatherName, documentSeries, documentNumber, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(CitizenAction.getCitizens(page));
+    this.props.dispatch(CitizenAction.findCitizens(
+      this.state.searchFieldFirstName,
+      this.state.searchFieldLastName,
+      this.state.searchFieldFatherName,
+      this.state.searchFieldDocumentSeries,
+      this.state.searchFieldDocumentNumber,
+      page));
   };
   onDelete = (object) => {
     this.props.dispatch(CitizenAction.deleteCitizen(object));
@@ -44,6 +72,7 @@ class CitizenListPage extends ExtendedComponentPage {
         isDeleted={this.props.isDeleted}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}
+        onSearch={this.onSearch}
       />
     );
   }

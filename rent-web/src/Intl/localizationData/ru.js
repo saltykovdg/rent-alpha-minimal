@@ -109,6 +109,7 @@ export default {
     buttonAddNewService: 'Добавить новую услугу',
     buttonAddNewValue: 'Добавить новое значение',
     buttonAddNewDocument: 'Добавить новый документ',
+    buttonFind: 'Найти',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
     confirmDelete: 'Подтвердите удаление записи.',
@@ -134,6 +135,7 @@ export default {
     commonFieldDateStart: 'Действует С',
     commonFieldDateEnd: 'Действует ПО',
     commonFieldValue: 'Значение',
+    filtersTitle: 'Фильтры',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

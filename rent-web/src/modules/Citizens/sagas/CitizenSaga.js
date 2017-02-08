@@ -120,8 +120,8 @@ export function* watchNewCitizen() {
   yield takeLatest(CitizenAction.NEW_CITIZEN, newCitizen);
 }
 
-export function* findCitizensByName(action) {
-  const response = yield call(CitizenApi.findCitizensByName, action.name);
+export function* findCitizens(action) {
+  const response = yield call(CitizenApi.findCitizens, action.firstName, action.lastName, action.fatherName, action.documentSeries, action.documentNumber, action.page);
   if (response && !response.error && !response.canceled) {
     yield put(CitizenAction.getCitizensSuccess(response));
   } else if (!response.canceled) {
@@ -129,8 +129,8 @@ export function* findCitizensByName(action) {
   }
 }
 
-export function* watchFindCitizensByName() {
-  yield takeLatest(CitizenAction.FIND_CITIZENS_BY_NAME, findCitizensByName);
+export function* watchFindCitizens() {
+  yield takeLatest(CitizenAction.FIND_CITIZENS, findCitizens);
 }
 
 export const rootCitizenSaga = [
@@ -139,5 +139,5 @@ export const rootCitizenSaga = [
   fork(watchSaveCitizen),
   fork(watchDeleteCitizen),
   fork(watchNewCitizen),
-  fork(watchFindCitizensByName),
+  fork(watchFindCitizens),
 ];
