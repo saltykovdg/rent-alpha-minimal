@@ -15,6 +15,6 @@ import rent.common.projection.AccountBasic;
         itemResourceRel = "account",
         excerptProjection = AccountBasic.class)
 public interface AccountRepository extends PagingAndSortingRepository<AccountEntity, String> {
-    @Query("select account from AccountEntity account where account.accountNumber like concat('%', :accountNumber, '%')")
+    @Query("select account from AccountEntity account where lower(account.accountNumber) like concat('%', lower(:accountNumber), '%')")
     Page<AccountEntity> findByAccountNumber(@Param("accountNumber") String accountNumber, Pageable p);
 }

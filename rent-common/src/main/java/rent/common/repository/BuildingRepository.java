@@ -20,6 +20,6 @@ public interface BuildingRepository extends PagingAndSortingRepository<BuildingE
     @Query("select building from BuildingEntity building join building.street street where street.id = :streetId order by building.house")
     List<BuildingEntity> findByStreetId(@Param("streetId") String streetId);
 
-    @Query("select building from BuildingEntity building join building.street street where street.name like concat('%', :streetName, '%')")
+    @Query("select building from BuildingEntity building join building.street street where lower(street.name) like concat('%', lower(:streetName), '%')")
     Page<BuildingEntity> findByStreetName(@Param("streetName") String streetName, Pageable p);
 }

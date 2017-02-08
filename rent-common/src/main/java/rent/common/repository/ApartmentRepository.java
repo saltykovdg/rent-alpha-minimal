@@ -20,6 +20,6 @@ public interface ApartmentRepository extends PagingAndSortingRepository<Apartmen
     @Query("select apartment from ApartmentEntity apartment join apartment.building building where building.id = :buildingId order by apartment.apartment")
     List<ApartmentEntity> findByBuildingId(@Param("buildingId") String buildingId);
 
-    @Query("select apartment from ApartmentEntity apartment join apartment.building building join building.street street where street.name like concat('%', :streetName, '%') and building.house like concat('%', :buildingName, '%')")
+    @Query("select apartment from ApartmentEntity apartment join apartment.building building join building.street street where lower(street.name) like concat('%', lower(:streetName), '%') and lower(building.house) like concat('%', lower(:buildingName), '%')")
     Page<ApartmentEntity> findByStreetNameAndBuildingName(@Param("streetName") String streetName, @Param("buildingName") String buildingName, Pageable p);
 }
