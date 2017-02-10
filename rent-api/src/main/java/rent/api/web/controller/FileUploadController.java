@@ -3,6 +3,7 @@ package rent.api.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,17 +28,18 @@ public class FileUploadController {
 
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST, produces = Constants.PRODUCES_TEXT_HTML_UTF8)
     @ResponseBody
-    public String uploadFile(@RequestParam(value = Constants.REQUEST_PARAM_FILE) MultipartFile file,
-                             @RequestParam(value = Constants.REQUEST_PARAM_FILENAME) String fileName) {
+    public HttpStatus uploadFile(@RequestParam(value = Constants.REQUEST_PARAM_FILE) MultipartFile file,
+                                 @RequestParam(value = Constants.REQUEST_PARAM_FILENAME) String fileName) {
         if (file.isEmpty()) {
-            return null;
+            return HttpStatus.NO_CONTENT;
         }
         try {
-            return fileUploadService.uploadFile(file, fileName);
+            fileUploadService.uploadFile(file, fileName);
+            return HttpStatus.OK;
         } catch (IOException e) {
             log.error("Uploading file failed!", e);
             log.error(e.getMessage(), e);
-            return null;
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
 }

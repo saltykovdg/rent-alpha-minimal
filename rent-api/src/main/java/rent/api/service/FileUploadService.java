@@ -23,7 +23,7 @@ public class FileUploadService {
         log.info("Content directory is: {}", contentDir);
     }
 
-    public String uploadFile(MultipartFile file, String fileName) throws IOException {
+    public void uploadFile(MultipartFile file, String fileName) throws IOException {
         File contentDirFile = new File(contentDir);
         FileUtils.forceMkdir(contentDirFile);
         String originalFilename = file.getOriginalFilename();
@@ -32,6 +32,5 @@ public class FileUploadService {
         }
         file.transferTo(contentDirFile);
         log.info(fileName + " successfully uploaded.");
-        return fileName;
     }
 }
