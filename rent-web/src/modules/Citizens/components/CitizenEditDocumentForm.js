@@ -1,19 +1,39 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Form, Modal, Select, Row, Col } from 'antd';
+import { Form, Modal, Select, Row, Col, Button, Icon, Table, notification, Alert } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
+const MAX_FILE_SIZE = 15728640; // 15mb
 
 class CitizenEditDocumentForm extends EditComponent {
+  constructor(props, context) {
+    super(props, context);
+    this.state = { attachmentsFileNameError: false };
+  }
   onOkFormDocumentEdit = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
         newValues.documentType = this.props.documentTypes.content.filter(documentType => this.getLink(documentType) === values.documentType)[0];
-        this.props.onOkFormDocumentEdit(newValues);
-        this.props.form.resetFields();
+
+        let attachmentsError = false;
+        const documentAttachments = this.props.document.documentAttachments;
+
+        documentAttachments.forEach((attachment) => {
+          if (!attachment.name) {
+            attachmentsError = true;
+          }
+        });
+
+        if (!attachmentsError) {
+          newValues.documentAttachments = documentAttachments;
+          this.props.onOkFormDocumentEdit(newValues);
+          this.props.form.resetFields();
+        } else {
+          this.setState({ attachmentsFileNameError: true });
+        }
       }
     });
   };
@@ -21,31 +41,72 @@ class CitizenEditDocumentForm extends EditComponent {
     this.props.form.resetFields();
     this.props.onCancelFormDocumentEdit();
   };
+  onViewDocumentAttachment = (attachment) => {
+    const otherWindow = window.open();
+    otherWindow.opener = null;
+    let fileUrl = `${process.env.RENT_API_URL}/${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
+    if (attachment.file) {
+      fileUrl = URL.createObjectURL(attachment.file);
+    }
+    otherWindow.location = fileUrl;
+  }
+  onDeleteDocumentAttachment = (attachment) => {
+    this.props.onDeleteDocumentAttachment(this.props.document, attachment);
+  }
+  onAddDocumentAttachment = () => {
+    const attachmentFileRef = this.attachmentFile;
+    attachmentFileRef.onchange = (event) => {
+      const file = event.target;
+      if (file.value) {
+        if (file.files[0].size <= MAX_FILE_SIZE) {
+          this.props.onAddDocumentAttachment(this.props.document, file.files[0]);
+        } else {
+          notification.warning({
+            message: this.props.intl.messages.addAttachmentTitle,
+            description: this.props.intl.messages.addAttachmentFileSizeErrorDescription,
+          });
+        }
+        file.value = null;
+      }
+    };
+    attachmentFileRef.click();
+  }
   render() {
     const object = this.props.document;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
     const baseFields = this.getBaseFields(object);
     let documentTypeList = null;
     if (this.props.documentTypes && this.props.documentTypes.content) {
       documentTypeList = this.props.documentTypes.content.map(documentType => (
         <Select.Option key={documentType.id} value={this.getLink(documentType)}>{documentType.name}</Select.Option>
       ));
-      if (!this.props.id && !object.documentType.id) {
+      if (!this.props.document.id && !object.documentType.id) {
         object.documentType = this.props.documentTypes.content[0];
       }
     }
+    let attachmentsDataSource = [];
+    if (object && object.documentAttachments && object.documentAttachments.length > 0) {
+      attachmentsDataSource = object.documentAttachments;
+    }
+    const attachmentsColumns = [
+      this.getAttachmentColumn(this.props.intl.messages.attachmentNameTitle, 'name'),
+      this.getAttachmentActionColumn(this.onViewDocumentAttachment, this.onDeleteDocumentAttachment),
+    ];
     return (
       <Modal
         visible={this.props.formDocumentEditVisible}
         title={titleItem}
-        okText={this.props.intl.messages.buttonSave}
+        okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
         onOk={this.onOkFormDocumentEdit}
         onCancel={this.onCancelFormDocumentEdit}
         closable={false}
         maskClosable={false}
       >
-        <Form vertical>
+        <Form layout="horizontal">
           {baseFields}
+          <h2 className="devider-5">
+            <FormattedMessage id="documentTitle" />
+          </h2>
           <FormItem label={this.props.intl.messages.documentTypeFieldName}>
             {this.getSelectWithSearchField('documentType', this.getLink(object.documentType), documentTypeList, this.onDocumentTypeChange)}
           </FormItem>
@@ -81,6 +142,23 @@ class CitizenEditDocumentForm extends EditComponent {
               </FormItem>
             </Col>
           </Row>
+          <h2 className="devider-15">
+            <FormattedMessage id="attachmentsTitle" />
+          </h2>
+          <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
+            <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
+          </Button>
+          <div className="attachments">
+            <input type="file" className="hidden" accept="image/*" ref={(node) => { this.attachmentFile = node; }} />
+            <Table
+              dataSource={attachmentsDataSource}
+              columns={attachmentsColumns}
+              loading={this.props.isLoading}
+              bordered pagination={false}
+              size="small"
+            />
+          </div>
+          {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
         </Form>
       </Modal>
     );

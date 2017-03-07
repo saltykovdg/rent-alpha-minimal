@@ -19,6 +19,7 @@ import {
   getCitizenIsRequestError,
   getCitizenIsSaved,
   emptyDocument,
+  emptyDocumentAttachment,
 } from './../reducers/CitizenReducer';
 
 import {
@@ -76,6 +77,18 @@ class CitizenEditPage extends ExtendedComponentPage {
     this.props.dispatch(CitizenAction.removeDocumentFromCitizen(ObjectUtil.cloneObject(document)));
     this.forceUpdate();
   }
+  onAddDocumentAttachment = (document, file, attachment = emptyDocumentAttachment) => {
+    const newAttachment = ObjectUtil.cloneObject(attachment);
+    newAttachment.id = moment().unix();
+    newAttachment.file = file;
+    newAttachment.name = file.name.replace(/\.[^/.]+$/, '');
+    this.props.dispatch(CitizenAction.addNewAttachmentToDocument(document, newAttachment));
+    this.forceUpdate();
+  }
+  onDeleteDocumentAttachment = (document, attachment) => {
+    this.props.dispatch(CitizenAction.removeAttachmentFromDocument(document, attachment));
+    this.forceUpdate();
+  }
   render() {
     return (
       <div>
@@ -96,6 +109,8 @@ class CitizenEditPage extends ExtendedComponentPage {
           formDocumentEditVisible={this.state.formDocumentEditVisible}
           onOkFormDocumentEdit={this.onOkFormDocumentEdit}
           onCancelFormDocumentEdit={this.onCancelFormDocumentEdit}
+          onAddDocumentAttachment={this.onAddDocumentAttachment}
+          onDeleteDocumentAttachment={this.onDeleteDocumentAttachment}
         />
       </div>
     );

@@ -42,13 +42,13 @@ class TariffEditValuesForm extends EditComponent {
       <Modal
         visible={this.props.formTariffValueEditVisible}
         title={titleItem}
-        okText={this.props.intl.messages.buttonSave}
+        okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
         onOk={this.onOkFormTariffValueEdit}
         onCancel={this.onCancelFormTariffValueEdit}
         closable={false}
         maskClosable={false}
       >
-        <Form vertical>
+        <Form layout="horizontal">
           {baseFields}
           <FormItem label={this.props.intl.messages.calculationTypeFieldName}>
             {this.getSelectWithSearchField('calculationType', this.getLink(object.calculationType), calculationTypeList)}

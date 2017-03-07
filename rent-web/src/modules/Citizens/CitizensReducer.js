@@ -10,6 +10,12 @@ import {
   getCitizenDocumentIsRequestError,
 } from './reducers/CitizenDocumentReducer';
 
+import {
+  citizenDocumentAttachmentReducer,
+  getCitizenDocumentAttachmentIsLoading,
+  getCitizenDocumentAttachmentIsRequestError,
+} from './reducers/CitizenDocumentAttachmentReducer';
+
 // Initial State
 const data = {
   list: {
@@ -29,18 +35,23 @@ const data = {
 const initialState = {
   citizen: data,
   citizenDocument: data,
+  citizenDocumentAttachment: data,
 };
 
 const CitizensReducer = (state = initialState, action) => {
   return {
     citizen: citizenReducer(state, action),
     citizenDocument: citizenDocumentReducer(state, action),
+    citizenDocumentAttachment: citizenDocumentAttachmentReducer(state, action),
   };
 };
 
 /* Selectors */
-export const getIsRequestError = state => getCitizenIsRequestError(state) || getCitizenDocumentIsRequestError(state);
-export const getIsLoading = state => getCitizenIsLoading(state) || getCitizenDocumentIsLoading(state);
+export const getIsRequestError = state => getCitizenIsRequestError(state) || getCitizenDocumentIsRequestError(state) ||
+                                          getCitizenDocumentAttachmentIsRequestError(state);
+
+export const getIsLoading = state => getCitizenIsLoading(state) || getCitizenDocumentIsLoading(state) ||
+                                     getCitizenDocumentAttachmentIsLoading(state);
 
 // Export Reducer
 export default CitizensReducer;

@@ -27,7 +27,7 @@ html, body, #root {
     margin-bottom: 15px;
   }
   .ant-form-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
   .ant-select-search--inline,
   .ant-input-search-wrapper,
@@ -39,6 +39,9 @@ html, body, #root {
   .ant-input-preSuffix-wrapper {
     margin-bottom: 10px;
   }
+  .ant-form .ant-form-item-label {
+    padding: 0 0 0px;
+  }
 }
 
 .ant-modal-footer button + button {
@@ -47,13 +50,16 @@ html, body, #root {
 
 .ant-modal-body {
   .ant-form-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
   .ant-select-search--inline,
   .ant-input-search-wrapper,
   .ant-calendar-picker,
   .ant-input-number {
     width: 100%;
+  }
+  .ant-form .ant-form-item-label {
+    padding: 0 0 0px;
   }
 }
 
@@ -88,5 +94,34 @@ p {
 }
 .pull-right {
   float: right !important;
+}
+.full-width {
+  width: 100%;
+}
+
+.attachments {
+  .ant-form .ant-form-item-label {
+    padding: 0 0 0px;
+  }
+  .ant-form-item-control {
+    line-height: 0px;
+  }
+  .ant-form-item {
+    margin-bottom: 0px;
+  }
+  margin-top: 5px;
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.devider-5 {
+  margin-bottom: 5px;
+}
+.devider-10 {
+  margin-bottom: 10px;
+}
+.devider-15 {
+  margin-bottom: 15px;
 }
 

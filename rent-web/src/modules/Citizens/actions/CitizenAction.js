@@ -18,6 +18,11 @@ export const ADD_NEW_DOCUMENT_TO_CITIZEN = 'ADD_NEW_DOCUMENT_TO_CITIZEN';
 export const EDIT_DOCUMENT_IN_CITIZEN = 'EDIT_DOCUMENT_IN_CITIZEN';
 export const REMOVE_DOCUMENT_FROM_CITIZEN = 'REMOVE_DOCUMENT_FROM_CITIZEN';
 
+// citizen documents attachments
+export const ADD_NEW_ATTACHMENT_TO_DOCUMENT = 'ADD_NEW_ATTACHMENT_TO_DOCUMENT';
+export const EDIT_ATTACHMENT_IN_DOCUMENT = 'EDIT_ATTACHMENT_IN_DOCUMENT';
+export const REMOVE_ATTACHMENT_FROM_DOCUMENT = 'REMOVE_ATTACHMENT_FROM_DOCUMENT';
+
 export const getCitizens = (page = 0) => {
   return {
     type: GET_CITIZENS,
@@ -136,5 +141,28 @@ export const removeDocumentFromCitizen = (document) => {
   return {
     type: REMOVE_DOCUMENT_FROM_CITIZEN,
     document,
+  };
+};
+
+// citizen documents attachments
+export const addNewAttachmentToDocument = (document, attachment) => {
+  return {
+    type: ADD_NEW_ATTACHMENT_TO_DOCUMENT,
+    document,
+    attachment,
+  };
+};
+export const editAttachmentInDocument = (document, attachment) => {
+  return {
+    type: EDIT_ATTACHMENT_IN_DOCUMENT,
+    document,
+    attachment,
+  };
+};
+export const removeAttachmentFromDocument = (document, attachment) => {
+  return {
+    type: REMOVE_ATTACHMENT_FROM_DOCUMENT,
+    document,
+    attachment,
   };
 };

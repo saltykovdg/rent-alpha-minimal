@@ -31,7 +31,7 @@ class StreetEdit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form vertical onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <FormItem label={this.props.intl.messages.streetTypeFieldName}>
               {this.getSelectField('streetType', object.streetType, values)}

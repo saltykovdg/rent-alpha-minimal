@@ -44,14 +44,14 @@ class AccountEditParameterForm extends EditComponent {
   }
   render() {
     const object = this.props.parameter;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
     const baseFields = this.getBaseFields(object);
     let parameterTypeList = null;
     if (this.props.parameterTypes && this.props.parameterTypes.content) {
       parameterTypeList = this.props.parameterTypes.content.map(parameterType => (
         <Select.Option key={parameterType.id} value={this.getLink(parameterType)}>{parameterType.name}</Select.Option>
       ));
-      if (!this.props.id && !object.parameterType.id) {
+      if (object && !object.id && !object.parameterType.id) {
         object.parameterType = this.props.parameterTypes.content[0];
       }
     }
@@ -62,13 +62,13 @@ class AccountEditParameterForm extends EditComponent {
       <Modal
         visible={this.props.formParameterEditVisible}
         title={titleItem}
-        okText={this.props.intl.messages.buttonSave}
+        okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
         onOk={this.onOkFormParameterEdit}
         onCancel={this.onCancelFormParameterEdit}
         closable={false}
         maskClosable={false}
       >
-        <Form vertical>
+        <Form layout="horizontal">
           {baseFields}
           <FormItem label={this.props.intl.messages.parameterTypeFieldName}>
             {this.getSelectWithSearchField('parameterType', this.getLink(object.parameterType), parameterTypeList, this.onParameterTypeChange)}

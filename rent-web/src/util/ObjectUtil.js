@@ -1,3 +1,5 @@
+import extend from 'extend';
+
 export function getLink(object) {
   let link = '';
   if (object && object.links) {
@@ -7,5 +9,5 @@ export function getLink(object) {
 }
 
 export function cloneObject(object) {
-  return JSON.parse(JSON.stringify(object));
+  return extend(true, {}, object);
 }

@@ -25,7 +25,7 @@ class <%= helpers.pascalCase(name) %>Edit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form vertical onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <FormItem label={this.props.intl.messages.<%= helpers.camelCase(name) %>FieldName}>
               {this.getInputField('name', object.name)}

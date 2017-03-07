@@ -56,14 +56,14 @@ class AccountEditServiceForm extends EditComponent {
       <Modal
         visible={this.props.formServiceEditVisible}
         title={titleItem}
-        okText={this.props.intl.messages.buttonSave}
+        okText={this.props.service && this.props.service.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
         onOk={this.onOkFormServiceEdit}
         onCancel={this.onCancelFormServiceEdit}
         closable={false}
         maskClosable={false}
       >
         <Spin spinning={this.props.isLoading}>
-          <Form vertical>
+          <Form layou="horizontal">
             {baseFields}
             <FormItem label={this.props.intl.messages.serviceFieldName}>
               {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList, this.onServiceChange)}

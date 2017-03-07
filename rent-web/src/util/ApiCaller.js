@@ -44,3 +44,7 @@ export function callApi(endpoint, method = 'get', body) {
     return { error: thrown, status };
   });
 }
+
+export function uploadFile(object) {
+  return callApi('file/upload', 'post', object);
+}

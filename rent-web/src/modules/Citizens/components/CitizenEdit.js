@@ -46,7 +46,7 @@ class CitizenEdit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form vertical onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <FormItem label={this.props.intl.messages.citizenFieldGenderType}>
               {this.getSelectField('genderType', object.genderType, genderTypes)}
@@ -63,7 +63,7 @@ class CitizenEdit extends EditComponent {
             <FormItem label={this.props.intl.messages.citizenFieldBirthday}>
               {this.getDateField('birthday', object.birthday)}
             </FormItem>
-            <h2>{this.props.intl.messages.documentTitle}</h2>
+            <h2>{this.props.intl.messages.documentsTitle}</h2>
             <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormDocumentEdit()}>
               <FormattedMessage id="buttonAddNewDocument" />
             </Button>

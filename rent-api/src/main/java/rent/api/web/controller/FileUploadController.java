@@ -28,18 +28,16 @@ public class FileUploadController {
 
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST, produces = Constants.PRODUCES_TEXT_HTML_UTF8)
     @ResponseBody
-    public HttpStatus uploadFile(@RequestParam(value = Constants.REQUEST_PARAM_FILE) MultipartFile file,
-                                 @RequestParam(value = Constants.REQUEST_PARAM_FILENAME) String fileName) {
+    public String uploadFile(@RequestParam(value = Constants.REQUEST_PARAM_FILE) MultipartFile file) {
         if (file.isEmpty()) {
-            return HttpStatus.NO_CONTENT;
+            return HttpStatus.NO_CONTENT.toString();
         }
         try {
-            fileUploadService.uploadFile(file, fileName);
-            return HttpStatus.OK;
+            return fileUploadService.uploadFile(file);
         } catch (IOException e) {
             log.error("Uploading file failed!", e);
             log.error(e.getMessage(), e);
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return HttpStatus.INTERNAL_SERVER_ERROR.toString();
         }
     }
 }

@@ -2,7 +2,14 @@ import moment from 'moment';
 
 import * as CitizenAction from './../actions/CitizenAction';
 import * as CitizenDocumentAction from './../actions/CitizenDocumentAction';
+import * as CitizenDocumentAttachmentAction from './../actions/CitizenDocumentAttachmentAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+
+export const emptyDocumentAttachment = {
+  id: '',
+  name: '',
+  urlLink: '',
+};
 
 export const emptyDocument = {
   id: '',
@@ -16,6 +23,7 @@ export const emptyDocument = {
   documentDateIssue: '',
   dateStart: moment(),
   dateEnd: null,
+  documentAttachments: [],
 };
 
 const emptyEditData = {
@@ -89,11 +97,33 @@ export const citizenReducer = (state, action) => {
     }
 
     case CitizenAction.REMOVE_DOCUMENT_FROM_CITIZEN: {
-      const newObj = state.citizen.edit.data;
+      const newObj = action.document;
       newObj.documents = newObj.documents.filter(document => document.id !== action.document.id);
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case CitizenAction.ADD_NEW_ATTACHMENT_TO_DOCUMENT: {
+      const newObj = action.document;
+      newObj.documentAttachments.push(action.attachment);
+      return state.citizen;
+    }
+
+    case CitizenAction.EDIT_ATTACHMENT_IN_DOCUMENT: {
+      const newObj = action.document;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      newObj.documentAttachments.push(action.attachment);
+      return state.citizen;
+    }
+
+    case CitizenAction.REMOVE_ATTACHMENT_FROM_DOCUMENT: {
+      const newObj = action.document;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      return state.citizen;
+    }
+
+    case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT:
+    case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS:
+    case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_FAILED:
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT:
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS:
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_FAILED: {

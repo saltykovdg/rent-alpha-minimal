@@ -5,6 +5,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import * as GenderTypeAction from './../../Constants/actions/GenderTypeAction';
 import * as DocumentTypeAction from './../../Constants/actions/DocumentTypeAction';
 import * as CitizenDocumentAction from './../actions/CitizenDocumentAction';
+import * as CitizenDocumentAttachmentAction from './../actions/CitizenDocumentAttachmentAction';
 import * as CitizenAction from './../actions/CitizenAction';
 import * as CitizenApi from './../api/CitizenApi';
 import * as CitizenPath from './../paths/CitizenPath';
@@ -50,17 +51,42 @@ export function* saveCitizen(action) {
   const documents = action.object.documents;
   const documentsLinks = [];
   for (let i = 0; i < documents.length; i += 1) {
-    const newItem = ObjectUtil.cloneObject(documents[i]);
-    newItem.documentType = ObjectUtil.getLink(documents[i].documentType);
-    newItem.documentAttachments = []; // todo: доделать вложения
-    yield put(CitizenDocumentAction.saveCitizenDocument(newItem));
-    sagaAction = yield take([CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS, CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_FAILED]);
-    if (sagaAction.type === CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS) {
-      documentsLinks.push(ObjectUtil.getLink(sagaAction.data));
-    } else {
-      break;
+    sagaAction = null;
+    const documentObj = ObjectUtil.cloneObject(documents[i]);
+    documentObj.documentType = ObjectUtil.getLink(documents[i].documentType);
+
+    // save document attachments
+    const documentAttachmentsLinks = [];
+    for (let j = 0; j < documentObj.documentAttachments.length; j += 1) {
+      const documentAttachmentObj = ObjectUtil.cloneObject(documentObj.documentAttachments[j]);
+      let attachmentFormData = null;
+      if (documentAttachmentObj.file) {
+        attachmentFormData = new FormData();
+        attachmentFormData.append('file', documentAttachmentObj.file);
+      }
+      yield put(CitizenDocumentAttachmentAction.saveCitizenDocumentAttachment(documentAttachmentObj, attachmentFormData));
+      sagaAction = yield take([CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS, CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_FAILED]);
+      if (sagaAction.type === CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS) {
+        documentAttachmentsLinks.push(ObjectUtil.getLink(sagaAction.data));
+      } else {
+        break;
+      }
+    }
+
+    // save document
+    if (sagaAction == null || (sagaAction && sagaAction.type === CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS)) {
+      documentObj.documentAttachments = documentAttachmentsLinks;
+      yield put(CitizenDocumentAction.saveCitizenDocument(documentObj));
+      sagaAction = yield take([CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS, CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_FAILED]);
+      if (sagaAction.type === CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS) {
+        documentsLinks.push(ObjectUtil.getLink(sagaAction.data));
+      } else {
+        break;
+      }
     }
   }
+
+  // save citizen
   if (sagaAction == null || (sagaAction && sagaAction.type === CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS)) {
     const objectCitizen = ObjectUtil.cloneObject(action.object);
     objectCitizen.documents = documentsLinks;

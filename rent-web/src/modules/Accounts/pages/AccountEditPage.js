@@ -166,7 +166,6 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteService={this.onDeleteService}
         />
         <AccountEditParameterForm
-          id={this.state.parameter.id}
           parameterTypes={this.props.parameterTypes}
           parameter={this.state.parameter}
           formParameterEditVisible={this.state.formParameterEditVisible}

@@ -31,7 +31,7 @@ class ContractorEdit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form vertical onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <h2>{this.props.intl.messages.contractorGroupGeneralInfo}</h2>
             <FormItem label={this.props.intl.messages.contractorTypeFieldName}>

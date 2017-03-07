@@ -93,7 +93,7 @@ class AccountEdit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form vertical onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <Row gutter={16}>
               <Col className="gutter-row" span={8}>

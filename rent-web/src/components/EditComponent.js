@@ -3,7 +3,9 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import { Input, InputNumber, Select, DatePicker, Popconfirm } from 'antd';
 import moment from 'moment';
+
 import { ExtendedComponent } from './ExtendedComponent';
+
 import * as ObjectUtil from './../util/ObjectUtil';
 
 class EditComponent extends ExtendedComponent {
@@ -78,6 +80,15 @@ class EditComponent extends ExtendedComponent {
       }],
     })(<Select notFoundContent="">{values}</Select>);
   };
+  getAttachmentField = (name, value) => {
+    return this.props.form.getFieldDecorator(name, {
+      initialValue: value,
+      rules: [{
+        required: true,
+        message: this.props.intl.messages.fieldIsEmptyError,
+      }],
+    })(<Input size="small" placeholder={this.props.intl.messages.attachmentNamePlaceholder} />);
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((error, values) => {
@@ -85,6 +96,48 @@ class EditComponent extends ExtendedComponent {
         this.props.onSave(values);
       }
     });
+  };
+  getAttachmentColumn = (title, name) => {
+    const onChange = (event, record) => {
+      const newObj = record;
+      newObj.name = event.target.value;
+      this.setState({ attachmentsFileNameError: false });
+    };
+    const messages = this.props.intl.messages;
+    return {
+      title,
+      key: name,
+      dataIndex: name,
+      render(text, record) {
+        return (
+          <Input
+            size="small"
+            placeholder={messages.attachmentNamePlaceholder}
+            value={record.name}
+            onChange={event => onChange(event, record)}
+          />
+        );
+      },
+    };
+  };
+  getAttachmentActionColumn = (onView, onDelete) => {
+    const messages = this.props.intl.messages;
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      width: '140px',
+      render(text, record) {
+        return (
+          <span>
+            <Link onClick={() => onView(record)}><FormattedMessage id="buttonView" /></Link>
+            <span className="ant-divider" />
+            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+              <Link><FormattedMessage id="buttonDelete" /></Link>
+            </Popconfirm>
+          </span>
+        );
+      },
+    };
   };
   getActionColumn = (onEdit, onDelete) => {
     const messages = this.props.intl.messages;

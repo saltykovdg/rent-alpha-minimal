@@ -59,7 +59,8 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
-        'RENT_API_URL': JSON.stringify('/rent-api')
+        'RENT_API_URL': JSON.stringify('/rent-api'),
+        'RENT_API_CONTENT_URL': JSON.stringify('/content/')
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
