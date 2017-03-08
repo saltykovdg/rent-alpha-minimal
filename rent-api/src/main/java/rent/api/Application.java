@@ -57,9 +57,4 @@ public class Application extends SpringBootServletInitializer {
         commonsRequestLoggingFilter.setMaxPayloadLength(5120);
         return commonsRequestLoggingFilter;
     }
-
-//    @Bean
-//    public LogFilter logFilter() {
-//        return new LogFilter();
-//    }
 }

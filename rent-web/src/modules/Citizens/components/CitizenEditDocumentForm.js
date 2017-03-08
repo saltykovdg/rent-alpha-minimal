@@ -5,7 +5,7 @@ import { Form, Modal, Select, Row, Col, Button, Icon, Table, notification, Alert
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
-const MAX_FILE_SIZE = 15728640; // 15mb
+const MAX_FILE_SIZE = parseInt(`${process.env.RENT_API_MAX_FILE_SIZE}`, 0);
 
 class CitizenEditDocumentForm extends EditComponent {
   constructor(props, context) {
@@ -46,7 +46,7 @@ class CitizenEditDocumentForm extends EditComponent {
   onViewDocumentAttachment = (attachment) => {
     const otherWindow = window.open();
     otherWindow.opener = null;
-    let fileUrl = `${process.env.RENT_API_URL}/${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
+    let fileUrl = `${process.env.RENT_API_URL}${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
     if (attachment.file) {
       fileUrl = URL.createObjectURL(attachment.file);
     }
