@@ -31,6 +31,7 @@ class CitizenEditDocumentForm extends EditComponent {
           newValues.documentAttachments = documentAttachments;
           this.props.onOkFormDocumentEdit(newValues);
           this.props.form.resetFields();
+          this.setState({ attachmentsFileNameError: false });
         } else {
           this.setState({ attachmentsFileNameError: true });
         }
@@ -38,8 +39,9 @@ class CitizenEditDocumentForm extends EditComponent {
     });
   };
   onCancelFormDocumentEdit = () => {
-    this.props.form.resetFields();
     this.props.onCancelFormDocumentEdit();
+    this.props.form.resetFields();
+    this.setState({ attachmentsFileNameError: false });
   };
   onViewDocumentAttachment = (attachment) => {
     const otherWindow = window.open();
@@ -145,6 +147,7 @@ class CitizenEditDocumentForm extends EditComponent {
           <h2 className="devider-15">
             <FormattedMessage id="attachmentsTitle" />
           </h2>
+          {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
           <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
             <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
           </Button>
@@ -158,7 +161,6 @@ class CitizenEditDocumentForm extends EditComponent {
               size="small"
             />
           </div>
-          {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
         </Form>
       </Modal>
     );
