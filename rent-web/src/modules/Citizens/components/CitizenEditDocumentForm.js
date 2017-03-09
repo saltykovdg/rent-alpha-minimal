@@ -1,16 +1,18 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Form, Modal, Select, Row, Col, Button, Icon, Table, notification, Alert } from 'antd';
+import { Form, Modal, Select, Row, Col, Button, Icon, Table, notification, Alert, Tabs } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
+
 const MAX_FILE_SIZE = parseInt(`${process.env.RENT_API_MAX_FILE_SIZE}`, 0);
 
 class CitizenEditDocumentForm extends EditComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = { attachmentsFileNameError: false };
+    this.state = { attachmentsFileNameError: false, activeTab: '1' };
   }
   onOkFormDocumentEdit = () => {
     this.props.form.validateFields((error, values) => {
@@ -31,17 +33,19 @@ class CitizenEditDocumentForm extends EditComponent {
           newValues.documentAttachments = documentAttachments;
           this.props.onOkFormDocumentEdit(newValues);
           this.props.form.resetFields();
-          this.setState({ attachmentsFileNameError: false });
+          this.setState({ attachmentsFileNameError: false, activeTab: '1' });
         } else {
-          this.setState({ attachmentsFileNameError: true });
+          this.setState({ attachmentsFileNameError: true, activeTab: '2' });
         }
+      } else {
+        this.setState({ activeTab: '1' });
       }
     });
   };
   onCancelFormDocumentEdit = () => {
     this.props.onCancelFormDocumentEdit();
     this.props.form.resetFields();
-    this.setState({ attachmentsFileNameError: false });
+    this.setState({ attachmentsFileNameError: false, activeTab: '1' });
   };
   onViewDocumentAttachment = (attachment) => {
     const otherWindow = window.open();
@@ -72,6 +76,9 @@ class CitizenEditDocumentForm extends EditComponent {
       }
     };
     attachmentFileRef.click();
+  }
+  onTabClick = (tab) => {
+    this.setState({ activeTab: tab });
   }
   render() {
     const object = this.props.document;
@@ -104,64 +111,64 @@ class CitizenEditDocumentForm extends EditComponent {
         closable={false}
         maskClosable={false}
       >
-        <Form layout="horizontal">
-          {baseFields}
-          <h2 className="devider-5">
-            <FormattedMessage id="documentTitle" />
-          </h2>
-          <FormItem label={this.props.intl.messages.documentTypeFieldName}>
-            {this.getSelectWithSearchField('documentType', this.getLink(object.documentType), documentTypeList, this.onDocumentTypeChange)}
-          </FormItem>
-          <Row gutter={16}>
-            <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.documentFieldSeries}>
-                {this.getInputField('documentSeries', object.documentSeries)}
+        <Tabs defaultActiveKey={this.state.activeTab} activeKey={this.state.activeTab} onTabClick={this.onTabClick}>
+          <TabPane tab={this.props.intl.messages.documentTitle} key="1">
+            <Form layout="horizontal">
+              {baseFields}
+              <FormItem label={this.props.intl.messages.documentTypeFieldName}>
+                {this.getSelectWithSearchField('documentType', this.getLink(object.documentType), documentTypeList, this.onDocumentTypeChange)}
               </FormItem>
-            </Col>
-            <Col className="gutter-row" span={12}>
-              <FormItem label={this.props.intl.messages.documentFieldNumber}>
-                {this.getInputField('documentNumber', object.documentNumber)}
+              <Row gutter={16}>
+                <Col className="gutter-row" span={12}>
+                  <FormItem label={this.props.intl.messages.documentFieldSeries}>
+                    {this.getInputField('documentSeries', object.documentSeries)}
+                  </FormItem>
+                </Col>
+                <Col className="gutter-row" span={12}>
+                  <FormItem label={this.props.intl.messages.documentFieldNumber}>
+                    {this.getInputField('documentNumber', object.documentNumber)}
+                  </FormItem>
+                </Col>
+              </Row>
+              <FormItem label={this.props.intl.messages.documentFieldIssuingAuthority}>
+                {this.getInputField('documentIssuingAuthority', object.documentIssuingAuthority)}
               </FormItem>
-            </Col>
-          </Row>
-          <FormItem label={this.props.intl.messages.documentFieldIssuingAuthority}>
-            {this.getInputField('documentIssuingAuthority', object.documentIssuingAuthority)}
-          </FormItem>
-          <Row gutter={16}>
-            <Col className="gutter-row" span={8}>
-              <FormItem label={this.props.intl.messages.documentFieldDateIssue}>
-                {this.getDateField('documentDateIssue', object.documentDateIssue)}
-              </FormItem>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <FormItem label={this.props.intl.messages.commonFieldDateStart}>
-                {this.getDateField('dateStart', object.dateStart)}
-              </FormItem>
-            </Col>
-            <Col className="gutter-row" span={8}>
-              <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
-                {this.getDateField('dateEnd', object.dateEnd, false)}
-              </FormItem>
-            </Col>
-          </Row>
-          <h2 className="devider-15">
-            <FormattedMessage id="attachmentsTitle" />
-          </h2>
-          {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
-          <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
-            <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
-          </Button>
-          <div className="attachments">
-            <input type="file" className="hidden" accept="image/*" ref={(node) => { this.attachmentFile = node; }} />
-            <Table
-              dataSource={attachmentsDataSource}
-              columns={attachmentsColumns}
-              loading={this.props.isLoading}
-              bordered pagination={false}
-              size="small"
-            />
-          </div>
-        </Form>
+              <Row gutter={16}>
+                <Col className="gutter-row" span={8}>
+                  <FormItem label={this.props.intl.messages.documentFieldDateIssue}>
+                    {this.getDateField('documentDateIssue', object.documentDateIssue)}
+                  </FormItem>
+                </Col>
+                <Col className="gutter-row" span={8}>
+                  <FormItem label={this.props.intl.messages.commonFieldDateStart}>
+                    {this.getDateField('dateStart', object.dateStart)}
+                  </FormItem>
+                </Col>
+                <Col className="gutter-row" span={8}>
+                  <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
+                    {this.getDateField('dateEnd', object.dateEnd, false)}
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>
+          </TabPane>
+          <TabPane tab={this.props.intl.messages.attachmentsTitle} key="2">
+            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
+            <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
+              <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
+            </Button>
+            <div className="attachments">
+              <input type="file" className="hidden" accept="image/*" ref={(node) => { this.attachmentFile = node; }} />
+              <Table
+                dataSource={attachmentsDataSource}
+                columns={attachmentsColumns}
+                loading={this.props.isLoading}
+                bordered pagination={false}
+                size="small"
+              />
+            </div>
+          </TabPane>
+        </Tabs>
       </Modal>
     );
   }
