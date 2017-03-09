@@ -24,6 +24,10 @@ class CitizenEdit extends EditComponent {
       documentsDataSource = object.documents.sort((a, b) => {
         return new Date(b.dateStart) - new Date(a.dateStart);
       });
+      documentsDataSource.forEach((obj) => {
+        const document = obj;
+        document.key = document.id;
+      });
     }
     const documentsColumns = [
       this.getColumn(this.props.intl.messages.documentTypeFieldName, 'documentType.name'),

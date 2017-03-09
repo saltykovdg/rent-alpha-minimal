@@ -46,6 +46,10 @@ class ListComponent extends ExtendedComponent {
     let pagination = false;
     if (this.props.data && this.props.data.content) {
       dataSource = this.props.data.content;
+      dataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
       if (this.props.data.page) {
         if (this.props.data.page.totalPages > 1) {
           pagination = {

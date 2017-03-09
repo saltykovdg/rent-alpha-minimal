@@ -24,6 +24,10 @@ class TariffEdit extends EditComponent {
       tariffValuesDataSource = object.values.sort((a, b) => {
         return new Date(b.dateStart) - new Date(a.dateStart);
       });
+      tariffValuesDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
     }
     const tariffValuesColumns = [
       this.getColumn(this.props.intl.messages.calculationTypeFieldName, 'calculationType.name'),

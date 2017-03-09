@@ -59,6 +59,10 @@ class AccountEdit extends EditComponent {
         const sort2 = new Date(b.dateStart) - new Date(a.dateStart);
         return sort1 || sort2;
       });
+      parametersDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
     }
     const parametersColumns = [
       this.getColumn(this.props.intl.messages.parameterTypeFieldName, 'parameterType.name'),
@@ -73,6 +77,10 @@ class AccountEdit extends EditComponent {
         const sort1 = a.service.name.localeCompare(b.service.name);
         const sort2 = new Date(b.dateStart) - new Date(a.dateStart);
         return sort1 || sort2;
+      });
+      servicesDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
       });
     }
     const servicesColumns = [

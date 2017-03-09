@@ -96,6 +96,10 @@ class CitizenEditDocumentForm extends EditComponent {
     let attachmentsDataSource = [];
     if (object && object.documentAttachments && object.documentAttachments.length > 0) {
       attachmentsDataSource = object.documentAttachments;
+      attachmentsDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
     }
     const attachmentsColumns = [
       this.getAttachmentColumn(this.props.intl.messages.attachmentNameTitle, 'name'),
