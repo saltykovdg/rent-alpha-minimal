@@ -28,6 +28,7 @@ public class DatabasePopulationService {
     private final ParameterTypeRepository parameterTypeRepository;
     private final CommonRepository commonRepository;
     private final GenderTypeRepository genderTypeRepository;
+    private final DocumentTypeRepository documentTypeRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
@@ -35,7 +36,7 @@ public class DatabasePopulationService {
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
                                      CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository,
                                      ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository,
-                                     GenderTypeRepository genderTypeRepository) {
+                                     GenderTypeRepository genderTypeRepository, DocumentTypeRepository documentTypeRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -47,6 +48,7 @@ public class DatabasePopulationService {
         this.parameterTypeRepository = parameterTypeRepository;
         this.commonRepository = commonRepository;
         this.genderTypeRepository = genderTypeRepository;
+        this.documentTypeRepository = documentTypeRepository;
     }
 
     @PostConstruct
@@ -58,6 +60,7 @@ public class DatabasePopulationService {
         createCalculationTypes();
         createMeasurementUnit();
         createGenderTypes();
+        createDocumentTypes();
 //        createStreetTypes();
 //        createStreets();
 //        createBuildings();
@@ -162,6 +165,22 @@ public class DatabasePopulationService {
         genderType.setName(name);
         genderType.setNameOrigin(name);
         genderTypeRepository.save(genderType);
+    }
+
+    private void createDocumentTypes() {
+        if (documentTypeRepository.count() == 0) {
+            createDocumentType("Паспорт");
+            createDocumentType("Свидетельство о рождении");
+            createDocumentType("Свидетельство права собственности");
+            createDocumentType("Договор купли продажи");
+            createDocumentType("Договор доверия");
+        }
+    }
+
+    private void createDocumentType(String name) {
+        DocumentTypeEntity documentType = new DocumentTypeEntity();
+        documentType.setName(name);
+        documentTypeRepository.save(documentType);
     }
 
 //    private void createStreetTypes() {
