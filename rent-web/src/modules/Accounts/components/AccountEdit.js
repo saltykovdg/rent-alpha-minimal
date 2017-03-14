@@ -106,6 +106,25 @@ class AccountEdit extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormOwnerEdit, this.props.onDeleteOwner),
     ];
+    let registeredDataSource = [];
+    if (object && object.registered && object.registered.length > 0) {
+      registeredDataSource = object.registered.sort((a, b) => {
+        return new Date(b.dateStart) - new Date(a.dateStart);
+      });
+      registeredDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
+    }
+    const registeredColumns = [
+      this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
+      this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
+      this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
+      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionColumn(this.props.showFormRegisteredEdit, this.props.onDeleteRegistered),
+    ];
     return (
       <div>
         <Breadcrumb>
@@ -187,6 +206,17 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={ownersDataSource}
               columns={ownersColumns}
+              bordered pagination={false}
+              size="small"
+            />
+            <br />
+            <h2>{this.props.intl.messages.registeredTitle}</h2>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormRegisteredEdit()}>
+              <FormattedMessage id="buttonAddNewRegistered" />
+            </Button>
+            <Table
+              dataSource={registeredDataSource}
+              columns={registeredColumns}
               bordered pagination={false}
               size="small"
             />

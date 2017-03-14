@@ -23,4 +23,6 @@ public interface AccountBasic extends AbstractBasic {
     List<AccountServiceBasic> getServices();
 
     List<AccountOwnerBasic> getOwners();
+
+    List<AccountRegisteredBasic> getRegistered();
 }

@@ -9,6 +9,7 @@ import AccountEdit from './../components/AccountEdit';
 import AccountEditParameterForm from './../components/AccountEditParameterForm';
 import AccountEditServiceForm from './../components/AccountEditServiceForm';
 import AccountEditOwnerForm from './../components/AccountEditOwnerForm';
+import AccountEditRegisteredForm from './../components/AccountEditRegisteredForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -23,7 +24,8 @@ import {
   emptyParameter,
   emptyService,
   emptyOwner,
-  emptyOwnerDocumentAttachment,
+  emptyRegistered,
+  emptyDocumentAttachment,
 } from './../reducers/AccountReducer';
 
 import {
@@ -70,6 +72,12 @@ import {
 } from './../../Constants/reducers/DocumentTypeReducer';
 
 import {
+  getRegistrationTypeListData,
+  getRegistrationTypeIsLoading,
+  getRegistrationTypeIsRequestError,
+} from './../../Constants/reducers/RegistrationTypeReducer';
+
+import {
   getCitizenListData,
   getCitizenIsLoading,
   getCitizenIsRequestError,
@@ -90,6 +98,7 @@ class AccountEditPage extends ExtendedComponentPage {
     this.initFormParameter(false);
     this.initFormService(false);
     this.initFormOwner(false);
+    this.initFormRegistered(false);
   }
   initFormParameter = (visible, parameter = emptyParameter) => {
     this.setState({
@@ -106,11 +115,17 @@ class AccountEditPage extends ExtendedComponentPage {
       formOwnerEditVisible: visible, owner: ObjectUtil.cloneObject(owner),
     });
   }
+  initFormRegistered = (visible, registered = emptyRegistered) => {
+    this.setState({
+      formRegisteredEditVisible: visible, registered: ObjectUtil.cloneObject(registered),
+    });
+  }
   onSave = (object) => {
     const newObject = ObjectUtil.cloneObject(object);
     newObject.parameters = this.props.data.parameters;
     newObject.services = this.props.data.services;
     newObject.owners = this.props.data.owners;
+    newObject.registered = this.props.data.registered;
     this.props.dispatch(AccountAction.saveAccount(newObject));
   }
   onStreetChange = (streetId) => {
@@ -189,7 +204,7 @@ class AccountEditPage extends ExtendedComponentPage {
     this.props.dispatch(AccountAction.removeOwnerFromAccount(ObjectUtil.cloneObject(owner)));
     this.forceUpdate();
   }
-  onAddOwnerDocumentAttachment = (owner, file, attachment = emptyOwnerDocumentAttachment) => {
+  onAddOwnerDocumentAttachment = (owner, file, attachment = emptyDocumentAttachment) => {
     const newAttachment = ObjectUtil.cloneObject(attachment);
     newAttachment.id = moment().unix();
     newAttachment.file = file;
@@ -201,7 +216,41 @@ class AccountEditPage extends ExtendedComponentPage {
     this.props.dispatch(AccountAction.removeAttachmentFromOwner(owner, attachment));
     this.forceUpdate();
   }
-  onSearchOwner = (firstName, lastName, fatherName, documentSeries, documentNumber, page, size) => {
+  showFormRegisteredEdit = (registered = emptyRegistered) => {
+    this.initFormRegistered(true, registered);
+  }
+  onOkFormRegisteredEdit = (registered = emptyRegistered) => {
+    this.initFormRegistered(false);
+    if (registered.id) {
+      this.props.dispatch(AccountAction.editRegisteredInAccount(ObjectUtil.cloneObject(registered)));
+    } else {
+      const newRegistered = ObjectUtil.cloneObject(registered);
+      newRegistered.id = moment().unix();
+      this.props.dispatch(AccountAction.addNewRegisteredToAccount(newRegistered));
+    }
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  }
+  onCancelFormRegisteredEdit = () => {
+    this.initFormRegistered(false);
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  }
+  onDeleteRegistered = (registered) => {
+    this.props.dispatch(AccountAction.removeRegisteredFromAccount(ObjectUtil.cloneObject(registered)));
+    this.forceUpdate();
+  }
+  onAddRegisteredDocumentAttachment = (registered, file, attachment = emptyDocumentAttachment) => {
+    const newAttachment = ObjectUtil.cloneObject(attachment);
+    newAttachment.id = moment().unix();
+    newAttachment.file = file;
+    newAttachment.name = file.name.replace(/\.[^/.]+$/, '');
+    this.props.dispatch(AccountAction.addNewAttachmentToRegistered(registered, newAttachment));
+    this.forceUpdate();
+  }
+  onDeleteRegisteredDocumentAttachment = (registered, attachment) => {
+    this.props.dispatch(AccountAction.removeAttachmentFromRegistered(registered, attachment));
+    this.forceUpdate();
+  }
+  onSearchCitizen = (firstName, lastName, fatherName, documentSeries, documentNumber, page, size) => {
     this.props.dispatch(CitizenAction.findCitizens(firstName, lastName, fatherName, documentSeries, documentNumber, page, size));
   }
   render() {
@@ -226,6 +275,8 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteService={this.onDeleteService}
           showFormOwnerEdit={this.showFormOwnerEdit}
           onDeleteOwner={this.onDeleteOwner}
+          showFormRegisteredEdit={this.showFormRegisteredEdit}
+          onDeleteRegistered={this.onDeleteRegistered}
         />
         <AccountEditParameterForm
           parameterTypes={this.props.parameterTypes}
@@ -254,7 +305,19 @@ class AccountEditPage extends ExtendedComponentPage {
           onCancelFormOwnerEdit={this.onCancelFormOwnerEdit}
           onAddOwnerDocumentAttachment={this.onAddOwnerDocumentAttachment}
           onDeleteOwnerDocumentAttachment={this.onDeleteOwnerDocumentAttachment}
-          onSearchOwner={this.onSearchOwner}
+          onSearchOwner={this.onSearchCitizen}
+        />
+        <AccountEditRegisteredForm
+          isLoading={this.props.isLoadingCitizen}
+          registered={this.state.registered}
+          citizens={this.props.citizens}
+          registrationTypes={this.props.registrationTypes}
+          formRegisteredEditVisible={this.state.formRegisteredEditVisible}
+          onOkFormRegisteredEdit={this.onOkFormRegisteredEdit}
+          onCancelFormRegisteredEdit={this.onCancelFormRegisteredEdit}
+          onAddRegisteredDocumentAttachment={this.onAddRegisteredDocumentAttachment}
+          onDeleteRegisteredDocumentAttachment={this.onDeleteRegisteredDocumentAttachment}
+          onSearchRegistered={this.onSearchCitizen}
         />
       </div>
     );
@@ -273,16 +336,19 @@ function mapStateToProps(state, props) {
     services: getServiceListData(state),
     tariffs: getTariffListData(state),
     documentTypes: getDocumentTypeListData(state),
+    registrationTypes: getRegistrationTypeListData(state),
     citizens: getCitizenListData(state),
     isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
                getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
-               getServiceIsLoading(state) || getDocumentTypeIsLoading(state),
+               getServiceIsLoading(state) || getDocumentTypeIsLoading(state) ||
+               getRegistrationTypeIsLoading(state),
     isLoadingTariff: getTariffIsLoading(state),
     isLoadingCitizen: getCitizenIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
                     getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
                     getServiceIsRequestError(state) || getTariffIsRequestError(state) ||
-                    getDocumentTypeIsRequestError(state) || getCitizenIsRequestError(state),
+                    getDocumentTypeIsRequestError(state) || getCitizenIsRequestError(state) ||
+                    getRegistrationTypeIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

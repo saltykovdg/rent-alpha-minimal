@@ -5,6 +5,8 @@ import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
 import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
 import * as AccountOwnerAction from './../actions/AccountOwnerAction';
+import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
+import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as AddressActions from './../../Address/AddressActions';
 import * as CitizenAction from './../../Citizens/actions/CitizenAction';
@@ -47,7 +49,19 @@ export const emptyOwner = {
   dateEnd: null,
 };
 
-export const emptyOwnerDocumentAttachment = {
+export const emptyRegistered = {
+  id: '',
+  citizen: null,
+  registrationType: {
+    id: '',
+    name: '',
+  },
+  documentAttachments: [],
+  dateStart: moment(),
+  dateEnd: null,
+};
+
+export const emptyDocumentAttachment = {
   id: '',
   name: '',
   urlLink: '',
@@ -73,6 +87,7 @@ const emptyEditData = {
   parameters: [],
   services: [],
   owners: [],
+  registered: [],
 };
 
 export const accountReducer = (state, action) => {
@@ -187,6 +202,46 @@ export const accountReducer = (state, action) => {
       return state.account;
     }
 
+    case AccountAction.ADD_NEW_REGISTERED_TO_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.registered.push(action.registered);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.EDIT_REGISTERED_IN_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.registered = newObj.registered.filter(document => document.id !== action.registered.id);
+      newObj.registered.push(action.registered);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.REMOVE_REGISTERED_FROM_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.registered = newObj.registered.filter(document => document.id !== action.registered.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.ADD_NEW_ATTACHMENT_TO_REGISTERED: {
+      const newObj = action.registered;
+      newObj.documentAttachments.push(action.attachment);
+      return state.account;
+    }
+    case AccountAction.EDIT_ATTACHMENT_IN_REGISTERED: {
+      const newObj = action.registered;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      newObj.documentAttachments.push(action.attachment);
+      return state.account;
+    }
+    case AccountAction.REMOVE_ATTACHMENT_FROM_REGISTERED: {
+      const newObj = action.registered;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      return state.account;
+    }
+
+    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED:
+    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS:
+    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_FAILED:
+    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT:
+    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS:
+    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED:
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER:
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS:
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER_FAILED:

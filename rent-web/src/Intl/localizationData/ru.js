@@ -14,6 +14,10 @@ export default {
     ownersTitle: 'Собственники',
     ownerTitle: 'Собственник',
 
+    // registered
+    registeredTitle: 'Прописанные',
+    registeredOneTitle: 'Прописанный',
+
     // citizens
     citizensTitle: 'Люди',
     citizenFieldGenderType: 'Пол',
@@ -118,6 +122,7 @@ export default {
     buttonAddNewDocument: 'Добавить новый документ',
     buttonAddNewAttachment: 'Добавить вложение',
     buttonAddNewOwner: 'Добавить нового собственника',
+    buttonAddNewRegistered: 'Добавить нового прописанного',
     buttonFind: 'Найти',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
@@ -158,6 +163,7 @@ export default {
     addAttachmentFileSizeErrorDescription: 'Превышен максимальный размер файла (максимальный размер 15 мб.).',
     addAttachmentFileNameErrorTitle: 'Укажите наименование для вложений!',
     selectOwnerErrorTitle: 'Укажите собственника!',
+    selectRegisteredErrorTitle: 'Укажите прописанного!',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

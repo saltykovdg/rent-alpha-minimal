@@ -33,6 +33,16 @@ export const ADD_NEW_ATTACHMENT_TO_OWNER = 'ADD_NEW_ATTACHMENT_TO_OWNER';
 export const EDIT_ATTACHMENT_IN_OWNER = 'EDIT_ATTACHMENT_IN_OWNER';
 export const REMOVE_ATTACHMENT_FROM_OWNER = 'REMOVE_ATTACHMENT_FROM_OWNER';
 
+// registered
+export const ADD_NEW_REGISTERED_TO_ACCOUNT = 'ADD_NEW_REGISTERED_TO_ACCOUNT';
+export const EDIT_REGISTERED_IN_ACCOUNT = 'EDIT_REGISTERED_IN_ACCOUNT';
+export const REMOVE_REGISTERED_FROM_ACCOUNT = 'REMOVE_REGISTERED_FROM_ACCOUNT';
+
+// registered attachments
+export const ADD_NEW_ATTACHMENT_TO_REGISTERED = 'ADD_NEW_ATTACHMENT_TO_REGISTERED';
+export const EDIT_ATTACHMENT_IN_REGISTERED = 'EDIT_ATTACHMENT_IN_REGISTERED';
+export const REMOVE_ATTACHMENT_FROM_REGISTERED = 'REMOVE_ATTACHMENT_FROM_REGISTERED';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -210,6 +220,49 @@ export const removeAttachmentFromOwner = (owner, attachment) => {
   return {
     type: REMOVE_ATTACHMENT_FROM_OWNER,
     owner,
+    attachment,
+  };
+};
+
+// registered
+export const addNewRegisteredToAccount = (registered) => {
+  return {
+    type: ADD_NEW_REGISTERED_TO_ACCOUNT,
+    registered,
+  };
+};
+export const editRegisteredInAccount = (registered) => {
+  return {
+    type: EDIT_REGISTERED_IN_ACCOUNT,
+    registered,
+  };
+};
+export const removeRegisteredFromAccount = (registered) => {
+  return {
+    type: REMOVE_REGISTERED_FROM_ACCOUNT,
+    registered,
+  };
+};
+
+// registered attachments
+export const addNewAttachmentToRegistered = (registered, attachment) => {
+  return {
+    type: ADD_NEW_ATTACHMENT_TO_REGISTERED,
+    registered,
+    attachment,
+  };
+};
+export const editAttachmentInRegistered = (registered, attachment) => {
+  return {
+    type: EDIT_ATTACHMENT_IN_REGISTERED,
+    registered,
+    attachment,
+  };
+};
+export const removeAttachmentFromRegistered = (registered, attachment) => {
+  return {
+    type: REMOVE_ATTACHMENT_FROM_REGISTERED,
+    registered,
     attachment,
   };
 };

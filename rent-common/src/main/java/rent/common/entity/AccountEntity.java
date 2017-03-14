@@ -81,6 +81,13 @@ public class AccountEntity extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AccountOwnerEntity> owners;
 
+    /**
+     * прописанные лс
+     */
+    @JoinColumn(name = Columns.ACCOUNT)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AccountRegisteredEntity> registered;
+
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -143,5 +150,13 @@ public class AccountEntity extends AbstractEntity {
 
     public void setOwners(List<AccountOwnerEntity> owners) {
         this.owners = owners;
+    }
+
+    public List<AccountRegisteredEntity> getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(List<AccountRegisteredEntity> registered) {
+        this.registered = registered;
     }
 }

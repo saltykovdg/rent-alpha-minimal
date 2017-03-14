@@ -9,9 +9,12 @@ import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
 import * as AccountOwnerAction from './../actions/AccountOwnerAction';
 import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
+import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
+import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as ServiceAction from './../../Services/actions/ServiceAction';
 import * as DocumentTypeAction from './../../Constants/actions/DocumentTypeAction';
+import * as RegistrationTypeAction from './../../Constants/actions/RegistrationTypeAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
 import * as ApiCaller from '../../../util/ApiCaller';
@@ -60,6 +63,10 @@ export function* getAccount(action) {
       sagaAction = yield take([DocumentTypeAction.GET_DOCUMENT_TYPES_SUCCESS, DocumentTypeAction.GET_DOCUMENT_TYPES_FAILED, LOCATION_CHANGE]);
     }
     if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(RegistrationTypeAction.findRegistrationTypesByName());
+      sagaAction = yield take([RegistrationTypeAction.GET_REGISTRATION_TYPES_SUCCESS, RegistrationTypeAction.GET_REGISTRATION_TYPES_FAILED, LOCATION_CHANGE]);
+    }
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountAction.getAccountSuccess(response));
     }
   } else if (!response.canceled) {
@@ -79,6 +86,8 @@ export function* saveAccount(action) {
   const servicesLinks = [];
   const owners = action.object.owners;
   const ownersLinks = [];
+  const registered = action.object.registered;
+  const registeredLinks = [];
 
   // save parameters
   for (let i = 0; i < parameters.length; i += 1) {
@@ -137,6 +146,49 @@ export function* saveAccount(action) {
     }
   }
 
+  // save registered
+  for (let i = 0; i < registered.length; i += 1) {
+    sagaAction = null;
+    const registeredObj = ObjectUtil.cloneObject(registered[i]);
+    registeredObj.registrationType = ObjectUtil.getLink(registered[i].registrationType);
+    registeredObj.citizen = ObjectUtil.getLink(registered[i].citizen);
+
+    // save registered attachments
+    const documentAttachmentsLinks = [];
+    for (let j = 0; j < registeredObj.documentAttachments.length; j += 1) {
+      const documentAttachmentObj = ObjectUtil.cloneObject(registeredObj.documentAttachments[j]);
+      let attachmentFormData = null;
+      if (documentAttachmentObj.file) {
+        attachmentFormData = new FormData();
+        attachmentFormData.append('file', documentAttachmentObj.file);
+      }
+      yield put(AccountRegisteredDocumentAttachmentAction.saveAccountRegisteredDocumentAttachment(documentAttachmentObj, attachmentFormData));
+      sagaAction = yield take([
+        AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS,
+        AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED,
+      ]);
+      if (sagaAction.type === AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS) {
+        documentAttachmentsLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+
+    // save registered
+    if (sagaAction == null) {
+      registeredObj.documentAttachments = documentAttachmentsLinks;
+      yield put(AccountRegisteredAction.saveAccountRegistered(registeredObj));
+      sagaAction = yield take([AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS, AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_FAILED]);
+      if (sagaAction.type === AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS) {
+        registeredLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+  }
+
   // save services
   if (sagaAction == null) {
     sagaAction = null;
@@ -161,6 +213,7 @@ export function* saveAccount(action) {
     objectAccount.parameters = parametersLinks;
     objectAccount.services = servicesLinks;
     objectAccount.owners = ownersLinks;
+    objectAccount.registered = registeredLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);
     if (response && !response.error && !response.canceled) {
       yield put(AccountAction.saveAccountSuccess(objectAccount));
@@ -226,6 +279,10 @@ export function* newAccount() {
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(DocumentTypeAction.findDocumentTypesByName());
     sagaAction = yield take([DocumentTypeAction.GET_DOCUMENT_TYPES_SUCCESS, DocumentTypeAction.GET_DOCUMENT_TYPES_FAILED, LOCATION_CHANGE]);
+  }
+  if (sagaAction.type !== LOCATION_CHANGE) {
+    yield put(RegistrationTypeAction.findRegistrationTypesByName());
+    sagaAction = yield take([RegistrationTypeAction.GET_REGISTRATION_TYPES_SUCCESS, RegistrationTypeAction.GET_REGISTRATION_TYPES_FAILED, LOCATION_CHANGE]);
   }
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(ServiceAction.findServicesByName());

@@ -11,25 +11,25 @@ const TabPane = Tabs.TabPane;
 const MAX_FILE_SIZE = parseInt(`${process.env.RENT_API_MAX_FILE_SIZE}`, 0);
 const MAX_CITIZENS_PER_PAGE_SIZE = 5;
 
-class AccountEditOwnerForm extends EditComponent {
+class AccountEditRegisteredForm extends EditComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {
       attachmentsFileNameError: false,
-      selectOwnerError: false,
+      selectRegisteredError: false,
       activeTab: '1',
     };
   }
   onOk = () => {
-    const citizen = this.props.owner.citizen;
+    const citizen = this.props.registered.citizen;
     if (citizen) {
       this.props.form.validateFields((error, values) => {
         if (!error && !this.props.isLoading) {
           const newValues = values;
-          newValues.documentType = this.props.documentTypes.content.filter(documentType => this.getLink(documentType) === values.documentType)[0];
+          newValues.registrationType = this.props.registrationTypes.content.filter(registrationType => this.getLink(registrationType) === values.registrationType)[0];
 
           let attachmentsError = false;
-          const documentAttachments = this.props.owner.documentAttachments;
+          const documentAttachments = this.props.registered.documentAttachments;
 
           documentAttachments.forEach((attachment) => {
             if (!attachment.name) {
@@ -40,26 +40,26 @@ class AccountEditOwnerForm extends EditComponent {
           if (!attachmentsError) {
             newValues.documentAttachments = documentAttachments;
             newValues.citizen = citizen;
-            this.props.onOkFormOwnerEdit(newValues);
+            this.props.onOkFormRegisteredEdit(newValues);
           } else {
-            this.setState({ attachmentsFileNameError: true, activeTab: '3' });
+            this.setState({ attachmentsFileNameError: true, activeTab: '2' });
           }
         } else {
-          this.setState({ activeTab: '2' });
+          this.setState({ activeTab: '1' });
         }
       });
     } else {
-      this.setState({ selectOwnerError: true, activeTab: '1' });
+      this.setState({ selectRegisteredError: true, activeTab: '1' });
     }
   }
   onCancel = () => {
-    this.props.onCancelFormOwnerEdit();
+    this.props.onCancelFormRegisteredEdit();
   }
   afterClose = () => {
     this.props.form.resetFields();
     this.setState({
       attachmentsFileNameError: false,
-      selectOwnerError: false,
+      selectRegisteredError: false,
       activeTab: '1',
     });
   }
@@ -72,16 +72,16 @@ class AccountEditOwnerForm extends EditComponent {
     }
     otherWindow.location = fileUrl;
   }
-  onDeleteOwnerDocumentAttachment = (attachment) => {
-    this.props.onDeleteOwnerDocumentAttachment(this.props.owner, attachment);
+  onDeleteRegisteredDocumentAttachment = (attachment) => {
+    this.props.onDeleteRegisteredDocumentAttachment(this.props.registered, attachment);
   }
-  onAddOwnerDocumentAttachment = () => {
+  onAddRegisteredDocumentAttachment = () => {
     const attachmentFileRef = this.attachmentFile;
     attachmentFileRef.onchange = (event) => {
       const file = event.target;
       if (file.value) {
         if (file.files[0].size <= MAX_FILE_SIZE) {
-          this.props.onAddOwnerDocumentAttachment(this.props.owner, file.files[0]);
+          this.props.onAddRegisteredDocumentAttachment(this.props.registered, file.files[0]);
         } else {
           notification.warning({
             message: this.props.intl.messages.addAttachmentFileSizeErrorTitle,
@@ -96,13 +96,13 @@ class AccountEditOwnerForm extends EditComponent {
   onTabClick = (tab) => {
     this.setState({ activeTab: tab });
   }
-  onSearchOwner = (page = 0) => {
+  onSearchRegistered = (page = 0) => {
     const firstNameSearchField = this.props.form.getFieldValue('firstNameSearchField');
     const lastNameSearchField = this.props.form.getFieldValue('lastNameSearchField');
     const fatherNameSearchField = this.props.form.getFieldValue('fatherNameSearchField');
     const documentSeriesSearchField = this.props.form.getFieldValue('documentSeriesSearchField');
     const documentNumberSearchField = this.props.form.getFieldValue('documentNumberSearchField');
-    this.props.onSearchOwner(
+    this.props.onSearchRegistered(
       firstNameSearchField,
       lastNameSearchField,
       fatherNameSearchField,
@@ -113,12 +113,12 @@ class AccountEditOwnerForm extends EditComponent {
     );
   }
   onSelectCitizen = (citizen) => {
-    this.props.owner.citizen = citizen;
-    this.setState({ selectOwnerError: false });
+    this.props.registered.citizen = citizen;
+    this.setState({ selectRegisteredError: false });
     this.forceUpdate();
   }
   onChangeCitizenClick = () => {
-    this.props.owner.citizen = null;
+    this.props.registered.citizen = null;
     this.forceUpdate();
   }
   getActionCitizenColumn = (onSelect) => {
@@ -141,7 +141,7 @@ class AccountEditOwnerForm extends EditComponent {
       this.getActionCitizenColumn(this.onSelectCitizen),
     ];
     let dataSource = [];
-    const onSearchOwner = this.onSearchOwner;
+    const onSearchRegistered = this.onSearchRegistered;
     let pagination = false;
     const citizens = this.props.citizens;
     if (citizens && citizens.content) {
@@ -159,7 +159,7 @@ class AccountEditOwnerForm extends EditComponent {
             pageSize: citizens.page.size,
             onChange(current) {
               pagination.current = current;
-              onSearchOwner(current - 1);
+              onSearchRegistered(current - 1);
             },
           };
         }
@@ -176,16 +176,16 @@ class AccountEditOwnerForm extends EditComponent {
     );
   }
   render() {
-    const object = this.props.owner;
+    const object = this.props.registered;
     const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
     const baseFields = this.getBaseFields(object);
-    let documentTypeList = null;
-    if (this.props.documentTypes && this.props.documentTypes.content) {
-      documentTypeList = this.props.documentTypes.content.map(documentType => (
-        <Select.Option key={documentType.id} value={this.getLink(documentType)}>{documentType.name}</Select.Option>
+    let registrationTypeList = null;
+    if (this.props.registrationTypes && this.props.registrationTypes.content) {
+      registrationTypeList = this.props.registrationTypes.content.map(registrationType => (
+        <Select.Option key={registrationType.id} value={this.getLink(registrationType)}>{registrationType.name}</Select.Option>
       ));
-      if (!object.id && !object.documentType.id) {
-        object.documentType = this.props.documentTypes.content[0];
+      if (!object.id && !object.registrationType.id) {
+        object.registrationType = this.props.registrationTypes.content[0];
       }
     }
     let attachmentsDataSource = [];
@@ -198,12 +198,12 @@ class AccountEditOwnerForm extends EditComponent {
     }
     const attachmentsColumns = [
       this.getAttachmentColumn(this.props.intl.messages.attachmentNameTitle, 'name'),
-      this.getAttachmentActionColumn(this.onViewDocumentAttachment, this.onDeleteOwnerDocumentAttachment),
+      this.getAttachmentActionColumn(this.onViewDocumentAttachment, this.onDeleteRegisteredDocumentAttachment),
     ];
     const panelSearchVisible = !object.citizen;
     return (
       <Modal
-        visible={this.props.formOwnerEditVisible}
+        visible={this.props.formRegisteredEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
         onOk={this.onOk}
@@ -213,10 +213,10 @@ class AccountEditOwnerForm extends EditComponent {
         maskClosable={false}
       >
         <Tabs defaultActiveKey={this.state.activeTab} activeKey={this.state.activeTab} onTabClick={this.onTabClick}>
-          <TabPane tab={this.props.intl.messages.ownerTitle} key="1">
+          <TabPane tab={this.props.intl.messages.registeredOneTitle} key="1">
             {panelSearchVisible ?
               <Form layout="horizontal">
-                {this.state.selectOwnerError ? <Alert message={this.props.intl.messages.selectOwnerErrorTitle} type="error" /> : null}
+                {this.state.selectRegisteredError ? <Alert message={this.props.intl.messages.selectRegisteredErrorTitle} type="error" /> : null}
                 <Row gutter={10}>
                   <Col className="gutter-row" span={8}>
                     <FormItem label={this.props.intl.messages.citizenFieldFirstName}>
@@ -248,7 +248,7 @@ class AccountEditOwnerForm extends EditComponent {
                   <Col className="gutter-row" span={8}>
                     <FormItem>
                       <br />
-                      <Button type="primary" htmlType="submit" className="full-width" onClick={() => this.onSearchOwner()}>
+                      <Button type="primary" htmlType="submit" className="full-width" onClick={() => this.onSearchRegistered()}>
                         <FormattedMessage id="buttonFind" />
                       </Button>
                     </FormItem>
@@ -257,6 +257,7 @@ class AccountEditOwnerForm extends EditComponent {
                 {this.getTableCitizenComponent()}
               </Form> :
               <Form layout="horizontal">
+                {baseFields}
                 <FormItem label={this.props.intl.messages.commonFieldCitizen}>
                   {this.getInputField('citizen', `${object.citizen.lastName} ${object.citizen.firstName} ${object.citizen.fatherName}`, false, true)}
                 </FormItem>
@@ -275,52 +276,27 @@ class AccountEditOwnerForm extends EditComponent {
                     </FormItem>
                   </Col>
                 </Row>
+                <FormItem label={this.props.intl.messages.registrationTypeFieldName}>
+                  {this.getSelectWithSearchField('registrationType', this.getLink(object.registrationType), registrationTypeList)}
+                </FormItem>
+                <Row gutter={16}>
+                  <Col className="gutter-row" span={12}>
+                    <FormItem label={this.props.intl.messages.commonFieldDateStart}>
+                      {this.getDateField('dateStart', object.dateStart)}
+                    </FormItem>
+                  </Col>
+                  <Col className="gutter-row" span={12}>
+                    <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
+                      {this.getDateField('dateEnd', object.dateEnd, false)}
+                    </FormItem>
+                  </Col>
+                </Row>
               </Form>
             }
           </TabPane>
-          <TabPane tab={this.props.intl.messages.documentTitle} key="2">
-            <Form layout="horizontal">
-              {baseFields}
-              <FormItem label={this.props.intl.messages.documentTypeFieldName}>
-                {this.getSelectWithSearchField('documentType', this.getLink(object.documentType), documentTypeList)}
-              </FormItem>
-              <Row gutter={16}>
-                <Col className="gutter-row" span={12}>
-                  <FormItem label={this.props.intl.messages.documentFieldSeries}>
-                    {this.getInputField('documentSeries', object.documentSeries)}
-                  </FormItem>
-                </Col>
-                <Col className="gutter-row" span={12}>
-                  <FormItem label={this.props.intl.messages.documentFieldNumber}>
-                    {this.getInputField('documentNumber', object.documentNumber)}
-                  </FormItem>
-                </Col>
-              </Row>
-              <FormItem label={this.props.intl.messages.documentFieldIssuingAuthority}>
-                {this.getInputField('documentIssuingAuthority', object.documentIssuingAuthority)}
-              </FormItem>
-              <Row gutter={16}>
-                <Col className="gutter-row" span={8}>
-                  <FormItem label={this.props.intl.messages.documentFieldDateIssue}>
-                    {this.getDateField('documentDateIssue', object.documentDateIssue)}
-                  </FormItem>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <FormItem label={this.props.intl.messages.commonFieldDateStart}>
-                    {this.getDateField('dateStart', object.dateStart)}
-                  </FormItem>
-                </Col>
-                <Col className="gutter-row" span={8}>
-                  <FormItem label={this.props.intl.messages.commonFieldDateEnd}>
-                    {this.getDateField('dateEnd', object.dateEnd, false)}
-                  </FormItem>
-                </Col>
-              </Row>
-            </Form>
-          </TabPane>
-          <TabPane tab={this.props.intl.messages.attachmentsTitle} key="3">
+          <TabPane tab={this.props.intl.messages.attachmentsTitle} key="2">
             {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /> : null}
-            <Button size="small" type="dashed" onClick={() => this.onAddOwnerDocumentAttachment()}>
+            <Button size="small" type="dashed" onClick={() => this.onAddRegisteredDocumentAttachment()}>
               <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
             </Button>
             <div className="attachments">
@@ -340,4 +316,4 @@ class AccountEditOwnerForm extends EditComponent {
   }
 }
 
-export default Form.create()(injectIntl(AccountEditOwnerForm));
+export default Form.create()(injectIntl(AccountEditRegisteredForm));

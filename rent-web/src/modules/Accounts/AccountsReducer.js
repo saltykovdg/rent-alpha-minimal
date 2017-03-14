@@ -28,6 +28,18 @@ import {
   getAccountOwnerDocumentAttachmentIsRequestError,
 } from './reducers/AccountOwnerDocumentAttachmentReducer';
 
+import {
+  accountRegisteredReducer,
+  getAccountRegisteredIsLoading,
+  getAccountRegisteredIsRequestError,
+} from './reducers/AccountRegisteredReducer';
+
+import {
+  accountRegisteredDocumentAttachmentReducer,
+  getAccountRegisteredDocumentAttachmentIsLoading,
+  getAccountRegisteredDocumentAttachmentIsRequestError,
+} from './reducers/AccountRegisteredDocumentAttachmentReducer';
+
 // Initial State
 const data = {
   list: {
@@ -50,6 +62,8 @@ const initialState = {
   accountService: data,
   accountOwner: data,
   accountOwnerDocumentAttachment: data,
+  accountRegistered: data,
+  accountRegisteredDocumentAttachment: data,
 };
 
 const AccountsReducer = (state = initialState, action) => {
@@ -59,17 +73,21 @@ const AccountsReducer = (state = initialState, action) => {
     accountService: accountServiceReducer(state, action),
     accountOwner: accountOwnerReducer(state, action),
     accountOwnerDocumentAttachment: accountOwnerDocumentAttachmentReducer(state, action),
+    accountRegistered: accountRegisteredReducer(state, action),
+    accountRegisteredDocumentAttachment: accountRegisteredDocumentAttachmentReducer(state, action),
   };
 };
 
 /* Selectors */
 export const getIsRequestError = state => getAccountIsRequestError(state) || getAccountParameterIsRequestError(state) ||
              getAccountServiceIsRequestError(state) || getAccountOwnerIsRequestError(state) ||
-             getAccountOwnerDocumentAttachmentIsRequestError(state);
+             getAccountOwnerDocumentAttachmentIsRequestError(state) || getAccountRegisteredIsRequestError(state) ||
+             getAccountRegisteredDocumentAttachmentIsRequestError(state);
 
 export const getIsLoading = state => getAccountIsLoading(state) || getAccountParameterIsLoading(state) ||
              getAccountServiceIsLoading(state) || getAccountOwnerIsLoading(state) ||
-             getAccountOwnerDocumentAttachmentIsLoading(state);
+             getAccountOwnerDocumentAttachmentIsLoading(state) || getAccountRegisteredIsLoading(state) ||
+             getAccountRegisteredDocumentAttachmentIsLoading(state);
 
 // Export Reducer
 export default AccountsReducer;
