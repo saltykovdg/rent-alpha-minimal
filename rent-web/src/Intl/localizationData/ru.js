@@ -99,6 +99,8 @@ export default {
     genderTypeTitle: 'Виды пола',
     genderTypeFieldName: 'Пол',
     genderTypeFieldNameOrigin: 'Пол (значение по умолчанию)',
+    registrationTypeTitle: 'Виды прописки',
+    registrationTypeFieldName: 'Вид прописки',
 
     // documents
     documentsTitle: 'Документы',

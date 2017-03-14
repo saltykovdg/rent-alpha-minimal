@@ -28,6 +28,12 @@ import {
   getGenderTypeIsRequestError,
 } from './reducers/GenderTypeReducer';
 
+import {
+  registrationTypeReducer,
+  getRegistrationTypeIsLoading,
+  getRegistrationTypeIsRequestError,
+} from './reducers/RegistrationTypeReducer';
+
 // Initial State
 const data = {
   list: {
@@ -50,6 +56,7 @@ const initialState = {
   parameterType: data,
   documentType: data,
   genderType: data,
+  registrationType: data,
 };
 
 const ConstantsReducer = (state = initialState, action) => {
@@ -59,23 +66,20 @@ const ConstantsReducer = (state = initialState, action) => {
     parameterType: parameterTypeReducer(state, action),
     documentType: documentTypeReducer(state, action),
     genderType: genderTypeReducer(state, action),
+    registrationType: registrationTypeReducer(state, action),
   };
 };
 
 /* Selectors */
 export const getIsRequestError = state =>
-  getCalculationTypeIsRequestError(state) ||
-  getMeasurementUnitIsRequestError(state) ||
-  getParameterTypeIsRequestError(state) ||
-  getDocumentTypeIsRequestError(state) ||
-  getGenderTypeIsRequestError(state);
+  getCalculationTypeIsRequestError(state) || getMeasurementUnitIsRequestError(state) ||
+  getParameterTypeIsRequestError(state) || getDocumentTypeIsRequestError(state) ||
+  getGenderTypeIsRequestError(state) || getRegistrationTypeIsRequestError(state);
 
 export const getIsLoading = state =>
-  getCalculationTypeIsLoading(state) ||
-  getMeasurementUnitIsLoading(state) ||
-  getParameterTypeIsLoading(state) ||
-  getDocumentTypeIsLoading(state) ||
-  getGenderTypeIsLoading(state);
+  getCalculationTypeIsLoading(state) || getMeasurementUnitIsLoading(state) ||
+  getParameterTypeIsLoading(state) || getDocumentTypeIsLoading(state) ||
+  getGenderTypeIsLoading(state) || getRegistrationTypeIsLoading(state);
 
 // Export Reducer
 export default ConstantsReducer;

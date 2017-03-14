@@ -15,6 +15,7 @@ import * as MeasurementUnitPath from '../../../Constants/paths/MeasurementUnitPa
 import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
 import * as GenderTypePath from '../../../Constants/paths/GenderTypePath';
 import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
+import * as RegistrationTypePath from '../../../Constants/paths/RegistrationTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
 
@@ -134,6 +135,11 @@ function Sidebar() {
           <Item key={DocumentTypePath.DOCUMENT_TYPE_LIST}>
             <Link to={DocumentTypePath.DOCUMENT_TYPE_LIST}>
               <FormattedMessage id="documentTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={RegistrationTypePath.REGISTRATION_TYPE_LIST}>
+            <Link to={RegistrationTypePath.REGISTRATION_TYPE_LIST}>
+              <FormattedMessage id="registrationTypeTitle" />
             </Link>
           </Item>
         </SubMenu>

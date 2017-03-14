@@ -11,6 +11,7 @@ import * as TariffPath from './modules/Tariffs/paths/TariffPath';
 import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
 import * as DocumentTypePath from './modules/Constants/paths/DocumentTypePath';
+import * as RegistrationTypePath from './modules/Constants/paths/RegistrationTypePath';
 import * as ParameterTypePath from './modules/Constants/paths/ParameterTypePath';
 import * as GenderTypePath from './modules/Constants/paths/GenderTypePath';
 import * as AccountPath from './modules/Accounts/paths/AccountPath';
@@ -60,6 +61,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Constants/pages/DocumentTypeEditPage');
   require('./modules/Constants/pages/GenderTypeListPage');
   require('./modules/Constants/pages/GenderTypeEditPage');
+  require('./modules/Constants/pages/RegistrationTypeListPage');
+  require('./modules/Constants/pages/RegistrationTypeEditPage');
 
   // Accounts
   require('./modules/Accounts/pages/AccountListPage');
@@ -312,6 +315,22 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Constants/pages/DocumentTypeEditPage').default);
+        });
+      }}
+    />
+    <Route
+      path={RegistrationTypePath.REGISTRATION_TYPE_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/RegistrationTypeListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${RegistrationTypePath.REGISTRATION_TYPE_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/RegistrationTypeEditPage').default);
         });
       }}
     />
