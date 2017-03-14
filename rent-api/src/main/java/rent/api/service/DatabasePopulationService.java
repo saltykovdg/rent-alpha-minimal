@@ -29,6 +29,7 @@ public class DatabasePopulationService {
     private final CommonRepository commonRepository;
     private final GenderTypeRepository genderTypeRepository;
     private final DocumentTypeRepository documentTypeRepository;
+    private final RegistrationTypeRepository registrationTypeRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
@@ -36,7 +37,8 @@ public class DatabasePopulationService {
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
                                      CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository,
                                      ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository,
-                                     GenderTypeRepository genderTypeRepository, DocumentTypeRepository documentTypeRepository) {
+                                     GenderTypeRepository genderTypeRepository, DocumentTypeRepository documentTypeRepository,
+                                     RegistrationTypeRepository registrationTypeRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -49,6 +51,7 @@ public class DatabasePopulationService {
         this.commonRepository = commonRepository;
         this.genderTypeRepository = genderTypeRepository;
         this.documentTypeRepository = documentTypeRepository;
+        this.registrationTypeRepository = registrationTypeRepository;
     }
 
     @PostConstruct
@@ -61,6 +64,7 @@ public class DatabasePopulationService {
         createMeasurementUnit();
         createGenderTypes();
         createDocumentTypes();
+        createRegistrationTypes();
 //        createStreetTypes();
 //        createStreets();
 //        createBuildings();
@@ -181,6 +185,19 @@ public class DatabasePopulationService {
         DocumentTypeEntity documentType = new DocumentTypeEntity();
         documentType.setName(name);
         documentTypeRepository.save(documentType);
+    }
+
+    private void createRegistrationTypes() {
+        if (registrationTypeRepository.count() == 0) {
+            createRegistrationType("Временная");
+            createRegistrationType("Постоянная");
+        }
+    }
+
+    private void createRegistrationType(String name) {
+        RegistrationTypeEntity registrationType = new RegistrationTypeEntity();
+        registrationType.setName(name);
+        registrationTypeRepository.save(registrationType);
     }
 
 //    private void createStreetTypes() {
