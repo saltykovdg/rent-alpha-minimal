@@ -68,7 +68,7 @@ class CitizenEditDocumentForm extends EditComponent {
           this.props.onAddDocumentAttachment(this.props.document, file.files[0]);
         } else {
           notification.warning({
-            message: this.props.intl.messages.addAttachmentTitle,
+            message: this.props.intl.messages.addAttachmentFileSizeErrorTitle,
             description: this.props.intl.messages.addAttachmentFileSizeErrorDescription,
           });
         }
@@ -89,7 +89,7 @@ class CitizenEditDocumentForm extends EditComponent {
       documentTypeList = this.props.documentTypes.content.map(documentType => (
         <Select.Option key={documentType.id} value={this.getLink(documentType)}>{documentType.name}</Select.Option>
       ));
-      if (!this.props.document.id && !object.documentType.id) {
+      if (!object.id && !object.documentType.id) {
         object.documentType = this.props.documentTypes.content[0];
       }
     }
@@ -157,7 +157,7 @@ class CitizenEditDocumentForm extends EditComponent {
             </Form>
           </TabPane>
           <TabPane tab={this.props.intl.messages.attachmentsTitle} key="2">
-            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorDescription} type="error" /> : null}
+            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /> : null}
             <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
               <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
             </Button>

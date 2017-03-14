@@ -173,7 +173,7 @@ public class DatabasePopulationService {
             createDocumentType("Свидетельство о рождении");
             createDocumentType("Свидетельство права собственности");
             createDocumentType("Договор купли продажи");
-            createDocumentType("Договор доверия");
+            createDocumentType("Договор дарения");
         }
     }
 

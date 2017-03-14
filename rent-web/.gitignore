@@ -13,3 +13,4 @@ jsconfig.json
 *.iml
 *.log
 *.lock
+*.yarnclean

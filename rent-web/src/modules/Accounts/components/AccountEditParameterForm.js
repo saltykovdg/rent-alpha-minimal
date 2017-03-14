@@ -15,7 +15,7 @@ class AccountEditParameterForm extends EditComponent {
     }
     return newParameterType;
   }
-  onOkFormParameterEdit = () => {
+  onOk = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
@@ -26,14 +26,15 @@ class AccountEditParameterForm extends EditComponent {
           newValues.value = newValues.value_text;
         }
         this.props.onOkFormParameterEdit(newValues);
-        this.props.form.resetFields();
       }
     });
   };
-  onCancelFormParameterEdit = () => {
-    this.props.form.resetFields();
+  onCancel = () => {
     this.props.onCancelFormParameterEdit();
   };
+  afterClose = () => {
+    this.props.form.resetFields();
+  }
   onParameterTypeChange = (value) => {
     this.props.parameter.parameterType = this.getParameterTypeByLink(value);
     if (this.props.parameter.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
@@ -63,8 +64,9 @@ class AccountEditParameterForm extends EditComponent {
         visible={this.props.formParameterEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
-        onOk={this.onOkFormParameterEdit}
-        onCancel={this.onCancelFormParameterEdit}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        afterClose={this.afterClose}
         closable={false}
         maskClosable={false}
       >

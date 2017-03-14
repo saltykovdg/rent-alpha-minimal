@@ -79,7 +79,7 @@ public class AccountEntity extends AbstractEntity {
      */
     @JoinColumn(name = Columns.ACCOUNT)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OwnerEntity> owners;
+    private List<AccountOwnerEntity> owners;
 
     public String getAccountNumber() {
         return accountNumber;
@@ -137,11 +137,11 @@ public class AccountEntity extends AbstractEntity {
         this.services = services;
     }
 
-    public List<OwnerEntity> getOwners() {
+    public List<AccountOwnerEntity> getOwners() {
         return owners;
     }
 
-    public void setOwners(List<OwnerEntity> owners) {
+    public void setOwners(List<AccountOwnerEntity> owners) {
         this.owners = owners;
     }
 }

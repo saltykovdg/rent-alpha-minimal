@@ -22,5 +22,5 @@ public interface AccountBasic extends AbstractBasic {
 
     List<AccountServiceBasic> getServices();
 
-    List<OwnerBasic> getOwners();
+    List<AccountOwnerBasic> getOwners();
 }

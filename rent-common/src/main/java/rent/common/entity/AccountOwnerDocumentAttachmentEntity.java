@@ -9,11 +9,11 @@ import javax.persistence.Table;
  * Прикрепленный документ собственника
  */
 @Entity
-@Table(name = OwnerDocumentAttachmentEntity.TABLE_NAME, indexes = {
-        @Index(columnList = OwnerDocumentAttachmentEntity.Columns.ID),
-        @Index(columnList = OwnerDocumentAttachmentEntity.Columns.NAME)
+@Table(name = AccountOwnerDocumentAttachmentEntity.TABLE_NAME, indexes = {
+        @Index(columnList = AccountOwnerDocumentAttachmentEntity.Columns.ID),
+        @Index(columnList = AccountOwnerDocumentAttachmentEntity.Columns.NAME)
 })
-public class OwnerDocumentAttachmentEntity extends AbstractEntity {
+public class AccountOwnerDocumentAttachmentEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_owners_documents_attachments";
 
     public interface Columns extends AbstractEntity.Columns {

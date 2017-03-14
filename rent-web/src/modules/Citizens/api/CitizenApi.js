@@ -16,8 +16,9 @@ export function deleteCitizen(object) {
   return ApiCaller.callApi(`citizen/${object.id}`, 'delete');
 }
 
-export function findCitizens(firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0) {
+export function findCitizens(firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0, size) {
   const query = `firstName=${firstName}&lastName=${lastName}&fatherName=${fatherName}&documentSeries=${documentSeries}&documentNumber=${documentNumber}`;
   const sort = '&sort=firstName&sort=lastName&sort=fatherName&sort=birthday';
-  return ApiCaller.callApi(`citizen/search/find?${query}&page=${page}${sort}`);
+  const sizeParam = size ? `&size=${size}` : '';
+  return ApiCaller.callApi(`citizen/search/find?${query}&page=${page}${sort}${sizeParam}`);
 }

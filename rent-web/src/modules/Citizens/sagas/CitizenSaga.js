@@ -147,7 +147,16 @@ export function* watchNewCitizen() {
 }
 
 export function* findCitizens(action) {
-  const response = yield call(CitizenApi.findCitizens, action.firstName, action.lastName, action.fatherName, action.documentSeries, action.documentNumber, action.page);
+  const response = yield call(
+    CitizenApi.findCitizens,
+    action.firstName,
+    action.lastName,
+    action.fatherName,
+    action.documentSeries,
+    action.documentNumber,
+    action.page,
+    action.size
+  );
   if (response && !response.error && !response.canceled) {
     yield put(CitizenAction.getCitizensSuccess(response));
   } else if (!response.canceled) {

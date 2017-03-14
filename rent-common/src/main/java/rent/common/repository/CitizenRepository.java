@@ -15,12 +15,12 @@ import rent.common.projection.CitizenBasic;
         itemResourceRel = "citizen",
         excerptProjection = CitizenBasic.class)
 public interface CitizenRepository extends PagingAndSortingRepository<CitizenEntity, String> {
-    @Query("select distinct citizen from CitizenEntity citizen join citizen.documents documents where " +
+    @Query("select distinct citizen from CitizenEntity citizen left join citizen.documents documents where " +
             "lower(citizen.firstName) like concat('%', lower(:firstName), '%') and " +
             "lower(citizen.lastName) like concat('%', lower(:lastName), '%') and " +
             "lower(citizen.fatherName) like concat('%', lower(:fatherName), '%') and " +
-            "lower(documents.documentSeries) like concat('%', lower(:documentSeries), '%') and " +
-            "lower(documents.documentNumber) like concat('%', lower(:documentNumber), '%')")
+            "lower(coalesce(documents.documentSeries, '')) like concat('%', lower(:documentSeries), '%') and " +
+            "lower(coalesce(documents.documentNumber, '')) like concat('%', lower(:documentNumber), '%')")
     Page<CitizenEntity> find(@Param("firstName") String firstName, @Param("lastName") String lastName,
                              @Param("fatherName") String fatherName, @Param("documentSeries") String documentSeries,
                              @Param("documentNumber") String documentNumber, Pageable p);

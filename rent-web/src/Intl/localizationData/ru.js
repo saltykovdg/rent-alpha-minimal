@@ -10,6 +10,10 @@ export default {
     accountFieldDateOpen: 'Дата открытия',
     accountFieldDateClose: 'Дата закрытия',
 
+    // owners
+    ownersTitle: 'Собственники',
+    ownerTitle: 'Собственник',
+
     // citizens
     citizensTitle: 'Люди',
     citizenFieldGenderType: 'Пол',
@@ -111,6 +115,7 @@ export default {
     buttonAddNewValue: 'Добавить новое значение',
     buttonAddNewDocument: 'Добавить новый документ',
     buttonAddNewAttachment: 'Добавить вложение',
+    buttonAddNewOwner: 'Добавить нового собственника',
     buttonFind: 'Найти',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
@@ -122,6 +127,8 @@ export default {
     buttonCancel: 'Отмена',
     buttonView: 'Просмотр',
     buttonApply: 'Применить',
+    buttonSelect: 'Выбрать',
+    buttonChange: 'Изменить',
     tableColumnActions: 'Действия',
     fieldIsEmptyError: 'Поле не должно быть пустым!',
     getRequestErrorTitle: 'Ошибка сети',
@@ -140,13 +147,15 @@ export default {
     commonFieldDateStart: 'Действует С',
     commonFieldDateEnd: 'Действует ПО',
     commonFieldValue: 'Значение',
+    commonFieldCitizen: 'ФИО',
     filtersTitle: 'Фильтры',
     attachmentsTitle: 'Вложения',
     attachmentNameTitle: 'Название вложения',
     attachmentNamePlaceholder: 'Введите название вложения',
-    addAttachmentTitle: 'Добавление вложения',
+    addAttachmentFileSizeErrorTitle: 'Добавление вложения',
     addAttachmentFileSizeErrorDescription: 'Превышен максимальный размер файла (максимальный размер 15 мб.).',
-    addAttachmentFileNameErrorDescription: 'Укажите наименование для вложений!',
+    addAttachmentFileNameErrorTitle: 'Укажите наименование для вложений!',
+    selectOwnerErrorTitle: 'Укажите собственника!',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

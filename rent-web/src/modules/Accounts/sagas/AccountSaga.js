@@ -7,8 +7,11 @@ import * as AddressAction from './../../Address/AddressActions';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
+import * as AccountOwnerAction from './../actions/AccountOwnerAction';
+import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as ServiceAction from './../../Services/actions/ServiceAction';
+import * as DocumentTypeAction from './../../Constants/actions/DocumentTypeAction';
 import * as AccountApi from './../api/AccountApi';
 import * as AccountPath from './../paths/AccountPath';
 import * as ApiCaller from '../../../util/ApiCaller';
@@ -53,6 +56,10 @@ export function* getAccount(action) {
       sagaAction = yield take([ServiceAction.GET_SERVICES_SUCCESS, ServiceAction.GET_SERVICES_FAILED, LOCATION_CHANGE]);
     }
     if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(DocumentTypeAction.findDocumentTypesByName());
+      sagaAction = yield take([DocumentTypeAction.GET_DOCUMENT_TYPES_SUCCESS, DocumentTypeAction.GET_DOCUMENT_TYPES_FAILED, LOCATION_CHANGE]);
+    }
+    if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountAction.getAccountSuccess(response));
     }
   } else if (!response.canceled) {
@@ -70,6 +77,10 @@ export function* saveAccount(action) {
   const parametersLinks = [];
   const services = action.object.services;
   const servicesLinks = [];
+  const owners = action.object.owners;
+  const ownersLinks = [];
+
+  // save parameters
   for (let i = 0; i < parameters.length; i += 1) {
     const newItem = ObjectUtil.cloneObject(parameters[i]);
     newItem.parameterType = ObjectUtil.getLink(parameters[i].parameterType);
@@ -77,11 +88,57 @@ export function* saveAccount(action) {
     sagaAction = yield take([AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS, AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED]);
     if (sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS) {
       parametersLinks.push(ObjectUtil.getLink(sagaAction.data));
+      sagaAction = null;
     } else {
       break;
     }
   }
-  if (sagaAction == null || (sagaAction && sagaAction.type === AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS)) {
+
+  // save owners
+  for (let i = 0; i < owners.length; i += 1) {
+    sagaAction = null;
+    const ownerObj = ObjectUtil.cloneObject(owners[i]);
+    ownerObj.documentType = ObjectUtil.getLink(owners[i].documentType);
+    ownerObj.citizen = ObjectUtil.getLink(owners[i].citizen);
+
+    // save owner attachments
+    const documentAttachmentsLinks = [];
+    for (let j = 0; j < ownerObj.documentAttachments.length; j += 1) {
+      const documentAttachmentObj = ObjectUtil.cloneObject(ownerObj.documentAttachments[j]);
+      let attachmentFormData = null;
+      if (documentAttachmentObj.file) {
+        attachmentFormData = new FormData();
+        attachmentFormData.append('file', documentAttachmentObj.file);
+      }
+      yield put(AccountOwnerDocumentAttachmentAction.saveAccountOwnerDocumentAttachment(documentAttachmentObj, attachmentFormData));
+      sagaAction = yield take([
+        AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS,
+        AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED,
+      ]);
+      if (sagaAction.type === AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS) {
+        documentAttachmentsLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+
+    // save owner
+    if (sagaAction == null) {
+      ownerObj.documentAttachments = documentAttachmentsLinks;
+      yield put(AccountOwnerAction.saveAccountOwner(ownerObj));
+      sagaAction = yield take([AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS, AccountOwnerAction.SAVE_ACCOUNT_OWNER_FAILED]);
+      if (sagaAction.type === AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS) {
+        ownersLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // save services
+  if (sagaAction == null) {
     sagaAction = null;
     for (let i = 0; i < services.length; i += 1) {
       const newItem = ObjectUtil.cloneObject(services[i]);
@@ -91,15 +148,19 @@ export function* saveAccount(action) {
       sagaAction = yield take([AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS, AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED]);
       if (sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS) {
         servicesLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
       } else {
         break;
       }
     }
   }
-  if (sagaAction == null || (sagaAction && sagaAction.type === AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS)) {
+
+  // save account
+  if (sagaAction == null) {
     const objectAccount = ObjectUtil.cloneObject(action.object);
     objectAccount.parameters = parametersLinks;
     objectAccount.services = servicesLinks;
+    objectAccount.owners = ownersLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);
     if (response && !response.error && !response.canceled) {
       yield put(AccountAction.saveAccountSuccess(objectAccount));
@@ -161,6 +222,10 @@ export function* newAccount() {
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(ParameterTypeAction.findParameterTypesByName());
     sagaAction = yield take([ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS, ParameterTypeAction.GET_PARAMETER_TYPES_FAILED, LOCATION_CHANGE]);
+  }
+  if (sagaAction.type !== LOCATION_CHANGE) {
+    yield put(DocumentTypeAction.findDocumentTypesByName());
+    sagaAction = yield take([DocumentTypeAction.GET_DOCUMENT_TYPES_SUCCESS, DocumentTypeAction.GET_DOCUMENT_TYPES_FAILED, LOCATION_CHANGE]);
   }
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(ServiceAction.findServicesByName());

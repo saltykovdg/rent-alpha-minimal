@@ -82,11 +82,11 @@ class CitizenEditPage extends ExtendedComponentPage {
     newAttachment.id = moment().unix();
     newAttachment.file = file;
     newAttachment.name = file.name.replace(/\.[^/.]+$/, '');
-    this.props.dispatch(CitizenAction.addNewAttachmentToDocument(document, newAttachment));
+    this.props.dispatch(CitizenAction.addNewAttachmentToCitizenDocument(document, newAttachment));
     this.forceUpdate();
   }
   onDeleteDocumentAttachment = (document, attachment) => {
-    this.props.dispatch(CitizenAction.removeAttachmentFromDocument(document, attachment));
+    this.props.dispatch(CitizenAction.removeAttachmentFromCitizenDocument(document, attachment));
     this.forceUpdate();
   }
   render() {

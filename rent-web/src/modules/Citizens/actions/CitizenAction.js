@@ -12,6 +12,7 @@ export const DELETE_CITIZEN_SUCCESS = 'DELETE_CITIZEN_SUCCESS';
 export const DELETE_CITIZEN_FAILED = 'DELETE_CITIZEN_FAILED';
 export const NEW_CITIZEN = 'NEW_CITIZEN';
 export const FIND_CITIZENS = 'FIND_CITIZENS';
+export const CLEAR_LOCAL_DATA_CITIZENS = 'CLEAR_LOCAL_DATA_CITIZENS';
 
 // citizen documents
 export const ADD_NEW_DOCUMENT_TO_CITIZEN = 'ADD_NEW_DOCUMENT_TO_CITIZEN';
@@ -19,9 +20,9 @@ export const EDIT_DOCUMENT_IN_CITIZEN = 'EDIT_DOCUMENT_IN_CITIZEN';
 export const REMOVE_DOCUMENT_FROM_CITIZEN = 'REMOVE_DOCUMENT_FROM_CITIZEN';
 
 // citizen documents attachments
-export const ADD_NEW_ATTACHMENT_TO_DOCUMENT = 'ADD_NEW_ATTACHMENT_TO_DOCUMENT';
-export const EDIT_ATTACHMENT_IN_DOCUMENT = 'EDIT_ATTACHMENT_IN_DOCUMENT';
-export const REMOVE_ATTACHMENT_FROM_DOCUMENT = 'REMOVE_ATTACHMENT_FROM_DOCUMENT';
+export const ADD_NEW_ATTACHMENT_TO_CITIZEN_DOCUMENT = 'ADD_NEW_ATTACHMENT_TO_CITIZEN_DOCUMENT';
+export const EDIT_ATTACHMENT_IN_CITIZEN_DOCUMENT = 'EDIT_ATTACHMENT_IN_CITIZEN_DOCUMENT';
+export const REMOVE_ATTACHMENT_FROM_CITIZEN_DOCUMENT = 'REMOVE_ATTACHMENT_FROM_CITIZEN_DOCUMENT';
 
 export const getCitizens = (page = 0) => {
   return {
@@ -112,7 +113,7 @@ export const newCitizen = () => {
   };
 };
 
-export const findCitizens = (firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0) => {
+export const findCitizens = (firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0, size) => {
   return {
     type: FIND_CITIZENS,
     firstName,
@@ -121,6 +122,13 @@ export const findCitizens = (firstName = '', lastName = '', fatherName = '', doc
     documentSeries,
     documentNumber,
     page,
+    size,
+  };
+};
+
+export const clearLocalDataCitizens = () => {
+  return {
+    type: CLEAR_LOCAL_DATA_CITIZENS,
   };
 };
 
@@ -145,23 +153,23 @@ export const removeDocumentFromCitizen = (document) => {
 };
 
 // citizen documents attachments
-export const addNewAttachmentToDocument = (document, attachment) => {
+export const addNewAttachmentToCitizenDocument = (document, attachment) => {
   return {
-    type: ADD_NEW_ATTACHMENT_TO_DOCUMENT,
+    type: ADD_NEW_ATTACHMENT_TO_CITIZEN_DOCUMENT,
     document,
     attachment,
   };
 };
-export const editAttachmentInDocument = (document, attachment) => {
+export const editAttachmentInCitizenDocument = (document, attachment) => {
   return {
-    type: EDIT_ATTACHMENT_IN_DOCUMENT,
+    type: EDIT_ATTACHMENT_IN_CITIZEN_DOCUMENT,
     document,
     attachment,
   };
 };
-export const removeAttachmentFromDocument = (document, attachment) => {
+export const removeAttachmentFromCitizenDocument = (document, attachment) => {
   return {
-    type: REMOVE_ATTACHMENT_FROM_DOCUMENT,
+    type: REMOVE_ATTACHMENT_FROM_CITIZEN_DOCUMENT,
     document,
     attachment,
   };

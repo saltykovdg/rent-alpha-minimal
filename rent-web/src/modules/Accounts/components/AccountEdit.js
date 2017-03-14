@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import {
-  Breadcrumb, Icon, Button, Form, Spin,
-  Select, Row, Col, Table,
-} from 'antd';
+import { Breadcrumb, Icon, Button, Form, Spin, Select, Row, Col, Table } from 'antd';
 
 import * as AccountPath from './../paths/AccountPath';
 import { EditComponent } from './../../../components/EditComponent';
@@ -90,6 +87,25 @@ class AccountEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.tariffFieldName, 'tariff.name'),
       this.getActionColumn(this.props.showFormServiceEdit, this.props.onDeleteService),
     ];
+    let ownersDataSource = [];
+    if (object && object.owners && object.owners.length > 0) {
+      ownersDataSource = object.owners.sort((a, b) => {
+        return new Date(b.dateStart) - new Date(a.dateStart);
+      });
+      ownersDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
+    }
+    const ownersColumns = [
+      this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
+      this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
+      this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
+      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionColumn(this.props.showFormOwnerEdit, this.props.onDeleteOwner),
+    ];
     return (
       <div>
         <Breadcrumb>
@@ -160,6 +176,17 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={servicesDataSource}
               columns={servicesColumns}
+              bordered pagination={false}
+              size="small"
+            />
+            <br />
+            <h2>{this.props.intl.messages.ownersTitle}</h2>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormOwnerEdit()}>
+              <FormattedMessage id="buttonAddNewOwner" />
+            </Button>
+            <Table
+              dataSource={ownersDataSource}
+              columns={ownersColumns}
               bordered pagination={false}
               size="small"
             />

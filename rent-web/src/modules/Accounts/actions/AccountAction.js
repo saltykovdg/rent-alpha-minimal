@@ -23,6 +23,16 @@ export const ADD_NEW_SERVICE_TO_ACCOUNT = 'ADD_NEW_SERVICE_TO_ACCOUNT';
 export const EDIT_SERVICE_IN_ACCOUNT = 'EDIT_SERVICE_IN_ACCOUNT';
 export const REMOVE_SERVICE_FROM_ACCOUNT = 'REMOVE_SERVICE_FROM_ACCOUNT';
 
+// owners
+export const ADD_NEW_OWNER_TO_ACCOUNT = 'ADD_NEW_OWNER_TO_ACCOUNT';
+export const EDIT_OWNER_IN_ACCOUNT = 'EDIT_OWNER_IN_ACCOUNT';
+export const REMOVE_OWNER_FROM_ACCOUNT = 'REMOVE_OWNER_FROM_ACCOUNT';
+
+// owners attachments
+export const ADD_NEW_ATTACHMENT_TO_OWNER = 'ADD_NEW_ATTACHMENT_TO_OWNER';
+export const EDIT_ATTACHMENT_IN_OWNER = 'EDIT_ATTACHMENT_IN_OWNER';
+export const REMOVE_ATTACHMENT_FROM_OWNER = 'REMOVE_ATTACHMENT_FROM_OWNER';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -158,5 +168,48 @@ export const removeServiceFromAccount = (service) => {
   return {
     type: REMOVE_SERVICE_FROM_ACCOUNT,
     service,
+  };
+};
+
+// owners
+export const addNewOwnerToAccount = (owner) => {
+  return {
+    type: ADD_NEW_OWNER_TO_ACCOUNT,
+    owner,
+  };
+};
+export const editOwnerInAccount = (owner) => {
+  return {
+    type: EDIT_OWNER_IN_ACCOUNT,
+    owner,
+  };
+};
+export const removeOwnerFromAccount = (owner) => {
+  return {
+    type: REMOVE_OWNER_FROM_ACCOUNT,
+    owner,
+  };
+};
+
+// owners attachments
+export const addNewAttachmentToOwner = (owner, attachment) => {
+  return {
+    type: ADD_NEW_ATTACHMENT_TO_OWNER,
+    owner,
+    attachment,
+  };
+};
+export const editAttachmentInOwner = (owner, attachment) => {
+  return {
+    type: EDIT_ATTACHMENT_IN_OWNER,
+    owner,
+    attachment,
+  };
+};
+export const removeAttachmentFromOwner = (owner, attachment) => {
+  return {
+    type: REMOVE_ATTACHMENT_FROM_OWNER,
+    owner,
+    attachment,
   };
 };

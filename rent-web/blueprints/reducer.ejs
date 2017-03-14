@@ -10,7 +10,7 @@ const initialState = {
   <%= helpers.camelCase(name) %>: data,
 };
 
-const <%= helpers.camelCase(name) %>Reducer = (state = initialState, action) => {
+const <%= helpers.pascalCase(parent) %>Reducer = (state = initialState, action) => {
   return {
     <%= helpers.camelCase(name) %>: <%= helpers.camelCase(name) %>Reducer(state, action),
   };

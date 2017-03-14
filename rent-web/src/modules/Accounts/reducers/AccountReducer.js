@@ -3,8 +3,11 @@ import moment from 'moment';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
+import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
+import * as AccountOwnerAction from './../actions/AccountOwnerAction';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as AddressActions from './../../Address/AddressActions';
+import * as CitizenAction from './../../Citizens/actions/CitizenAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const emptyParameter = {
@@ -26,6 +29,28 @@ export const emptyService = {
   },
   dateStart: moment(),
   dateEnd: null,
+};
+
+export const emptyOwner = {
+  id: '',
+  citizen: null,
+  documentType: {
+    id: '',
+    name: '',
+  },
+  documentSeries: '',
+  documentNumber: '',
+  documentIssuingAuthority: '',
+  documentDateIssue: '',
+  documentAttachments: [],
+  dateStart: moment(),
+  dateEnd: null,
+};
+
+export const emptyOwnerDocumentAttachment = {
+  id: '',
+  name: '',
+  urlLink: '',
 };
 
 const emptyEditData = {
@@ -99,14 +124,12 @@ export const accountReducer = (state, action) => {
       newObj.parameters.push(action.parameter);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case AccountAction.EDIT_PARAMETER_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
       newObj.parameters.push(action.parameter);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case AccountAction.REMOVE_PARAMETER_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
@@ -118,20 +141,58 @@ export const accountReducer = (state, action) => {
       newObj.services.push(action.service);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case AccountAction.EDIT_SERVICE_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.services = newObj.services.filter(service => service.id !== action.service.id);
       newObj.services.push(action.service);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case AccountAction.REMOVE_SERVICE_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.services = newObj.services.filter(service => service.id !== action.service.id);
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case AccountAction.ADD_NEW_OWNER_TO_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.owners.push(action.owner);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.EDIT_OWNER_IN_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.owners = newObj.owners.filter(document => document.id !== action.owner.id);
+      newObj.owners.push(action.owner);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.REMOVE_OWNER_FROM_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.owners = newObj.owners.filter(document => document.id !== action.owner.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountAction.ADD_NEW_ATTACHMENT_TO_OWNER: {
+      const newObj = action.owner;
+      newObj.documentAttachments.push(action.attachment);
+      return state.account;
+    }
+    case AccountAction.EDIT_ATTACHMENT_IN_OWNER: {
+      const newObj = action.owner;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      newObj.documentAttachments.push(action.attachment);
+      return state.account;
+    }
+    case AccountAction.REMOVE_ATTACHMENT_FROM_OWNER: {
+      const newObj = action.owner;
+      newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
+      return state.account;
+    }
+
+    case AccountOwnerAction.SAVE_ACCOUNT_OWNER:
+    case AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS:
+    case AccountOwnerAction.SAVE_ACCOUNT_OWNER_FAILED:
+    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT:
+    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS:
+    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED:
     case AddressActions.FIND_APARTMENTS_BY_BUILDING_ID:
     case AddressActions.GET_APARTMENTS_SUCCESS:
     case AddressActions.GET_APARTMENTS_FAILED:
@@ -141,6 +202,10 @@ export const accountReducer = (state, action) => {
     case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
     case TariffAction.GET_TARIFFS_SUCCESS:
     case TariffAction.GET_TARIFFS_FAILED:
+    case CitizenAction.CLEAR_LOCAL_DATA_CITIZENS:
+    case CitizenAction.FIND_CITIZENS:
+    case CitizenAction.GET_CITIZENS_SUCCESS:
+    case CitizenAction.GET_CITIZENS_FAILED:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED:

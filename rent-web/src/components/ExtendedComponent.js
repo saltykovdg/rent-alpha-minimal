@@ -39,9 +39,10 @@ class ExtendedComponent extends Component {
   getDateColumn = (title, name) => {
     return {
       title,
+      dataIndex: name,
       key: name,
-      render(text, record) {
-        return record[name] ? moment(record[name]).format(dateFormat) : '';
+      render(text) {
+        return text ? moment(text).format(dateFormat) : '';
       },
     };
   }

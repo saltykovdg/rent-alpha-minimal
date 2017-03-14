@@ -8,15 +8,15 @@ import java.util.List;
  * Собственник ЛС
  */
 @Entity
-@Table(name = OwnerEntity.TABLE_NAME, indexes = {
-        @Index(columnList = OwnerEntity.Columns.ID),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_TYPE),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_SERIES),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_NUMBER),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
-        @Index(columnList = OwnerEntity.Columns.DOCUMENT_DATE_ISSUE)
+@Table(name = AccountOwnerEntity.TABLE_NAME, indexes = {
+        @Index(columnList = AccountOwnerEntity.Columns.ID),
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_TYPE),
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_SERIES),
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_NUMBER),
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_DATE_ISSUE)
 })
-public class OwnerEntity extends AbstractEntity {
+public class AccountOwnerEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_owners";
 
     public interface Columns extends AbstractEntity.Columns {
@@ -74,7 +74,7 @@ public class OwnerEntity extends AbstractEntity {
      */
     @JoinColumn(name = Columns.ACCOUNT_OWNER)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OwnerDocumentAttachmentEntity> documentAttachments;
+    private List<AccountOwnerDocumentAttachmentEntity> documentAttachments;
 
     /**
      * дата начала
@@ -136,11 +136,11 @@ public class OwnerEntity extends AbstractEntity {
         this.documentDateIssue = documentDateIssue;
     }
 
-    public List<OwnerDocumentAttachmentEntity> getDocumentAttachments() {
+    public List<AccountOwnerDocumentAttachmentEntity> getDocumentAttachments() {
         return documentAttachments;
     }
 
-    public void setDocumentAttachments(List<OwnerDocumentAttachmentEntity> documentAttachments) {
+    public void setDocumentAttachments(List<AccountOwnerDocumentAttachmentEntity> documentAttachments) {
         this.documentAttachments = documentAttachments;
     }
 

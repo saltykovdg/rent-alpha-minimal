@@ -8,11 +8,13 @@ import { ExtendedComponentPage } from './../../../components/ExtendedComponentPa
 import AccountEdit from './../components/AccountEdit';
 import AccountEditParameterForm from './../components/AccountEditParameterForm';
 import AccountEditServiceForm from './../components/AccountEditServiceForm';
+import AccountEditOwnerForm from './../components/AccountEditOwnerForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
 import * as AddressAction from './../../Address/AddressActions';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
+import * as CitizenAction from './../../Citizens/actions/CitizenAction';
 
 // Import Selectors
 import {
@@ -20,6 +22,8 @@ import {
   getAccountIsSaved,
   emptyParameter,
   emptyService,
+  emptyOwner,
+  emptyOwnerDocumentAttachment,
 } from './../reducers/AccountReducer';
 
 import {
@@ -59,6 +63,18 @@ import {
   getTariffIsRequestError,
 } from './../..//Tariffs/reducers/TariffReducer';
 
+import {
+  getDocumentTypeListData,
+  getDocumentTypeIsLoading,
+  getDocumentTypeIsRequestError,
+} from './../../Constants/reducers/DocumentTypeReducer';
+
+import {
+  getCitizenListData,
+  getCitizenIsLoading,
+  getCitizenIsRequestError,
+} from './../../Citizens/reducers/CitizenReducer';
+
 import * as ObjectUtil from './../../../util/ObjectUtil';
 
 class AccountEditPage extends ExtendedComponentPage {
@@ -70,8 +86,10 @@ class AccountEditPage extends ExtendedComponentPage {
     } else {
       this.props.dispatch(AccountAction.newAccount());
     }
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
     this.initFormParameter(false);
     this.initFormService(false);
+    this.initFormOwner(false);
   }
   initFormParameter = (visible, parameter = emptyParameter) => {
     this.setState({
@@ -83,25 +101,30 @@ class AccountEditPage extends ExtendedComponentPage {
       formServiceEditVisible: visible, service: ObjectUtil.cloneObject(service),
     });
   }
+  initFormOwner = (visible, owner = emptyOwner) => {
+    this.setState({
+      formOwnerEditVisible: visible, owner: ObjectUtil.cloneObject(owner),
+    });
+  }
   onSave = (object) => {
     const newObject = ObjectUtil.cloneObject(object);
     newObject.parameters = this.props.data.parameters;
     newObject.services = this.props.data.services;
     newObject.owners = this.props.data.owners;
     this.props.dispatch(AccountAction.saveAccount(newObject));
-  };
+  }
   onStreetChange = (streetId) => {
     this.props.dispatch(AddressAction.findBuildingsByStreetId(streetId));
-  };
+  }
   onBuildingChange = (buildingId) => {
     this.props.dispatch(AddressAction.findApartmentsByBuildingId(buildingId));
-  };
+  }
   onServiceChange = (serviceId = '') => {
     this.props.dispatch(TariffAction.findTariffsByServiceId(serviceId));
-  };
+  }
   showFormParameterEdit = (parameter = emptyParameter) => {
     this.initFormParameter(true, parameter);
-  };
+  }
   onOkFormParameterEdit = (parameter = emptyParameter) => {
     this.initFormParameter(false);
     if (parameter.id) {
@@ -126,7 +149,7 @@ class AccountEditPage extends ExtendedComponentPage {
     } else {
       this.onServiceChange();
     }
-  };
+  }
   onOkFormServiceEdit = (service = emptyService) => {
     this.initFormService(false);
     if (service.id) {
@@ -143,6 +166,43 @@ class AccountEditPage extends ExtendedComponentPage {
   onDeleteService = (service) => {
     this.props.dispatch(AccountAction.removeServiceFromAccount(ObjectUtil.cloneObject(service)));
     this.forceUpdate();
+  }
+  showFormOwnerEdit = (owner = emptyOwner) => {
+    this.initFormOwner(true, owner);
+  }
+  onOkFormOwnerEdit = (owner = emptyOwner) => {
+    this.initFormOwner(false);
+    if (owner.id) {
+      this.props.dispatch(AccountAction.editOwnerInAccount(ObjectUtil.cloneObject(owner)));
+    } else {
+      const newOwner = ObjectUtil.cloneObject(owner);
+      newOwner.id = moment().unix();
+      this.props.dispatch(AccountAction.addNewOwnerToAccount(newOwner));
+    }
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  }
+  onCancelFormOwnerEdit = () => {
+    this.initFormOwner(false);
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  }
+  onDeleteOwner = (owner) => {
+    this.props.dispatch(AccountAction.removeOwnerFromAccount(ObjectUtil.cloneObject(owner)));
+    this.forceUpdate();
+  }
+  onAddOwnerDocumentAttachment = (owner, file, attachment = emptyOwnerDocumentAttachment) => {
+    const newAttachment = ObjectUtil.cloneObject(attachment);
+    newAttachment.id = moment().unix();
+    newAttachment.file = file;
+    newAttachment.name = file.name.replace(/\.[^/.]+$/, '');
+    this.props.dispatch(AccountAction.addNewAttachmentToOwner(owner, newAttachment));
+    this.forceUpdate();
+  }
+  onDeleteOwnerDocumentAttachment = (owner, attachment) => {
+    this.props.dispatch(AccountAction.removeAttachmentFromOwner(owner, attachment));
+    this.forceUpdate();
+  }
+  onSearchOwner = (firstName, lastName, fatherName, documentSeries, documentNumber, page, size) => {
+    this.props.dispatch(CitizenAction.findCitizens(firstName, lastName, fatherName, documentSeries, documentNumber, page, size));
   }
   render() {
     return (
@@ -164,6 +224,8 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteParameter={this.onDeleteParameter}
           showFormServiceEdit={this.showFormServiceEdit}
           onDeleteService={this.onDeleteService}
+          showFormOwnerEdit={this.showFormOwnerEdit}
+          onDeleteOwner={this.onDeleteOwner}
         />
         <AccountEditParameterForm
           parameterTypes={this.props.parameterTypes}
@@ -182,6 +244,18 @@ class AccountEditPage extends ExtendedComponentPage {
           onOkFormServiceEdit={this.onOkFormServiceEdit}
           onCancelFormServiceEdit={this.onCancelFormServiceEdit}
         />
+        <AccountEditOwnerForm
+          isLoading={this.props.isLoadingCitizen}
+          owner={this.state.owner}
+          citizens={this.props.citizens}
+          documentTypes={this.props.documentTypes}
+          formOwnerEditVisible={this.state.formOwnerEditVisible}
+          onOkFormOwnerEdit={this.onOkFormOwnerEdit}
+          onCancelFormOwnerEdit={this.onCancelFormOwnerEdit}
+          onAddOwnerDocumentAttachment={this.onAddOwnerDocumentAttachment}
+          onDeleteOwnerDocumentAttachment={this.onDeleteOwnerDocumentAttachment}
+          onSearchOwner={this.onSearchOwner}
+        />
       </div>
     );
   }
@@ -198,13 +272,17 @@ function mapStateToProps(state, props) {
     parameterTypes: getParameterTypeListData(state),
     services: getServiceListData(state),
     tariffs: getTariffListData(state),
+    documentTypes: getDocumentTypeListData(state),
+    citizens: getCitizenListData(state),
     isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
                getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
-               getServiceIsLoading(state),
+               getServiceIsLoading(state) || getDocumentTypeIsLoading(state),
     isLoadingTariff: getTariffIsLoading(state),
+    isLoadingCitizen: getCitizenIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
                     getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
-                    getServiceIsRequestError(state) || getTariffIsRequestError(state),
+                    getServiceIsRequestError(state) || getTariffIsRequestError(state) ||
+                    getDocumentTypeIsRequestError(state) || getCitizenIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

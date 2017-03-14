@@ -88,34 +88,30 @@ export const citizenReducer = (state, action) => {
       newObj.documents.push(action.document);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case CitizenAction.EDIT_DOCUMENT_IN_CITIZEN: {
       const newObj = state.citizen.edit.data;
       newObj.documents = newObj.documents.filter(document => document.id !== action.document.id);
       newObj.documents.push(action.document);
       return prepareEdit(newObj, false, false, false, false);
     }
-
     case CitizenAction.REMOVE_DOCUMENT_FROM_CITIZEN: {
-      const newObj = action.document;
+      const newObj = state.citizen.edit.data;
       newObj.documents = newObj.documents.filter(document => document.id !== action.document.id);
       return prepareEdit(newObj, false, false, false, false);
     }
 
-    case CitizenAction.ADD_NEW_ATTACHMENT_TO_DOCUMENT: {
+    case CitizenAction.ADD_NEW_ATTACHMENT_TO_CITIZEN_DOCUMENT: {
       const newObj = action.document;
       newObj.documentAttachments.push(action.attachment);
       return state.citizen;
     }
-
-    case CitizenAction.EDIT_ATTACHMENT_IN_DOCUMENT: {
+    case CitizenAction.EDIT_ATTACHMENT_IN_CITIZEN_DOCUMENT: {
       const newObj = action.document;
       newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
       newObj.documentAttachments.push(action.attachment);
       return state.citizen;
     }
-
-    case CitizenAction.REMOVE_ATTACHMENT_FROM_DOCUMENT: {
+    case CitizenAction.REMOVE_ATTACHMENT_FROM_CITIZEN_DOCUMENT: {
       const newObj = action.document;
       newObj.documentAttachments = newObj.documentAttachments.filter(attachment => attachment.id !== action.attachment.id);
       return state.citizen;
@@ -128,6 +124,10 @@ export const citizenReducer = (state, action) => {
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS:
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_FAILED: {
       return state.citizen;
+    }
+
+    case CitizenAction.CLEAR_LOCAL_DATA_CITIZENS: {
+      return prepareList(null, emptyEditData, false, false, false, false);
     }
 
     default:
