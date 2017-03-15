@@ -11,8 +11,9 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.handler.MappedInterceptor;
+import rent.api.interceptors.LoggingRequestInterceptor;
 
 @Configuration
 @ComponentScan(basePackages = {"rent.api", "rent.common"})
@@ -48,13 +49,7 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    public CommonsRequestLoggingFilter commonLogFilter() {
-        CommonsRequestLoggingFilter commonsRequestLoggingFilter = new CommonsRequestLoggingFilter();
-        commonsRequestLoggingFilter.setIncludeQueryString(true);
-        commonsRequestLoggingFilter.setIncludePayload(true);
-        commonsRequestLoggingFilter.setIncludeHeaders(true);
-        commonsRequestLoggingFilter.setIncludeClientInfo(true);
-        commonsRequestLoggingFilter.setMaxPayloadLength(5120);
-        return commonsRequestLoggingFilter;
+    public MappedInterceptor loggingMappedInterceptor() {
+        return new MappedInterceptor(new String[]{"/**"}, new LoggingRequestInterceptor());
     }
 }
