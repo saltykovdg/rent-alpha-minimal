@@ -121,6 +121,7 @@ class AccountEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
       this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
       this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getColumn(this.props.intl.messages.registrationTypeFieldName, 'registrationType.name'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormRegisteredEdit, this.props.onDeleteRegistered),
