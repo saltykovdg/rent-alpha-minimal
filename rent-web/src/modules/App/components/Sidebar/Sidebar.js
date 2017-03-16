@@ -18,6 +18,7 @@ import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as RegistrationTypePath from '../../../Constants/paths/RegistrationTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
+import * as NormPath from '../../../Norms/paths/NormPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -87,13 +88,6 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
-        <SubMenu key="sidebarNorms" title={<FormattedMessage id="normsTitle" />}>
-          <Item key="sidebarNormsGroupsNorms">
-            <Link to="/norms/group/list">
-              <FormattedMessage id="normsGroupsNormsTitle" />
-            </Link>
-          </Item>
-        </SubMenu>
         <SubMenu key="sidebarServices" title={<FormattedMessage id="servicesTitle" />}>
           <Item key={ServiceTypePath.SERVICE_TYPE_LIST}>
             <Link to={ServiceTypePath.SERVICE_TYPE_LIST}>
@@ -109,6 +103,11 @@ function Sidebar() {
         <Item key={TariffPath.TARIFF_LIST}>
           <Link to={TariffPath.TARIFF_LIST}>
             <FormattedMessage id="tariffsTitle" />
+          </Link>
+        </Item>
+        <Item key={NormPath.NORM_LIST}>
+          <Link to={NormPath.NORM_LIST}>
+            <FormattedMessage id="normsTitle" />
           </Link>
         </Item>
         <SubMenu key="sidebarConstants" title={<FormattedMessage id="constantsTitle" />}>

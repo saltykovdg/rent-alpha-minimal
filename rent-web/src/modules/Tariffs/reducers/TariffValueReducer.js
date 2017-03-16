@@ -3,7 +3,6 @@ import { prepareEdit, prepareList, prepareDefault } from './../../../util/Reduce
 
 const emptyEditData = {
   id: '',
-  name: '',
 };
 
 export const tariffValueReducer = (state, action) => {

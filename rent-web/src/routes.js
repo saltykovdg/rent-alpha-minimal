@@ -16,6 +16,7 @@ import * as ParameterTypePath from './modules/Constants/paths/ParameterTypePath'
 import * as GenderTypePath from './modules/Constants/paths/GenderTypePath';
 import * as AccountPath from './modules/Accounts/paths/AccountPath';
 import * as CitizenPath from './modules/Citizens/paths/CitizenPath';
+import * as NormPath from './modules/Norms/paths/NormPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -49,6 +50,10 @@ if (process.env.NODE_ENV !== 'production') {
   // Tariffs
   require('./modules/Tariffs/pages/TariffListPage');
   require('./modules/Tariffs/pages/TariffEditPage');
+
+  // Norms
+  require('./modules/Norms/pages/NormListPage');
+  require('./modules/Norms/pages/NormEditPage');
 
   // Constants
   require('./modules/Constants/pages/CalculationTypeListPage');
@@ -233,6 +238,24 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Tariffs/pages/TariffEditPage').default);
+        });
+      }}
+    />
+
+    { /* Norms */ }
+    <Route
+      path={NormPath.NORM_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Norms/pages/NormListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${NormPath.NORM_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Norms/pages/NormEditPage').default);
         });
       }}
     />

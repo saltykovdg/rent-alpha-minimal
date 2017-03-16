@@ -83,7 +83,7 @@ export const tariffReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
-    case TariffAction.REMOVE_VALUE_FROM_TARIF: {
+    case TariffAction.REMOVE_VALUE_FROM_TARIFF: {
       const newObj = state.tariff.edit.data;
       newObj.values = newObj.values.filter(value => value.id !== action.tariffValue.id);
       return prepareEdit(newObj, false, false, false, false);

@@ -26,8 +26,10 @@ export default {
     citizenFieldFatherName: 'Отчество',
     citizenFieldBirthday: 'Дата рождения',
 
+    // norms
     normsTitle: 'Нормативы',
-    normsGroupsNormsTitle: 'Группы нормативов',
+    normValuesTitle: 'Значения норматива',
+    normFieldName: 'Наименование норматива',
 
     // organizations
     dictionariesTitle: 'Справочники',

@@ -17,7 +17,7 @@ export const FIND_TARIFFS_BY_SERVICE_ID = 'FIND_TARIFFS_BY_SERVICE_ID';
 // tariff values
 export const ADD_NEW_VALUE_TO_TARIFF = 'ADD_NEW_VALUE_TO_TARIFF';
 export const EDIT_VALUE_IN_TARIFF = 'EDIT_VALUE_IN_TARIFF';
-export const REMOVE_VALUE_FROM_TARIF = 'REMOVE_VALUE_FROM_TARIF';
+export const REMOVE_VALUE_FROM_TARIFF = 'REMOVE_VALUE_FROM_TARIFF';
 
 export const getTariffs = (page = 0) => {
   return {
@@ -137,7 +137,7 @@ export const editValueInTariff = (tariffValue) => {
 };
 export const removeValueFromTariff = (tariffValue) => {
   return {
-    type: REMOVE_VALUE_FROM_TARIF,
+    type: REMOVE_VALUE_FROM_TARIFF,
     tariffValue,
   };
 };

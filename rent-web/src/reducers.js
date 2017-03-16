@@ -13,6 +13,7 @@ import intl from './modules/Intl/IntlReducer';
 import tariffs from './modules/Tariffs/TariffsReducer';
 import accounts from './modules/Accounts/AccountsReducer';
 import citizens from './modules/Citizens/CitizensReducer';
+import norms from './modules/Norms/NormsReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
@@ -25,4 +26,5 @@ export default combineReducers({
   tariffs,
   accounts,
   citizens,
+  norms,
 });

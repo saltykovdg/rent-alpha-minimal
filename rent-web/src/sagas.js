@@ -5,6 +5,7 @@ import rootConstantsSaga from './modules/Constants/ConstantsSaga';
 import rootTariffsSaga from './modules/Tariffs/TariffsSaga';
 import rootAccountsSaga from './modules/Accounts/AccountsSaga';
 import rootCitizensSaga from './modules/Citizens/CitizensSaga';
+import rootNormsSaga from './modules/Norms/NormsSaga';
 
 export default function* rootSaga() {
   yield [
@@ -15,5 +16,6 @@ export default function* rootSaga() {
     ...rootTariffsSaga,
     ...rootAccountsSaga,
     ...rootCitizensSaga,
+    ...rootNormsSaga,
   ];
 }
