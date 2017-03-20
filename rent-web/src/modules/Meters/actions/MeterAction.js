@@ -11,7 +11,11 @@ export const DELETE_METER = 'DELETE_METER';
 export const DELETE_METER_SUCCESS = 'DELETE_METER_SUCCESS';
 export const DELETE_METER_FAILED = 'DELETE_METER_FAILED';
 export const NEW_METER = 'NEW_METER';
-export const FIND_METERS_BY_NAME = 'FIND_METERS_BY_NAME';
+
+// find meters
+export const FIND_METERS = 'FIND_METERS';
+export const FIND_METERS_INDIVIDUAL = 'FIND_METERS_INDIVIDUAL';
+export const FIND_METERS_COMMON_HOUSE = 'FIND_METERS_COMMON_HOUSE';
 
 // meter values
 export const ADD_NEW_VALUE_TO_METER = 'ADD_NEW_VALUE_TO_METER';
@@ -107,10 +111,33 @@ export const newMeter = () => {
   };
 };
 
-export const findMetersByName = (name = '') => {
+// find meters
+export const findMeters = (meterType = '', service = '', name = '', serialNumber = '', page = 0) => {
   return {
-    type: FIND_METERS_BY_NAME,
+    type: FIND_METERS,
+    meterType,
+    service,
     name,
+    serialNumber,
+    page,
+  };
+};
+export const findMetersIndividual = (service = '', name = '', serialNumber = '', page = 0) => {
+  return {
+    type: FIND_METERS_INDIVIDUAL,
+    service,
+    name,
+    serialNumber,
+    page,
+  };
+};
+export const findMetersCommonHouse = (service = '', name = '', serialNumber = '', page = 0) => {
+  return {
+    type: FIND_METERS_COMMON_HOUSE,
+    service,
+    name,
+    serialNumber,
+    page,
   };
 };
 

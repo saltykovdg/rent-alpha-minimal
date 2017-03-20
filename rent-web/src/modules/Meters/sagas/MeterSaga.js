@@ -121,8 +121,24 @@ export function* watchNewMeter() {
   yield takeLatest(MeterAction.NEW_METER, newMeter);
 }
 
-export function* findMetersByName(action) {
-  const response = yield call(MeterApi.findMetersByName, action.name);
+export function* findMeters(action) {
+  const response = yield call(MeterApi.findMeters, action.meterType, action.service, action.name, action.serialNumber, action.page);
+  if (response && !response.error && !response.canceled) {
+    yield put(MeterAction.getMetersSuccess(response));
+  } else if (!response.canceled) {
+    yield put(MeterAction.getMetersFailed());
+  }
+}
+export function* findMetersIndividual(action) {
+  const response = yield call(MeterApi.findMetersIndividual, action.service, action.name, action.serialNumber, action.page);
+  if (response && !response.error && !response.canceled) {
+    yield put(MeterAction.getMetersSuccess(response));
+  } else if (!response.canceled) {
+    yield put(MeterAction.getMetersFailed());
+  }
+}
+export function* findMetersCommonHouse(action) {
+  const response = yield call(MeterApi.findMetersCommonHouse, action.service, action.name, action.serialNumber, action.page);
   if (response && !response.error && !response.canceled) {
     yield put(MeterAction.getMetersSuccess(response));
   } else if (!response.canceled) {
@@ -130,8 +146,14 @@ export function* findMetersByName(action) {
   }
 }
 
-export function* watchFindMetersByName() {
-  yield takeLatest(MeterAction.FIND_METERS_BY_NAME, findMetersByName);
+export function* watchFindMeters() {
+  yield takeLatest(MeterAction.FIND_METERS, findMeters);
+}
+export function* watchFindMetersIndividual() {
+  yield takeLatest(MeterAction.FIND_METERS_INDIVIDUAL, findMetersIndividual);
+}
+export function* watchFindMetersCommonHouse() {
+  yield takeLatest(MeterAction.FIND_METERS_COMMON_HOUSE, findMetersCommonHouse);
 }
 
 export const rootMeterSaga = [
@@ -140,5 +162,7 @@ export const rootMeterSaga = [
   fork(watchSaveMeter),
   fork(watchDeleteMeter),
   fork(watchNewMeter),
-  fork(watchFindMetersByName),
+  fork(watchFindMeters),
+  fork(watchFindMetersIndividual),
+  fork(watchFindMetersCommonHouse),
 ];

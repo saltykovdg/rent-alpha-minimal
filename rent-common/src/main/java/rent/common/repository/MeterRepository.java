@@ -9,19 +9,37 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import rent.common.entity.MeterEntity;
 import rent.common.projection.MeterBasic;
 
-import java.util.List;
-
 @RepositoryRestResource(
         collectionResourceRel = "meters",
         path = "meter",
         itemResourceRel = "meter",
         excerptProjection = MeterBasic.class)
 public interface MeterRepository extends PagingAndSortingRepository<MeterEntity, String> {
-    List<MeterEntity> findByNameContainingOrderByName(@Param("name") String name);
+    @Query("select distinct meter from MeterEntity meter join meter.service service join meter.meterType meterType where " +
+            "lower(meterType.name) like concat('%', lower(:meterType), '%') and " +
+            "lower(service.name) like concat('%', lower(:service), '%') and " +
+            "lower(meter.name) like concat('%', lower(:name), '%') and " +
+            "lower(meter.serialNumber) like concat('%', lower(:serialNumber), '%') ")
+    Page<MeterEntity> find(@Param("meterType") String meterType,
+                           @Param("service") String service,
+                           @Param("name") String name,
+                           @Param("serialNumber") String serialNumber, Pageable p);
 
-    @Query("select meter from MeterEntity meter join meter.service service where service.id = :serviceId order by meter.name")
-    List<MeterEntity> findByServiceId(@Param("serviceId") String serviceId);
+    @Query("select distinct meter from MeterEntity meter join meter.service service join meter.meterType meterType where " +
+            "lower(service.name) like concat('%', lower(:service), '%') and " +
+            "lower(meter.name) like concat('%', lower(:name), '%') and " +
+            "lower(meter.serialNumber) like concat('%', lower(:serialNumber), '%') and " +
+            "meterType.code = '01'")
+    Page<MeterEntity> findIndividual(@Param("service") String service,
+                                     @Param("name") String name,
+                                     @Param("serialNumber") String serialNumber, Pageable p);
 
-    @Query("select meter from MeterEntity meter join meter.service service where lower(service.name) like concat('%', lower(:serviceName), '%') and lower(meter.name) like concat('%', lower(:meterName), '%')")
-    Page<MeterEntity> findByServiceNameAndMeterName(@Param("serviceName") String serviceName, @Param("meterName") String meterName, Pageable p);
+    @Query("select distinct meter from MeterEntity meter join meter.service service join meter.meterType meterType where " +
+            "lower(service.name) like concat('%', lower(:service), '%') and " +
+            "lower(meter.name) like concat('%', lower(:name), '%') and " +
+            "lower(meter.serialNumber) like concat('%', lower(:serialNumber), '%') and " +
+            "meterType.code = '02'")
+    Page<MeterEntity> findCommonHouse(@Param("service") String service,
+                                      @Param("name") String name,
+                                      @Param("serialNumber") String serialNumber, Pageable p);
 }

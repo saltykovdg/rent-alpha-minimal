@@ -48,7 +48,9 @@ export const meterReducer = (state, action) => {
     case MeterAction.SAVE_METER: {
       return prepareEdit(state.meter.edit.data, true, false, false, false);
     }
-    case MeterAction.FIND_METERS_BY_NAME:
+    case MeterAction.FIND_METERS:
+    case MeterAction.FIND_METERS_INDIVIDUAL:
+    case MeterAction.FIND_METERS_COMMON_HOUSE:
     case MeterAction.GET_METERS:
     case MeterAction.DELETE_METER: {
       return prepareList(state.meter.list.data, emptyEditData, true, false, false, false);

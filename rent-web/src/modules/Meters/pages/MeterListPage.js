@@ -22,15 +22,39 @@ class MeterListPage extends ExtendedComponentPage {
     super(props, context);
     const page = context.router.location.query.page;
     this.state = {
+      searchFieldMeterType: '',
+      searchFieldService: '',
+      searchFieldName: '',
+      searchFieldSerialNumber: '',
       page: page ? page - 1 : 0,
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(MeterAction.getMeters(this.state.page));
+    this.props.dispatch(MeterAction.findMeters(
+      this.state.searchFieldMeterType,
+      this.state.searchFieldService,
+      this.state.searchFieldName,
+      this.state.searchFieldSerialNumber,
+      this.state.page));
+  }
+  onSearch = (meterType, service, name, serialNumber) => {
+    this.setState({
+      page: 0,
+      searchFieldMeterType: meterType,
+      searchFieldService: service,
+      searchFieldName: name,
+      searchFieldSerialNumber: serialNumber,
+    });
+    this.props.dispatch(MeterAction.findMeters(meterType, service, name, serialNumber, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(MeterAction.getMeters(page));
+    this.props.dispatch(MeterAction.findMeters(
+      this.state.searchFieldMeterType,
+      this.state.searchFieldService,
+      this.state.searchFieldName,
+      this.state.searchFieldSerialNumber,
+      page));
   };
   onDelete = (object) => {
     this.props.dispatch(MeterAction.deleteMeter(object));
@@ -44,6 +68,7 @@ class MeterListPage extends ExtendedComponentPage {
         isDeleted={this.props.isDeleted}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}
+        onSearch={this.onSearch}
       />
     );
   }
