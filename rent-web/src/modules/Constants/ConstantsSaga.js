@@ -5,6 +5,7 @@ import { rootParameterTypeSaga } from './sagas/ParameterTypeSaga';
 import { rootDocumentTypeSaga } from './sagas/DocumentTypeSaga';
 import { rootGenderTypeSaga } from './sagas/GenderTypeSaga';
 import { rootRegistrationTypeSaga } from './sagas/RegistrationTypeSaga';
+import { rootMeterTypeSaga } from './sagas/MeterTypeSaga';
 
 // Export Saga
 export default [
@@ -14,4 +15,5 @@ export default [
   ...rootDocumentTypeSaga,
   ...rootGenderTypeSaga,
   ...rootRegistrationTypeSaga,
+  ...rootMeterTypeSaga,
 ];

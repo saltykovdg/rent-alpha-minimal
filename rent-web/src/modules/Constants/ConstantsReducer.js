@@ -34,6 +34,12 @@ import {
   getRegistrationTypeIsRequestError,
 } from './reducers/RegistrationTypeReducer';
 
+import {
+  meterTypeReducer,
+  getMeterTypeIsLoading,
+  getMeterTypeIsRequestError,
+} from './reducers/MeterTypeReducer';
+
 // Initial State
 const data = {
   list: {
@@ -57,6 +63,7 @@ const initialState = {
   documentType: data,
   genderType: data,
   registrationType: data,
+  meterType: data,
 };
 
 const ConstantsReducer = (state = initialState, action) => {
@@ -67,6 +74,7 @@ const ConstantsReducer = (state = initialState, action) => {
     documentType: documentTypeReducer(state, action),
     genderType: genderTypeReducer(state, action),
     registrationType: registrationTypeReducer(state, action),
+    meterType: meterTypeReducer(state, action),
   };
 };
 
@@ -74,12 +82,14 @@ const ConstantsReducer = (state = initialState, action) => {
 export const getIsRequestError = state =>
   getCalculationTypeIsRequestError(state) || getMeasurementUnitIsRequestError(state) ||
   getParameterTypeIsRequestError(state) || getDocumentTypeIsRequestError(state) ||
-  getGenderTypeIsRequestError(state) || getRegistrationTypeIsRequestError(state);
+  getGenderTypeIsRequestError(state) || getRegistrationTypeIsRequestError(state) ||
+  getMeterTypeIsRequestError(state);
 
 export const getIsLoading = state =>
   getCalculationTypeIsLoading(state) || getMeasurementUnitIsLoading(state) ||
   getParameterTypeIsLoading(state) || getDocumentTypeIsLoading(state) ||
-  getGenderTypeIsLoading(state) || getRegistrationTypeIsLoading(state);
+  getGenderTypeIsLoading(state) || getRegistrationTypeIsLoading(state) ||
+  getMeterTypeIsLoading(state);
 
 // Export Reducer
 export default ConstantsReducer;

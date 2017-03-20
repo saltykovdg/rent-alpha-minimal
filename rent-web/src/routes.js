@@ -12,11 +12,13 @@ import * as CalculationTypePath from './modules/Constants/paths/CalculationTypeP
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
 import * as DocumentTypePath from './modules/Constants/paths/DocumentTypePath';
 import * as RegistrationTypePath from './modules/Constants/paths/RegistrationTypePath';
+import * as MeterTypePath from './modules/Constants/paths/MeterTypePath';
 import * as ParameterTypePath from './modules/Constants/paths/ParameterTypePath';
 import * as GenderTypePath from './modules/Constants/paths/GenderTypePath';
 import * as AccountPath from './modules/Accounts/paths/AccountPath';
 import * as CitizenPath from './modules/Citizens/paths/CitizenPath';
 import * as NormPath from './modules/Norms/paths/NormPath';
+import * as MeterPath from './modules/Meters/paths/MeterPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -55,6 +57,10 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Norms/pages/NormListPage');
   require('./modules/Norms/pages/NormEditPage');
 
+  // Meters
+  require('./modules/Meters/pages/MeterListPage');
+  require('./modules/Meters/pages/MeterEditPage');
+
   // Constants
   require('./modules/Constants/pages/CalculationTypeListPage');
   require('./modules/Constants/pages/CalculationTypeEditPage');
@@ -68,6 +74,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Constants/pages/GenderTypeEditPage');
   require('./modules/Constants/pages/RegistrationTypeListPage');
   require('./modules/Constants/pages/RegistrationTypeEditPage');
+  require('./modules/Constants/pages/MeterTypeListPage');
+  require('./modules/Constants/pages/MeterTypeEditPage');
 
   // Accounts
   require('./modules/Accounts/pages/AccountListPage');
@@ -357,6 +365,22 @@ export default (
         });
       }}
     />
+    <Route
+      path={MeterTypePath.METER_TYPE_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/MeterTypeListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${MeterTypePath.METER_TYPE_EDIT}/:id`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/MeterTypeEditPage').default);
+        });
+      }}
+    />
 
     { /* Accounts */ }
     <Route
@@ -390,6 +414,24 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Citizens/pages/CitizenEditPage').default);
+        });
+      }}
+    />
+
+    { /* Meters */ }
+    <Route
+      path={MeterPath.METER_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Meters/pages/MeterListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${MeterPath.METER_EDIT}(/:id)`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Meters/pages/MeterEditPage').default);
         });
       }}
     />

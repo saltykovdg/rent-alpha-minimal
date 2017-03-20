@@ -6,16 +6,16 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 
 /**
- * Виды параметров
+ * Вид счетчика
  */
 @Entity
-@Table(name = ParameterTypeEntity.TABLE_NAME, indexes = {
-        @Index(columnList = ParameterTypeEntity.Columns.ID),
-        @Index(columnList = ParameterTypeEntity.Columns.CODE),
-        @Index(columnList = ParameterTypeEntity.Columns.NAME)
+@Table(name = MeterTypeEntity.TABLE_NAME, indexes = {
+        @Index(columnList = MeterTypeEntity.Columns.ID),
+        @Index(columnList = MeterTypeEntity.Columns.CODE),
+        @Index(columnList = MeterTypeEntity.Columns.NAME)
 })
-public class ParameterTypeEntity extends AbstractEntity {
-    public static final String TABLE_NAME = "const_parameter_types";
+public class MeterTypeEntity extends AbstractEntity {
+    public static final String TABLE_NAME = "const_meter_types";
 
     public interface Columns extends AbstractEntity.Columns {
         String CODE = "code";
@@ -24,13 +24,13 @@ public class ParameterTypeEntity extends AbstractEntity {
     }
 
     /**
-     * код параметра
+     * код вида счетчика
      */
     @Column(name = Columns.CODE)
     private String code;
 
     /**
-     * название параметра
+     * название вида счетчика
      */
     @Column(name = Columns.NAME)
     private String name;

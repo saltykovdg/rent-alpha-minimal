@@ -26,7 +26,7 @@ class App extends Component {
   render() {
     return (
       <div className="wrapper">
-        {!window.devToolsExtension && process.env.NODE_ENV !== 'production' && <DevTools />}
+        {!window.devToolsExtension && process.env.NODE_ENV !== 'production' && process.env.USE_REDUX_DEVTOOLS === 'true' && <DevTools />}
         <Header />
         <div className="main">
           <Sidebar />

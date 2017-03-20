@@ -16,9 +16,11 @@ import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
 import * as GenderTypePath from '../../../Constants/paths/GenderTypePath';
 import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as RegistrationTypePath from '../../../Constants/paths/RegistrationTypePath';
+import * as MeterTypePath from '../../../Constants/paths/MeterTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
 import * as NormPath from '../../../Norms/paths/NormPath';
+import * as MeterPath from '../../../Meters/paths/MeterPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -52,6 +54,11 @@ function Sidebar() {
         <Item key={CitizenPath.CITIZEN_LIST}>
           <Link to={CitizenPath.CITIZEN_LIST}>
             <FormattedMessage id="citizensTitle" />
+          </Link>
+        </Item>
+        <Item key={MeterPath.METER_LIST}>
+          <Link to={MeterPath.METER_LIST}>
+            <FormattedMessage id="metersTitle" />
           </Link>
         </Item>
         <SubMenu key="sidebarOrganizations" title={<FormattedMessage id="organizationTitle" />}>
@@ -119,6 +126,11 @@ function Sidebar() {
           <Item key={ParameterTypePath.PARAMETER_TYPE_LIST}>
             <Link to={ParameterTypePath.PARAMETER_TYPE_LIST}>
               <FormattedMessage id="parameterTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={MeterTypePath.METER_TYPE_LIST}>
+            <Link to={MeterTypePath.METER_TYPE_LIST}>
+              <FormattedMessage id="meterTypeTitle" />
             </Link>
           </Item>
           <Item key={GenderTypePath.GENDER_TYPE_LIST}>

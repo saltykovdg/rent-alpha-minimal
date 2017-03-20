@@ -62,6 +62,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('development'),
+        'USE_REDUX_DEVTOOLS': JSON.stringify('false'),
         'RENT_API_URL': JSON.stringify('http://localhost:8080'),
         'RENT_API_CONTENT_URL': JSON.stringify('/content'),
         'RENT_API_MAX_FILE_SIZE': JSON.stringify('15728640')

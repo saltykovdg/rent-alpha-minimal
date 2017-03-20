@@ -20,11 +20,9 @@ class ListComponent extends ExtendedComponent {
     const onDelete = this.props.onDelete;
     const buttonDelete = (record) => {
       return (
-        <div>
-          <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
-            <Link><FormattedMessage id="buttonDelete" /></Link>
-          </Popconfirm>
-        </div>
+        <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+          <Link><FormattedMessage id="buttonDelete" /></Link>
+        </Popconfirm>
       );
     };
     return {
@@ -34,6 +32,7 @@ class ListComponent extends ExtendedComponent {
         return (
           <span>
             <Link to={`${editPath}/${record.id}`}><FormattedMessage id="buttonEdit" /></Link>
+            { useButtonDelete ? <span className="ant-divider" /> : null }
             { useButtonDelete ? buttonDelete(record) : null }
           </span>
         );

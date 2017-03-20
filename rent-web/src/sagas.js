@@ -6,6 +6,7 @@ import rootTariffsSaga from './modules/Tariffs/TariffsSaga';
 import rootAccountsSaga from './modules/Accounts/AccountsSaga';
 import rootCitizensSaga from './modules/Citizens/CitizensSaga';
 import rootNormsSaga from './modules/Norms/NormsSaga';
+import rootMetersSaga from './modules/Meters/MetersSaga';
 
 export default function* rootSaga() {
   yield [
@@ -17,5 +18,6 @@ export default function* rootSaga() {
     ...rootAccountsSaga,
     ...rootCitizensSaga,
     ...rootNormsSaga,
+    ...rootMetersSaga,
   ];
 }

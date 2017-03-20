@@ -31,6 +31,15 @@ export default {
     normValuesTitle: 'Значения норматива',
     normFieldName: 'Наименование норматива',
 
+    // meters
+    metersTitle: 'Счетчики',
+    meterValuesTitle: 'Показания',
+    meterFieldName: 'Наименование счетчика',
+    meterFieldSerialNumber: 'Серийный номер',
+    meterFieldValue: 'Показание',
+    meterFieldConsumption: 'Расход',
+    meterFieldDateValue: 'Дата снятия',
+
     // organizations
     dictionariesTitle: 'Справочники',
     organizationTitle: 'Организации',
@@ -107,6 +116,9 @@ export default {
     genderTypeFieldNameOrigin: 'Пол (значение по умолчанию)',
     registrationTypeTitle: 'Виды прописки',
     registrationTypeFieldName: 'Вид прописки',
+    meterTypeTitle: 'Виды счетчиков',
+    meterTypeFieldName: 'Вид счетчика',
+    meterTypeFieldNameOrigin: 'Вид счетчика (значение по умолчанию)',
 
     // documents
     documentsTitle: 'Документы',
@@ -121,6 +133,7 @@ export default {
     buttonAddNewParameter: 'Добавить новый параметр',
     buttonAddNewService: 'Добавить новую услугу',
     buttonAddNewValue: 'Добавить новое значение',
+    buttonAddNewValueMeter: 'Добавить новое показание',
     buttonAddNewDocument: 'Добавить новый документ',
     buttonAddNewAttachment: 'Добавить вложение',
     buttonAddNewOwner: 'Добавить нового собственника',

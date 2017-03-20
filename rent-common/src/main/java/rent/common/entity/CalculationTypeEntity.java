@@ -30,7 +30,7 @@ public class CalculationTypeEntity extends AbstractEntity {
     private String code;
 
     /**
-     * имя вида расчета
+     * название вида расчета
      */
     @Column(name = Columns.NAME)
     private String name;

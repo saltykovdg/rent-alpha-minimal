@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
+import rent.common.enums.MeterType;
 import rent.common.enums.ParameterType;
 import rent.common.repository.*;
 import rent.common.enums.RoleType;
@@ -30,6 +31,7 @@ public class DatabasePopulationService {
     private final GenderTypeRepository genderTypeRepository;
     private final DocumentTypeRepository documentTypeRepository;
     private final RegistrationTypeRepository registrationTypeRepository;
+    private final MeterTypeRepository meterTypeRepository;
 
     @Autowired
     public DatabasePopulationService(RoleRepository roleRepository, UserRepository userRepository,
@@ -38,7 +40,7 @@ public class DatabasePopulationService {
                                      CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository,
                                      ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository,
                                      GenderTypeRepository genderTypeRepository, DocumentTypeRepository documentTypeRepository,
-                                     RegistrationTypeRepository registrationTypeRepository) {
+                                     RegistrationTypeRepository registrationTypeRepository, MeterTypeRepository meterTypeRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -52,6 +54,7 @@ public class DatabasePopulationService {
         this.genderTypeRepository = genderTypeRepository;
         this.documentTypeRepository = documentTypeRepository;
         this.registrationTypeRepository = registrationTypeRepository;
+        this.meterTypeRepository = meterTypeRepository;
     }
 
     @PostConstruct
@@ -65,6 +68,7 @@ public class DatabasePopulationService {
         createGenderTypes();
         createDocumentTypes();
         createRegistrationTypes();
+        createMeterTypes();
 //        createStreetTypes();
 //        createStreets();
 //        createBuildings();
@@ -130,27 +134,24 @@ public class DatabasePopulationService {
         CalculationTypeEntity calculationType;
         calculationType = calculationTypeRepository.findByCode(CalculationType.TOTAL_AREA.getCode());
         if (calculationType == null) {
-            calculationType = createCalculationType(CalculationType.TOTAL_AREA.getCode(), "По общей площади");
-            calculationTypeRepository.save(calculationType);
+            createCalculationType(CalculationType.TOTAL_AREA.getCode(), "По общей площади");
         }
         calculationType = calculationTypeRepository.findByCode(CalculationType.PEOPLES.getCode());
         if (calculationType == null) {
-            calculationType = createCalculationType(CalculationType.PEOPLES.getCode(), "По прописанным");
-            calculationTypeRepository.save(calculationType);
+            createCalculationType(CalculationType.PEOPLES.getCode(), "По прописанным");
         }
         calculationType = calculationTypeRepository.findByCode(CalculationType.METER_READING.getCode());
         if (calculationType == null) {
-            calculationType = createCalculationType(CalculationType.METER_READING.getCode(), "По показаниям счетчика");
-            calculationTypeRepository.save(calculationType);
+            createCalculationType(CalculationType.METER_READING.getCode(), "По показаниям счетчика");
         }
     }
 
-    private CalculationTypeEntity createCalculationType(String id, String name) {
+    private void createCalculationType(String code, String name) {
         CalculationTypeEntity calculationType = new CalculationTypeEntity();
-        calculationType.setCode(id);
+        calculationType.setCode(code);
         calculationType.setName(name);
         calculationType.setNameOrigin(name);
-        return calculationType;
+        calculationTypeRepository.save(calculationType);
     }
 
     private void createMeasurementUnit() {
@@ -198,6 +199,26 @@ public class DatabasePopulationService {
         RegistrationTypeEntity registrationType = new RegistrationTypeEntity();
         registrationType.setName(name);
         registrationTypeRepository.save(registrationType);
+    }
+
+    private void createMeterTypes() {
+        MeterTypeEntity meterType;
+        meterType = meterTypeRepository.findByCode(MeterType.INDIVIDUAL.getCode());
+        if (meterType == null) {
+            createMeterType(MeterType.INDIVIDUAL.getCode(), "Индивидуальный");
+        }
+        meterType = meterTypeRepository.findByCode(MeterType.COMMON_HOUSE.getCode());
+        if (meterType == null) {
+            createMeterType(MeterType.COMMON_HOUSE.getCode(), "Общедомовой");
+        }
+    }
+
+    private void createMeterType(String code, String name) {
+        MeterTypeEntity meterType = new MeterTypeEntity();
+        meterType.setCode(code);
+        meterType.setName(name);
+        meterType.setNameOrigin(name);
+        meterTypeRepository.save(meterType);
     }
 
 //    private void createStreetTypes() {
