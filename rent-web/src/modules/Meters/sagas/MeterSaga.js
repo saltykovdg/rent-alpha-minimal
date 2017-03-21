@@ -130,7 +130,7 @@ export function* findMeters(action) {
   }
 }
 export function* findMetersIndividual(action) {
-  const response = yield call(MeterApi.findMetersIndividual, action.service, action.name, action.serialNumber, action.page);
+  const response = yield call(MeterApi.findMetersIndividual, action.service, action.name, action.serialNumber, action.page, action.size);
   if (response && !response.error && !response.canceled) {
     yield put(MeterAction.getMetersSuccess(response));
   } else if (!response.canceled) {
@@ -138,7 +138,7 @@ export function* findMetersIndividual(action) {
   }
 }
 export function* findMetersCommonHouse(action) {
-  const response = yield call(MeterApi.findMetersCommonHouse, action.service, action.name, action.serialNumber, action.page);
+  const response = yield call(MeterApi.findMetersCommonHouse, action.service, action.name, action.serialNumber, action.page, action.size);
   if (response && !response.error && !response.canceled) {
     yield put(MeterAction.getMetersSuccess(response));
   } else if (!response.canceled) {

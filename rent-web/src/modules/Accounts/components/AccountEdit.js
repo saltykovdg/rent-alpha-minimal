@@ -126,6 +126,24 @@ class AccountEdit extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormRegisteredEdit, this.props.onDeleteRegistered),
     ];
+    let metersDataSource = [];
+    if (object && object.meters && object.meters.length > 0) {
+      metersDataSource = object.meters.sort((a, b) => {
+        return new Date(b.dateStart) - new Date(a.dateStart);
+      });
+      metersDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
+    }
+    const metersColumns = [
+      this.getColumn(this.props.intl.messages.serviceFieldName, 'meter.service.name'),
+      this.getColumn(this.props.intl.messages.meterFieldName, 'meter.name'),
+      this.getColumn(this.props.intl.messages.meterFieldSerialNumber, 'meter.serialNumber'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionColumn(this.props.showFormMeterEdit, this.props.onDeleteMeter),
+    ];
     return (
       <div>
         <Breadcrumb>
@@ -218,6 +236,17 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={registeredDataSource}
               columns={registeredColumns}
+              bordered pagination={false}
+              size="small"
+            />
+            <br />
+            <h2>{this.props.intl.messages.metersTitle}</h2>
+            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormMeterEdit()}>
+              <FormattedMessage id="buttonAddNewMeter" />
+            </Button>
+            <Table
+              dataSource={metersDataSource}
+              columns={metersColumns}
               bordered pagination={false}
               size="small"
             />

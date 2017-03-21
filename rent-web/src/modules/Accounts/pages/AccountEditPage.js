@@ -10,12 +10,14 @@ import AccountEditParameterForm from './../components/AccountEditParameterForm';
 import AccountEditServiceForm from './../components/AccountEditServiceForm';
 import AccountEditOwnerForm from './../components/AccountEditOwnerForm';
 import AccountEditRegisteredForm from './../components/AccountEditRegisteredForm';
+import AccountEditMeterForm from './../components/AccountEditMeterForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
 import * as AddressAction from './../../Address/AddressActions';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as CitizenAction from './../../Citizens/actions/CitizenAction';
+import * as MeterAction from './../../Meters/actions/MeterAction';
 
 // Import Selectors
 import {
@@ -25,6 +27,7 @@ import {
   emptyService,
   emptyOwner,
   emptyRegistered,
+  emptyMeter,
   emptyDocumentAttachment,
 } from './../reducers/AccountReducer';
 
@@ -83,6 +86,12 @@ import {
   getCitizenIsRequestError,
 } from './../../Citizens/reducers/CitizenReducer';
 
+import {
+  getMeterListData,
+  getMeterIsLoading,
+  getMeterIsRequestError,
+} from './../../Meters/reducers/MeterReducer';
+
 import * as ObjectUtil from './../../../util/ObjectUtil';
 
 class AccountEditPage extends ExtendedComponentPage {
@@ -95,10 +104,12 @@ class AccountEditPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.newAccount());
     }
     this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+    this.props.dispatch(MeterAction.clearLocalDataMeters());
     this.initFormParameter(false);
     this.initFormService(false);
     this.initFormOwner(false);
     this.initFormRegistered(false);
+    this.initFormMeter(false);
   }
   initFormParameter = (visible, parameter = emptyParameter) => {
     this.setState({
@@ -120,12 +131,18 @@ class AccountEditPage extends ExtendedComponentPage {
       formRegisteredEditVisible: visible, registered: ObjectUtil.cloneObject(registered),
     });
   }
+  initFormMeter = (visible, meter = emptyMeter) => {
+    this.setState({
+      formMeterEditVisible: visible, meter: ObjectUtil.cloneObject(meter),
+    });
+  }
   onSave = (object) => {
     const newObject = ObjectUtil.cloneObject(object);
     newObject.parameters = this.props.data.parameters;
     newObject.services = this.props.data.services;
     newObject.owners = this.props.data.owners;
     newObject.registered = this.props.data.registered;
+    newObject.meters = this.props.data.meters;
     this.props.dispatch(AccountAction.saveAccount(newObject));
   }
   onStreetChange = (streetId) => {
@@ -253,6 +270,31 @@ class AccountEditPage extends ExtendedComponentPage {
   onSearchCitizen = (firstName, lastName, fatherName, documentSeries, documentNumber, page, size) => {
     this.props.dispatch(CitizenAction.findCitizens(firstName, lastName, fatherName, documentSeries, documentNumber, page, size));
   }
+  showFormMeterEdit = (meter = emptyMeter) => {
+    this.initFormMeter(true, meter);
+  }
+  onOkFormMeterEdit = (meter = emptyMeter) => {
+    this.initFormMeter(false);
+    if (meter.id) {
+      this.props.dispatch(AccountAction.editMeterInAccount(ObjectUtil.cloneObject(meter)));
+    } else {
+      const newMeter = ObjectUtil.cloneObject(meter);
+      newMeter.id = moment().unix();
+      this.props.dispatch(AccountAction.addNewMeterToAccount(newMeter));
+    }
+    this.props.dispatch(MeterAction.clearLocalDataMeters());
+  }
+  onCancelFormMeterEdit = () => {
+    this.initFormMeter(false);
+    this.props.dispatch(MeterAction.clearLocalDataMeters());
+  }
+  onDeleteMeter = (meter) => {
+    this.props.dispatch(AccountAction.removeMeterFromAccount(ObjectUtil.cloneObject(meter)));
+    this.forceUpdate();
+  }
+  onSearchMeters = (service, name, serialNumber, page, size) => {
+    this.props.dispatch(MeterAction.findMetersIndividual(service, name, serialNumber, page, size));
+  }
   render() {
     return (
       <div>
@@ -277,6 +319,8 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteOwner={this.onDeleteOwner}
           showFormRegisteredEdit={this.showFormRegisteredEdit}
           onDeleteRegistered={this.onDeleteRegistered}
+          showFormMeterEdit={this.showFormMeterEdit}
+          onDeleteMeter={this.onDeleteMeter}
         />
         <AccountEditParameterForm
           parameterTypes={this.props.parameterTypes}
@@ -319,6 +363,15 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteRegisteredDocumentAttachment={this.onDeleteRegisteredDocumentAttachment}
           onSearchRegistered={this.onSearchCitizen}
         />
+        <AccountEditMeterForm
+          isLoading={this.props.isLoadingMeters}
+          accountMeter={this.state.meter}
+          meters={this.props.meters}
+          formMeterEditVisible={this.state.formMeterEditVisible}
+          onOkFormMeterEdit={this.onOkFormMeterEdit}
+          onCancelFormMeterEdit={this.onCancelFormMeterEdit}
+          onSearchMeters={this.onSearchMeters}
+        />
       </div>
     );
   }
@@ -338,17 +391,19 @@ function mapStateToProps(state, props) {
     documentTypes: getDocumentTypeListData(state),
     registrationTypes: getRegistrationTypeListData(state),
     citizens: getCitizenListData(state),
+    meters: getMeterListData(state),
     isLoading: getIsLoadingAccounts(state) || getIsLoadingAddress(state) ||
                getContractorIsLoading(state) || getParameterTypeIsLoading(state) ||
                getServiceIsLoading(state) || getDocumentTypeIsLoading(state) ||
                getRegistrationTypeIsLoading(state),
     isLoadingTariff: getTariffIsLoading(state),
     isLoadingCitizen: getCitizenIsLoading(state),
+    isLoadingMeters: getMeterIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state) || getIsRequestErrorAddress(state) ||
                     getContractorIsRequestError(state) || getParameterTypeIsRequestError(state) ||
                     getServiceIsRequestError(state) || getTariffIsRequestError(state) ||
                     getDocumentTypeIsRequestError(state) || getCitizenIsRequestError(state) ||
-                    getRegistrationTypeIsRequestError(state),
+                    getRegistrationTypeIsRequestError(state) || getMeterIsRequestError(state),
     isSaved: getAccountIsSaved(state),
     id: props.params.id,
   };

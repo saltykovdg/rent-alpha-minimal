@@ -6,6 +6,7 @@ import { rootAccountOwnerSaga } from './sagas/AccountOwnerSaga';
 import { rootAccountOwnerDocumentAttachmentSaga } from './sagas/AccountOwnerDocumentAttachmentSaga';
 import { rootAccountRegisteredSaga } from './sagas/AccountRegisteredSaga';
 import { rootAccountRegisteredDocumentAttachmentSaga } from './sagas/AccountRegisteredDocumentAttachmentSaga';
+import { rootAccountMeterSaga } from './sagas/AccountMeterSaga';
 
 // Export Saga
 export default [
@@ -16,4 +17,5 @@ export default [
   ...rootAccountOwnerDocumentAttachmentSaga,
   ...rootAccountRegisteredSaga,
   ...rootAccountRegisteredDocumentAttachmentSaga,
+  ...rootAccountMeterSaga,
 ];

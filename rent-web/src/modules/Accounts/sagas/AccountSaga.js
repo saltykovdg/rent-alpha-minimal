@@ -11,6 +11,7 @@ import * as AccountOwnerAction from './../actions/AccountOwnerAction';
 import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
 import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
 import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
+import * as AccountMeterAction from './../actions/AccountMeterAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as ServiceAction from './../../Services/actions/ServiceAction';
 import * as DocumentTypeAction from './../../Constants/actions/DocumentTypeAction';
@@ -88,6 +89,8 @@ export function* saveAccount(action) {
   const ownersLinks = [];
   const registered = action.object.registered;
   const registeredLinks = [];
+  const meters = action.object.meters;
+  const metersLinks = [];
 
   // save parameters
   for (let i = 0; i < parameters.length; i += 1) {
@@ -207,6 +210,25 @@ export function* saveAccount(action) {
     }
   }
 
+  // save meters
+  for (let i = 0; i < meters.length; i += 1) {
+    sagaAction = null;
+    const meterObj = ObjectUtil.cloneObject(meters[i]);
+    meterObj.meter = ObjectUtil.getLink(meters[i].meter);
+
+    // save meter
+    if (sagaAction == null) {
+      yield put(AccountMeterAction.saveAccountMeter(meterObj));
+      sagaAction = yield take([AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS, AccountMeterAction.SAVE_ACCOUNT_METER_FAILED]);
+      if (sagaAction.type === AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS) {
+        metersLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+  }
+
   // save account
   if (sagaAction == null) {
     const objectAccount = ObjectUtil.cloneObject(action.object);
@@ -214,6 +236,7 @@ export function* saveAccount(action) {
     objectAccount.services = servicesLinks;
     objectAccount.owners = ownersLinks;
     objectAccount.registered = registeredLinks;
+    objectAccount.meters = metersLinks;
     const response = yield call(AccountApi.saveAccount, objectAccount);
     if (response && !response.error && !response.canceled) {
       yield put(AccountAction.saveAccountSuccess(objectAccount));

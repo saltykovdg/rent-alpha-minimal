@@ -116,6 +116,10 @@ export const meterReducer = (state, action) => {
       return state.meter;
     }
 
+    case MeterAction.CLEAR_LOCAL_DATA_METERS: {
+      return prepareList(null, emptyEditData, false, false, false, false);
+    }
+
     default:
       return prepareDefault(state.meter.list, emptyEditData);
   }

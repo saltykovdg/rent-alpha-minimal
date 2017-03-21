@@ -43,6 +43,11 @@ export const ADD_NEW_ATTACHMENT_TO_REGISTERED = 'ADD_NEW_ATTACHMENT_TO_REGISTERE
 export const EDIT_ATTACHMENT_IN_REGISTERED = 'EDIT_ATTACHMENT_IN_REGISTERED';
 export const REMOVE_ATTACHMENT_FROM_REGISTERED = 'REMOVE_ATTACHMENT_FROM_REGISTERED';
 
+// meters
+export const ADD_NEW_METER_TO_ACCOUNT = 'ADD_NEW_METER_TO_ACCOUNT';
+export const EDIT_METER_IN_ACCOUNT = 'EDIT_METER_IN_ACCOUNT';
+export const REMOVE_METER_FROM_ACCOUNT = 'REMOVE_METER_FROM_ACCOUNT';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -264,5 +269,25 @@ export const removeAttachmentFromRegistered = (registered, attachment) => {
     type: REMOVE_ATTACHMENT_FROM_REGISTERED,
     registered,
     attachment,
+  };
+};
+
+// meters
+export const addNewMeterToAccount = (meter) => {
+  return {
+    type: ADD_NEW_METER_TO_ACCOUNT,
+    meter,
+  };
+};
+export const editMeterInAccount = (meter) => {
+  return {
+    type: EDIT_METER_IN_ACCOUNT,
+    meter,
+  };
+};
+export const removeMeterFromAccount = (meter) => {
+  return {
+    type: REMOVE_METER_FROM_ACCOUNT,
+    meter,
   };
 };

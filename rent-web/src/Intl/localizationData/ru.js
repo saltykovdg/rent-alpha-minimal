@@ -138,6 +138,7 @@ export default {
     buttonAddNewAttachment: 'Добавить вложение',
     buttonAddNewOwner: 'Добавить нового собственника',
     buttonAddNewRegistered: 'Добавить нового прописанного',
+    buttonAddNewMeter: 'Добавить новый прибор учета',
     buttonFind: 'Найти',
     editPageCreateTitle: 'Создание новой записи',
     editPageEditTitle: 'Редактирование записи',
@@ -179,6 +180,7 @@ export default {
     addAttachmentFileNameErrorTitle: 'Укажите наименование для вложений!',
     selectOwnerErrorTitle: 'Укажите собственника!',
     selectRegisteredErrorTitle: 'Укажите прописанного!',
+    selectMeterErrorTitle: 'Укажите прибор учета!',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

@@ -22,6 +22,8 @@ export const ADD_NEW_VALUE_TO_METER = 'ADD_NEW_VALUE_TO_METER';
 export const EDIT_VALUE_IN_METER = 'EDIT_VALUE_IN_METER';
 export const REMOVE_VALUE_FROM_METER = 'REMOVE_VALUE_FROM_METER';
 
+export const CLEAR_LOCAL_DATA_METERS = 'CLEAR_LOCAL_DATA_METERS';
+
 export const getMeters = (page = 0) => {
   return {
     type: GET_METERS,
@@ -122,22 +124,24 @@ export const findMeters = (meterType = '', service = '', name = '', serialNumber
     page,
   };
 };
-export const findMetersIndividual = (service = '', name = '', serialNumber = '', page = 0) => {
+export const findMetersIndividual = (service = '', name = '', serialNumber = '', page = 0, size = 0) => {
   return {
     type: FIND_METERS_INDIVIDUAL,
     service,
     name,
     serialNumber,
     page,
+    size,
   };
 };
-export const findMetersCommonHouse = (service = '', name = '', serialNumber = '', page = 0) => {
+export const findMetersCommonHouse = (service = '', name = '', serialNumber = '', page = 0, size = 0) => {
   return {
     type: FIND_METERS_COMMON_HOUSE,
     service,
     name,
     serialNumber,
     page,
+    size,
   };
 };
 
@@ -158,5 +162,11 @@ export const removeValueFromMeter = (meterValue) => {
   return {
     type: REMOVE_VALUE_FROM_METER,
     meterValue,
+  };
+};
+
+export const clearLocalDataMeters = () => {
+  return {
+    type: CLEAR_LOCAL_DATA_METERS,
   };
 };

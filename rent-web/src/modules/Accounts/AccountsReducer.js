@@ -40,6 +40,12 @@ import {
   getAccountRegisteredDocumentAttachmentIsRequestError,
 } from './reducers/AccountRegisteredDocumentAttachmentReducer';
 
+import {
+  accountMeterReducer,
+  getAccountMeterIsLoading,
+  getAccountMeterIsRequestError,
+} from './reducers/AccountMeterReducer';
+
 // Initial State
 const data = {
   list: {
@@ -64,6 +70,7 @@ const initialState = {
   accountOwnerDocumentAttachment: data,
   accountRegistered: data,
   accountRegisteredDocumentAttachment: data,
+  accountMeter: data,
 };
 
 const AccountsReducer = (state = initialState, action) => {
@@ -75,6 +82,7 @@ const AccountsReducer = (state = initialState, action) => {
     accountOwnerDocumentAttachment: accountOwnerDocumentAttachmentReducer(state, action),
     accountRegistered: accountRegisteredReducer(state, action),
     accountRegisteredDocumentAttachment: accountRegisteredDocumentAttachmentReducer(state, action),
+    accountMeter: accountMeterReducer(state, action),
   };
 };
 
@@ -82,12 +90,12 @@ const AccountsReducer = (state = initialState, action) => {
 export const getIsRequestError = state => getAccountIsRequestError(state) || getAccountParameterIsRequestError(state) ||
              getAccountServiceIsRequestError(state) || getAccountOwnerIsRequestError(state) ||
              getAccountOwnerDocumentAttachmentIsRequestError(state) || getAccountRegisteredIsRequestError(state) ||
-             getAccountRegisteredDocumentAttachmentIsRequestError(state);
+             getAccountRegisteredDocumentAttachmentIsRequestError(state) || getAccountMeterIsRequestError(state);
 
 export const getIsLoading = state => getAccountIsLoading(state) || getAccountParameterIsLoading(state) ||
              getAccountServiceIsLoading(state) || getAccountOwnerIsLoading(state) ||
              getAccountOwnerDocumentAttachmentIsLoading(state) || getAccountRegisteredIsLoading(state) ||
-             getAccountRegisteredDocumentAttachmentIsLoading(state);
+             getAccountRegisteredDocumentAttachmentIsLoading(state) || getAccountMeterIsLoading(state);
 
 // Export Reducer
 export default AccountsReducer;

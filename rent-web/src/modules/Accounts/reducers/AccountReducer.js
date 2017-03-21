@@ -7,9 +7,11 @@ import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwner
 import * as AccountOwnerAction from './../actions/AccountOwnerAction';
 import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
 import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
+import * as AccountMeterAction from './../actions/AccountMeterAction';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as AddressActions from './../../Address/AddressActions';
 import * as CitizenAction from './../../Citizens/actions/CitizenAction';
+import * as MeterAction from './../../Meters/actions/MeterAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const emptyParameter = {
@@ -67,6 +69,13 @@ export const emptyDocumentAttachment = {
   urlLink: '',
 };
 
+export const emptyMeter = {
+  id: '',
+  meter: null,
+  dateStart: moment(),
+  dateEnd: null,
+};
+
 const emptyEditData = {
   id: '',
   accountNumber: '',
@@ -88,6 +97,7 @@ const emptyEditData = {
   services: [],
   owners: [],
   registered: [],
+  meters: [],
 };
 
 export const accountReducer = (state, action) => {
@@ -175,13 +185,13 @@ export const accountReducer = (state, action) => {
     }
     case AccountAction.EDIT_OWNER_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
-      newObj.owners = newObj.owners.filter(document => document.id !== action.owner.id);
+      newObj.owners = newObj.owners.filter(owner => owner.id !== action.owner.id);
       newObj.owners.push(action.owner);
       return prepareEdit(newObj, false, false, false, false);
     }
     case AccountAction.REMOVE_OWNER_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
-      newObj.owners = newObj.owners.filter(document => document.id !== action.owner.id);
+      newObj.owners = newObj.owners.filter(owner => owner.id !== action.owner.id);
       return prepareEdit(newObj, false, false, false, false);
     }
 
@@ -209,13 +219,13 @@ export const accountReducer = (state, action) => {
     }
     case AccountAction.EDIT_REGISTERED_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
-      newObj.registered = newObj.registered.filter(document => document.id !== action.registered.id);
+      newObj.registered = newObj.registered.filter(registered => registered.id !== action.registered.id);
       newObj.registered.push(action.registered);
       return prepareEdit(newObj, false, false, false, false);
     }
     case AccountAction.REMOVE_REGISTERED_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
-      newObj.registered = newObj.registered.filter(document => document.id !== action.registered.id);
+      newObj.registered = newObj.registered.filter(registered => registered.id !== action.registered.id);
       return prepareEdit(newObj, false, false, false, false);
     }
 
@@ -236,6 +246,30 @@ export const accountReducer = (state, action) => {
       return state.account;
     }
 
+    case AccountAction.ADD_NEW_METER_TO_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.meters.push(action.meter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.EDIT_METER_IN_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
+      newObj.meters.push(action.meter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AccountAction.REMOVE_METER_FROM_ACCOUNT: {
+      const newObj = state.account.edit.data;
+      newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case AccountMeterAction.SAVE_ACCOUNT_METER:
+    case AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS:
+    case AccountMeterAction.SAVE_ACCOUNT_METER_FAILED:
+    case MeterAction.CLEAR_LOCAL_DATA_METERS:
+    case MeterAction.FIND_METERS_INDIVIDUAL:
+    case MeterAction.GET_METERS_SUCCESS:
+    case MeterAction.GET_METERS_FAILED:
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED:
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS:
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_FAILED:
