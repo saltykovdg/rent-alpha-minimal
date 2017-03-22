@@ -10,12 +10,12 @@ import { rootAccountMeterSaga } from './sagas/AccountMeterSaga';
 
 // Export Saga
 export default [
-  ...rootAccountSaga,
-  ...rootAccountParameterSaga,
-  ...rootAccountServiceSaga,
-  ...rootAccountOwnerSaga,
-  ...rootAccountOwnerDocumentAttachmentSaga,
-  ...rootAccountRegisteredSaga,
-  ...rootAccountRegisteredDocumentAttachmentSaga,
-  ...rootAccountMeterSaga,
+  rootAccountSaga,
+  rootAccountParameterSaga,
+  rootAccountServiceSaga,
+  rootAccountOwnerSaga,
+  rootAccountOwnerDocumentAttachmentSaga,
+  rootAccountRegisteredSaga,
+  rootAccountRegisteredDocumentAttachmentSaga,
+  rootAccountMeterSaga,
 ];

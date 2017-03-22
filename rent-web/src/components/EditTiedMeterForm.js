@@ -3,19 +3,19 @@ import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Form, Modal, Row, Col, Button, Table, Alert } from 'antd';
 
-import { EditComponent } from './../../../components/EditComponent';
+import { EditComponent } from './EditComponent';
 
 const FormItem = Form.Item;
 
 const MAX_METERS_PER_PAGE_SIZE = 5;
 
-class AccountEditMeterForm extends EditComponent {
+class EditTiedMeterForm extends EditComponent {
   constructor(props, context) {
     super(props, context);
     this.state = { selectMeterError: false };
   }
   onOk = () => {
-    const meter = this.props.accountMeter.meter;
+    const meter = this.props.tiedMeter.meter;
     if (meter) {
       this.props.form.validateFields((error, values) => {
         if (!error && !this.props.isLoading) {
@@ -48,12 +48,12 @@ class AccountEditMeterForm extends EditComponent {
     );
   }
   onSelectMeter = (meter) => {
-    this.props.accountMeter.meter = meter;
+    this.props.tiedMeter.meter = meter;
     this.setState({ selectMeterError: false });
     this.forceUpdate();
   }
   onChangeMeterClick = () => {
-    this.props.accountMeter.meter = null;
+    this.props.tiedMeter.meter = null;
     this.forceUpdate();
   }
   getActionMeterColumn = (onSelect) => {
@@ -111,7 +111,7 @@ class AccountEditMeterForm extends EditComponent {
     );
   }
   render() {
-    const object = this.props.accountMeter;
+    const object = this.props.tiedMeter;
     const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
     const baseFields = this.getBaseFields(object);
     const panelSearchVisible = !object.meter;
@@ -206,4 +206,4 @@ class AccountEditMeterForm extends EditComponent {
   }
 }
 
-export default Form.create()(injectIntl(AccountEditMeterForm));
+export default Form.create()(injectIntl(EditTiedMeterForm));

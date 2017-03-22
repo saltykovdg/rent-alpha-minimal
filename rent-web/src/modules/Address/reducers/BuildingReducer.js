@@ -1,5 +1,16 @@
+import moment from 'moment';
+
 import * as AddressAction from './../AddressActions';
+import * as MeterAction from './../../Meters/actions/MeterAction';
+import * as BuildingMeterAction from './../actions/BuildingMeterAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+
+export const emptyMeter = {
+  id: '',
+  meter: null,
+  dateStart: moment(),
+  dateEnd: null,
+};
 
 const emptyEditData = {
   id: '',
@@ -9,6 +20,7 @@ const emptyEditData = {
   street: {
     id: '',
   },
+  meters: [],
 };
 
 const buildingReducer = (state, action) => {
@@ -54,6 +66,33 @@ const buildingReducer = (state, action) => {
 
     case AddressAction.NEW_BUILDING: {
       return prepareEdit(emptyEditData, false, false, false, false);
+    }
+
+    case AddressAction.ADD_NEW_METER_TO_BUILDING: {
+      const newObj = state.building.edit.data;
+      newObj.meters.push(action.meter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AddressAction.EDIT_METER_IN_BUILDING: {
+      const newObj = state.building.edit.data;
+      newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
+      newObj.meters.push(action.meter);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+    case AddressAction.REMOVE_METER_FROM_BUILDING: {
+      const newObj = state.building.edit.data;
+      newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
+      return prepareEdit(newObj, false, false, false, false);
+    }
+
+    case BuildingMeterAction.SAVE_BUILDING_METER:
+    case BuildingMeterAction.SAVE_BUILDING_METER_SUCCESS:
+    case BuildingMeterAction.SAVE_BUILDING_METER_FAILED:
+    case MeterAction.CLEAR_LOCAL_DATA_METERS:
+    case MeterAction.FIND_METERS_COMMON_HOUSE:
+    case MeterAction.GET_METERS_SUCCESS:
+    case MeterAction.GET_METERS_FAILED: {
+      return state.building;
     }
 
     default:

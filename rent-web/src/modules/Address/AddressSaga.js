@@ -3,9 +3,13 @@ import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as AddressAction from './AddressActions';
+import * as BuildingMeterAction from './actions/BuildingMeterAction';
 import * as AddressApi from './AddressApi';
 import * as AddressPath from './AddressPaths';
 import * as ApiCaller from '../../util/ApiCaller';
+import * as ObjectUtil from './../../util/ObjectUtil';
+
+import { rootBuildingMeterSaga } from './sagas/BuildingMeterSaga';
 
 // get lists
 export function* getStreetTypes(action) {
@@ -146,13 +150,47 @@ export function* saveStreet(action) {
   }
 }
 export function* saveBuilding(action) {
-  const response = yield call(AddressApi.saveBuilding, action.object);
-  if (response && !response.error && !response.canceled) {
-    yield put(AddressAction.saveBuildingSuccess(response));
-    yield call(browserHistory.push, AddressPath.BUILDING_LIST);
-  } else if (!response.canceled) {
+  let sagaAction = null;
+  const meters = action.object.meters;
+  const metersLinks = [];
+
+  // save meters
+  for (let i = 0; i < meters.length; i += 1) {
+    sagaAction = null;
+    const meterObj = ObjectUtil.cloneObject(meters[i]);
+    meterObj.meter = ObjectUtil.getLink(meters[i].meter);
+
+    // save meter
+    if (sagaAction == null) {
+      yield put(BuildingMeterAction.saveBuildingMeter(meterObj));
+      sagaAction = yield take([BuildingMeterAction.SAVE_BUILDING_METER_SUCCESS, BuildingMeterAction.SAVE_BUILDING_METER_FAILED]);
+      if (sagaAction.type === BuildingMeterAction.SAVE_BUILDING_METER_SUCCESS) {
+        metersLinks.push(ObjectUtil.getLink(sagaAction.data));
+        sagaAction = null;
+      } else {
+        break;
+      }
+    }
+  }
+
+  // save building
+  if (sagaAction == null) {
+    const objectBuilding = ObjectUtil.cloneObject(action.object);
+    objectBuilding.meters = metersLinks;
+    const response = yield call(AddressApi.saveBuilding, objectBuilding);
+    if (response && !response.error && !response.canceled) {
+      yield put(AddressAction.saveBuildingSuccess(response));
+      yield call(browserHistory.push, AddressPath.BUILDING_LIST);
+    } else if (!response.canceled) {
+      const data = {
+        httpStatus: response.status,
+        object: action.object,
+      };
+      yield put(AddressAction.saveBuildingFailed(data));
+    }
+  } else if (sagaAction) {
     const data = {
-      httpStatus: response.status,
+      httpStatus: sagaAction.data.httpStatus,
       object: action.object,
     };
     yield put(AddressAction.saveBuildingFailed(data));
@@ -389,4 +427,6 @@ export const rootAddressSaga = [
   fork(watchFindBuildingsByStreetName),
   fork(watchFindApartmentsByBuildingId),
   fork(watchFindApartmentsByStreetNameAndBuildingName),
+
+  rootBuildingMeterSaga,
 ];

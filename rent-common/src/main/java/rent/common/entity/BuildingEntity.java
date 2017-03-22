@@ -1,6 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Строение
@@ -14,6 +15,7 @@ public class BuildingEntity extends AbstractEntity {
     public static final String TABLE_NAME = "address_buildings";
 
     public interface Columns extends AbstractEntity.Columns {
+        String BUILDING = "building_id";
         String STREET = "street_id";
         String HOUSE = "house";
         String HOUSE_NUMBER = "house_number";
@@ -21,29 +23,36 @@ public class BuildingEntity extends AbstractEntity {
     }
 
     /**
-     * Улица
+     * улица
      */
     @JoinColumn(name = Columns.STREET)
     @ManyToOne(fetch = FetchType.LAZY)
     private StreetEntity street;
 
     /**
-     * Дом
+     * дом
      */
     @Column(name = Columns.HOUSE)
     private String house;
 
     /**
-     * Номер дома
+     * номер дома
      */
     @Column(name = Columns.HOUSE_NUMBER)
     private Integer houseNumber;
 
     /**
-     * Корпус
+     * корпус
      */
     @Column(name = Columns.HOUSING)
     private String housing;
+
+    /**
+     * счетчики общедомовые
+     */
+    @JoinColumn(name = Columns.BUILDING)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BuildingMeterEntity> meters;
 
     public StreetEntity getStreet() {
         return street;
@@ -75,5 +84,13 @@ public class BuildingEntity extends AbstractEntity {
 
     public void setHousing(String housing) {
         this.housing = housing;
+    }
+
+    public List<BuildingMeterEntity> getMeters() {
+        return meters;
+    }
+
+    public void setMeters(List<BuildingMeterEntity> meters) {
+        this.meters = meters;
     }
 }

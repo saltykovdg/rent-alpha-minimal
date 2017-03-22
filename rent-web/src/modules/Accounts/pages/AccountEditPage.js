@@ -10,7 +10,7 @@ import AccountEditParameterForm from './../components/AccountEditParameterForm';
 import AccountEditServiceForm from './../components/AccountEditServiceForm';
 import AccountEditOwnerForm from './../components/AccountEditOwnerForm';
 import AccountEditRegisteredForm from './../components/AccountEditRegisteredForm';
-import AccountEditMeterForm from './../components/AccountEditMeterForm';
+import EditTiedMeterForm from './../../../components/EditTiedMeterForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -363,9 +363,9 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteRegisteredDocumentAttachment={this.onDeleteRegisteredDocumentAttachment}
           onSearchRegistered={this.onSearchCitizen}
         />
-        <AccountEditMeterForm
+        <EditTiedMeterForm
           isLoading={this.props.isLoadingMeters}
-          accountMeter={this.state.meter}
+          tiedMeter={this.state.meter}
           meters={this.props.meters}
           formMeterEditVisible={this.state.formMeterEditVisible}
           onOkFormMeterEdit={this.onOkFormMeterEdit}

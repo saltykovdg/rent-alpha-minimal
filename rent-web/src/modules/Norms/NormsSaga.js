@@ -4,6 +4,6 @@ import { rootNormValueSaga } from './sagas/NormValueSaga';
 
 // Export Saga
 export default [
-  ...rootNormSaga,
-  ...rootNormValueSaga,
+  rootNormSaga,
+  rootNormValueSaga,
 ];

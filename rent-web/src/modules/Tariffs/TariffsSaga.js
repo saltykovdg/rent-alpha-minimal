@@ -4,6 +4,6 @@ import { rootTariffValueSaga } from './sagas/TariffValueSaga';
 
 // Export Saga
 export default [
-  ...rootTariffSaga,
-  ...rootTariffValueSaga,
+  rootTariffSaga,
+  rootTariffValueSaga,
 ];

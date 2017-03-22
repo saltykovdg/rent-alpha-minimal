@@ -3,6 +3,12 @@ import streetReducer from './reducers/StreetReducer';
 import buildingReducer from './reducers/BuildingReducer';
 import apartmentReducer from './reducers/ApartmentReducer';
 
+import {
+  buildingMeterReducer,
+  getBuildingMeterIsLoading,
+  getBuildingMeterIsRequestError,
+} from './reducers/BuildingMeterReducer';
+
 // Initial State
 const data = {
   list: {
@@ -23,6 +29,7 @@ const initialState = {
   streetType: data,
   street: data,
   building: data,
+  buildingMeter: data,
   apartment: data,
 };
 
@@ -31,6 +38,7 @@ const addressReducer = (state = initialState, action) => {
     streetType: streetTypeReducer(state, action),
     street: streetReducer(state, action),
     building: buildingReducer(state, action),
+    buildingMeter: buildingMeterReducer(state, action),
     apartment: apartmentReducer(state, action),
   };
 };
@@ -65,16 +73,14 @@ export const getApartmentIsSaved = state => state.address.apartment.isSaved;
 export const getApartmentIsDeleted = state => state.address.apartment.isDeleted;
 
 export const getIsRequestError = state =>
-  getStreetTypeIsRequestError(state) ||
-  getStreetIsRequestError(state) ||
-  getBuildingIsRequestError(state) ||
-  getApartmentIsRequestError(state);
+  getStreetTypeIsRequestError(state) || getStreetIsRequestError(state) ||
+  getBuildingIsRequestError(state) || getApartmentIsRequestError(state) ||
+  getBuildingMeterIsRequestError(state);
 
 export const getIsLoading = state =>
-  getStreetTypeIsLoading(state) ||
-  getStreetIsLoading(state) ||
-  getBuildingIsLoading(state) ||
-  getApartmentIsLoading(state);
+  getStreetTypeIsLoading(state) || getStreetIsLoading(state) ||
+  getBuildingIsLoading(state) || getApartmentIsLoading(state) ||
+  getBuildingMeterIsLoading(state);
 
 // Export Reducer
 export default addressReducer;

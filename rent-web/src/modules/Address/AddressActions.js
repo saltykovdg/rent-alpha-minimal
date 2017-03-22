@@ -70,6 +70,11 @@ export const FIND_BUILDINGS_BY_STREET_NAME = 'FIND_BUILDINGS_BY_STREET_NAME';
 export const FIND_APARTMENTS_BY_BUILDING_ID = 'FIND_APARTMENTS_BY_BUILDING_ID';
 export const FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME = 'FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME';
 
+// meters
+export const ADD_NEW_METER_TO_BUILDING = 'ADD_NEW_METER_TO_BUILDING';
+export const EDIT_METER_IN_BUILDING = 'EDIT_METER_IN_BUILDING';
+export const REMOVE_METER_FROM_BUILDING = 'REMOVE_METER_FROM_BUILDING';
+
 // get lists action creator
 export const getStreetTypes = (page = 0) => {
   return {
@@ -438,5 +443,25 @@ export const findApartmentsByStreetNameAndBuildingName = (streetName = '', build
     streetName,
     buildingName,
     page,
+  };
+};
+
+// meters
+export const addNewMeterToBuilding = (meter) => {
+  return {
+    type: ADD_NEW_METER_TO_BUILDING,
+    meter,
+  };
+};
+export const editMeterInBuilding = (meter) => {
+  return {
+    type: EDIT_METER_IN_BUILDING,
+    meter,
+  };
+};
+export const removeMeterFromBuilding = (meter) => {
+  return {
+    type: REMOVE_METER_FROM_BUILDING,
+    meter,
   };
 };

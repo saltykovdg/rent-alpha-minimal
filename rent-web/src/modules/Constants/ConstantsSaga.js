@@ -9,11 +9,11 @@ import { rootMeterTypeSaga } from './sagas/MeterTypeSaga';
 
 // Export Saga
 export default [
-  ...rootCalculationTypeSaga,
-  ...rootMeasurementUnitSaga,
-  ...rootParameterTypeSaga,
-  ...rootDocumentTypeSaga,
-  ...rootGenderTypeSaga,
-  ...rootRegistrationTypeSaga,
-  ...rootMeterTypeSaga,
+  rootCalculationTypeSaga,
+  rootMeasurementUnitSaga,
+  rootParameterTypeSaga,
+  rootDocumentTypeSaga,
+  rootGenderTypeSaga,
+  rootRegistrationTypeSaga,
+  rootMeterTypeSaga,
 ];
