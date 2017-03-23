@@ -11,9 +11,9 @@ function Header() {
   const userName = 'Пользователь';
   return (
     <div className="header">
-      <div className="header-logo">
-        <Link to="/"><FormattedMessage id="headerTitle" /></Link>
-      </div>
+      <Link to="/" className="header-logo">
+        <FormattedMessage id="headerTitle" />
+      </Link>
       <Menu className="header-menu" mode="horizontal">
         <SubMenu title={<span><Icon type="user" />{userName}</span>}>
           <Menu.Item>
