@@ -60,8 +60,8 @@ class CitizenEditPage extends ExtendedComponentPage {
   showFormDocumentEdit = (document = emptyDocument) => {
     this.initFormDocument(true, document);
   };
-  onOkFormDocumentEdit = (document = emptyDocument) => {
-    this.initFormDocument(false);
+  onOkFormDocumentEdit = (document) => {
+    this.initFormDocument(false, document);
     if (document.id) {
       this.props.dispatch(CitizenAction.editDocumentInCitizen(ObjectUtil.cloneObject(document)));
     } else {
@@ -70,8 +70,8 @@ class CitizenEditPage extends ExtendedComponentPage {
       this.props.dispatch(CitizenAction.addNewDocumentToCitizen(newDocument));
     }
   }
-  onCancelFormDocumentEdit = () => {
-    this.initFormDocument(false);
+  onCancelFormDocumentEdit = (document) => {
+    this.initFormDocument(false, document);
   }
   onDeleteDocument = (document) => {
     this.props.dispatch(CitizenAction.removeDocumentFromCitizen(ObjectUtil.cloneObject(document)));

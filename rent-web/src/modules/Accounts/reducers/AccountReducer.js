@@ -288,6 +288,7 @@ export const accountReducer = (state, action) => {
     case AddressActions.FIND_BUILDINGS_BY_STREET_ID:
     case AddressActions.GET_BUILDINGS_SUCCESS:
     case AddressActions.GET_BUILDINGS_FAILED:
+    case TariffAction.CLEAR_LOCAL_DATA_TARIFFS:
     case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
     case TariffAction.GET_TARIFFS_SUCCESS:
     case TariffAction.GET_TARIFFS_FAILED:

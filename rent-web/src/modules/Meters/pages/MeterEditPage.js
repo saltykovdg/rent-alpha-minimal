@@ -58,8 +58,8 @@ class MeterEditPage extends ExtendedComponentPage {
   showFormMeterValueEdit = (meterValue = emptyMeterValue) => {
     this.initFormMeterValue(true, meterValue);
   };
-  onOkFormMeterValueEdit = (meterValue = emptyMeterValue) => {
-    this.initFormMeterValue(false);
+  onOkFormMeterValueEdit = (meterValue) => {
+    this.initFormMeterValue(false, meterValue);
     if (meterValue.id) {
       this.props.dispatch(MeterAction.editValueInMeter(ObjectUtil.cloneObject(meterValue)));
     } else {
@@ -68,8 +68,8 @@ class MeterEditPage extends ExtendedComponentPage {
       this.props.dispatch(MeterAction.addNewValueToMeter(newMeterValue));
     }
   }
-  onCancelFormMeterValueEdit = () => {
-    this.initFormMeterValue(false);
+  onCancelFormMeterValueEdit = (meterValue) => {
+    this.initFormMeterValue(false, meterValue);
   }
   onDeleteMeterValue = (meterValue) => {
     this.props.dispatch(MeterAction.removeValueFromMeter(ObjectUtil.cloneObject(meterValue)));

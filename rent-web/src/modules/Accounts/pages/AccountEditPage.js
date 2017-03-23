@@ -103,8 +103,13 @@ class AccountEditPage extends ExtendedComponentPage {
     } else {
       this.props.dispatch(AccountAction.newAccount());
     }
-    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
+
+    // clear additional dicts
+    this.clearLocalDataCitizens();
+    this.clearLocalDataMeters();
+    this.clearLocalDataTariffs();
+
+    // default form values
     this.initFormParameter(false);
     this.initFormService(false);
     this.initFormOwner(false);
@@ -154,11 +159,11 @@ class AccountEditPage extends ExtendedComponentPage {
   onServiceChange = (serviceId = '') => {
     this.props.dispatch(TariffAction.findTariffsByServiceId(serviceId));
   }
-  showFormParameterEdit = (parameter = emptyParameter) => {
+  showFormParameterEdit = (parameter) => {
     this.initFormParameter(true, parameter);
   }
-  onOkFormParameterEdit = (parameter = emptyParameter) => {
-    this.initFormParameter(false);
+  onOkFormParameterEdit = (parameter) => {
+    this.initFormParameter(false, parameter);
     if (parameter.id) {
       this.props.dispatch(AccountAction.editParameterInAccount(ObjectUtil.cloneObject(parameter)));
     } else {
@@ -167,8 +172,8 @@ class AccountEditPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.addNewParameterToAccount(newParam));
     }
   }
-  onCancelFormParameterEdit = () => {
-    this.initFormParameter(false);
+  onCancelFormParameterEdit = (parameter) => {
+    this.initFormParameter(false, parameter);
   }
   onDeleteParameter = (parameter) => {
     this.props.dispatch(AccountAction.removeParameterFromAccount(ObjectUtil.cloneObject(parameter)));
@@ -182,8 +187,8 @@ class AccountEditPage extends ExtendedComponentPage {
       this.onServiceChange();
     }
   }
-  onOkFormServiceEdit = (service = emptyService) => {
-    this.initFormService(false);
+  onOkFormServiceEdit = (service) => {
+    this.initFormService(false, service);
     if (service.id) {
       this.props.dispatch(AccountAction.editServiceInAccount(ObjectUtil.cloneObject(service)));
     } else {
@@ -192,18 +197,27 @@ class AccountEditPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.addNewServiceToAccount(newService));
     }
   }
-  onCancelFormServiceEdit = () => {
-    this.initFormService(false);
+  onCancelFormServiceEdit = (service) => {
+    this.initFormService(false, service);
   }
   onDeleteService = (service) => {
     this.props.dispatch(AccountAction.removeServiceFromAccount(ObjectUtil.cloneObject(service)));
     this.forceUpdate();
   }
+  clearLocalDataTariffs = () => {
+    this.props.dispatch(TariffAction.clearLocalDataTariffs());
+  }
+  clearLocalDataCitizens = () => {
+    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  }
+  clearLocalDataMeters = () => {
+    this.props.dispatch(MeterAction.clearLocalDataMeters());
+  }
   showFormOwnerEdit = (owner = emptyOwner) => {
     this.initFormOwner(true, owner);
   }
-  onOkFormOwnerEdit = (owner = emptyOwner) => {
-    this.initFormOwner(false);
+  onOkFormOwnerEdit = (owner) => {
+    this.initFormOwner(false, owner);
     if (owner.id) {
       this.props.dispatch(AccountAction.editOwnerInAccount(ObjectUtil.cloneObject(owner)));
     } else {
@@ -211,11 +225,9 @@ class AccountEditPage extends ExtendedComponentPage {
       newOwner.id = moment().unix();
       this.props.dispatch(AccountAction.addNewOwnerToAccount(newOwner));
     }
-    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
   }
-  onCancelFormOwnerEdit = () => {
-    this.initFormOwner(false);
-    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  onCancelFormOwnerEdit = (owner) => {
+    this.initFormOwner(false, owner);
   }
   onDeleteOwner = (owner) => {
     this.props.dispatch(AccountAction.removeOwnerFromAccount(ObjectUtil.cloneObject(owner)));
@@ -236,8 +248,8 @@ class AccountEditPage extends ExtendedComponentPage {
   showFormRegisteredEdit = (registered = emptyRegistered) => {
     this.initFormRegistered(true, registered);
   }
-  onOkFormRegisteredEdit = (registered = emptyRegistered) => {
-    this.initFormRegistered(false);
+  onOkFormRegisteredEdit = (registered) => {
+    this.initFormRegistered(false, registered);
     if (registered.id) {
       this.props.dispatch(AccountAction.editRegisteredInAccount(ObjectUtil.cloneObject(registered)));
     } else {
@@ -245,11 +257,9 @@ class AccountEditPage extends ExtendedComponentPage {
       newRegistered.id = moment().unix();
       this.props.dispatch(AccountAction.addNewRegisteredToAccount(newRegistered));
     }
-    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
   }
-  onCancelFormRegisteredEdit = () => {
-    this.initFormRegistered(false);
-    this.props.dispatch(CitizenAction.clearLocalDataCitizens());
+  onCancelFormRegisteredEdit = (registered) => {
+    this.initFormRegistered(false, registered);
   }
   onDeleteRegistered = (registered) => {
     this.props.dispatch(AccountAction.removeRegisteredFromAccount(ObjectUtil.cloneObject(registered)));
@@ -273,8 +283,8 @@ class AccountEditPage extends ExtendedComponentPage {
   showFormMeterEdit = (meter = emptyMeter) => {
     this.initFormMeter(true, meter);
   }
-  onOkFormMeterEdit = (meter = emptyMeter) => {
-    this.initFormMeter(false);
+  onOkFormMeterEdit = (meter) => {
+    this.initFormMeter(false, meter);
     if (meter.id) {
       this.props.dispatch(AccountAction.editMeterInAccount(ObjectUtil.cloneObject(meter)));
     } else {
@@ -282,11 +292,9 @@ class AccountEditPage extends ExtendedComponentPage {
       newMeter.id = moment().unix();
       this.props.dispatch(AccountAction.addNewMeterToAccount(newMeter));
     }
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
   }
-  onCancelFormMeterEdit = () => {
-    this.initFormMeter(false);
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
+  onCancelFormMeterEdit = (meter) => {
+    this.initFormMeter(false, meter);
   }
   onDeleteMeter = (meter) => {
     this.props.dispatch(AccountAction.removeMeterFromAccount(ObjectUtil.cloneObject(meter)));
@@ -338,6 +346,7 @@ class AccountEditPage extends ExtendedComponentPage {
           formServiceEditVisible={this.state.formServiceEditVisible}
           onOkFormServiceEdit={this.onOkFormServiceEdit}
           onCancelFormServiceEdit={this.onCancelFormServiceEdit}
+          clearLocalDataTariffs={this.clearLocalDataTariffs}
         />
         <AccountEditOwnerForm
           isLoading={this.props.isLoadingCitizen}
@@ -350,6 +359,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onAddOwnerDocumentAttachment={this.onAddOwnerDocumentAttachment}
           onDeleteOwnerDocumentAttachment={this.onDeleteOwnerDocumentAttachment}
           onSearchOwner={this.onSearchCitizen}
+          clearLocalDataCitizens={this.clearLocalDataCitizens}
         />
         <AccountEditRegisteredForm
           isLoading={this.props.isLoadingCitizen}
@@ -362,6 +372,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onAddRegisteredDocumentAttachment={this.onAddRegisteredDocumentAttachment}
           onDeleteRegisteredDocumentAttachment={this.onDeleteRegisteredDocumentAttachment}
           onSearchRegistered={this.onSearchCitizen}
+          clearLocalDataCitizens={this.clearLocalDataCitizens}
         />
         <EditTiedMeterForm
           isLoading={this.props.isLoadingMeters}
@@ -371,6 +382,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onOkFormMeterEdit={this.onOkFormMeterEdit}
           onCancelFormMeterEdit={this.onCancelFormMeterEdit}
           onSearchMeters={this.onSearchMeters}
+          clearLocalDataMeters={this.clearLocalDataMeters}
         />
       </div>
     );

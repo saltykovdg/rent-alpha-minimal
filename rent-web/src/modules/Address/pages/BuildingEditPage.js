@@ -42,13 +42,16 @@ class BuildingEditPage extends ExtendedComponentPage {
     } else {
       this.props.dispatch(AddressAction.newBuilding());
     }
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
+    this.clearLocalDataMeters();
     this.initFormMeter(false);
   }
   initFormMeter = (visible, meter = emptyMeter) => {
     this.setState({
       formMeterEditVisible: visible, meter: ObjectUtil.cloneObject(meter),
     });
+  }
+  clearLocalDataMeters = () => {
+    this.props.dispatch(MeterAction.clearLocalDataMeters());
   }
   onSave = (object) => {
     const newObject = ObjectUtil.cloneObject(object);
@@ -58,8 +61,8 @@ class BuildingEditPage extends ExtendedComponentPage {
   showFormMeterEdit = (meter = emptyMeter) => {
     this.initFormMeter(true, meter);
   }
-  onOkFormMeterEdit = (meter = emptyMeter) => {
-    this.initFormMeter(false);
+  onOkFormMeterEdit = (meter) => {
+    this.initFormMeter(false, meter);
     if (meter.id) {
       this.props.dispatch(AddressAction.editMeterInBuilding(ObjectUtil.cloneObject(meter)));
     } else {
@@ -67,11 +70,9 @@ class BuildingEditPage extends ExtendedComponentPage {
       newMeter.id = moment().unix();
       this.props.dispatch(AddressAction.addNewMeterToBuilding(newMeter));
     }
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
   }
-  onCancelFormMeterEdit = () => {
-    this.initFormMeter(false);
-    this.props.dispatch(MeterAction.clearLocalDataMeters());
+  onCancelFormMeterEdit = (meter) => {
+    this.initFormMeter(false, meter);
   }
   onDeleteMeter = (meter) => {
     this.props.dispatch(AddressAction.removeMeterFromBuilding(ObjectUtil.cloneObject(meter)));
@@ -102,6 +103,7 @@ class BuildingEditPage extends ExtendedComponentPage {
           onOkFormMeterEdit={this.onOkFormMeterEdit}
           onCancelFormMeterEdit={this.onCancelFormMeterEdit}
           onSearchMeters={this.onSearchMeters}
+          clearLocalDataMeters={this.clearLocalDataMeters}
         />
       </div>
     );

@@ -7,21 +7,22 @@ import { EditComponent } from './../../../components/EditComponent';
 const FormItem = Form.Item;
 
 class TariffEditValuesForm extends EditComponent {
-  onOkFormTariffValueEdit = () => {
+  onOk = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
         newValues.calculationType = this.props.calculationTypes.content.filter(calculationType => this.getLink(calculationType) === values.calculationType)[0];
         newValues.measurementUnit = this.props.measurementUnits.content.filter(measurementUnit => this.getLink(measurementUnit) === values.measurementUnit)[0];
         this.props.onOkFormTariffValueEdit(newValues);
-        this.props.form.resetFields();
       }
     });
-  };
-  onCancelFormTariffValueEdit = () => {
+  }
+  onCancel = () => {
+    this.props.onCancelFormTariffValueEdit(this.props.tariffValue);
+  }
+  afterClose = () => {
     this.props.form.resetFields();
-    this.props.onCancelFormTariffValueEdit();
-  };
+  }
   render() {
     const object = this.props.tariffValue;
     const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
@@ -43,8 +44,9 @@ class TariffEditValuesForm extends EditComponent {
         visible={this.props.formTariffValueEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
-        onOk={this.onOkFormTariffValueEdit}
-        onCancel={this.onCancelFormTariffValueEdit}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        afterClose={this.afterClose}
         closable={false}
         maskClosable={false}
       >

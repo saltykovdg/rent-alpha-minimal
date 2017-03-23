@@ -53,9 +53,10 @@ class AccountEditOwnerForm extends EditComponent {
     }
   }
   onCancel = () => {
-    this.props.onCancelFormOwnerEdit();
+    this.props.onCancelFormOwnerEdit(this.props.owner);
   }
   afterClose = () => {
+    this.props.clearLocalDataCitizens();
     this.props.form.resetFields();
     this.setState({
       attachmentsFileNameError: false,

@@ -7,20 +7,21 @@ import { EditComponent } from './../../../components/EditComponent';
 const FormItem = Form.Item;
 
 class NormEditValuesForm extends EditComponent {
-  onOkFormNormValueEdit = () => {
+  onOk = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
         newValues.measurementUnit = this.props.measurementUnits.content.filter(measurementUnit => this.getLink(measurementUnit) === values.measurementUnit)[0];
         this.props.onOkFormNormValueEdit(newValues);
-        this.props.form.resetFields();
       }
     });
   };
-  onCancelFormNormValueEdit = () => {
-    this.props.form.resetFields();
-    this.props.onCancelFormNormValueEdit();
+  onCancel = () => {
+    this.props.onCancelFormNormValueEdit(this.props.normValue);
   };
+  afterClose = () => {
+    this.props.form.resetFields();
+  }
   render() {
     const object = this.props.normValue;
     const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
@@ -36,8 +37,9 @@ class NormEditValuesForm extends EditComponent {
         visible={this.props.formNormValueEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
-        onOk={this.onOkFormNormValueEdit}
-        onCancel={this.onCancelFormNormValueEdit}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        afterClose={this.afterClose}
         closable={false}
         maskClosable={false}
       >

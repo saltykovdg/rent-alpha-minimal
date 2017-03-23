@@ -28,10 +28,10 @@ class AccountEditParameterForm extends EditComponent {
         this.props.onOkFormParameterEdit(newValues);
       }
     });
-  };
+  }
   onCancel = () => {
-    this.props.onCancelFormParameterEdit();
-  };
+    this.props.onCancelFormParameterEdit(this.props.parameter);
+  }
   afterClose = () => {
     this.props.form.resetFields();
   }

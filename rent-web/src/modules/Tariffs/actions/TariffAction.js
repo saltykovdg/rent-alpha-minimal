@@ -19,6 +19,8 @@ export const ADD_NEW_VALUE_TO_TARIFF = 'ADD_NEW_VALUE_TO_TARIFF';
 export const EDIT_VALUE_IN_TARIFF = 'EDIT_VALUE_IN_TARIFF';
 export const REMOVE_VALUE_FROM_TARIFF = 'REMOVE_VALUE_FROM_TARIFF';
 
+export const CLEAR_LOCAL_DATA_TARIFFS = 'CLEAR_LOCAL_DATA_TARIFFS';
+
 export const getTariffs = (page = 0) => {
   return {
     type: GET_TARIFFS,
@@ -139,5 +141,11 @@ export const removeValueFromTariff = (tariffValue) => {
   return {
     type: REMOVE_VALUE_FROM_TARIFF,
     tariffValue,
+  };
+};
+
+export const clearLocalDataTariffs = () => {
+  return {
+    type: CLEAR_LOCAL_DATA_TARIFFS,
   };
 };

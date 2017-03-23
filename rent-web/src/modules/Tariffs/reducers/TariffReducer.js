@@ -95,6 +95,10 @@ export const tariffReducer = (state, action) => {
       return state.tariff;
     }
 
+    case TariffAction.CLEAR_LOCAL_DATA_TARIFFS: {
+      return prepareList(null, emptyEditData, false, false, false, false);
+    }
+
     default:
       return prepareDefault(state.tariff.list, emptyEditData);
   }

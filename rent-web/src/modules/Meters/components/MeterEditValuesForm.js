@@ -7,18 +7,19 @@ import { EditComponent } from './../../../components/EditComponent';
 const FormItem = Form.Item;
 
 class MeterEditValuesForm extends EditComponent {
-  onOkFormMeterValueEdit = () => {
+  onOk = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         this.props.onOkFormMeterValueEdit(values);
-        this.props.form.resetFields();
       }
     });
   };
-  onCancelFormMeterValueEdit = () => {
-    this.props.form.resetFields();
-    this.props.onCancelFormMeterValueEdit();
+  onCancel = () => {
+    this.props.onCancelFormMeterValueEdit(this.props.meterValue);
   };
+  afterClose = () => {
+    this.props.form.resetFields();
+  }
   render() {
     const object = this.props.meterValue;
     const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
@@ -29,8 +30,9 @@ class MeterEditValuesForm extends EditComponent {
         visible={this.props.formMeterValueEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
-        onOk={this.onOkFormMeterValueEdit}
-        onCancel={this.onCancelFormMeterValueEdit}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        afterClose={this.afterClose}
         closable={false}
         maskClosable={false}
       >

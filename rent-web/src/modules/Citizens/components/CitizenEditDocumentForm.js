@@ -14,7 +14,7 @@ class CitizenEditDocumentForm extends EditComponent {
     super(props, context);
     this.state = { attachmentsFileNameError: false, activeTab: '1' };
   }
-  onOkFormDocumentEdit = () => {
+  onOk = () => {
     this.props.form.validateFields((error, values) => {
       if (!error && !this.props.isLoading) {
         const newValues = values;
@@ -32,8 +32,6 @@ class CitizenEditDocumentForm extends EditComponent {
         if (!attachmentsError) {
           newValues.documentAttachments = documentAttachments;
           this.props.onOkFormDocumentEdit(newValues);
-          this.props.form.resetFields();
-          this.setState({ attachmentsFileNameError: false, activeTab: '1' });
         } else {
           this.setState({ attachmentsFileNameError: true, activeTab: '2' });
         }
@@ -42,11 +40,13 @@ class CitizenEditDocumentForm extends EditComponent {
       }
     });
   };
-  onCancelFormDocumentEdit = () => {
-    this.props.onCancelFormDocumentEdit();
+  onCancel = () => {
+    this.props.onCancelFormDocumentEdit(this.props.document);
+  };
+  afterClose = () => {
     this.props.form.resetFields();
     this.setState({ attachmentsFileNameError: false, activeTab: '1' });
-  };
+  }
   onViewDocumentAttachment = (attachment) => {
     const otherWindow = window.open();
     otherWindow.opener = null;
@@ -110,8 +110,9 @@ class CitizenEditDocumentForm extends EditComponent {
         visible={this.props.formDocumentEditVisible}
         title={titleItem}
         okText={object && object.id ? this.props.intl.messages.buttonApply : this.props.intl.messages.buttonAdd}
-        onOk={this.onOkFormDocumentEdit}
-        onCancel={this.onCancelFormDocumentEdit}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        afterClose={this.afterClose}
         closable={false}
         maskClosable={false}
       >

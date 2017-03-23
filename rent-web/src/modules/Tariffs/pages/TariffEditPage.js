@@ -65,7 +65,7 @@ class TariffEditPage extends ExtendedComponentPage {
   showFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
     this.initFormTariffValue(true, tariffValue);
   };
-  onOkFormTariffValueEdit = (tariffValue = emptyTariffValue) => {
+  onOkFormTariffValueEdit = (tariffValue) => {
     this.initFormTariffValue(false);
     if (tariffValue.id) {
       this.props.dispatch(TariffAction.editValueInTariff(ObjectUtil.cloneObject(tariffValue)));
@@ -75,8 +75,8 @@ class TariffEditPage extends ExtendedComponentPage {
       this.props.dispatch(TariffAction.addNewValueToTariff(newTariffValue));
     }
   }
-  onCancelFormTariffValueEdit = () => {
-    this.initFormTariffValue(false);
+  onCancelFormTariffValueEdit = (tariffValue) => {
+    this.initFormTariffValue(false, tariffValue);
   }
   onDeleteTariffValue = (tariffValue) => {
     this.props.dispatch(TariffAction.removeValueFromTariff(ObjectUtil.cloneObject(tariffValue)));

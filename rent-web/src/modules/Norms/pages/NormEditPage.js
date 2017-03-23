@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
 
-import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
-
 // Import Components
 import NormEdit from './../components/NormEdit';
 import NormEditValuesForm from './../components/NormEditValuesForm';
+import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 
 // Import Actions
 import * as NormAction from './../actions/NormAction';
@@ -59,7 +58,7 @@ class NormEditPage extends ExtendedComponentPage {
   showFormNormValueEdit = (normValue = emptyNormValue) => {
     this.initFormNormValue(true, normValue);
   };
-  onOkFormNormValueEdit = (normValue = emptyNormValue) => {
+  onOkFormNormValueEdit = (normValue) => {
     this.initFormNormValue(false);
     if (normValue.id) {
       this.props.dispatch(NormAction.editValueInNorm(ObjectUtil.cloneObject(normValue)));
@@ -69,8 +68,8 @@ class NormEditPage extends ExtendedComponentPage {
       this.props.dispatch(NormAction.addNewValueToNorm(newNormValue));
     }
   }
-  onCancelFormNormValueEdit = () => {
-    this.initFormNormValue(false);
+  onCancelFormNormValueEdit = (normValue) => {
+    this.initFormNormValue(false, normValue);
   }
   onDeleteNormValue = (normValue) => {
     this.props.dispatch(NormAction.removeValueFromNorm(ObjectUtil.cloneObject(normValue)));

@@ -29,9 +29,10 @@ class EditTiedMeterForm extends EditComponent {
     }
   }
   onCancel = () => {
-    this.props.onCancelFormMeterEdit();
+    this.props.onCancelFormMeterEdit(this.props.tiedMeter);
   }
   afterClose = () => {
+    this.props.clearLocalDataMeters();
     this.props.form.resetFields();
     this.setState({ selectMeterError: false });
   }

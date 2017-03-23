@@ -53,9 +53,10 @@ class AccountEditRegisteredForm extends EditComponent {
     }
   }
   onCancel = () => {
-    this.props.onCancelFormRegisteredEdit();
+    this.props.onCancelFormRegisteredEdit(this.props.registered);
   }
   afterClose = () => {
+    this.props.clearLocalDataCitizens();
     this.props.form.resetFields();
     this.setState({
       attachmentsFileNameError: false,
