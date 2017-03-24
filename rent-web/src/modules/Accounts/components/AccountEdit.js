@@ -10,12 +10,14 @@ const FormItem = Form.Item;
 
 class AccountEdit extends EditComponent {
   onStreetChange = (value) => {
-    this.props.form.setFieldsValue({ building: '' });
-    this.props.form.setFieldsValue({ apartment: '' });
+    this.props.form.setFieldsValue({
+      apartment: undefined,
+      building: undefined,
+    });
     this.props.onStreetChange(value);
   }
   onBuildingChange = (value) => {
-    this.props.form.setFieldsValue({ apartment: '' });
+    this.props.form.setFieldsValue({ apartment: undefined });
     this.props.onBuildingChange(value);
   }
   render() {

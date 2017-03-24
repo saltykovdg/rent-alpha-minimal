@@ -283,6 +283,7 @@ export const accountReducer = (state, action) => {
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT:
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS:
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED:
+    case AddressActions.CLEAR_LOCAL_DATA_APARTMENTS:
     case AddressActions.FIND_APARTMENTS_BY_BUILDING_ID:
     case AddressActions.GET_APARTMENTS_SUCCESS:
     case AddressActions.GET_APARTMENTS_FAILED:

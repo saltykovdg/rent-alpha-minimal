@@ -76,6 +76,8 @@ export const ADD_NEW_METER_TO_BUILDING = 'ADD_NEW_METER_TO_BUILDING';
 export const EDIT_METER_IN_BUILDING = 'EDIT_METER_IN_BUILDING';
 export const REMOVE_METER_FROM_BUILDING = 'REMOVE_METER_FROM_BUILDING';
 
+export const CLEAR_LOCAL_DATA_APARTMENTS = 'CLEAR_LOCAL_DATA_APARTMENTS';
+
 // get lists action creator
 export const getStreetTypes = (page = 0) => {
   return {
@@ -474,5 +476,11 @@ export const removeMeterFromBuilding = (meter) => {
   return {
     type: REMOVE_METER_FROM_BUILDING,
     meter,
+  };
+};
+
+export const clearLocalDataApartments = () => {
+  return {
+    type: CLEAR_LOCAL_DATA_APARTMENTS,
   };
 };

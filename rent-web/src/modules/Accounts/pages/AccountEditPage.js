@@ -152,6 +152,7 @@ class AccountEditPage extends ExtendedComponentPage {
   }
   onStreetChange = (streetId) => {
     this.props.dispatch(AddressAction.findBuildingsByStreetId(streetId));
+    this.props.dispatch(AddressAction.clearLocalDataApartments());
   }
   onBuildingChange = (buildingId) => {
     this.props.dispatch(AddressAction.findApartmentsByBuildingId(buildingId));

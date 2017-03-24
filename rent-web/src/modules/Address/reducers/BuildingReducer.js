@@ -17,9 +17,6 @@ const emptyEditData = {
   house: '',
   houseNumber: 0,
   housing: '',
-  street: {
-    id: '',
-  },
   meters: [],
 };
 

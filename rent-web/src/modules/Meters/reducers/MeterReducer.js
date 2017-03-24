@@ -13,14 +13,6 @@ export const emptyMeterValue = {
 
 const emptyEditData = {
   id: '',
-  meterType: {
-    id: '',
-    name: '',
-  },
-  service: {
-    id: '',
-    name: '',
-  },
   name: '',
   serialNumber: '',
   values: [],

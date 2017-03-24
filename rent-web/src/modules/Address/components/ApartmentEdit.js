@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 
 class ApartmentEdit extends EditComponent {
   onStreetChange = (value) => {
-    this.props.form.setFieldsValue({ building: '' });
+    this.props.form.setFieldsValue({ building: undefined });
     this.props.onStreetChange(value);
   }
   render() {

@@ -54,7 +54,7 @@ class EditComponent extends ExtendedComponent {
   };
   getSelectWithSearchField = (name, value, values, onChange = () => {}) => {
     return this.props.form.getFieldDecorator(name, {
-      initialValue: value,
+      initialValue: value || undefined,
       rules: [{
         required: true,
         message: this.props.intl.messages.fieldIsEmptyError,
@@ -73,12 +73,21 @@ class EditComponent extends ExtendedComponent {
   };
   getSelectField = (name, value, values) => {
     return this.props.form.getFieldDecorator(name, {
-      initialValue: this.getLink(value),
+      initialValue: value ? this.getLink(value) : undefined,
       rules: [{
         required: true,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(<Select notFoundContent="">{values}</Select>);
+    })(
+      <Select
+        showSearch
+        placeholder={this.props.intl.messages.findPlaceholder}
+        optionFilterProp="children"
+        notFoundContent=""
+      >
+        {values}
+      </Select>
+    );
   };
   getAttachmentField = (name, value) => {
     return this.props.form.getFieldDecorator(name, {

@@ -70,6 +70,10 @@ const apartmentReducer = (state, action) => {
       return state.apartment;
     }
 
+    case AddressAction.CLEAR_LOCAL_DATA_APARTMENTS: {
+      return prepareList(null, emptyEditData, false, false, false, false);
+    }
+
     default:
       return prepareDefault(state.apartment.list, emptyEditData);
   }
