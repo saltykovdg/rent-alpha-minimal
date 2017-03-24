@@ -35,14 +35,14 @@ class StreetList extends ListComponent {
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={8}>
             <Input placeholder={this.props.intl.messages.streetTypeFieldName} ref={(node) => { this.findStreetType = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={8}>
             <Input placeholder={this.props.intl.messages.streetFieldName} ref={(node) => { this.findStreet = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={1}>
-            <Button icon="search" onClick={() => this.handlerSearch()}>
+          <Col className="gutter-row" span={8}>
+            <Button icon="search" onClick={() => this.handlerSearch()} className="full-width">
               <FormattedMessage id="buttonFind" />
             </Button>
           </Col>

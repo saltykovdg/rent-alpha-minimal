@@ -38,20 +38,20 @@ class MeterList extends ListComponent {
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={5}>
             <Input placeholder={this.props.intl.messages.meterTypeFieldName} ref={(node) => { this.findMeterType = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={5}>
             <Input placeholder={this.props.intl.messages.serviceFieldName} ref={(node) => { this.findService = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={5}>
             <Input placeholder={this.props.intl.messages.meterFieldName} ref={(node) => { this.findName = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={3}>
+          <Col className="gutter-row" span={5}>
             <Input placeholder={this.props.intl.messages.meterFieldSerialNumber} ref={(node) => { this.findSerialNumber = node; }} onPressEnter={() => this.handlerSearch()} />
           </Col>
-          <Col className="gutter-row" span={1}>
-            <Button icon="search" onClick={() => this.handlerSearch()}>
+          <Col className="gutter-row" span={4}>
+            <Button icon="search" onClick={() => this.handlerSearch()} className="full-width">
               <FormattedMessage id="buttonFind" />
             </Button>
           </Col>
