@@ -317,8 +317,24 @@ export function* watchNewAccount() {
   yield takeLatest(AccountAction.NEW_ACCOUNT, newAccount);
 }
 
+// find
 export function* findAccountsByAccountNumber(action) {
   const response = yield call(AccountApi.findAccountsByAccountNumber, action.accountNumber, action.page);
+  if (response && !response.error && !response.canceled) {
+    yield put(AccountAction.getAccountsSuccess(response));
+  } else if (!response.canceled) {
+    yield put(AccountAction.getAccountsFailed());
+  }
+}
+export function* findAccounts(action) {
+  const response = yield call(AccountApi.findAccounts,
+    action.accountNumber,
+    action.lastName,
+    action.street,
+    action.house,
+    action.apartment,
+    action.page
+  );
   if (response && !response.error && !response.canceled) {
     yield put(AccountAction.getAccountsSuccess(response));
   } else if (!response.canceled) {
@@ -329,6 +345,9 @@ export function* findAccountsByAccountNumber(action) {
 export function* watchFindAccountsByAccountNumber() {
   yield takeLatest(AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER, findAccountsByAccountNumber);
 }
+export function* watchFindAccounts() {
+  yield takeLatest(AccountAction.FIND_ACCOUNTS, findAccounts);
+}
 
 export const rootAccountSaga = [
   fork(watchGetAccounts),
@@ -337,4 +356,5 @@ export const rootAccountSaga = [
   fork(watchDeleteAccount),
   fork(watchNewAccount),
   fork(watchFindAccountsByAccountNumber),
+  fork(watchFindAccounts),
 ];

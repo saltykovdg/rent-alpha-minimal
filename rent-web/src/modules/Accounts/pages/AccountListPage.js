@@ -24,21 +24,43 @@ class AccountListPage extends ExtendedComponentPage {
     this.state = {
       page: page ? page - 1 : 0,
       searchFieldAccountNumber: '',
+      searchFieldLastName: '',
+      searchFieldStreet: '',
+      searchFieldHouse: '',
+      searchFieldApartment: '',
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(AccountAction.findAccountsByAccountNumber(this.state.searchFieldAccountNumber, this.state.page));
+    this.props.dispatch(AccountAction.findAccounts(
+      this.state.searchFieldAccountNumber,
+      this.state.searchFieldLastName,
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      this.state.page,
+    ));
   }
-  onSearch = (accountNumber) => {
+  onSearch = (accountNumber, lastName, street, house, apartment) => {
     this.setState({
       page: 0,
       searchFieldAccountNumber: accountNumber,
+      searchFieldLastName: lastName,
+      searchFieldStreet: street,
+      searchFieldHouse: house,
+      searchFieldApartment: apartment,
     });
-    this.props.dispatch(AccountAction.findAccountsByAccountNumber(accountNumber, 0));
+    this.props.dispatch(AccountAction.findAccounts(accountNumber, lastName, street, house, apartment, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(AccountAction.findAccountsByAccountNumber(this.state.searchFieldAccountNumber, page));
+    this.props.dispatch(AccountAction.findAccounts(
+      this.state.searchFieldAccountNumber,
+      this.state.searchFieldLastName,
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      page,
+    ));
   };
   onDelete = (object) => {
     this.props.dispatch(AccountAction.deleteAccount(object));

@@ -107,6 +107,7 @@ export const accountReducer = (state, action) => {
       return prepareEdit(state.account.edit.data, true, false, false, false);
     }
     case AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER:
+    case AccountAction.FIND_ACCOUNTS:
     case AccountAction.GET_ACCOUNTS:
     case AccountAction.DELETE_ACCOUNT: {
       return prepareList(state.account.list.data, emptyEditData, true, false, false, false);
