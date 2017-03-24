@@ -197,7 +197,7 @@ class AccountEdit extends EditComponent {
               </Col>
             </Row>
             <h2>{this.props.intl.messages.parameterTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormParameterEdit()}>
+            <Button size="small" onClick={() => this.props.showFormParameterEdit()}>
               <FormattedMessage id="buttonAddNewParameter" />
             </Button>
             <Table
@@ -206,9 +206,8 @@ class AccountEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <h2>{this.props.intl.messages.servicesTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormServiceEdit()}>
+            <Button size="small" onClick={() => this.props.showFormServiceEdit()}>
               <FormattedMessage id="buttonAddNewService" />
             </Button>
             <Table
@@ -217,9 +216,8 @@ class AccountEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <h2>{this.props.intl.messages.ownersTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormOwnerEdit()}>
+            <Button size="small" onClick={() => this.props.showFormOwnerEdit()}>
               <FormattedMessage id="buttonAddNewOwner" />
             </Button>
             <Table
@@ -228,9 +226,8 @@ class AccountEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <h2>{this.props.intl.messages.registeredTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormRegisteredEdit()}>
+            <Button size="small" onClick={() => this.props.showFormRegisteredEdit()}>
               <FormattedMessage id="buttonAddNewRegistered" />
             </Button>
             <Table
@@ -239,9 +236,8 @@ class AccountEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <h2>{this.props.intl.messages.metersTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormMeterEdit()}>
+            <Button size="small" onClick={() => this.props.showFormMeterEdit()}>
               <FormattedMessage id="buttonAddNewMeter" />
             </Button>
             <Table
@@ -250,7 +246,6 @@ class AccountEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(AccountPath.ACCOUNT_LIST)}>

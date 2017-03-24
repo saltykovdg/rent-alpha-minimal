@@ -67,7 +67,7 @@ class MeterEdit extends EditComponent {
               {this.getInputField('serialNumber', object.serialNumber)}
             </FormItem>
             <h2>{this.props.intl.messages.meterValuesTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormMeterValueEdit()}>
+            <Button size="small" onClick={() => this.props.showFormMeterValueEdit()}>
               <FormattedMessage id="buttonAddNewValueMeter" />
             </Button>
             <Table
@@ -76,7 +76,6 @@ class MeterEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(MeterPath.METER_LIST)}>

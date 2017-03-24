@@ -57,7 +57,7 @@ class TariffEdit extends EditComponent {
               {this.getInputField('name', object.name)}
             </FormItem>
             <h2>{this.props.intl.messages.tariffValuesTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormTariffValueEdit()}>
+            <Button size="small" onClick={() => this.props.showFormTariffValueEdit()}>
               <FormattedMessage id="buttonAddNewValue" />
             </Button>
             <Table
@@ -66,7 +66,6 @@ class TariffEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(TariffPath.TARIFF_LIST)}>

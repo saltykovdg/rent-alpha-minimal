@@ -68,7 +68,7 @@ class CitizenEdit extends EditComponent {
               {this.getDateField('birthday', object.birthday)}
             </FormItem>
             <h2>{this.props.intl.messages.documentsTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormDocumentEdit()}>
+            <Button size="small" onClick={() => this.props.showFormDocumentEdit()}>
               <FormattedMessage id="buttonAddNewDocument" />
             </Button>
             <Table
@@ -77,7 +77,6 @@ class CitizenEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(CitizenPath.CITIZEN_LIST)}>

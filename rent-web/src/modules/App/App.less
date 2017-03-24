@@ -19,11 +19,14 @@ html, body, #root {
   padding: 15px;
   flex: 1 1;
   min-width: 310px;
-  .ant-breadcrumb, h1, h2, button {
+  h1, h2, button, .ant-form-item, .ant-breadcrumb, .ant-table-wrapper {
     margin-bottom: 15px;
   }
-  .ant-form-item {
-    margin-bottom: 10px;
+}
+
+.content, .ant-modal-content {
+  .ant-btn-sm {
+    margin-bottom: 5px;
   }
   .ant-select-search--inline,
   .ant-input-search-wrapper,
@@ -39,29 +42,24 @@ html, body, #root {
   .ant-form .ant-form-item-label {
     padding: 0 0 0px;
   }
-}
-
-.ant-modal-footer button + button {
-  float: left;
-}
-
-.ant-modal-body {
-  .ant-form-item,
-  .ant-collapse {
-    margin-bottom: 10px;
+  .ant-modal-body {
+    .ant-form-item {
+      margin-bottom: 10px;
+    }
+    .ant-table-wrapper, ul {
+      margin-bottom: 0px;
+    }
   }
-  .ant-select-search--inline,
-  .ant-input-search-wrapper,
-  .ant-calendar-picker,
-  .ant-input-number {
-    width: 100%;
+  .ant-modal-footer {
+    margin-bottom: 0px;
   }
-  .ant-form .ant-form-item-label {
-    padding: 0 0 0px;
+  .ant-modal-footer button + button {
+    float: left;
   }
-  .ant-collapse-content > .ant-collapse-content-box {
-    padding-top: 10px;
-    padding-bottom: 0px;
+  .attachments {
+    input[type="file"] {
+      display: none;
+    }
   }
 }
 
@@ -74,15 +72,6 @@ h2 {
   font-weight: 500;
   color: #404040;
   border-bottom: 3px dashed #666;
-}
-
-hr {
-  border: 0;
-  height: 1px;
-  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
 }
 
 p {
@@ -99,30 +88,4 @@ p {
 }
 .full-width {
   width: 100%;
-}
-
-.attachments {
-  .ant-form .ant-form-item-label {
-    padding: 0 0 0px;
-  }
-  .ant-form-item-control {
-    line-height: 0px;
-  }
-  .ant-form-item {
-    margin-bottom: 0px;
-  }
-  margin-top: 5px;
-  input[type="file"] {
-    display: none;
-  }
-}
-
-.devider-5 {
-  margin-bottom: 5px;
-}
-.devider-10 {
-  margin-bottom: 10px;
-}
-.devider-15 {
-  margin-bottom: 15px;
 }

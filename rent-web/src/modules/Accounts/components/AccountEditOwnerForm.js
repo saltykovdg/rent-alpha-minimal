@@ -247,8 +247,7 @@ class AccountEditOwnerForm extends EditComponent {
                     </FormItem>
                   </Col>
                   <Col className="gutter-row" span={8}>
-                    <FormItem>
-                      <br />
+                    <FormItem label=" " colon={false}>
                       <Button type="primary" htmlType="submit" className="full-width" onClick={() => this.onSearchOwner()}>
                         <FormattedMessage id="buttonFind" />
                       </Button>
@@ -268,8 +267,7 @@ class AccountEditOwnerForm extends EditComponent {
                     </FormItem>
                   </Col>
                   <Col className="gutter-row" span={12}>
-                    <FormItem>
-                      <br />
+                    <FormItem label=" " colon={false}>
                       <Button type="default" htmlType="submit" className="full-width" onClick={() => this.onChangeCitizenClick()}>
                         <FormattedMessage id="buttonChange" />
                       </Button>

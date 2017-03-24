@@ -149,8 +149,7 @@ class EditTiedMeterForm extends EditComponent {
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={12}>
-                <FormItem>
-                  <br />
+                <FormItem label=" " colon={false}>
                   <Button type="primary" htmlType="submit" className="full-width" onClick={() => this.onSearchMeters()}>
                     <FormattedMessage id="buttonFind" />
                   </Button>
@@ -180,8 +179,7 @@ class EditTiedMeterForm extends EditComponent {
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={12}>
-                <FormItem>
-                  <br />
+                <FormItem label=" " colon={false}>
                   <Button type="default" htmlType="submit" className="full-width" onClick={() => this.onChangeMeterClick()}>
                     <FormattedMessage id="buttonChange" />
                   </Button>

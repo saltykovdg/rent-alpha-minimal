@@ -64,7 +64,7 @@ class BuildingEdit extends EditComponent {
               {this.getInputField('housing', object.housing, false)}
             </FormItem>
             <h2>{this.props.intl.messages.metersTitle}</h2>
-            <Button size="small" style={{ marginBottom: '5px' }} onClick={() => this.props.showFormMeterEdit()}>
+            <Button size="small" onClick={() => this.props.showFormMeterEdit()}>
               <FormattedMessage id="buttonAddNewMeter" />
             </Button>
             <Table
@@ -73,7 +73,6 @@ class BuildingEdit extends EditComponent {
               bordered pagination={false}
               size="small"
             />
-            <br />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
               <Button className="pull-right" onClick={() => this.forwardTo(AddressPath.BUILDING_LIST)}>
