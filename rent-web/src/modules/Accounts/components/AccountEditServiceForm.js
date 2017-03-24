@@ -61,7 +61,7 @@ class AccountEditServiceForm extends EditComponent {
         maskClosable={false}
       >
         <Spin spinning={this.props.isLoading}>
-          <Form layou="horizontal">
+          <Form layout="horizontal">
             {baseFields}
             <FormItem label={this.props.intl.messages.serviceFieldName}>
               {this.getSelectWithSearchField('service', this.getLink(object.service), serviceList, this.onServiceChange)}

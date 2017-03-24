@@ -19,16 +19,15 @@ html, body, #root {
   padding: 15px;
   flex: 1 1;
   min-width: 310px;
-  h1, h2, button, .ant-form-item, .ant-breadcrumb, .ant-table-wrapper {
+  h1, h2, button, .ant-breadcrumb, .ant-table-wrapper {
     margin-bottom: 15px;
-  }
-  .ant-form .ant-form-item-label {
-    margin-bottom: 10px;
-    line-height: 0px;
   }
 }
 
 .content, .ant-modal-content {
+  .ant-form-item {
+    margin-bottom: 15px;
+  }
   .ant-btn-sm {
     margin-bottom: 5px;
   }
@@ -45,11 +44,10 @@ html, body, #root {
   }
   .ant-form .ant-form-item-label {
     padding: 0 0 0px;
+    margin-bottom: 5px;
+    line-height: normal;
   }
   .ant-modal-body {
-    .ant-form-item {
-      margin-bottom: 10px;
-    }
     .ant-table-wrapper, ul {
       margin-bottom: 0px;
     }
