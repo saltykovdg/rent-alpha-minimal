@@ -16,6 +16,7 @@ const streetReducer = (state, action) => {
     case AddressAction.SAVE_STREET: {
       return prepareEdit(state.street.edit.data, true, false, false, false);
     }
+    case AddressAction.FIND_STREETS:
     case AddressAction.FIND_STREETS_BY_NAME:
     case AddressAction.GET_STREETS:
     case AddressAction.DELETE_STREET: {

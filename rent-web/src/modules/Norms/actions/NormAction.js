@@ -11,7 +11,6 @@ export const DELETE_NORM = 'DELETE_NORM';
 export const DELETE_NORM_SUCCESS = 'DELETE_NORM_SUCCESS';
 export const DELETE_NORM_FAILED = 'DELETE_NORM_FAILED';
 export const NEW_NORM = 'NEW_NORM';
-export const FIND_NORMS_BY_NAME = 'FIND_NORMS_BY_NAME';
 export const FIND_NORMS_BY_SERVICE_ID = 'FIND_NORMS_BY_SERVICE_ID';
 
 // norm values
@@ -108,12 +107,6 @@ export const newNorm = () => {
   };
 };
 
-export const findNormsByName = (name = '') => {
-  return {
-    type: FIND_NORMS_BY_NAME,
-    name,
-  };
-};
 export const findNormsByServiceId = (serviceId = '') => {
   return {
     type: FIND_NORMS_BY_SERVICE_ID,

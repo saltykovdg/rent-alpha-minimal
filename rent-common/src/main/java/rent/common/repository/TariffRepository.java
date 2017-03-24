@@ -19,9 +19,7 @@ import java.util.List;
 public interface TariffRepository extends PagingAndSortingRepository<TariffEntity, String> {
     List<TariffEntity> findByNameContainingOrderByName(@Param("name") String name);
 
-    @Query("select tariff from TariffEntity tariff join tariff.service service where service.id = :serviceId order by tariff.name")
+    @Query("select distinct tariff from TariffEntity tariff join tariff.service service where " +
+            "service.id = :serviceId order by tariff.name")
     List<TariffEntity> findByServiceId(@Param("serviceId") String serviceId);
-
-    @Query("select tariff from TariffEntity tariff join tariff.service service where lower(service.name) like concat('%', lower(:serviceName), '%') and lower(tariff.name) like concat('%', lower(:tariffName), '%')")
-    Page<TariffEntity> findByServiceNameAndTariffName(@Param("serviceName") String serviceName, @Param("tariffName") String tariffName, Pageable p);
 }

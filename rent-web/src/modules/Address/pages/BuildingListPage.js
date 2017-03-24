@@ -23,22 +23,32 @@ class BuildingListPage extends ExtendedComponentPage {
     const page = context.router.location.query.page;
     this.state = {
       page: page ? page - 1 : 0,
-      searchFieldStreetName: '',
+      searchFieldStreet: '',
+      searchFieldHouse: '',
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(AddressAction.findBuildingsByStreetName(this.state.searchFieldStreetName, this.state.page));
+    this.props.dispatch(AddressAction.findBuildings(
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.page,
+    ));
   }
-  onSearch = (streetName) => {
+  onSearch = (street, house) => {
     this.setState({
       page: 0,
-      searchFieldStreetName: streetName,
+      searchFieldStreet: street,
+      searchFieldHouse: house,
     });
-    this.props.dispatch(AddressAction.findBuildingsByStreetName(streetName, 0));
+    this.props.dispatch(AddressAction.findBuildings(street, house, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(AddressAction.findBuildingsByStreetName(this.state.searchFieldStreetName, page));
+    this.props.dispatch(AddressAction.findBuildings(
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      page,
+    ));
   };
   onDelete = (object) => {
     this.props.dispatch(AddressAction.deleteBuilding(object));

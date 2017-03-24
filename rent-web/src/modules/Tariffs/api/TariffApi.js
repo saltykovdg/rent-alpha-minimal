@@ -16,9 +16,6 @@ export function deleteTariff(object) {
   return ApiCaller.callApi(`tariff/${object.id}`, 'delete');
 }
 
-export function findTariffsByName(name = '') {
-  return ApiCaller.callApi(`tariff/search/findByNameContainingOrderByName?name=${name}`);
-}
 export function findTariffsByServiceId(serviceId = '') {
   return ApiCaller.callApi(`tariff/search/findByServiceId?serviceId=${serviceId}`);
 }

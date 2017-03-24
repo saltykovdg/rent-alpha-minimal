@@ -22,15 +22,33 @@ class StreetListPage extends ExtendedComponentPage {
     super(props, context);
     const page = context.router.location.query.page;
     this.state = {
+      searchFieldServiceType: '',
+      searchFieldService: '',
       page: page ? page - 1 : 0,
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(AddressAction.getStreets(this.state.page));
+    this.props.dispatch(AddressAction.findStreets(
+      this.state.searchFieldServiceType,
+      this.state.searchFieldService,
+      this.state.page,
+    ));
+  }
+  onSearch = (serviceType, service) => {
+    this.setState({
+      page: 0,
+      searchFieldServiceType: serviceType,
+      searchFieldService: service,
+    });
+    this.props.dispatch(AddressAction.findStreets(serviceType, service, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(AddressAction.getStreets(page));
+    this.props.dispatch(AddressAction.findStreets(
+      this.state.searchFieldServiceType,
+      this.state.searchFieldService,
+      page,
+    ));
   };
   onDelete = (object) => {
     this.props.dispatch(AddressAction.deleteStreet(object));
@@ -44,6 +62,7 @@ class StreetListPage extends ExtendedComponentPage {
         isDeleted={this.props.isDeleted}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}
+        onSearch={this.onSearch}
       />
     );
   }

@@ -23,28 +23,40 @@ class ApartmentListPage extends ExtendedComponentPage {
     const page = context.router.location.query.page;
     this.state = {
       page: page ? page - 1 : 0,
-      searchFieldStreetName: '',
-      searchFieldBuildingName: '',
+      searchFieldStreet: '',
+      searchFieldHouse: '',
+      searchFieldApartment: '',
     };
   }
   componentWillMount() {
     super.componentWillMount();
-    this.props.dispatch(AddressAction.findApartmentsByStreetNameAndBuildingName(this.state.searchFieldStreetName, this.state.searchFieldBuildingName, this.state.page));
+    this.props.dispatch(AddressAction.findApartments(
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      this.state.page,
+    ));
   }
-  onSearch = (streetName, buildingName) => {
+  onSearch = (street, house, apartment) => {
     this.setState({
       page: 0,
-      searchFieldStreetName: streetName,
-      searchFieldBuildingName: buildingName,
+      searchFieldStreet: street,
+      searchFieldHouse: house,
+      searchFieldApartment: apartment,
     });
-    this.props.dispatch(AddressAction.findApartmentsByStreetNameAndBuildingName(streetName, buildingName, 0));
+    this.props.dispatch(AddressAction.findApartments(street, house, apartment, 0));
   }
   onChangePage = (page) => {
-    this.props.dispatch(AddressAction.findApartmentsByStreetNameAndBuildingName(this.state.searchFieldStreetName, this.state.searchFieldBuildingName, page));
-  };
+    this.props.dispatch(AddressAction.findApartments(
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      page,
+    ));
+  }
   onDelete = (object) => {
     this.props.dispatch(AddressAction.deleteApartment(object));
-  };
+  }
   render() {
     return (
       <ApartmentList

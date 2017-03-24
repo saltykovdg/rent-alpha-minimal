@@ -26,7 +26,7 @@ const apartmentReducer = (state, action) => {
       return prepareEdit(state.apartment.edit.data, true, false, false, false);
     }
     case AddressAction.FIND_APARTMENTS_BY_BUILDING_ID:
-    case AddressAction.FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME:
+    case AddressAction.FIND_APARTMENTS:
     case AddressAction.GET_APARTMENTS:
     case AddressAction.DELETE_APARTMENT: {
       return prepareList(state.apartment.list.data, emptyEditData, true, false, false, false);

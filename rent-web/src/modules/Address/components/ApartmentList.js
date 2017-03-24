@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button } from 'antd';
+import { Breadcrumb, Icon, Button, Row, Col, Input } from 'antd';
 
 import * as AddressPath from './../AddressPaths';
 import { ListComponent } from './../../../components/ListComponent';
 
 class ApartmentList extends ListComponent {
   handlerSearch = () => {
-    const findStreetNameValue = this.findStreetName.input.refs.input.value;
-    const findBuildingNameValue = this.findBuildingName.input.refs.input.value;
-    this.props.onSearch(findStreetNameValue, findBuildingNameValue);
+    const findStreet = this.findStreet.refs.input.value;
+    const findHouse = this.findHouse.refs.input.value;
+    const findApartment = this.findApartment.refs.input.value;
+    this.props.onSearch(findStreet, findHouse, findApartment);
   }
   render() {
     const columns = [
@@ -39,8 +40,23 @@ class ApartmentList extends ListComponent {
         <Button type="primary" onClick={() => this.forwardTo(AddressPath.APARTMENT_EDIT)}>
           <FormattedMessage id="buttonAddNewRecord" />
         </Button>
-        {this.getFilterField(this.props.intl.messages.findByStreetNamePlaceholder, (node) => { this.findStreetName = node; }, this.handlerSearch)}
-        {this.getFilterField(this.props.intl.messages.findByBuildingNamePlaceholder, (node) => { this.findBuildingName = node; }, this.handlerSearch)}
+        <h2><FormattedMessage id="filtersTitle" /></h2>
+        <Row gutter={10}>
+          <Col className="gutter-row" span={3}>
+            <Input placeholder={this.props.intl.messages.streetFieldName} ref={(node) => { this.findStreet = node; }} onPressEnter={() => this.handlerSearch()} />
+          </Col>
+          <Col className="gutter-row" span={3}>
+            <Input placeholder={this.props.intl.messages.buildingFieldHouse} ref={(node) => { this.findHouse = node; }} onPressEnter={() => this.handlerSearch()} />
+          </Col>
+          <Col className="gutter-row" span={3}>
+            <Input placeholder={this.props.intl.messages.apartmentFieldApartment} ref={(node) => { this.findApartment = node; }} onPressEnter={() => this.handlerSearch()} />
+          </Col>
+          <Col className="gutter-row" span={1}>
+            <Button icon="search" onClick={() => this.handlerSearch()}>
+              <FormattedMessage id="buttonFind" />
+            </Button>
+          </Col>
+        </Row>
         {this.getTableComponent(columns)}
       </div>
     );

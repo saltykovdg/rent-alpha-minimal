@@ -30,7 +30,7 @@ const buildingReducer = (state, action) => {
       return prepareEdit(state.building.edit.data, true, false, false, false);
     }
     case AddressAction.FIND_BUILDINGS_BY_STREET_ID:
-    case AddressAction.FIND_BUILDINGS_BY_STREET_NAME:
+    case AddressAction.FIND_BUILDINGS:
     case AddressAction.GET_BUILDINGS:
     case AddressAction.DELETE_BUILDING: {
       return prepareList(state.building.list.data, emptyEditData, true, false, false, false);

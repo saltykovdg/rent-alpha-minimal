@@ -27,7 +27,6 @@ export const normReducer = (state, action) => {
     case NormAction.SAVE_NORM: {
       return prepareEdit(state.norm.edit.data, true, false, false, false);
     }
-    case NormAction.FIND_NORMS_BY_NAME:
     case NormAction.FIND_NORMS_BY_SERVICE_ID:
     case NormAction.GET_NORMS:
     case NormAction.DELETE_NORM: {

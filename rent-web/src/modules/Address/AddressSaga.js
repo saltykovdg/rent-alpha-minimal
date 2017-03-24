@@ -329,6 +329,14 @@ export function* findStreetTypesByName(action) {
     yield put(AddressAction.getStreetTypesFailed());
   }
 }
+export function* findStreets(action) {
+  const response = yield call(AddressApi.findStreets, action.streetType, action.name, action.page);
+  if (response && !response.error && !response.canceled) {
+    yield put(AddressAction.getStreetsSuccess(response));
+  } else if (!response.canceled) {
+    yield put(AddressAction.getStreetsFailed());
+  }
+}
 export function* findStreetsByName(action) {
   const response = yield call(AddressApi.findStreetsByName, action.name);
   if (response && !response.error && !response.canceled) {
@@ -345,8 +353,8 @@ export function* findBuildingsByStreetId(action) {
     yield put(AddressAction.getBuildingsFailed());
   }
 }
-export function* findBuildingsByStreetName(action) {
-  const response = yield call(AddressApi.findBuildingsByStreetName, action.streetName, action.page);
+export function* findBuildings(action) {
+  const response = yield call(AddressApi.findBuildings, action.street, action.house, action.page);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.getBuildingsSuccess(response));
   } else if (!response.canceled) {
@@ -361,8 +369,8 @@ export function* findApartmentsByBuildingId(action) {
     yield put(AddressAction.getApartmentsFailed());
   }
 }
-export function* findApartmentsByStreetNameAndBuildingName(action) {
-  const response = yield call(AddressApi.findApartmentsByStreetNameAndBuildingName, action.streetName, action.buildingName, action.page);
+export function* findApartments(action) {
+  const response = yield call(AddressApi.findApartments, action.street, action.house, action.apartment, action.page);
   if (response && !response.error && !response.canceled) {
     yield put(AddressAction.getApartmentsSuccess(response));
   } else if (!response.canceled) {
@@ -373,20 +381,23 @@ export function* findApartmentsByStreetNameAndBuildingName(action) {
 export function* watchFindStreetTypesByName() {
   yield takeLatest(AddressAction.FIND_STREET_TYPES_BY_NAME, findStreetTypesByName);
 }
+export function* watchFindStreets() {
+  yield takeLatest(AddressAction.FIND_STREETS, findStreets);
+}
 export function* watchFindStreetsByName() {
   yield takeLatest(AddressAction.FIND_STREETS_BY_NAME, findStreetsByName);
 }
 export function* watchFindBuildingsByStreetId() {
   yield takeLatest(AddressAction.FIND_BUILDINGS_BY_STREET_ID, findBuildingsByStreetId);
 }
-export function* watchFindBuildingsByStreetName() {
-  yield takeLatest(AddressAction.FIND_BUILDINGS_BY_STREET_NAME, findBuildingsByStreetName);
+export function* watchFindBuildings() {
+  yield takeLatest(AddressAction.FIND_BUILDINGS, findBuildings);
 }
 export function* watchFindApartmentsByBuildingId() {
   yield takeLatest(AddressAction.FIND_APARTMENTS_BY_BUILDING_ID, findApartmentsByBuildingId);
 }
-export function* watchFindApartmentsByStreetNameAndBuildingName() {
-  yield takeLatest(AddressAction.FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME, findApartmentsByStreetNameAndBuildingName);
+export function* watchFindApartments() {
+  yield takeLatest(AddressAction.FIND_APARTMENTS, findApartments);
 }
 
 export const rootAddressSaga = [
@@ -422,11 +433,12 @@ export const rootAddressSaga = [
 
   // find
   fork(watchFindStreetTypesByName),
+  fork(watchFindStreets),
   fork(watchFindStreetsByName),
   fork(watchFindBuildingsByStreetId),
-  fork(watchFindBuildingsByStreetName),
+  fork(watchFindBuildings),
   fork(watchFindApartmentsByBuildingId),
-  fork(watchFindApartmentsByStreetNameAndBuildingName),
+  fork(watchFindApartments),
 
   rootBuildingMeterSaga,
 ];

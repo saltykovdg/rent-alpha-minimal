@@ -120,14 +120,6 @@ export function* watchNewNorm() {
 }
 
 // find
-export function* findNormsByName(action) {
-  const response = yield call(NormApi.findNormsByName, action.name);
-  if (response && !response.error && !response.canceled) {
-    yield put(NormAction.getNormsSuccess(response));
-  } else if (!response.canceled) {
-    yield put(NormAction.getNormsFailed());
-  }
-}
 export function* findNormsByServiceId(action) {
   const response = yield call(NormApi.findNormsByServiceId, action.serviceId);
   if (response && !response.error && !response.canceled) {
@@ -137,9 +129,6 @@ export function* findNormsByServiceId(action) {
   }
 }
 
-export function* watchFindNormsByName() {
-  yield takeLatest(NormAction.FIND_NORMS_BY_NAME, findNormsByName);
-}
 export function* watchFindNormsByServiceId() {
   yield takeLatest(NormAction.FIND_NORMS_BY_SERVICE_ID, findNormsByServiceId);
 }
@@ -150,6 +139,5 @@ export const rootNormSaga = [
   fork(watchSaveNorm),
   fork(watchDeleteNorm),
   fork(watchNewNorm),
-  fork(watchFindNormsByName),
   fork(watchFindNormsByServiceId),
 ];

@@ -64,11 +64,12 @@ export const NEW_BUILDING = 'NEW_BUILDING';
 export const NEW_APARTMENT = 'NEW_APARTMENT';
 
 export const FIND_STREET_TYPES_BY_NAME = 'FIND_STREET_TYPES_BY_NAME';
+export const FIND_STREETS = 'FIND_STREETS';
 export const FIND_STREETS_BY_NAME = 'FIND_STREETS_BY_NAME';
 export const FIND_BUILDINGS_BY_STREET_ID = 'FIND_BUILDINGS_BY_STREET_ID';
-export const FIND_BUILDINGS_BY_STREET_NAME = 'FIND_BUILDINGS_BY_STREET_NAME';
+export const FIND_BUILDINGS = 'FIND_BUILDINGS';
 export const FIND_APARTMENTS_BY_BUILDING_ID = 'FIND_APARTMENTS_BY_BUILDING_ID';
-export const FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME = 'FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME';
+export const FIND_APARTMENTS = 'FIND_APARTMENTS';
 
 // meters
 export const ADD_NEW_METER_TO_BUILDING = 'ADD_NEW_METER_TO_BUILDING';
@@ -412,6 +413,14 @@ export const findStreetTypesByName = (name = '') => {
     name,
   };
 };
+export const findStreets = (streetType = '', name = '', page = 0) => {
+  return {
+    type: FIND_STREETS,
+    streetType,
+    name,
+    page,
+  };
+};
 export const findStreetsByName = (name = '') => {
   return {
     type: FIND_STREETS_BY_NAME,
@@ -424,10 +433,11 @@ export const findBuildingsByStreetId = (streetId = '') => {
     streetId,
   };
 };
-export const findBuildingsByStreetName = (streetName = '', page = 0) => {
+export const findBuildings = (street = '', house = '', page = 0) => {
   return {
-    type: FIND_BUILDINGS_BY_STREET_NAME,
-    streetName,
+    type: FIND_BUILDINGS,
+    street,
+    house,
     page,
   };
 };
@@ -437,11 +447,12 @@ export const findApartmentsByBuildingId = (buildingId = '') => {
     buildingId,
   };
 };
-export const findApartmentsByStreetNameAndBuildingName = (streetName = '', buildingName = '', page = 0) => {
+export const findApartments = (street = '', house = '', apartment = '', page = 0) => {
   return {
-    type: FIND_APARTMENTS_BY_STREET_NAME_AND_BUILDING_NAME,
-    streetName,
-    buildingName,
+    type: FIND_APARTMENTS,
+    street,
+    house,
+    apartment,
     page,
   };
 };

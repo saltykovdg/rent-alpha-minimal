@@ -19,9 +19,7 @@ import java.util.List;
 public interface NormRepository extends PagingAndSortingRepository<NormEntity, String> {
     List<NormEntity> findByNameContainingOrderByName(@Param("name") String name);
 
-    @Query("select norm from NormEntity norm join norm.service service where service.id = :serviceId order by norm.name")
+    @Query("select distinct norm from NormEntity norm join norm.service service where " +
+            "service.id = :serviceId order by norm.name")
     List<NormEntity> findByServiceId(@Param("serviceId") String serviceId);
-
-    @Query("select norm from NormEntity norm join norm.service service where lower(service.name) like concat('%', lower(:serviceName), '%') and lower(norm.name) like concat('%', lower(:normName), '%')")
-    Page<NormEntity> findByServiceNameAndNormName(@Param("serviceName") String serviceName, @Param("normName") String normName, Pageable p);
 }

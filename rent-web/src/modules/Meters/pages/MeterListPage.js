@@ -36,7 +36,8 @@ class MeterListPage extends ExtendedComponentPage {
       this.state.searchFieldService,
       this.state.searchFieldName,
       this.state.searchFieldSerialNumber,
-      this.state.page));
+      this.state.page,
+    ));
   }
   onSearch = (meterType, service, name, serialNumber) => {
     this.setState({

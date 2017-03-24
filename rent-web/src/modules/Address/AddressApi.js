@@ -55,19 +55,27 @@ export function deleteApartment(object) {
 export function findStreetTypesByName(name = '') {
   return ApiCaller.callApi(`street-type/search/findByNameContainingOrderByName?name=${name}`);
 }
+export function findStreets(streetType = '', name = '', page = 0) {
+  const query = `&streetType=${streetType}&name=${name}&`;
+  const sort = '&sort=streetType.name&sort=name';
+  return ApiCaller.callApi(`street/search/find?page=${page}${query}${sort}`);
+}
 export function findStreetsByName(name = '') {
   return ApiCaller.callApi(`street/search/findByNameContainingOrderByName?name=${name}`);
 }
 export function findBuildingsByStreetId(streetId = '') {
   return ApiCaller.callApi(`building/search/findByStreetId?streetId=${streetId}`);
 }
-export function findBuildingsByStreetName(streetName = '', page = 0) {
-  return ApiCaller.callApi(`building/search/findByStreetName?streetName=${streetName}&page=${page}&sort=street.name&sort=house`);
+export function findBuildings(street = '', house = '', page = 0) {
+  const query = `&street=${street}&house=${house}&`;
+  const sort = '&sort=street.name&sort=house';
+  return ApiCaller.callApi(`building/search/find?page=${page}${query}${sort}`);
 }
 export function findApartmentsByBuildingId(buildingId = '') {
   return ApiCaller.callApi(`apartment/search/findByBuildingId?buildingId=${buildingId}`);
 }
-export function findApartmentsByStreetNameAndBuildingName(streetName = '', buildingName = '', page = 0) {
+export function findApartments(street = '', house = '', apartment = '', page = 0) {
+  const query = `&street=${street}&house=${house}&apartment=${apartment}`;
   const sort = '&sort=building.street.name&sort=building.house&sort=apartment';
-  return ApiCaller.callApi(`apartment/search/findByStreetNameAndBuildingName?streetName=${streetName}&buildingName=${buildingName}&page=${page}${sort}`);
+  return ApiCaller.callApi(`apartment/search/find?page=${page}${query}${sort}`);
 }

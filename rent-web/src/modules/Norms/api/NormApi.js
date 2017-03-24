@@ -16,10 +16,6 @@ export function deleteNorm(object) {
   return ApiCaller.callApi(`norm/${object.id}`, 'delete');
 }
 
-export function findNormsByName(name = '') {
-  return ApiCaller.callApi(`norm/search/findByNameContainingOrderByName?name=${name}`);
-}
 export function findNormsByServiceId(serviceId = '') {
   return ApiCaller.callApi(`norm/search/findByServiceId?serviceId=${serviceId}`);
 }
-
