@@ -11,7 +11,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "babel-eslint": "7.2.0",
+    "babel-eslint": "7.2.1",
     "babel-jest": "19.0.0",
     "babel-loader": "6.4.1",
     "babel-plugin-import": "1.1.1",
@@ -31,9 +31,9 @@
     "less": "2.7.2",
     "less-loader": "3.0.0",
     "react-addons-test-utils": "15.4.2",
-    "style-loader": "0.14.1",
+    "style-loader": "0.16.0",
     "url-loader": "0.5.8",
-    "webpack": "2.2.1",
+    "webpack": "2.3.2",
     "webpack-dev-server": "2.4.2",
     "rimraf": "2.6.1"
   },
@@ -53,10 +53,10 @@
     "redux-devtools": "3.3.2",
     "redux-devtools-dock-monitor": "1.1.1",
     "redux-devtools-log-monitor": "1.2.0",
-    "enzyme": "2.7.1",
+    "enzyme": "2.8.0",
     "sinon": "2.1.0",
     "antd": "2.8.2",
-    "moment": "2.18.0",
+    "moment": "2.18.1",
     "extend": "3.0.0"
   },
   "jest": {
