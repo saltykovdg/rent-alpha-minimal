@@ -9,7 +9,7 @@ module.exports = {
     ]
   },
   output: {
-    path: './build',
+    path: __dirname + '/build',
     filename: '[name].[chunkhash].bundle.js',
     publicPath: '/'
   },
