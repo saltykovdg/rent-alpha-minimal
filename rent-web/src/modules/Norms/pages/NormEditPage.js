@@ -59,7 +59,7 @@ class NormEditPage extends ExtendedComponentPage {
     this.initFormNormValue(true, normValue);
   };
   onOkFormNormValueEdit = (normValue) => {
-    this.initFormNormValue(false);
+    this.initFormNormValue(false, normValue);
     if (normValue.id) {
       this.props.dispatch(NormAction.editValueInNorm(ObjectUtil.cloneObject(normValue)));
     } else {
