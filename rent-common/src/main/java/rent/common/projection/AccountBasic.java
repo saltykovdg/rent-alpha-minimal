@@ -27,4 +27,18 @@ public interface AccountBasic extends AbstractBasic {
     List<AccountRegisteredBasic> getRegistered();
 
     List<AccountMeterBasic> getMeters();
+
+    List<AccountParameterBasic> getCurrentParameters();
+
+    List<AccountServiceBasic> getCurrentServices();
+
+    List<AccountOwnerBasic> getCurrentOwners();
+
+    List<AccountRegisteredBasic> getCurrentRegistered();
+
+    List<AccountMeterBasic> getCurrentMeters();
+
+    Double getCurrentTotalArea();
+
+    String getCurrentPhoneNumbers();
 }

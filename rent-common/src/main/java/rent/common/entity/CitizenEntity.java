@@ -112,4 +112,12 @@ public class CitizenEntity extends AbstractEntity {
     public void setDocuments(List<CitizenDocumentEntity> documents) {
         this.documents = documents;
     }
+
+    public List<CitizenDocumentEntity> getCurrentDocuments() {
+        return getDocumentsForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<CitizenDocumentEntity> getDocumentsForPeriod(Date period) {
+        return (List<CitizenDocumentEntity>) getListForPeriod(period, this.documents);
+    }
 }

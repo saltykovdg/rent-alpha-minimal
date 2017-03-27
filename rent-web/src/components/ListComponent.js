@@ -39,7 +39,7 @@ class ListComponent extends ExtendedComponent {
       },
     };
   }
-  getTableComponent(columns) {
+  getTableComponent(columns, expandedRowRender = null) {
     let dataSource = [];
     const onChangePage = this.props.onChangePage;
     let pagination = false;
@@ -67,6 +67,7 @@ class ListComponent extends ExtendedComponent {
       <Table
         dataSource={dataSource}
         columns={columns}
+        expandedRowRender={expandedRowRender}
         pagination={pagination}
         loading={this.props.isLoading}
       />

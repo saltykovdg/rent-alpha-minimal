@@ -1,5 +1,7 @@
 package rent.common.entity;
 
+import rent.common.enums.ParameterType;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -173,5 +175,72 @@ public class AccountEntity extends AbstractEntity {
 
     public void setMeters(List<AccountMeterEntity> meters) {
         this.meters = meters;
+    }
+
+    public List<AccountParameterEntity> getCurrentParameters() {
+        return getParametersForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<AccountParameterEntity> getParametersForPeriod(Date period) {
+        return (List<AccountParameterEntity>) getListForPeriod(period, this.parameters);
+    }
+
+    public List<AccountServiceEntity> getCurrentServices() {
+        return getServicesForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<AccountServiceEntity> getServicesForPeriod(Date period) {
+        return (List<AccountServiceEntity>) getListForPeriod(period, this.services);
+    }
+
+    public List<AccountOwnerEntity> getCurrentOwners() {
+        return getOwnersForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<AccountOwnerEntity> getOwnersForPeriod(Date period) {
+        return (List<AccountOwnerEntity>) getListForPeriod(period, this.owners);
+    }
+
+    public List<AccountRegisteredEntity> getCurrentRegistered() {
+        return getRegisteredForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<AccountRegisteredEntity> getRegisteredForPeriod(Date period) {
+        return (List<AccountRegisteredEntity>) getListForPeriod(period, this.registered);
+    }
+
+    public List<AccountMeterEntity> getCurrentMeters() {
+        return getMetersForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<AccountMeterEntity> getMetersForPeriod(Date period) {
+        return (List<AccountMeterEntity>) getListForPeriod(period, this.meters);
+    }
+
+    public Double getCurrentTotalArea() {
+        Double totalArea = this.apartment.getTotalArea();
+        List<AccountParameterEntity> parameters = getCurrentParameters();
+        for (AccountParameterEntity parameter : parameters) {
+            if (parameter.getParameterType().getCode().equals(ParameterType.TOTAL_AREA.getCode())) {
+                try {
+                    totalArea = Double.valueOf(parameter.getValue());
+                    break;
+                } catch (NumberFormatException e) {
+                   // do nothing
+                }
+            }
+        }
+        return totalArea;
+    }
+
+    public String getCurrentPhoneNumbers() {
+        StringBuilder phoneNumbers = new StringBuilder();
+        List<AccountParameterEntity> parameters = getCurrentParameters();
+        for (AccountParameterEntity parameter : parameters) {
+            if (parameter.getParameterType().getCode().equals(ParameterType.PHONE_NUMBER.getCode())) {
+                phoneNumbers.append(phoneNumbers.toString().equals("") ? "" : ";").append(parameter.getValue());
+            }
+        }
+        return phoneNumbers.toString();
     }
 }

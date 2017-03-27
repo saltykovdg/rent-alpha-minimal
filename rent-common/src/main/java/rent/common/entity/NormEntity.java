@@ -1,6 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,5 +64,13 @@ public class NormEntity extends AbstractEntity {
 
     public void setValues(List<NormValueEntity> values) {
         this.values = values;
+    }
+
+    public List<TariffValueEntity> getCurrentValues() {
+        return getValuesForPeriod(new Date(System.currentTimeMillis()));
+    }
+
+    public List<TariffValueEntity> getValuesForPeriod(Date period) {
+        return (List<TariffValueEntity>) getListForPeriod(period, this.values);
     }
 }

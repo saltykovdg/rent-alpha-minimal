@@ -1,5 +1,7 @@
 package rent.common.entity;
 
+import rent.common.interfaces.UseDateStartDateEnd;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,15 +15,23 @@ import java.util.Date;
         @Index(columnList = AccountServiceEntity.Columns.DATE_START),
         @Index(columnList = AccountServiceEntity.Columns.DATE_END)
 })
-public class AccountServiceEntity extends AbstractEntity {
+public class AccountServiceEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "accounts_services";
 
     public interface Columns extends AbstractEntity.Columns {
+        String ACCOUNT = "account_id";
         String SERVICE = "service_id";
         String TARIFF = "tariff_id";
         String DATE_START = "date_start";
         String DATE_END = "date_end";
     }
+
+    /**
+     * лс
+     */
+    @JoinColumn(name = Columns.ACCOUNT)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AccountEntity account;
 
     /**
      * услуга
@@ -48,6 +58,14 @@ public class AccountServiceEntity extends AbstractEntity {
     @JoinColumn(name = Columns.TARIFF)
     @ManyToOne(fetch = FetchType.LAZY)
     private TariffEntity tariff;
+
+    public AccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
 
     public ServiceEntity getService() {
         return service;

@@ -23,6 +23,42 @@ class AccountList extends ListComponent {
       this.getDateColumn(this.props.intl.messages.accountFieldDateClose, 'dateClose'),
       this.getActionColumn(AccountPath.ACCOUNT_EDIT),
     ];
+    const expandedRowRender = (record) => {
+      const messages = this.props.intl.messages;
+      const currentOwners = record.currentOwners.map(owner => (
+        <div>{owner.citizen.lastName} {owner.citizen.firstName} {owner.citizen.fatherName}</div>
+      ));
+      const currentRegistered = record.currentRegistered.map(registered => (
+        <div>{registered.citizen.lastName} {registered.citizen.firstName} {registered.citizen.fatherName}</div>
+      ));
+      return (
+        <div>
+          <Row gutter={10}>
+            <Col className="gutter-row" span={6}>
+              <h4>{messages.addressShortTitle}</h4>
+              {record.apartment.building.street.streetType.nameShort}&nbsp;
+              {record.apartment.building.street.name},&nbsp;
+              {messages.buildingFieldHouse.toLowerCase()}&nbsp;
+              {record.apartment.building.house},&nbsp;
+              {messages.apartmentFieldApartment.toLowerCase()}&nbsp;
+              {record.apartment.apartment}&nbsp;
+            </Col>
+            <Col className="gutter-row" span={6}>
+              <h4>{messages.ownersTitle}</h4>
+              {currentOwners}
+            </Col>
+            <Col className="gutter-row" span={6}>
+              <h4>{messages.registeredTitle}</h4>
+              {currentRegistered}
+            </Col>
+            <Col className="gutter-row" span={6}>
+              <h4>{messages.apartmentFieldTotalArea}</h4>
+              {record.currentTotalArea}
+            </Col>
+          </Row>
+        </div>
+      );
+    };
     return (
       <div>
         <Breadcrumb>
@@ -60,7 +96,7 @@ class AccountList extends ListComponent {
             </Button>
           </Col>
         </Row>
-        {this.getTableComponent(columns)}
+        {this.getTableComponent(columns, expandedRowRender)}
       </div>
     );
   }

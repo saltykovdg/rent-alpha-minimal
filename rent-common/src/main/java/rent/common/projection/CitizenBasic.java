@@ -19,4 +19,6 @@ public interface CitizenBasic extends AbstractBasic {
     Date getBirthday();
 
     List<CitizenDocumentBasic> getDocuments();
+
+    List<CitizenDocumentBasic> getCurrentDocuments();
 }
