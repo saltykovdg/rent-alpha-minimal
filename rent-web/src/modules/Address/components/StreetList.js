@@ -31,7 +31,7 @@ class StreetList extends ListComponent {
           <FormattedMessage id="streetTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(AddressPath.STREET_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateStreet" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>

@@ -71,7 +71,7 @@ class AccountList extends ListComponent {
           <FormattedMessage id="accountsTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(AccountPath.ACCOUNT_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateAccount" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>

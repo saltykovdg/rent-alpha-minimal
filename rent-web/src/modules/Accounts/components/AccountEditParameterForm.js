@@ -45,7 +45,7 @@ class AccountEditParameterForm extends EditComponent {
   }
   render() {
     const object = this.props.parameter;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditParameterTypeOnAccountTitle" /> : <FormattedMessage id="editPageAddParameterTypeOnAccountTitle" />;
     const baseFields = this.getBaseFields(object);
     let parameterTypeList = null;
     if (this.props.parameterTypes && this.props.parameterTypes.content) {

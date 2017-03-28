@@ -33,7 +33,7 @@ class BuildingList extends ListComponent {
           <FormattedMessage id="buildingTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(AddressPath.BUILDING_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateBuilding" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>

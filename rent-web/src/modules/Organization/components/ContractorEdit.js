@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class ContractorEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditContractorTitle" /> : <FormattedMessage id="editPageCreateContractorTitle" />;
     const baseFields = this.getBaseFields(object);
     let values = null;
     if (this.props.contractorTypes && this.props.contractorTypes.content) {

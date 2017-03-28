@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class CitizenEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditCitizenTitle" /> : <FormattedMessage id="editPageCreateCitizenTitle" />;
     const baseFields = this.getBaseFields(object);
     let genderTypes = null;
     if (this.props.genderTypes && this.props.genderTypes.content) {

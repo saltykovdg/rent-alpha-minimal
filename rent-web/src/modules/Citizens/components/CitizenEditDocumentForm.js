@@ -82,7 +82,7 @@ class CitizenEditDocumentForm extends EditComponent {
   }
   render() {
     const object = this.props.document;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditDocumentOnCitizenTitle" /> : <FormattedMessage id="editPageAddDocumentOnCitizenTitle" />;
     const baseFields = this.getBaseFields(object);
     let documentTypeList = null;
     if (this.props.documentTypes && this.props.documentTypes.content) {

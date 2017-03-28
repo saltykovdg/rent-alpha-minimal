@@ -38,7 +38,7 @@ class ApartmentList extends ListComponent {
           <FormattedMessage id="apartmentTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(AddressPath.APARTMENT_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateApartment" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>

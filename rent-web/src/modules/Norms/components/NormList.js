@@ -25,7 +25,7 @@ class NormList extends ListComponent {
           <FormattedMessage id="normsTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(NormPath.NORM_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateNorm" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

@@ -113,7 +113,7 @@ class EditTiedMeterForm extends EditComponent {
   }
   render() {
     const object = this.props.tiedMeter;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.title;
     const baseFields = this.getBaseFields(object);
     const panelSearchVisible = !object.meter;
     return (

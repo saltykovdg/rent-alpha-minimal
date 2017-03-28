@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class TariffEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTariffTitle" /> : <FormattedMessage id="editPageCreateTariffTitle" />;
     const baseFields = this.getBaseFields(object);
     let services = null;
     if (this.props.services && this.props.services.content) {

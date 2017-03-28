@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class NormEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditNormTitle" /> : <FormattedMessage id="editPageCreateNormTitle" />;
     const baseFields = this.getBaseFields(object);
     let services = null;
     if (this.props.services && this.props.services.content) {

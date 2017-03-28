@@ -24,7 +24,7 @@ class NormEditValuesForm extends EditComponent {
   }
   render() {
     const object = this.props.normValue;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditValueOnNormTitle" /> : <FormattedMessage id="editPageAddValueOnNormTitle" />;
     const baseFields = this.getBaseFields(object);
     let measurementUnitList = null;
     if (this.props.measurementUnits && this.props.measurementUnits.content) {

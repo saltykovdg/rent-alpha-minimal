@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class StreetEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditStreetTitle" /> : <FormattedMessage id="editPageCreateStreetTitle" />;
     const baseFields = this.getBaseFields(object);
     let values = null;
     if (this.props.streetTypes && this.props.streetTypes.content) {

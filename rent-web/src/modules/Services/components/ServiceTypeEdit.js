@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class ServiceTypeEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditServiceTypeTitle" /> : <FormattedMessage id="editPageCreateServiceTypeTitle" />;
     const baseFields = this.getBaseFields(object);
     return (
       <div>

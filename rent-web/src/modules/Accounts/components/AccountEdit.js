@@ -22,7 +22,7 @@ class AccountEdit extends EditComponent {
   }
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditAccountTitle" /> : <FormattedMessage id="editPageCreateAccountTitle" />;
     const baseFields = this.getBaseFields(object);
     let contractorsList = null;
     if (this.props.contractors && this.props.contractors.content) {

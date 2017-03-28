@@ -305,6 +305,7 @@ class AccountEditPage extends ExtendedComponentPage {
     this.props.dispatch(MeterAction.findMetersIndividual(service, name, serialNumber, page, size));
   }
   render() {
+    const messages = this.props.intl.messages;
     return (
       <div>
         <AccountEdit
@@ -376,6 +377,7 @@ class AccountEditPage extends ExtendedComponentPage {
           clearLocalDataCitizens={this.clearLocalDataCitizens}
         />
         <EditTiedMeterForm
+          title={this.state.meter.id ? messages.editPageEditMeterOnAccountTitle : messages.editPageAddMeterOnAccountTitle}
           isLoading={this.props.isLoadingMeters}
           tiedMeter={this.state.meter}
           meters={this.props.meters}

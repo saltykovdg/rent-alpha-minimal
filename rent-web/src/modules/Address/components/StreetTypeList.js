@@ -26,7 +26,7 @@ class StreetTypeList extends ListComponent {
           <FormattedMessage id="streetTypeTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(AddressPath.STREET_TYPE_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateStreetType" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

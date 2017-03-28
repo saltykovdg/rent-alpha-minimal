@@ -82,6 +82,7 @@ class BuildingEditPage extends ExtendedComponentPage {
     this.props.dispatch(MeterAction.findMetersCommonHouse(service, name, serialNumber, page, size));
   }
   render() {
+    const messages = this.props.intl.messages;
     return (
       <div>
         <BuildingEdit
@@ -96,6 +97,7 @@ class BuildingEditPage extends ExtendedComponentPage {
           onDeleteMeter={this.onDeleteMeter}
         />
         <EditTiedMeterForm
+          title={this.state.meter.id ? messages.editPageEditMeterOnBuildingTitle : messages.editPageAddMeterOnBuildingTitle}
           isLoading={this.props.isLoadingMeters}
           tiedMeter={this.state.meter}
           meters={this.props.meters}

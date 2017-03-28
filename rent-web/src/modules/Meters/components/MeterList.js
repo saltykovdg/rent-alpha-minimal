@@ -34,7 +34,7 @@ class MeterList extends ListComponent {
           <FormattedMessage id="metersTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(MeterPath.METER_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateMeter" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>

@@ -178,7 +178,7 @@ class AccountEditRegisteredForm extends EditComponent {
   }
   render() {
     const object = this.props.registered;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditRegisteredOnAccountTitle" /> : <FormattedMessage id="editPageAddRegisteredOnAccountTitle" />;
     const baseFields = this.getBaseFields(object);
     let registrationTypeList = null;
     if (this.props.registrationTypes && this.props.registrationTypes.content) {

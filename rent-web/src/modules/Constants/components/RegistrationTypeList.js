@@ -25,7 +25,7 @@ class RegistrationTypeList extends ListComponent {
           <FormattedMessage id="registrationTypeTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(RegistrationTypePath.REGISTRATION_TYPE_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateRegistrationType" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

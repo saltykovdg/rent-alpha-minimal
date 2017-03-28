@@ -32,7 +32,7 @@ class AccountEditServiceForm extends EditComponent {
   }
   render() {
     const object = this.props.service;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditServiceOnAccountTitle" /> : <FormattedMessage id="editPageAddServiceOnAccountTitle" />;
     const baseFields = this.getBaseFields(object);
     let serviceList = null;
     if (this.props.services && this.props.services.content) {

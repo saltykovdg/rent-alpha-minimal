@@ -25,7 +25,7 @@ class DocumentTypeList extends ListComponent {
           <FormattedMessage id="documentTypeTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(DocumentTypePath.DOCUMENT_TYPE_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateDocumentType" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

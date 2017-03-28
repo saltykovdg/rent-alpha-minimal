@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class MeasurementUnitEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditMeasurementUnitTitle" /> : <FormattedMessage id="editPageCreateMeasurementUnitTitle" />;
     const baseFields = this.getBaseFields(object);
     return (
       <div>

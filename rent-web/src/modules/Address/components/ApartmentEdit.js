@@ -19,7 +19,7 @@ class ApartmentEdit extends EditComponent {
       object.totalArea = parseFloat(object.totalArea);
       object.livingArea = parseFloat(object.livingArea);
     }
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditApartmentTitle" /> : <FormattedMessage id="editPageCreateApartmentTitle" />;
     const baseFields = this.getBaseFields(object);
     let streets = null;
     if (this.props.streets && this.props.streets.content) {

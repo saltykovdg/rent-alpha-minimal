@@ -25,7 +25,7 @@ class TariffEditValuesForm extends EditComponent {
   }
   render() {
     const object = this.props.tariffValue;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditValueOnTariffTitle" /> : <FormattedMessage id="editPageAddValueOnTariffTitle" />;
     const baseFields = this.getBaseFields(object);
     let calculationTypeList = null;
     if (this.props.calculationTypes && this.props.calculationTypes.content) {

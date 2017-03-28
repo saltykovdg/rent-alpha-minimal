@@ -25,7 +25,7 @@ class MeasurementUnitList extends ListComponent {
           <FormattedMessage id="measurementUnitTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(MeasurementUnitPath.MEASUREMENT_UNIT_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateMeasurementUnit" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

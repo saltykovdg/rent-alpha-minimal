@@ -25,7 +25,7 @@ class ServiceTypeList extends ListComponent {
           <FormattedMessage id="serviceTypeTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(ServiceTypePath.SERVICE_TYPE_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateServiceType" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

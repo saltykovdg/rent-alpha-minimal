@@ -25,7 +25,7 @@ class TariffList extends ListComponent {
           <FormattedMessage id="tariffsTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(TariffPath.TARIFF_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateTariff" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

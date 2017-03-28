@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 class MeterEdit extends EditComponent {
   render() {
     const object = this.props.data;
-    const titleItem = this.props.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = this.props.id ? <FormattedMessage id="editPageEditMeterTitle" /> : <FormattedMessage id="editPageCreateMeterTitle" />;
     const baseFields = this.getBaseFields(object);
     let meterTypes = null;
     if (this.props.meterTypes && this.props.meterTypes.content) {

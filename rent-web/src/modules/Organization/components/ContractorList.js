@@ -28,7 +28,7 @@ class ContractorList extends ListComponent {
           <FormattedMessage id="contractorTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(OrganizationPath.CONTRACTOR_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateContractor" />
         </Button>
         {this.getTableComponent(columns)}
       </div>

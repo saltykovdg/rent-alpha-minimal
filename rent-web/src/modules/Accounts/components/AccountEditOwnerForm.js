@@ -178,7 +178,7 @@ class AccountEditOwnerForm extends EditComponent {
   }
   render() {
     const object = this.props.owner;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditOwnerOnAccountTitle" /> : <FormattedMessage id="editPageAddOwnerOnAccountTitle" />;
     const baseFields = this.getBaseFields(object);
     let documentTypeList = null;
     if (this.props.documentTypes && this.props.documentTypes.content) {

@@ -22,7 +22,7 @@ class MeterEditValuesForm extends EditComponent {
   }
   render() {
     const object = this.props.meterValue;
-    const titleItem = object && object.id ? <FormattedMessage id="editPageEditTitle" /> : <FormattedMessage id="editPageCreateTitle" />;
+    const titleItem = object && object.id ? <FormattedMessage id="editPageEditValueOnMeterTitle" /> : <FormattedMessage id="editPageAddValueOnMeterTitle" />;
     const baseFields = this.getBaseFields(object);
     baseFields.push(this.getBaseFormField('consumption', object.consumption, <Input key="consumption" type="hidden" />));
     return (

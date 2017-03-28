@@ -36,7 +36,7 @@ class CitizenList extends ListComponent {
           <FormattedMessage id="citizensTitle" />
         </h1>
         <Button type="primary" onClick={() => this.forwardTo(CitizenPath.CITIZEN_EDIT)}>
-          <FormattedMessage id="buttonAddNewRecord" />
+          <FormattedMessage id="buttonCreateCitizen" />
         </Button>
         <h2><FormattedMessage id="filtersTitle" /></h2>
         <Row gutter={10}>
