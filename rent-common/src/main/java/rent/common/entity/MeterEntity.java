@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Счетчик (прибор учета)
+ * Прибор учета
  */
 @Entity
 @Table(name = MeterEntity.TABLE_NAME, indexes = {
@@ -26,7 +26,7 @@ public class MeterEntity extends AbstractEntity {
     }
 
     /**
-     * вид счетчика
+     * вид прибора учета
      */
     @JoinColumn(name = Columns.METER_TYPE)
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Показание счетчика
@@ -36,7 +36,7 @@ public class MeterValueEntity extends AbstractEntity {
      * дата снятия показания
      */
     @Column(name = Columns.DATE_VALUE)
-    private Date dateValue;
+    private LocalDate dateValue;
 
     public Double getValue() {
         return value;
@@ -54,11 +54,11 @@ public class MeterValueEntity extends AbstractEntity {
         this.consumption = consumption;
     }
 
-    public Date getDateValue() {
+    public LocalDate getDateValue() {
         return dateValue;
     }
 
-    public void setDateValue(Date dateValue) {
+    public void setDateValue(LocalDate dateValue) {
         this.dateValue = dateValue;
     }
 }

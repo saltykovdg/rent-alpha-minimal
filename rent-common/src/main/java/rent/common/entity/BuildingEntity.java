@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -49,7 +49,7 @@ public class BuildingEntity extends AbstractEntity {
     private String housing;
 
     /**
-     * счетчики общедомовые
+     * общедомовые приборы учета
      */
     @JoinColumn(name = Columns.BUILDING)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -96,10 +96,10 @@ public class BuildingEntity extends AbstractEntity {
     }
 
     public List<BuildingMeterEntity> getCurrentMeters() {
-        return getMetersForPeriod(new Date(System.currentTimeMillis()));
+        return getMetersForPeriod(LocalDate.now());
     }
 
-    public List<BuildingMeterEntity> getMetersForPeriod(Date period) {
+    public List<BuildingMeterEntity> getMetersForPeriod(LocalDate period) {
         return (List<BuildingMeterEntity>) getListForPeriod(period, this.meters);
     }
 }

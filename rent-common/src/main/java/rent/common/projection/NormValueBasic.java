@@ -3,7 +3,7 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.NormValueEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Projection(types = {NormValueEntity.class})
 public interface NormValueBasic extends AbstractBasic {
@@ -11,7 +11,7 @@ public interface NormValueBasic extends AbstractBasic {
 
     Double getValue();
 
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }

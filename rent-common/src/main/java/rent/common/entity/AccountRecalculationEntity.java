@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Перерасчет ЛС
@@ -18,6 +18,7 @@ public class AccountRecalculationEntity extends AbstractEntity {
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT_SERVICE = "account_service_id";
         String PERIOD = "period";
+        String CONSUMPTION = "consumption";
         String VALUE = "value";
     }
 
@@ -32,7 +33,13 @@ public class AccountRecalculationEntity extends AbstractEntity {
      * период
      */
     @Column(name = Columns.PERIOD)
-    private Date period;
+    private LocalDate period;
+
+    /**
+     * расход
+     */
+    @Column(name = Columns.CONSUMPTION)
+    private Double consumption;
 
     /**
      * сумма
@@ -48,12 +55,20 @@ public class AccountRecalculationEntity extends AbstractEntity {
         this.accountService = accountService;
     }
 
-    public Date getPeriod() {
+    public LocalDate getPeriod() {
         return period;
     }
 
-    public void setPeriod(Date period) {
+    public void setPeriod(LocalDate period) {
         this.period = period;
+    }
+
+    public Double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Double consumption) {
+        this.consumption = consumption;
     }
 
     public Double getValue() {

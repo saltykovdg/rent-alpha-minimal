@@ -3,7 +3,7 @@ package rent.common.entity;
 import rent.common.enums.ParameterType;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -40,13 +40,13 @@ public class AccountEntity extends AbstractEntity {
      * дата открытия лс
      */
     @Column(name = Columns.DATE_OPEN)
-    private Date dateOpen;
+    private LocalDate dateOpen;
 
     /**
      * дата закрытия лс
      */
     @Column(name = Columns.DATE_CLOSE)
-    private Date dateClose;
+    private LocalDate dateClose;
 
     /**
      * управляющая компания
@@ -91,7 +91,7 @@ public class AccountEntity extends AbstractEntity {
     private List<AccountRegisteredEntity> registered;
 
     /**
-     * счетчики лс
+     * приборы учета лс
      */
     @JoinColumn(name = Columns.ACCOUNT)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -105,19 +105,19 @@ public class AccountEntity extends AbstractEntity {
         this.accountNumber = accountNumber;
     }
 
-    public Date getDateOpen() {
+    public LocalDate getDateOpen() {
         return dateOpen;
     }
 
-    public void setDateOpen(Date dateOpen) {
+    public void setDateOpen(LocalDate dateOpen) {
         this.dateOpen = dateOpen;
     }
 
-    public Date getDateClose() {
+    public LocalDate getDateClose() {
         return dateClose;
     }
 
-    public void setDateClose(Date dateClose) {
+    public void setDateClose(LocalDate dateClose) {
         this.dateClose = dateClose;
     }
 
@@ -178,42 +178,42 @@ public class AccountEntity extends AbstractEntity {
     }
 
     public List<AccountParameterEntity> getCurrentParameters() {
-        return getParametersForPeriod(new Date(System.currentTimeMillis()));
+        return getParametersForPeriod(LocalDate.now());
     }
 
-    public List<AccountParameterEntity> getParametersForPeriod(Date period) {
+    public List<AccountParameterEntity> getParametersForPeriod(LocalDate period) {
         return (List<AccountParameterEntity>) getListForPeriod(period, this.parameters);
     }
 
     public List<AccountServiceEntity> getCurrentServices() {
-        return getServicesForPeriod(new Date(System.currentTimeMillis()));
+        return getServicesForPeriod(LocalDate.now());
     }
 
-    public List<AccountServiceEntity> getServicesForPeriod(Date period) {
+    public List<AccountServiceEntity> getServicesForPeriod(LocalDate period) {
         return (List<AccountServiceEntity>) getListForPeriod(period, this.services);
     }
 
     public List<AccountOwnerEntity> getCurrentOwners() {
-        return getOwnersForPeriod(new Date(System.currentTimeMillis()));
+        return getOwnersForPeriod(LocalDate.now());
     }
 
-    public List<AccountOwnerEntity> getOwnersForPeriod(Date period) {
+    public List<AccountOwnerEntity> getOwnersForPeriod(LocalDate period) {
         return (List<AccountOwnerEntity>) getListForPeriod(period, this.owners);
     }
 
     public List<AccountRegisteredEntity> getCurrentRegistered() {
-        return getRegisteredForPeriod(new Date(System.currentTimeMillis()));
+        return getRegisteredForPeriod(LocalDate.now());
     }
 
-    public List<AccountRegisteredEntity> getRegisteredForPeriod(Date period) {
+    public List<AccountRegisteredEntity> getRegisteredForPeriod(LocalDate period) {
         return (List<AccountRegisteredEntity>) getListForPeriod(period, this.registered);
     }
 
     public List<AccountMeterEntity> getCurrentMeters() {
-        return getMetersForPeriod(new Date(System.currentTimeMillis()));
+        return getMetersForPeriod(LocalDate.now());
     }
 
-    public List<AccountMeterEntity> getMetersForPeriod(Date period) {
+    public List<AccountMeterEntity> getMetersForPeriod(LocalDate period) {
         return (List<AccountMeterEntity>) getListForPeriod(period, this.meters);
     }
 

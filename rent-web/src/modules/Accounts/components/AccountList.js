@@ -19,8 +19,8 @@ class AccountList extends ListComponent {
     const columns = [
       this.getColumn(this.props.intl.messages.managementCompanyTitle, 'contractor.name'),
       this.getColumn(this.props.intl.messages.accountFieldAccountNumber, 'accountNumber'),
-      this.getDateColumn(this.props.intl.messages.accountFieldDateOpen, 'dateOpen'),
-      this.getDateColumn(this.props.intl.messages.accountFieldDateClose, 'dateClose'),
+      this.getColumn(this.props.intl.messages.accountFieldDateOpen, 'dateOpen'),
+      this.getColumn(this.props.intl.messages.accountFieldDateClose, 'dateClose'),
       this.getActionColumn(AccountPath.ACCOUNT_EDIT),
     ];
     const expandedRowRender = (record) => {

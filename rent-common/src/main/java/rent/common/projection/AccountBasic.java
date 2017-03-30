@@ -3,16 +3,16 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.AccountEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Projection(types = {AccountEntity.class})
 public interface AccountBasic extends AbstractBasic {
     String getAccountNumber();
 
-    Date getDateOpen();
+    LocalDate getDateOpen();
 
-    Date getDateClose();
+    LocalDate getDateClose();
 
     ContractorBasic getContractor();
 

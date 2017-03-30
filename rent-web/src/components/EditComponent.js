@@ -41,7 +41,7 @@ class EditComponent extends ExtendedComponent {
   };
   getDateField = (name, value, required = true, disabled = false) => {
     return this.props.form.getFieldDecorator(name, {
-      initialValue: value ? moment(value) : null,
+      initialValue: value ? moment.utc(value) : null,
       rules: [{
         type: 'object',
         required,

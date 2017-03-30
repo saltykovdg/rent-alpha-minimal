@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class CitizenEntity extends AbstractEntity {
      * дата рождения
      */
     @Column(name = Columns.BIRTHDAY)
-    private Date birthday;
+    private LocalDate birthday;
 
     /**
      * документы
@@ -97,11 +97,11 @@ public class CitizenEntity extends AbstractEntity {
         this.fatherName = fatherName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -114,10 +114,10 @@ public class CitizenEntity extends AbstractEntity {
     }
 
     public List<CitizenDocumentEntity> getCurrentDocuments() {
-        return getDocumentsForPeriod(new Date(System.currentTimeMillis()));
+        return getDocumentsForPeriod(LocalDate.now());
     }
 
-    public List<CitizenDocumentEntity> getDocumentsForPeriod(Date period) {
+    public List<CitizenDocumentEntity> getDocumentsForPeriod(LocalDate period) {
         return (List<CitizenDocumentEntity>) getListForPeriod(period, this.documents);
     }
 }

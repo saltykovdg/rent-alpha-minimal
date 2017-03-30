@@ -3,7 +3,7 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.AccountParameterEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Projection(types = {AccountParameterEntity.class})
 public interface AccountParameterBasic extends AbstractBasic {
@@ -11,7 +11,7 @@ public interface AccountParameterBasic extends AbstractBasic {
 
     String getValue();
 
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }

@@ -32,8 +32,8 @@ class NormEdit extends EditComponent {
     const normValuesColumns = [
       this.getColumn(this.props.intl.messages.measurementUnitFieldName, 'measurementUnit.name'),
       this.getColumn(this.props.intl.messages.commonFieldValue, 'value'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormNormValueEdit, this.props.onDeleteNormValue),
     ];
     return (

@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import * as MeterAction from './../actions/MeterAction';
 import * as MeterValueAction from './../actions/MeterValueAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
@@ -8,7 +6,7 @@ export const emptyMeterValue = {
   id: '',
   value: 0,
   consumption: 0,
-  dateValue: moment(),
+  dateValue: null,
 };
 
 const emptyEditData = {

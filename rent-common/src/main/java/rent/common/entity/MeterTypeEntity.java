@@ -6,7 +6,7 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 
 /**
- * Вид счетчика
+ * Вид прибора учета
  */
 @Entity
 @Table(name = MeterTypeEntity.TABLE_NAME, indexes = {
@@ -24,13 +24,13 @@ public class MeterTypeEntity extends AbstractEntity {
     }
 
     /**
-     * код вида счетчика
+     * код
      */
     @Column(name = Columns.CODE)
     private String code;
 
     /**
-     * название вида счетчика
+     * название
      */
     @Column(name = Columns.NAME)
     private String name;

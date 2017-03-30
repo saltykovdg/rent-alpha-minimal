@@ -3,7 +3,7 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.CitizenDocumentEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Projection(types = {CitizenDocumentEntity.class})
@@ -16,11 +16,11 @@ public interface CitizenDocumentBasic extends AbstractBasic {
 
     String getDocumentIssuingAuthority();
 
-    Date getDocumentDateIssue();
+    LocalDate getDocumentDateIssue();
 
     List<CitizenDocumentAttachmentBasic> getDocumentAttachments();
 
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }

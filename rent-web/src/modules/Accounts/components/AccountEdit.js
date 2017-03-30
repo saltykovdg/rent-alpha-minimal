@@ -66,8 +66,8 @@ class AccountEdit extends EditComponent {
     const parametersColumns = [
       this.getColumn(this.props.intl.messages.parameterTypeFieldName, 'parameterType.name'),
       this.getColumn(this.props.intl.messages.commonFieldValue, 'value'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormParameterEdit, this.props.onDeleteParameter),
     ];
     let servicesDataSource = [];
@@ -84,8 +84,8 @@ class AccountEdit extends EditComponent {
     }
     const servicesColumns = [
       this.getColumn(this.props.intl.messages.serviceFieldName, 'service.name'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getColumn(this.props.intl.messages.tariffFieldName, 'tariff.name'),
       this.getActionColumn(this.props.showFormServiceEdit, this.props.onDeleteService),
     ];
@@ -103,9 +103,9 @@ class AccountEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
       this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
       this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
-      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormOwnerEdit, this.props.onDeleteOwner),
     ];
     let registeredDataSource = [];
@@ -122,10 +122,10 @@ class AccountEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
       this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
       this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
-      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
       this.getColumn(this.props.intl.messages.registrationTypeFieldName, 'registrationType.name'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormRegisteredEdit, this.props.onDeleteRegistered),
     ];
     let metersDataSource = [];
@@ -142,8 +142,8 @@ class AccountEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.serviceFieldName, 'meter.service.name'),
       this.getColumn(this.props.intl.messages.meterFieldName, 'meter.name'),
       this.getColumn(this.props.intl.messages.meterFieldSerialNumber, 'meter.serialNumber'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormMeterEdit, this.props.onDeleteMeter),
     ];
     return (

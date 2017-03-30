@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import * as AddressAction from './../AddressActions';
 import * as MeterAction from './../../Meters/actions/MeterAction';
 import * as BuildingMeterAction from './../actions/BuildingMeterAction';
@@ -8,7 +6,7 @@ import { prepareEdit, prepareList, prepareDefault } from './../../../util/Reduce
 export const emptyMeter = {
   id: '',
   meter: null,
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 

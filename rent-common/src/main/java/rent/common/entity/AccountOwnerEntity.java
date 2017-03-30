@@ -3,7 +3,7 @@ package rent.common.entity;
 import rent.common.interfaces.UseDateStartDateEnd;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -69,7 +69,7 @@ public class AccountOwnerEntity extends AbstractEntity implements UseDateStartDa
      * документ дата выдачи
      */
     @Column(name = Columns.DOCUMENT_DATE_ISSUE)
-    private Date documentDateIssue;
+    private LocalDate documentDateIssue;
 
     /**
      * прикреплённые документы
@@ -82,13 +82,13 @@ public class AccountOwnerEntity extends AbstractEntity implements UseDateStartDa
      * дата начала
      */
     @Column(name = Columns.DATE_START)
-    private Date dateStart;
+    private LocalDate dateStart;
 
     /**
      * дата окончания
      */
     @Column(name = Columns.DATE_END)
-    private Date dateEnd;
+    private LocalDate dateEnd;
 
     public CitizenEntity getCitizen() {
         return citizen;
@@ -130,11 +130,11 @@ public class AccountOwnerEntity extends AbstractEntity implements UseDateStartDa
         this.documentIssuingAuthority = documentIssuingAuthority;
     }
 
-    public Date getDocumentDateIssue() {
+    public LocalDate getDocumentDateIssue() {
         return documentDateIssue;
     }
 
-    public void setDocumentDateIssue(Date documentDateIssue) {
+    public void setDocumentDateIssue(LocalDate documentDateIssue) {
         this.documentDateIssue = documentDateIssue;
     }
 
@@ -146,19 +146,19 @@ public class AccountOwnerEntity extends AbstractEntity implements UseDateStartDa
         this.documentAttachments = documentAttachments;
     }
 
-    public Date getDateStart() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDate dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDate getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
     }
 }

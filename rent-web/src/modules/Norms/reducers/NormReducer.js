@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import * as NormAction from './../actions/NormAction';
 import * as NormValueAction from './../actions/NormValueAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
@@ -11,7 +9,7 @@ export const emptyNormValue = {
     name: '',
   },
   value: 0,
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 

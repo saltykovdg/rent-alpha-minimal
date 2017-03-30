@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Оплата ЛС
@@ -32,7 +32,7 @@ public class AccountPaymentEntity extends AbstractEntity {
      * период
      */
     @Column(name = Columns.PERIOD)
-    private Date period;
+    private LocalDate period;
 
     /**
      * сумма
@@ -48,11 +48,11 @@ public class AccountPaymentEntity extends AbstractEntity {
         this.accountService = accountService;
     }
 
-    public Date getPeriod() {
+    public LocalDate getPeriod() {
         return period;
     }
 
-    public void setPeriod(Date period) {
+    public void setPeriod(LocalDate period) {
         this.period = period;
     }
 

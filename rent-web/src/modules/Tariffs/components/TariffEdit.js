@@ -33,8 +33,8 @@ class TariffEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.calculationTypeFieldName, 'calculationType.name'),
       this.getColumn(this.props.intl.messages.measurementUnitFieldName, 'measurementUnit.name'),
       this.getColumn(this.props.intl.messages.commonFieldValue, 'value'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormTariffValueEdit, this.props.onDeleteTariffValue),
     ];
     return (

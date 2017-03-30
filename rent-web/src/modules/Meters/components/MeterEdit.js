@@ -38,7 +38,7 @@ class MeterEdit extends EditComponent {
     const meterValuesColumns = [
       this.getColumn(this.props.intl.messages.meterFieldValue, 'value'),
       this.getColumn(this.props.intl.messages.meterFieldConsumption, 'consumption'),
-      this.getDateColumn(this.props.intl.messages.meterFieldDateValue, 'dateValue'),
+      this.getColumn(this.props.intl.messages.meterFieldDateValue, 'dateValue'),
       this.getActionColumn(this.props.showFormMeterValueEdit, this.props.onDeleteMeterValue),
     ];
     return (

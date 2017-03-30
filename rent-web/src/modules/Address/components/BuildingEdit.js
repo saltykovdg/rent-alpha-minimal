@@ -33,8 +33,8 @@ class BuildingEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.serviceFieldName, 'meter.service.name'),
       this.getColumn(this.props.intl.messages.meterFieldName, 'meter.name'),
       this.getColumn(this.props.intl.messages.meterFieldSerialNumber, 'meter.serialNumber'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormMeterEdit, this.props.onDeleteMeter),
     ];
     return (

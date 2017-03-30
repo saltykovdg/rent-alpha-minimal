@@ -4,13 +4,13 @@ import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.AccountRecalculationEntity;
 import rent.common.entity.AccountServiceEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Projection(types = {AccountRecalculationEntity.class})
 public interface AccountRecalculationBasic extends AbstractBasic {
     AccountServiceEntity getAccountService();
 
-    Date getPeriod();
+    LocalDate getPeriod();
 
     Double getValue();
 }

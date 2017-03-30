@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import * as CitizenAction from './../actions/CitizenAction';
 import * as CitizenDocumentAction from './../actions/CitizenDocumentAction';
 import * as CitizenDocumentAttachmentAction from './../actions/CitizenDocumentAttachmentAction';
@@ -21,7 +19,7 @@ export const emptyDocument = {
   documentNumber: '',
   documentIssuingAuthority: '',
   documentDateIssue: '',
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
   documentAttachments: [],
 };

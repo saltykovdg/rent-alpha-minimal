@@ -3,11 +3,11 @@ package rent.common.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import rent.common.interfaces.UseDateStartDateEnd;
-import rent.common.utils.DateUtils;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,10 +33,10 @@ public abstract class AbstractEntity {
     private String id;
 
     @Column(name = Columns.CREATION_DATE)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = Columns.LAST_MODIFIED_DATE)
-    private Date lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @Column(name = Columns.VERSION)
     private Long version;
@@ -49,19 +49,19 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
@@ -75,13 +75,13 @@ public abstract class AbstractEntity {
 
     @PrePersist
     void onCreate() {
-        this.setCreationDate(new Date(System.currentTimeMillis()));
+        this.setCreationDate(LocalDateTime.now());
         this.setVersion(0L);
     }
 
     @PreUpdate
     void onPersist() {
-        this.setLastModifiedDate(new Date(System.currentTimeMillis()));
+        this.setLastModifiedDate(LocalDateTime.now());
         this.setVersion(this.getVersion() + 1);
     }
 
@@ -98,12 +98,12 @@ public abstract class AbstractEntity {
         return id.hashCode();
     }
 
-    protected List<? extends UseDateStartDateEnd> getListForPeriod(Date period, List<? extends UseDateStartDateEnd> list) {
+    protected List<? extends UseDateStartDateEnd> getListForPeriod(LocalDate period, List<? extends UseDateStartDateEnd> list) {
         List<UseDateStartDateEnd> newList = new ArrayList<>();
         for (UseDateStartDateEnd obj : list) {
-            Date dateStart = DateUtils.setMinTime(obj.getDateStart());
-            Date dateEnd = DateUtils.setMaxTime(obj.getDateEnd());
-            if (dateStart.getTime() <= period.getTime() && (dateEnd == null || dateEnd.getTime() >= period.getTime())) {
+            LocalDate dateStart = obj.getDateStart();
+            LocalDate dateEnd = obj.getDateEnd();
+            if (dateStart.compareTo(period) <= 0 && (dateEnd == null || dateEnd.compareTo(period) >= 0)) {
                 newList.add(obj);
             }
         }

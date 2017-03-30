@@ -1,11 +1,8 @@
 import { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import { notification } from 'antd';
-import moment from 'moment';
 
 import * as HttpStatus from './../util/HttpStatus';
-
-const dateFormat = 'YYYY-MM-DD';
 
 class ExtendedComponent extends Component {
   componentDidUpdate() {
@@ -36,16 +33,6 @@ class ExtendedComponent extends Component {
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: name };
   };
-  getDateColumn = (title, name) => {
-    return {
-      title,
-      dataIndex: name,
-      key: name,
-      render(text) {
-        return text ? moment(text).format(dateFormat) : '';
-      },
-    };
-  }
   forwardTo = (url) => {
     browserHistory.push(url);
   };

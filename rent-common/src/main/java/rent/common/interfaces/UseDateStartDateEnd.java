@@ -1,9 +1,9 @@
 package rent.common.interfaces;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface UseDateStartDateEnd {
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }

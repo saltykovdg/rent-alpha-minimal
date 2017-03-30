@@ -3,7 +3,8 @@ package rent.common.entity;
 import rent.common.interfaces.UseDateStartDateEnd;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Услуга лицевого счета
@@ -20,6 +21,7 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
 
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT = "account_id";
+        String ACCOUNT_SERVICE = "account_service_id";
         String SERVICE = "service_id";
         String TARIFF = "tariff_id";
         String DATE_START = "date_start";
@@ -44,13 +46,13 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
      * дата начала
      */
     @Column(name = Columns.DATE_START)
-    private Date dateStart;
+    private LocalDate dateStart;
 
     /**
      * дата окончания
      */
     @Column(name = Columns.DATE_END)
-    private Date dateEnd;
+    private LocalDate dateEnd;
 
     /**
      * тариф
@@ -58,6 +60,34 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
     @JoinColumn(name = Columns.TARIFF)
     @ManyToOne(fetch = FetchType.LAZY)
     private TariffEntity tariff;
+
+    /**
+     * сальдо
+     */
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AccountOpeningBalanceEntity> openingBalances;
+
+    /**
+     * начисления
+     */
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AccountAccrualEntity> accruals;
+
+    /**
+     * перерасчеты
+     */
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AccountRecalculationEntity> recalculations;
+
+    /**
+     * оплаты
+     */
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<AccountPaymentEntity> payments;
 
     public AccountEntity getAccount() {
         return account;
@@ -75,19 +105,19 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
         this.service = service;
     }
 
-    public Date getDateStart() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDate dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDate getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
     }
 
@@ -97,5 +127,37 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
 
     public void setTariff(TariffEntity tariff) {
         this.tariff = tariff;
+    }
+
+    public List<AccountOpeningBalanceEntity> getOpeningBalances() {
+        return openingBalances;
+    }
+
+    public void setOpeningBalances(List<AccountOpeningBalanceEntity> openingBalances) {
+        this.openingBalances = openingBalances;
+    }
+
+    public List<AccountAccrualEntity> getAccruals() {
+        return accruals;
+    }
+
+    public void setAccruals(List<AccountAccrualEntity> accruals) {
+        this.accruals = accruals;
+    }
+
+    public List<AccountRecalculationEntity> getRecalculations() {
+        return recalculations;
+    }
+
+    public void setRecalculations(List<AccountRecalculationEntity> recalculations) {
+        this.recalculations = recalculations;
+    }
+
+    public List<AccountPaymentEntity> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<AccountPaymentEntity> payments) {
+        this.payments = payments;
     }
 }

@@ -138,7 +138,7 @@ class AccountEditRegisteredForm extends EditComponent {
   getTableCitizenComponent() {
     const columns = [
       this.getColumn(this.props.intl.messages.commonFieldCitizen, 'citizen'),
-      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'birthday'),
+      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'birthday'),
       this.getActionCitizenColumn(this.onSelectCitizen),
     ];
     let dataSource = [];

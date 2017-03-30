@@ -1,13 +1,13 @@
 package rent.common.projection;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public interface AbstractBasic {
     String getId();
 
-    Date getCreationDate();
+    LocalDateTime getCreationDate();
 
-    Date getLastModifiedDate();
+    LocalDateTime getLastModifiedDate();
 
     Long getVersion();
 }

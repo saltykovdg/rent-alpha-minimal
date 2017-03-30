@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountParameterAction from './../actions/AccountParameterAction';
 import * as AccountServiceAction from './../actions/AccountServiceAction';
@@ -21,7 +19,7 @@ export const emptyParameter = {
     name: '',
   },
   value: 0,
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 
@@ -31,7 +29,7 @@ export const emptyService = {
     id: '',
     name: '',
   },
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 
@@ -47,7 +45,7 @@ export const emptyOwner = {
   documentIssuingAuthority: '',
   documentDateIssue: '',
   documentAttachments: [],
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 
@@ -59,7 +57,7 @@ export const emptyRegistered = {
     name: '',
   },
   documentAttachments: [],
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 
@@ -72,14 +70,14 @@ export const emptyDocumentAttachment = {
 export const emptyMeter = {
   id: '',
   meter: null,
-  dateStart: moment(),
+  dateStart: null,
   dateEnd: null,
 };
 
 const emptyEditData = {
   id: '',
   accountNumber: '',
-  dateOpen: moment(),
+  dateOpen: null,
   dateClose: null,
   contractor: {
     id: '',

@@ -21,7 +21,7 @@ class CitizenList extends ListComponent {
       this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'firstName'),
       this.getColumn(this.props.intl.messages.citizenFieldLastName, 'lastName'),
       this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'fatherName'),
-      this.getDateColumn(this.props.intl.messages.citizenFieldBirthday, 'birthday'),
+      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'birthday'),
       this.getActionColumn(CitizenPath.CITIZEN_EDIT),
     ];
     return (

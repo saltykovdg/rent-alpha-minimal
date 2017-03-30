@@ -3,7 +3,7 @@ package rent.common.entity;
 import rent.common.interfaces.UseDateStartDateEnd;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Параметр лицевого счета
@@ -39,13 +39,13 @@ public class AccountParameterEntity extends AbstractEntity implements UseDateSta
      * дата начала
      */
     @Column(name = Columns.DATE_START)
-    private Date dateStart;
+    private LocalDate dateStart;
 
     /**
      * дата окончания
      */
     @Column(name = Columns.DATE_END)
-    private Date dateEnd;
+    private LocalDate dateEnd;
 
     public ParameterTypeEntity getParameterType() {
         return parameterType;
@@ -63,19 +63,19 @@ public class AccountParameterEntity extends AbstractEntity implements UseDateSta
         this.value = value;
     }
 
-    public Date getDateStart() {
+    public LocalDate getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDate dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDate getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
     }
 }

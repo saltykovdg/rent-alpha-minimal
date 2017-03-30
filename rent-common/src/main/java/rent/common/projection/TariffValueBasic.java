@@ -3,7 +3,7 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.TariffValueEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Projection(types = {TariffValueEntity.class})
 public interface TariffValueBasic extends AbstractBasic {
@@ -13,7 +13,7 @@ public interface TariffValueBasic extends AbstractBasic {
 
     Double getValue();
 
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }

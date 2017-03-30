@@ -3,7 +3,7 @@ package rent.common.projection;
 import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.AccountOwnerEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Projection(types = {AccountOwnerEntity.class})
@@ -18,11 +18,11 @@ public interface AccountOwnerBasic extends AbstractBasic {
 
     String getDocumentIssuingAuthority();
 
-    Date getDocumentDateIssue();
+    LocalDate getDocumentDateIssue();
 
     List<AccountOwnerDocumentAttachmentBasic> getDocumentAttachments();
 
-    Date getDateStart();
+    LocalDate getDateStart();
 
-    Date getDateEnd();
+    LocalDate getDateEnd();
 }
