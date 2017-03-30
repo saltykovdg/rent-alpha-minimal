@@ -35,8 +35,8 @@ class CitizenEdit extends EditComponent {
       this.getColumn(this.props.intl.messages.documentFieldNumber, 'documentNumber'),
       this.getColumn(this.props.intl.messages.documentFieldIssuingAuthority, 'documentIssuingAuthority'),
       this.getColumn(this.props.intl.messages.documentFieldDateIssue, 'documentDateIssue'),
-      this.getColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormDocumentEdit, this.props.onDeleteDocument),
     ];
     return (

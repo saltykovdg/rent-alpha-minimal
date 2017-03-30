@@ -4,6 +4,8 @@ import { notification } from 'antd';
 
 import * as HttpStatus from './../util/HttpStatus';
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 class ExtendedComponent extends Component {
   componentDidUpdate() {
     if (this.props.isRequestError && this.props.isRequestError === HttpStatus.CONFLICT) {
@@ -33,6 +35,20 @@ class ExtendedComponent extends Component {
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: name };
   };
+  getDateColumn = (title, name) => {
+    return {
+      title,
+      dataIndex: name,
+      key: name,
+      render(text) {
+        let value = text;
+        if (value && value.constructor.name === 'Moment') {
+          value = value.format(DATE_FORMAT);
+        }
+        return value;
+      },
+    };
+  }
   forwardTo = (url) => {
     browserHistory.push(url);
   };
