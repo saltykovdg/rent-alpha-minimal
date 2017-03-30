@@ -1,6 +1,5 @@
 package rent.common.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import rent.common.entity.ServiceEntity;
 
 public class AccountCalculationDto {
@@ -53,12 +52,10 @@ public class AccountCalculationDto {
         this.recalculations = recalculations;
     }
 
-    @JsonProperty("payments")
     public Double getPayments() {
         return payments;
     }
 
-    @JsonProperty("payments")
     public void setPayments(Double payments) {
         this.payments = payments;
     }

@@ -64,28 +64,28 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
     /**
      * сальдо
      */
-    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE, updatable = false)
     @OneToMany(fetch = FetchType.LAZY)
     private List<AccountOpeningBalanceEntity> openingBalances;
 
     /**
      * начисления
      */
-    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE, updatable = false)
     @OneToMany(fetch = FetchType.LAZY)
     private List<AccountAccrualEntity> accruals;
 
     /**
      * перерасчеты
      */
-    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE, updatable = false)
     @OneToMany(fetch = FetchType.LAZY)
     private List<AccountRecalculationEntity> recalculations;
 
     /**
      * оплаты
      */
-    @JoinColumn(name = Columns.ACCOUNT_SERVICE)
+    @JoinColumn(name = Columns.ACCOUNT_SERVICE, updatable = false)
     @OneToMany(fetch = FetchType.LAZY)
     private List<AccountPaymentEntity> payments;
 
@@ -133,31 +133,15 @@ public class AccountServiceEntity extends AbstractEntity implements UseDateStart
         return openingBalances;
     }
 
-    public void setOpeningBalances(List<AccountOpeningBalanceEntity> openingBalances) {
-        this.openingBalances = openingBalances;
-    }
-
     public List<AccountAccrualEntity> getAccruals() {
         return accruals;
-    }
-
-    public void setAccruals(List<AccountAccrualEntity> accruals) {
-        this.accruals = accruals;
     }
 
     public List<AccountRecalculationEntity> getRecalculations() {
         return recalculations;
     }
 
-    public void setRecalculations(List<AccountRecalculationEntity> recalculations) {
-        this.recalculations = recalculations;
-    }
-
     public List<AccountPaymentEntity> getPayments() {
         return payments;
-    }
-
-    public void setPayments(List<AccountPaymentEntity> payments) {
-        this.payments = payments;
     }
 }
