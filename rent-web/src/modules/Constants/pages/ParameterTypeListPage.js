@@ -30,10 +30,11 @@ class ParameterTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(ParameterTypeAction.getParameterTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(ParameterTypeAction.getParameterTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(ParameterTypeAction.deleteParameterType(object));
+    this.props.dispatch(ParameterTypeAction.deleteParameterType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

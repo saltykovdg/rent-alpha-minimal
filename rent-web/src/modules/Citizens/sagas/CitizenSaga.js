@@ -118,7 +118,14 @@ export function* deleteCitizen(action) {
   const response = yield call(CitizenApi.deleteCitizen, action.object);
   if (response === '') {
     yield put(CitizenAction.deleteCitizenSuccess(action.object));
-    yield put(CitizenAction.getCitizens());
+    yield put(CitizenAction.findCitizens(
+      action.firstName,
+      action.lastName,
+      action.fatherName,
+      action.documentSeries,
+      action.documentNumber,
+      action.page,
+    ));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

@@ -38,7 +38,8 @@ class CitizenListPage extends ExtendedComponentPage {
       this.state.searchFieldFatherName,
       this.state.searchFieldDocumentSeries,
       this.state.searchFieldDocumentNumber,
-      this.state.page));
+      this.state.page,
+    ));
   }
   onSearch = (firstName, lastName, fatherName, documentSeries, documentNumber) => {
     this.setState({
@@ -52,6 +53,7 @@ class CitizenListPage extends ExtendedComponentPage {
     this.props.dispatch(CitizenAction.findCitizens(firstName, lastName, fatherName, documentSeries, documentNumber, 0));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(CitizenAction.findCitizens(
       this.state.searchFieldFirstName,
       this.state.searchFieldLastName,
@@ -61,7 +63,15 @@ class CitizenListPage extends ExtendedComponentPage {
       page));
   };
   onDelete = (object) => {
-    this.props.dispatch(CitizenAction.deleteCitizen(object));
+    this.props.dispatch(CitizenAction.deleteCitizen(
+      object,
+      this.state.searchFieldFirstName,
+      this.state.searchFieldLastName,
+      this.state.searchFieldFatherName,
+      this.state.searchFieldDocumentSeries,
+      this.state.searchFieldDocumentNumber,
+      this.getActualPageAfterDelete(),
+    ));
   };
   render() {
     return (

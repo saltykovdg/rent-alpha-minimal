@@ -54,7 +54,7 @@ export function* deleteServiceType(action) {
   const response = yield call(ServiceTypeApi.deleteServiceType, action.object);
   if (response === '') {
     yield put(ServiceTypeAction.deleteServiceTypeSuccess(action.object));
-    yield put(ServiceTypeAction.getServiceTypes());
+    yield put(ServiceTypeAction.getServiceTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

@@ -50,6 +50,7 @@ class MeterListPage extends ExtendedComponentPage {
     this.props.dispatch(MeterAction.findMeters(meterType, service, name, serialNumber, 0));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(MeterAction.findMeters(
       this.state.searchFieldMeterType,
       this.state.searchFieldService,
@@ -58,7 +59,14 @@ class MeterListPage extends ExtendedComponentPage {
       page));
   };
   onDelete = (object) => {
-    this.props.dispatch(MeterAction.deleteMeter(object));
+    this.props.dispatch(MeterAction.deleteMeter(
+      object,
+      this.state.searchFieldMeterType,
+      this.state.searchFieldService,
+      this.state.searchFieldName,
+      this.state.searchFieldSerialNumber,
+      this.getActualPageAfterDelete(),
+    ));
   };
   render() {
     return (

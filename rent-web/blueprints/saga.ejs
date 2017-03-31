@@ -56,7 +56,7 @@ export function* delete<%= helpers.pascalCase(name) %>(action) {
   const response = yield call(<%= helpers.pascalCase(name) %>Api.delete<%= helpers.pascalCase(name) %>, action.object);
   if (response === '') {
     yield put(<%= helpers.pascalCase(name) %>Action.delete<%= helpers.pascalCase(name) %>Success(action.object));
-    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>s());
+    yield put(<%= helpers.pascalCase(name) %>Action.get<%= helpers.pascalCase(name) %>s(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

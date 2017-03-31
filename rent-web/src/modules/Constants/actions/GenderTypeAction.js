@@ -75,10 +75,11 @@ export const saveGenderTypeFailed = (data) => {
   };
 };
 
-export const deleteGenderType = (object) => {
+export const deleteGenderType = (object, page = 0) => {
   return {
     type: DELETE_GENDER_TYPE,
     object,
+    page,
   };
 };
 

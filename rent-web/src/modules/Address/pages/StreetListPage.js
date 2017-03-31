@@ -44,6 +44,7 @@ class StreetListPage extends ExtendedComponentPage {
     this.props.dispatch(AddressAction.findStreets(serviceType, service, 0));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(AddressAction.findStreets(
       this.state.searchFieldServiceType,
       this.state.searchFieldService,
@@ -51,7 +52,12 @@ class StreetListPage extends ExtendedComponentPage {
     ));
   };
   onDelete = (object) => {
-    this.props.dispatch(AddressAction.deleteStreet(object));
+    this.props.dispatch(AddressAction.deleteStreet(
+      object,
+      this.state.searchFieldServiceType,
+      this.state.searchFieldService,
+      this.getActualPageAfterDelete(),
+    ));
   };
   render() {
     return (

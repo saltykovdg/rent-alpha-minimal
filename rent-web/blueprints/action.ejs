@@ -75,10 +75,11 @@ export const save<%= helpers.pascalCase(name) %>Failed = (data) => {
   };
 };
 
-export const delete<%= helpers.pascalCase(name) %> = (object) => {
+export const delete<%= helpers.pascalCase(name) %> = (object, page = 0) => {
   return {
     type: DELETE_<%= helpers.constantCase(name) %>,
     object,
+    page,
   };
 };
 

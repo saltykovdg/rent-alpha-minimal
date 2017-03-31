@@ -83,10 +83,11 @@ export const saveTariffFailed = (data, showError = true) => {
   };
 };
 
-export const deleteTariff = (object) => {
+export const deleteTariff = (object, page = 0) => {
   return {
     type: DELETE_TARIFF,
     object,
+    page,
   };
 };
 

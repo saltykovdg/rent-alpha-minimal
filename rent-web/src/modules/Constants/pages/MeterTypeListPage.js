@@ -30,10 +30,11 @@ class MeterTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(MeterTypeAction.getMeterTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(MeterTypeAction.getMeterTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(MeterTypeAction.deleteMeterType(object));
+    this.props.dispatch(MeterTypeAction.deleteMeterType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

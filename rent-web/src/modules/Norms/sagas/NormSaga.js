@@ -91,7 +91,7 @@ export function* deleteNorm(action) {
   const response = yield call(NormApi.deleteNorm, action.object);
   if (response === '') {
     yield put(NormAction.deleteNormSuccess(action.object));
-    yield put(NormAction.getNorms());
+    yield put(NormAction.getNorms(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

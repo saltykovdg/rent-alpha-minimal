@@ -54,7 +54,7 @@ export function* deleteGenderType(action) {
   const response = yield call(GenderTypeApi.deleteGenderType, action.object);
   if (response === '') {
     yield put(GenderTypeAction.deleteGenderTypeSuccess(action.object));
-    yield put(GenderTypeAction.getGenderTypes());
+    yield put(GenderTypeAction.getGenderTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

@@ -54,7 +54,7 @@ export function* deleteParameterType(action) {
   const response = yield call(ParameterTypeApi.deleteParameterType, action.object);
   if (response === '') {
     yield put(ParameterTypeAction.deleteParameterTypeSuccess(action.object));
-    yield put(ParameterTypeAction.getParameterTypes());
+    yield put(ParameterTypeAction.getParameterTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

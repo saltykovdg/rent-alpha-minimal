@@ -30,10 +30,11 @@ class CalculationTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(CalculationTypeAction.getCalculationTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(CalculationTypeAction.getCalculationTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(CalculationTypeAction.deleteCalculationType(object));
+    this.props.dispatch(CalculationTypeAction.deleteCalculationType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

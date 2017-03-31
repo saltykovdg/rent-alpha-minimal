@@ -165,16 +165,18 @@ export const saveContractorFailed = (data) => {
 };
 
 // delete action creator
-export const deleteContractorType = (object) => {
+export const deleteContractorType = (object, page = 0) => {
   return {
     type: DELETE_CONTRACTOR_TYPE,
     object,
+    page,
   };
 };
-export const deleteContractor = (object) => {
+export const deleteContractor = (object, page = 0) => {
   return {
     type: DELETE_CONTRACTOR,
     object,
+    page,
   };
 };
 

@@ -54,7 +54,7 @@ export function* deleteMeasurementUnit(action) {
   const response = yield call(MeasurementUnitApi.deleteMeasurementUnit, action.object);
   if (response === '') {
     yield put(MeasurementUnitAction.deleteMeasurementUnitSuccess(action.object));
-    yield put(MeasurementUnitAction.getMeasurementUnits());
+    yield put(MeasurementUnitAction.getMeasurementUnits(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

@@ -97,7 +97,7 @@ export function* deleteTariff(action) {
   const response = yield call(TariffApi.deleteTariff, action.object);
   if (response === '') {
     yield put(TariffAction.deleteTariffSuccess(action.object));
-    yield put(TariffAction.getTariffs());
+    yield put(TariffAction.getTariffs(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

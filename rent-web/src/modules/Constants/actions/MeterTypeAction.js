@@ -75,10 +75,11 @@ export const saveMeterTypeFailed = (data) => {
   };
 };
 
-export const deleteMeterType = (object) => {
+export const deleteMeterType = (object, page = 0) => {
   return {
     type: DELETE_METER_TYPE,
     object,
+    page,
   };
 };
 

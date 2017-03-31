@@ -54,7 +54,7 @@ export function* deleteRegistrationType(action) {
   const response = yield call(RegistrationTypeApi.deleteRegistrationType, action.object);
   if (response === '') {
     yield put(RegistrationTypeAction.deleteRegistrationTypeSuccess(action.object));
-    yield put(RegistrationTypeAction.getRegistrationTypes());
+    yield put(RegistrationTypeAction.getRegistrationTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

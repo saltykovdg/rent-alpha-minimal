@@ -86,10 +86,15 @@ export const saveMeterFailed = (data) => {
   };
 };
 
-export const deleteMeter = (object) => {
+export const deleteMeter = (object, meterType = '', service = '', name = '', serialNumber = '', page = 0) => {
   return {
     type: DELETE_METER,
     object,
+    meterType,
+    service,
+    name,
+    serialNumber,
+    page,
   };
 };
 

@@ -44,6 +44,7 @@ class BuildingListPage extends ExtendedComponentPage {
     this.props.dispatch(AddressAction.findBuildings(street, house, 0));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(AddressAction.findBuildings(
       this.state.searchFieldStreet,
       this.state.searchFieldHouse,
@@ -51,7 +52,12 @@ class BuildingListPage extends ExtendedComponentPage {
     ));
   };
   onDelete = (object) => {
-    this.props.dispatch(AddressAction.deleteBuilding(object));
+    this.props.dispatch(AddressAction.deleteBuilding(
+      object,
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.getActualPageAfterDelete(),
+    ));
   };
   render() {
     return (

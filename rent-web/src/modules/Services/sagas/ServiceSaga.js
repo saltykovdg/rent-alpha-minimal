@@ -60,7 +60,7 @@ export function* deleteService(action) {
   const response = yield call(ServiceApi.deleteService, action.object);
   if (response === '') {
     yield put(ServiceAction.deleteServiceSuccess(action.object));
-    yield put(ServiceAction.getServices());
+    yield put(ServiceAction.getServices(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

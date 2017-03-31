@@ -30,10 +30,11 @@ class DocumentTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(DocumentTypeAction.getDocumentTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(DocumentTypeAction.getDocumentTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(DocumentTypeAction.deleteDocumentType(object));
+    this.props.dispatch(DocumentTypeAction.deleteDocumentType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

@@ -93,7 +93,13 @@ export function* deleteMeter(action) {
   const response = yield call(MeterApi.deleteMeter, action.object);
   if (response === '') {
     yield put(MeterAction.deleteMeterSuccess(action.object));
-    yield put(MeterAction.getMeters());
+    yield put(MeterAction.findMeters(
+      action.meterType,
+      action.service,
+      action.name,
+      action.serialNumber,
+      action.page,
+    ));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

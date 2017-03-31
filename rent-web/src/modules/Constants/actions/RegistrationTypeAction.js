@@ -75,10 +75,11 @@ export const saveRegistrationTypeFailed = (data) => {
   };
 };
 
-export const deleteRegistrationType = (object) => {
+export const deleteRegistrationType = (object, page = 0) => {
   return {
     type: DELETE_REGISTRATION_TYPE,
     object,
+    page,
   };
 };
 

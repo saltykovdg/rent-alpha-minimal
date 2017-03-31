@@ -228,7 +228,7 @@ export function* deleteStreetType(action) {
   const response = yield call(AddressApi.deleteStreetType, action.object);
   if (response === '') {
     yield put(AddressAction.deleteStreetTypeSuccess(action.object));
-    yield put(AddressAction.getStreetTypes());
+    yield put(AddressAction.getStreetTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,
@@ -241,7 +241,7 @@ export function* deleteStreet(action) {
   const response = yield call(AddressApi.deleteStreet, action.object);
   if (response === '') {
     yield put(AddressAction.deleteStreetSuccess(action.object));
-    yield put(AddressAction.getStreets());
+    yield put(AddressAction.findStreets(action.streetType, action.name, action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,
@@ -254,7 +254,7 @@ export function* deleteBuilding(action) {
   const response = yield call(AddressApi.deleteBuilding, action.object);
   if (response === '') {
     yield put(AddressAction.deleteBuildingSuccess(action.object));
-    yield put(AddressAction.getBuildings());
+    yield put(AddressAction.findBuildings(action.street, action.house, action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,
@@ -267,7 +267,7 @@ export function* deleteApartment(action) {
   const response = yield call(AddressApi.deleteApartment, action.object);
   if (response === '') {
     yield put(AddressAction.deleteApartmentSuccess(action.object));
-    yield put(AddressAction.getApartments());
+    yield put(AddressAction.findApartments(action.street, action.house, action.apartment, action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

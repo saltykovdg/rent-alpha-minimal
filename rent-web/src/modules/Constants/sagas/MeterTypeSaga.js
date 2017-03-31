@@ -54,7 +54,7 @@ export function* deleteMeterType(action) {
   const response = yield call(MeterTypeApi.deleteMeterType, action.object);
   if (response === '') {
     yield put(MeterTypeAction.deleteMeterTypeSuccess(action.object));
-    yield put(MeterTypeAction.getMeterTypes());
+    yield put(MeterTypeAction.getMeterTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

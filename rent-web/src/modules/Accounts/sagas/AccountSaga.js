@@ -265,7 +265,14 @@ export function* deleteAccount(action) {
   const response = yield call(AccountApi.deleteAccount, action.object);
   if (response === '') {
     yield put(AccountAction.deleteAccountSuccess(action.object));
-    yield put(AccountAction.getAccounts());
+    yield put(AccountAction.findAccounts(
+      action.accountNumber,
+      action.lastName,
+      action.street,
+      action.house,
+      action.apartment,
+      action.page,
+    ));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

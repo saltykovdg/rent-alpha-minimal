@@ -30,10 +30,11 @@ class GenderTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(GenderTypeAction.getGenderTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(GenderTypeAction.getGenderTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(GenderTypeAction.deleteGenderType(object));
+    this.props.dispatch(GenderTypeAction.deleteGenderType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

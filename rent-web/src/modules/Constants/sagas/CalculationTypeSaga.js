@@ -55,7 +55,7 @@ export function* deleteCalculationType(action) {
   const response = yield call(CalculationTypeApi.deleteCalculationType, action.object);
   if (response === '') {
     yield put(CalculationTypeAction.deleteCalculationTypeSuccess(action.object));
-    yield put(CalculationTypeAction.getCalculationTypes());
+    yield put(CalculationTypeAction.getCalculationTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

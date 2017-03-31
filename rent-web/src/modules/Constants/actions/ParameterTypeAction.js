@@ -75,10 +75,11 @@ export const saveParameterTypeFailed = (data) => {
   };
 };
 
-export const deleteParameterType = (object) => {
+export const deleteParameterType = (object, page = 0) => {
   return {
     type: DELETE_PARAMETER_TYPE,
     object,
+    page,
   };
 };
 

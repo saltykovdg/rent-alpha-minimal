@@ -101,7 +101,7 @@ export function* deleteContractorType(action) {
   const response = yield call(OrganizationApi.deleteContractorType, action.object);
   if (response === '') {
     yield put(OrganizationAction.deleteContractorTypeSuccess(action.object));
-    yield put(OrganizationAction.getContractorTypes());
+    yield put(OrganizationAction.getContractorTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,
@@ -114,7 +114,7 @@ export function* deleteContractor(action) {
   const response = yield call(OrganizationApi.deleteContractor, action.object);
   if (response === '') {
     yield put(OrganizationAction.deleteContractorSuccess(action.object));
-    yield put(OrganizationAction.getContractors());
+    yield put(OrganizationAction.getContractors(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

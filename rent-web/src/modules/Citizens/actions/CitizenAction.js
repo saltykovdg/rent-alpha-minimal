@@ -86,10 +86,16 @@ export const saveCitizenFailed = (data) => {
   };
 };
 
-export const deleteCitizen = (object) => {
+export const deleteCitizen = (object, firstName = '', lastName = '', fatherName = '', documentSeries = '', documentNumber = '', page = 0) => {
   return {
     type: DELETE_CITIZEN,
     object,
+    firstName,
+    lastName,
+    fatherName,
+    documentSeries,
+    documentNumber,
+    page,
   };
 };
 

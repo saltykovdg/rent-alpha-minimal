@@ -75,10 +75,11 @@ export const saveDocumentTypeFailed = (data) => {
   };
 };
 
-export const deleteDocumentType = (object) => {
+export const deleteDocumentType = (object, page = 0) => {
   return {
     type: DELETE_DOCUMENT_TYPE,
     object,
+    page,
   };
 };
 

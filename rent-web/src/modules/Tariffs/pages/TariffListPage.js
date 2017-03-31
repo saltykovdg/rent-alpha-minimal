@@ -30,10 +30,11 @@ class TariffListPage extends ExtendedComponentPage {
     this.props.dispatch(TariffAction.getTariffs(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(TariffAction.getTariffs(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(TariffAction.deleteTariff(object));
+    this.props.dispatch(TariffAction.deleteTariff(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

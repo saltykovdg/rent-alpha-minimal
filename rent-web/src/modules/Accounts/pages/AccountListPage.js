@@ -53,6 +53,7 @@ class AccountListPage extends ExtendedComponentPage {
     this.props.dispatch(AccountAction.findAccounts(accountNumber, lastName, street, house, apartment, 0));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(AccountAction.findAccounts(
       this.state.searchFieldAccountNumber,
       this.state.searchFieldLastName,
@@ -63,7 +64,15 @@ class AccountListPage extends ExtendedComponentPage {
     ));
   };
   onDelete = (object) => {
-    this.props.dispatch(AccountAction.deleteAccount(object));
+    this.props.dispatch(AccountAction.deleteAccount(
+      object,
+      this.state.searchFieldAccountNumber,
+      this.state.searchFieldLastName,
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      this.getActualPageAfterDelete(),
+    ));
   };
   render() {
     return (

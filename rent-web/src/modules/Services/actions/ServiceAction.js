@@ -75,10 +75,11 @@ export const saveServiceFailed = (data) => {
   };
 };
 
-export const deleteService = (object) => {
+export const deleteService = (object, page = 0) => {
   return {
     type: DELETE_SERVICE,
     object,
+    page,
   };
 };
 

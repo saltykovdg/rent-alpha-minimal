@@ -309,28 +309,39 @@ export const saveApartmentFailed = (data) => {
 };
 
 // delete action creator
-export const deleteStreetType = (object) => {
+export const deleteStreetType = (object, page = 0) => {
   return {
     type: DELETE_STREET_TYPE,
     object,
+    page,
   };
 };
-export const deleteStreet = (object) => {
+export const deleteStreet = (object, streetType = '', name = '', page = 0) => {
   return {
     type: DELETE_STREET,
     object,
+    streetType,
+    name,
+    page,
   };
 };
-export const deleteBuilding = (object) => {
+export const deleteBuilding = (object, street = '', house = '', page = 0) => {
   return {
     type: DELETE_BUILDING,
     object,
+    street,
+    house,
+    page,
   };
 };
-export const deleteApartment = (object) => {
+export const deleteApartment = (object, street = '', house = '', apartment = '', page = 0) => {
   return {
     type: DELETE_APARTMENT,
     object,
+    street,
+    house,
+    apartment,
+    page,
   };
 };
 

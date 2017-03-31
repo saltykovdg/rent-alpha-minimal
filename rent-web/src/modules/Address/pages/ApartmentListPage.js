@@ -55,7 +55,13 @@ class ApartmentListPage extends ExtendedComponentPage {
     ));
   }
   onDelete = (object) => {
-    this.props.dispatch(AddressAction.deleteApartment(object));
+    this.props.dispatch(AddressAction.deleteApartment(
+      object,
+      this.state.searchFieldStreet,
+      this.state.searchFieldHouse,
+      this.state.searchFieldApartment,
+      this.getActualPageAfterDelete(),
+    ));
   }
   render() {
     return (

@@ -112,10 +112,16 @@ export const saveAccountFailed = (data, showError = true) => {
   };
 };
 
-export const deleteAccount = (object) => {
+export const deleteAccount = (object, accountNumber = '', lastName = '', street = '', house = '', apartment = '', page = 0) => {
   return {
     type: DELETE_ACCOUNT,
     object,
+    accountNumber,
+    lastName,
+    street,
+    house,
+    apartment,
+    page,
   };
 };
 

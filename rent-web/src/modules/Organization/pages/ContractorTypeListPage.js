@@ -30,10 +30,11 @@ class ContractorTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(OrganizationAction.getContractorTypes(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(OrganizationAction.getContractorTypes(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(OrganizationAction.deleteContractorType(object));
+    this.props.dispatch(OrganizationAction.deleteContractorType(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

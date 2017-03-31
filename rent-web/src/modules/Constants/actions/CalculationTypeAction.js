@@ -75,10 +75,11 @@ export const saveCalculationTypeFailed = (data) => {
   };
 };
 
-export const deleteCalculationType = (object) => {
+export const deleteCalculationType = (object, page = 0) => {
   return {
     type: DELETE_CALCULATION_TYPE,
     object,
+    page,
   };
 };
 

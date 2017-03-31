@@ -30,10 +30,11 @@ class MeasurementUnitListPage extends ExtendedComponentPage {
     this.props.dispatch(MeasurementUnitAction.getMeasurementUnits(this.state.page));
   }
   onChangePage = (page) => {
+    this.setState({ page });
     this.props.dispatch(MeasurementUnitAction.getMeasurementUnits(page));
   };
   onDelete = (object) => {
-    this.props.dispatch(MeasurementUnitAction.deleteMeasurementUnit(object));
+    this.props.dispatch(MeasurementUnitAction.deleteMeasurementUnit(object, this.getActualPageAfterDelete()));
   };
   render() {
     return (

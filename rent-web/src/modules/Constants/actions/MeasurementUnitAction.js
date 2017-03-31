@@ -75,10 +75,11 @@ export const saveMeasurementUnitFailed = (data) => {
   };
 };
 
-export const deleteMeasurementUnit = (object) => {
+export const deleteMeasurementUnit = (object, page = 0) => {
   return {
     type: DELETE_MEASUREMENT_UNIT,
     object,
+    page,
   };
 };
 

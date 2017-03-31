@@ -75,10 +75,11 @@ export const saveServiceTypeFailed = (data) => {
   };
 };
 
-export const deleteServiceType = (object) => {
+export const deleteServiceType = (object, page = 0) => {
   return {
     type: DELETE_SERVICE_TYPE,
     object,
+    page,
   };
 };
 

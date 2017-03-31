@@ -54,7 +54,7 @@ export function* deleteDocumentType(action) {
   const response = yield call(DocumentTypeApi.deleteDocumentType, action.object);
   if (response === '') {
     yield put(DocumentTypeAction.deleteDocumentTypeSuccess(action.object));
-    yield put(DocumentTypeAction.getDocumentTypes());
+    yield put(DocumentTypeAction.getDocumentTypes(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

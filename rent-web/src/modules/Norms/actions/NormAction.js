@@ -80,10 +80,11 @@ export const saveNormFailed = (data) => {
   };
 };
 
-export const deleteNorm = (object) => {
+export const deleteNorm = (object, page = 0) => {
   return {
     type: DELETE_NORM,
     object,
+    page,
   };
 };
 
