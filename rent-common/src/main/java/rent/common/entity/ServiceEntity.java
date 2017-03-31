@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = ServiceEntity.TABLE_NAME, indexes = {
         @Index(columnList = ServiceEntity.Columns.ID),
         @Index(columnList = ServiceEntity.Columns.NAME),
-        @Index(columnList = ServiceEntity.Columns.SERVICE_TYPE)
+        @Index(columnList = ServiceEntity.Columns.SERVICE_TYPE),
 })
 public class ServiceEntity extends AbstractEntity {
     public static final String TABLE_NAME = "services";

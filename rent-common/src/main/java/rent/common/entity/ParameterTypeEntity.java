@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = ParameterTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = ParameterTypeEntity.Columns.ID),
         @Index(columnList = ParameterTypeEntity.Columns.CODE),
-        @Index(columnList = ParameterTypeEntity.Columns.NAME)
+        @Index(columnList = ParameterTypeEntity.Columns.NAME),
 })
 public class ParameterTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_parameter_types";

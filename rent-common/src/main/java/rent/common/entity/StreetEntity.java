@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = StreetEntity.TABLE_NAME, indexes = {
         @Index(columnList = StreetEntity.Columns.ID),
         @Index(columnList = StreetEntity.Columns.NAME),
-        @Index(columnList = StreetEntity.Columns.STREET_TYPE)
+        @Index(columnList = StreetEntity.Columns.STREET_TYPE),
 })
 public class StreetEntity extends AbstractEntity {
     public static final String TABLE_NAME = "address_streets";

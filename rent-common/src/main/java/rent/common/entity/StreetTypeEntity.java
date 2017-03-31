@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = StreetTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = StreetTypeEntity.Columns.ID),
-        @Index(columnList = StreetTypeEntity.Columns.NAME)
+        @Index(columnList = StreetTypeEntity.Columns.NAME),
 })
 public class StreetTypeEntity extends AbstractEntity  {
     public static final String TABLE_NAME = "address_streets_types";

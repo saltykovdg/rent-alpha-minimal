@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = DocumentTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = DocumentTypeEntity.Columns.ID),
-        @Index(columnList = DocumentTypeEntity.Columns.NAME)
+        @Index(columnList = DocumentTypeEntity.Columns.NAME),
 })
 public class DocumentTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_document_types";

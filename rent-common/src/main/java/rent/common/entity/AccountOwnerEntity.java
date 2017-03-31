@@ -16,7 +16,9 @@ import java.util.List;
         @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_SERIES),
         @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_NUMBER),
         @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
-        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_DATE_ISSUE)
+        @Index(columnList = AccountOwnerEntity.Columns.DOCUMENT_DATE_ISSUE),
+        @Index(columnList = AccountOwnerEntity.Columns.DATE_START),
+        @Index(columnList = AccountOwnerEntity.Columns.DATE_END),
 })
 public class AccountOwnerEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "accounts_owners";

@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import rent.common.entity.AccountServiceEntity;
 import rent.common.entity.CitizenDocumentAttachmentEntity;
+import rent.common.repository.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
@@ -22,11 +24,15 @@ public class HibernatePreDeleteEventListener implements PreDeleteEventListener {
     private final Logger log = LoggerFactory.getLogger(HibernatePreDeleteEventListener.class);
 
     private final EntityManagerFactory entityManagerFactory;
+    private final CommonRepository commonRepository;
     private final String contentDir;
 
     @Autowired
-    public HibernatePreDeleteEventListener(EntityManagerFactory entityManagerFactory, @Value("${content.dir}") String contentDir) {
+    public HibernatePreDeleteEventListener(EntityManagerFactory entityManagerFactory,
+                                           @Value("${content.dir}") String contentDir,
+                                           CommonRepository commonRepository) {
         this.entityManagerFactory = entityManagerFactory;
+        this.commonRepository = commonRepository;
         this.contentDir = contentDir;
     }
 
@@ -44,9 +50,12 @@ public class HibernatePreDeleteEventListener implements PreDeleteEventListener {
         if (entity instanceof CitizenDocumentAttachmentEntity) {
             CitizenDocumentAttachmentEntity attachment = (CitizenDocumentAttachmentEntity) entity;
             File file = new File(contentDir + "/" + attachment.getUrlLink());
-            if(file.delete()) {
+            if (file.delete()) {
                 log.info(attachment.getUrlLink() + " successfully removed.");
             }
+        } else if (entity instanceof AccountServiceEntity) {
+            AccountServiceEntity accountService = (AccountServiceEntity) entity;
+            commonRepository.deleteCalculationsByAccountServiceId(accountService.getId());
         }
         return false;
     }

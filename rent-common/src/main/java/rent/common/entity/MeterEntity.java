@@ -12,7 +12,7 @@ import java.util.List;
         @Index(columnList = MeterEntity.Columns.METER_TYPE),
         @Index(columnList = MeterEntity.Columns.SERVICE),
         @Index(columnList = MeterEntity.Columns.NAME),
-        @Index(columnList = MeterEntity.Columns.SERIAL_NUMBER)
+        @Index(columnList = MeterEntity.Columns.SERIAL_NUMBER),
 })
 public class MeterEntity extends AbstractEntity {
     public static final String TABLE_NAME = "meters";

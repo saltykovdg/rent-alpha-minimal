@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Table(name = ApartmentEntity.TABLE_NAME, indexes = {
         @Index(columnList = ApartmentEntity.Columns.ID),
         @Index(columnList = ApartmentEntity.Columns.BUILDING),
-        @Index(columnList = ApartmentEntity.Columns.APARTMENT)})
+        @Index(columnList = ApartmentEntity.Columns.APARTMENT),
+})
 public class ApartmentEntity extends AbstractEntity {
     public static final String TABLE_NAME = "address_apartments";
 

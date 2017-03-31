@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = GenderTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = GenderTypeEntity.Columns.ID),
-        @Index(columnList = GenderTypeEntity.Columns.NAME)
+        @Index(columnList = GenderTypeEntity.Columns.NAME),
 })
 public class GenderTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_gender_types";

@@ -111,4 +111,26 @@ public class CommonRepository {
         }
         return sum;
     }
+
+    public void deleteCalculationsByAccountServiceId(String accountServiceId) {
+        String hql = "delete from AccountOpeningBalanceEntity accountOpeningBalance " +
+                "where accountOpeningBalance.accountService.id = :accountServiceId";
+        entityManager.createQuery(hql).setParameter("accountServiceId", accountServiceId)
+                .executeUpdate();
+
+        hql = "delete from AccountAccrualEntity accountAccrual " +
+                "where accountAccrual.accountService.id = :accountServiceId";
+        entityManager.createQuery(hql).setParameter("accountServiceId", accountServiceId)
+                .executeUpdate();
+
+        hql = "delete from AccountRecalculationEntity accountRecalculation " +
+                "where accountRecalculation.accountService.id = :accountServiceId";
+        entityManager.createQuery(hql).setParameter("accountServiceId", accountServiceId)
+                .executeUpdate();
+
+        hql = "delete from AccountPaymentEntity accountPayment " +
+                "where accountPayment.accountService.id = :accountServiceId";
+        entityManager.createQuery(hql).setParameter("accountServiceId", accountServiceId)
+                .executeUpdate();
+    }
 }

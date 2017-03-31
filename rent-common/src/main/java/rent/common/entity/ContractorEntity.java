@@ -10,7 +10,7 @@ import javax.persistence.*;
         @Index(columnList = ContractorEntity.Columns.ID),
         @Index(columnList = ContractorEntity.Columns.CONTRACTOR_TYPE),
         @Index(columnList = ContractorEntity.Columns.FULL_NAME),
-        @Index(columnList = ContractorEntity.Columns.NAME)
+        @Index(columnList = ContractorEntity.Columns.NAME),
 })
 public class ContractorEntity extends AbstractEntity {
     public static final String TABLE_NAME = "organization_contractors";

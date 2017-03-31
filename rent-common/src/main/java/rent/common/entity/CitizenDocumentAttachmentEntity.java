@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = CitizenDocumentAttachmentEntity.TABLE_NAME, indexes = {
         @Index(columnList = CitizenDocumentAttachmentEntity.Columns.ID),
-        @Index(columnList = CitizenDocumentAttachmentEntity.Columns.NAME)
+        @Index(columnList = CitizenDocumentAttachmentEntity.Columns.NAME),
 })
 public class CitizenDocumentAttachmentEntity extends AbstractEntity {
     public static final String TABLE_NAME = "citizens_documents_attachments";

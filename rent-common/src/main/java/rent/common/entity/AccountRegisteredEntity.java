@@ -12,7 +12,10 @@ import java.util.List;
 @Entity
 @Table(name = AccountRegisteredEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountRegisteredEntity.Columns.ID),
+        @Index(columnList = AccountRegisteredEntity.Columns.CITIZEN),
         @Index(columnList = AccountRegisteredEntity.Columns.REGISTRATION_TYPE),
+        @Index(columnList = AccountRegisteredEntity.Columns.DATE_START),
+        @Index(columnList = AccountRegisteredEntity.Columns.DATE_END),
 })
 public class AccountRegisteredEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "accounts_registered";

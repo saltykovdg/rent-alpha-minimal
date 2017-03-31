@@ -16,7 +16,9 @@ import java.util.List;
         @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_SERIES),
         @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_NUMBER),
         @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_ISSUING_AUTHORITY),
-        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_DATE_ISSUE)
+        @Index(columnList = CitizenDocumentEntity.Columns.DOCUMENT_DATE_ISSUE),
+        @Index(columnList = CitizenDocumentEntity.Columns.DATE_START),
+        @Index(columnList = CitizenDocumentEntity.Columns.DATE_END),
 })
 public class CitizenDocumentEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "citizens_documents";

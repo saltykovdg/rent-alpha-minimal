@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = NormEntity.TABLE_NAME, indexes = {
         @Index(columnList = NormEntity.Columns.ID),
         @Index(columnList = NormEntity.Columns.NAME),
-        @Index(columnList = NormEntity.Columns.SERVICE)
+        @Index(columnList = NormEntity.Columns.SERVICE),
 })
 public class NormEntity extends AbstractEntity {
     public static final String TABLE_NAME = "norms";

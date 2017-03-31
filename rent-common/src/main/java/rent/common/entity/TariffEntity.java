@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = TariffEntity.TABLE_NAME, indexes = {
         @Index(columnList = TariffEntity.Columns.ID),
         @Index(columnList = TariffEntity.Columns.NAME),
-        @Index(columnList = TariffEntity.Columns.SERVICE)
+        @Index(columnList = TariffEntity.Columns.SERVICE),
 })
 public class TariffEntity extends AbstractEntity {
     public static final String TABLE_NAME = "tariffs";

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = CalculationTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = CalculationTypeEntity.Columns.ID),
         @Index(columnList = CalculationTypeEntity.Columns.CODE),
-        @Index(columnList = CalculationTypeEntity.Columns.NAME)
+        @Index(columnList = CalculationTypeEntity.Columns.NAME),
 })
 public class CalculationTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_calculation_types";

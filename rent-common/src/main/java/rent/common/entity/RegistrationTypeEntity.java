@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = RegistrationTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = RegistrationTypeEntity.Columns.ID),
-        @Index(columnList = RegistrationTypeEntity.Columns.NAME)
+        @Index(columnList = RegistrationTypeEntity.Columns.NAME),
 })
 public class RegistrationTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_registration_types";

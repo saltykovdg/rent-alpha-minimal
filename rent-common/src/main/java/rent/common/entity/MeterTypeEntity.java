@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = MeterTypeEntity.TABLE_NAME, indexes = {
         @Index(columnList = MeterTypeEntity.Columns.ID),
         @Index(columnList = MeterTypeEntity.Columns.CODE),
-        @Index(columnList = MeterTypeEntity.Columns.NAME)
+        @Index(columnList = MeterTypeEntity.Columns.NAME),
 })
 public class MeterTypeEntity extends AbstractEntity {
     public static final String TABLE_NAME = "const_meter_types";

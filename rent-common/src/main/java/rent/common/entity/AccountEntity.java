@@ -16,7 +16,7 @@ import java.util.List;
         @Index(columnList = AccountEntity.Columns.DATE_OPEN),
         @Index(columnList = AccountEntity.Columns.DATE_CLOSE),
         @Index(columnList = AccountEntity.Columns.CONTRACTOR),
-        @Index(columnList = AccountEntity.Columns.APARTMENT)
+        @Index(columnList = AccountEntity.Columns.APARTMENT),
 })
 public class AccountEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts";

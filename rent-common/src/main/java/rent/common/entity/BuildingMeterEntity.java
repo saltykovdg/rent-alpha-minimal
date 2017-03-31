@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @Table(name = BuildingMeterEntity.TABLE_NAME, indexes = {
         @Index(columnList = BuildingMeterEntity.Columns.ID),
         @Index(columnList = BuildingMeterEntity.Columns.METER),
+        @Index(columnList = BuildingMeterEntity.Columns.DATE_START),
+        @Index(columnList = BuildingMeterEntity.Columns.DATE_END),
 })
 public class BuildingMeterEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "address_buildings_meters";

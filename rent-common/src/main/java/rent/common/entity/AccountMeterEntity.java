@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @Table(name = AccountMeterEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountMeterEntity.Columns.ID),
         @Index(columnList = AccountMeterEntity.Columns.METER),
+        @Index(columnList = AccountMeterEntity.Columns.DATE_START),
+        @Index(columnList = AccountMeterEntity.Columns.DATE_END),
 })
 public class AccountMeterEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "accounts_meters";

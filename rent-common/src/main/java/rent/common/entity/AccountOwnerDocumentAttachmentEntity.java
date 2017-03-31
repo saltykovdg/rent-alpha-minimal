@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = AccountOwnerDocumentAttachmentEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountOwnerDocumentAttachmentEntity.Columns.ID),
-        @Index(columnList = AccountOwnerDocumentAttachmentEntity.Columns.NAME)
+        @Index(columnList = AccountOwnerDocumentAttachmentEntity.Columns.NAME),
 })
 public class AccountOwnerDocumentAttachmentEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_owners_documents_attachments";

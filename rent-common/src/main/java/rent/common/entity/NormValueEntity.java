@@ -13,7 +13,7 @@ import java.time.LocalDate;
         @Index(columnList = NormValueEntity.Columns.ID),
         @Index(columnList = TariffValueEntity.Columns.MEASUREMENT_UNIT),
         @Index(columnList = NormValueEntity.Columns.DATE_START),
-        @Index(columnList = NormValueEntity.Columns.DATE_END)
+        @Index(columnList = NormValueEntity.Columns.DATE_END),
 })
 public class NormValueEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "norms_values";

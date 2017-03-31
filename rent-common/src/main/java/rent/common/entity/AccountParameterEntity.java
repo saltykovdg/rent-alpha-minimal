@@ -13,7 +13,7 @@ import java.time.LocalDate;
         @Index(columnList = AccountParameterEntity.Columns.ID),
         @Index(columnList = AccountParameterEntity.Columns.PARAMETER_TYPE),
         @Index(columnList = AccountParameterEntity.Columns.DATE_START),
-        @Index(columnList = AccountParameterEntity.Columns.DATE_END)
+        @Index(columnList = AccountParameterEntity.Columns.DATE_END),
 })
 public class AccountParameterEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "accounts_parameters";

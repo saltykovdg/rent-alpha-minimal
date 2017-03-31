@@ -13,7 +13,7 @@ import java.util.List;
         @Index(columnList = CitizenEntity.Columns.GENDER_TYPE),
         @Index(columnList = CitizenEntity.Columns.FIRST_NAME),
         @Index(columnList = CitizenEntity.Columns.LAST_NAME),
-        @Index(columnList = CitizenEntity.Columns.FATHER_NAME)
+        @Index(columnList = CitizenEntity.Columns.FATHER_NAME),
 })
 public class CitizenEntity extends AbstractEntity {
     public static final String TABLE_NAME = "citizens";

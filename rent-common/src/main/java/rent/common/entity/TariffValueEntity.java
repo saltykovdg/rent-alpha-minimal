@@ -14,7 +14,7 @@ import java.time.LocalDate;
         @Index(columnList = TariffValueEntity.Columns.CALCULATION_TYPE),
         @Index(columnList = TariffValueEntity.Columns.MEASUREMENT_UNIT),
         @Index(columnList = TariffValueEntity.Columns.DATE_START),
-        @Index(columnList = TariffValueEntity.Columns.DATE_END)
+        @Index(columnList = TariffValueEntity.Columns.DATE_END),
 })
 public class TariffValueEntity extends AbstractEntity implements UseDateStartDateEnd {
     public static final String TABLE_NAME = "tariffs_values";
