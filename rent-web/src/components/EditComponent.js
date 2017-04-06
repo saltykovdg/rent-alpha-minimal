@@ -35,7 +35,6 @@ class EditComponent extends ExtendedComponent {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value,
       rules: [{
-        type: 'number',
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],

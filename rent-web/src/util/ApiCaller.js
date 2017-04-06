@@ -2,18 +2,32 @@ import axios from 'axios';
 
 let sources = [];
 
+const ignoreCancelRequests = [
+  'working-period',
+];
+
 export function cancelAllRequests() {
-  sources.forEach((source) => {
-    source.cancel();
+  const removed = [];
+  sources.forEach((item) => {
+    let ignore = false;
+    ignoreCancelRequests.forEach((ignoreItem) => {
+      if (item.endpoint.includes(ignoreItem)) {
+        ignore = true;
+      }
+    });
+    if (!ignore) {
+      item.source.cancel();
+      removed.push(item.endpoint);
+    }
   });
-  sources = [];
+  sources = sources.filter(source => !removed.includes(source.endpoint));
 }
 
 export function callApi(endpoint, method = 'get', body) {
   cancelAllRequests();
 
   const cancelToken = axios.CancelToken;
-  const currentSource = cancelToken.source();
+  const currentSource = { source: cancelToken.source(), endpoint };
   sources.push(currentSource);
 
   return axios({

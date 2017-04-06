@@ -56,7 +56,7 @@ class ExtendedComponent extends Component {
 
 ExtendedComponent.propTypes = {
   intl: PropTypes.objectOf(PropTypes.shape),
-  isRequestError: PropTypes.objectOf(PropTypes.object),
+  isRequestError: PropTypes.any,
   isSaved: PropTypes.bool,
   isDeleted: PropTypes.bool,
 };

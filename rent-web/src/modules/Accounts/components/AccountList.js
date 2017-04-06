@@ -26,10 +26,10 @@ class AccountList extends ListComponent {
     const expandedRowRender = (record) => {
       const messages = this.props.intl.messages;
       const currentOwners = record.currentOwners.map(owner => (
-        <div>{owner.citizen.lastName} {owner.citizen.firstName} {owner.citizen.fatherName}</div>
+        <div key={owner.id}>{owner.citizen.lastName} {owner.citizen.firstName} {owner.citizen.fatherName}</div>
       ));
       const currentRegistered = record.currentRegistered.map(registered => (
-        <div>{registered.citizen.lastName} {registered.citizen.firstName} {registered.citizen.fatherName}</div>
+        <div key={registered.id}>{registered.citizen.lastName} {registered.citizen.firstName} {registered.citizen.fatherName}</div>
       ));
       return (
         <div>

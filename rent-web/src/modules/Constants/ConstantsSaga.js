@@ -6,6 +6,7 @@ import { rootDocumentTypeSaga } from './sagas/DocumentTypeSaga';
 import { rootGenderTypeSaga } from './sagas/GenderTypeSaga';
 import { rootRegistrationTypeSaga } from './sagas/RegistrationTypeSaga';
 import { rootMeterTypeSaga } from './sagas/MeterTypeSaga';
+import { rootWorkingPeriodSaga } from './sagas/WorkingPeriodSaga';
 
 // Export Saga
 export default [
@@ -16,4 +17,5 @@ export default [
   rootGenderTypeSaga,
   rootRegistrationTypeSaga,
   rootMeterTypeSaga,
+  rootWorkingPeriodSaga,
 ];

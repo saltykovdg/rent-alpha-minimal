@@ -3,6 +3,7 @@ export default {
   messages: {
     headerTitle: 'Квартплата 1.0',
     headerMenuLogout: 'Выйти',
+    currentWorkingPeriod: 'Текущий рабочий период: ',
 
     // accounts
     accountsTitle: 'Лицевые счета',
