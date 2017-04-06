@@ -14,8 +14,7 @@ export const workingPeriodReducer = (state, action) => {
       return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, true, false, false, false);
     }
     case WorkingPeriodAction.FIND_WORKING_PERIODS_BY_NAME:
-    case WorkingPeriodAction.GET_WORKING_PERIODS:
-    case WorkingPeriodAction.DELETE_WORKING_PERIOD: {
+    case WorkingPeriodAction.GET_WORKING_PERIODS: {
       return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, true, false, false, false);
     }
 
@@ -33,24 +32,6 @@ export const workingPeriodReducer = (state, action) => {
       return prepareList(null, state.workingPeriod.edit.data, false, true, false, false);
     }
 
-    case WorkingPeriodAction.SAVE_WORKING_PERIOD_SUCCESS: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, false, false, true, false);
-    }
-    case WorkingPeriodAction.DELETE_WORKING_PERIOD_SUCCESS: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, false, false, false, true);
-    }
-
-    case WorkingPeriodAction.SAVE_WORKING_PERIOD_FAILED: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, false, true, false, false);
-    }
-    case WorkingPeriodAction.DELETE_WORKING_PERIOD_FAILED: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, false, true, false, false);
-    }
-
-    case WorkingPeriodAction.NEW_WORKING_PERIOD: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, false, false, false, false);
-    }
-
     default:
       return state.workingPeriod;
   }
@@ -61,5 +42,3 @@ export const getWorkingPeriodEditData = state => state.constants.workingPeriod.e
 export const getWorkingPeriodListData = state => state.constants.workingPeriod.list.data;
 export const getWorkingPeriodIsLoading = state => state.constants.workingPeriod.list.isLoading || state.constants.workingPeriod.edit.isLoading;
 export const getWorkingPeriodIsRequestError = state => state.constants.workingPeriod.list.isRequestError || state.constants.workingPeriod.edit.isRequestError;
-export const getWorkingPeriodIsSaved = state => state.constants.workingPeriod.isSaved;
-export const getWorkingPeriodIsDeleted = state => state.constants.workingPeriod.isDeleted;
