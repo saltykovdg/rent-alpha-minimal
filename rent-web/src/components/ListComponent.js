@@ -1,20 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
-import { Popconfirm, Input, Table } from 'antd';
+import { Popconfirm, Table } from 'antd';
 
 import { ExtendedComponent } from './ExtendedComponent';
 
-const Search = Input.Search;
-
 class ListComponent extends ExtendedComponent {
-  getFilterField(textHint, ref, handler) {
-    return (
-      <div>
-        <Search placeholder={textHint} ref={ref} onSearch={handler} />
-      </div>
-    );
-  }
   getActionColumn = (editPath, useButtonDelete = true) => {
     const messages = this.props.intl.messages;
     const onDelete = this.props.onDelete;
