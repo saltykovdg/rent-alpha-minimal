@@ -55,7 +55,7 @@
     "redux-devtools-log-monitor": "1.2.0",
     "enzyme": "2.8.0",
     "sinon": "2.1.0",
-    "antd": "2.9.0",
+    "antd": "2.9.1",
     "moment": "2.18.1",
     "extend": "3.0.0"
   },
