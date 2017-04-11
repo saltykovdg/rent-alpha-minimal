@@ -1,7 +1,6 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -94,13 +93,5 @@ public class BuildingEntity extends AbstractEntity {
 
     public void setMeters(List<BuildingMeterEntity> meters) {
         this.meters = meters;
-    }
-
-    public List<BuildingMeterEntity> getCurrentMeters() {
-        return getMetersForPeriod(LocalDate.now());
-    }
-
-    public List<BuildingMeterEntity> getMetersForPeriod(LocalDate period) {
-        return (List<BuildingMeterEntity>) getListForPeriod(period, this.meters);
     }
 }

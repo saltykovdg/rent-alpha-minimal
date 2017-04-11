@@ -65,12 +65,4 @@ public class TariffEntity extends AbstractEntity {
     public void setValues(List<TariffValueEntity> values) {
         this.values = values;
     }
-
-    public List<TariffValueEntity> getCurrentValues() {
-        return getValuesForPeriod(LocalDate.now());
-    }
-
-    public List<TariffValueEntity> getValuesForPeriod(LocalDate period) {
-        return (List<TariffValueEntity>) getListForPeriod(period, this.values);
-    }
 }

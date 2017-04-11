@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import { notification } from 'antd';
 
 import * as HttpStatus from './../util/HttpStatus';
+import * as ParameterType from './../util/ParameterType';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -34,7 +35,7 @@ class ExtendedComponent extends Component {
   }
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: name };
-  };
+  }
   getDateColumn = (title, name) => {
     return {
       title,
@@ -51,7 +52,51 @@ class ExtendedComponent extends Component {
   }
   forwardTo = (url) => {
     browserHistory.push(url);
-  };
+  }
+  getListForCurrentPeriod = (list) => {
+    return this.getListForPeriod(list, this.props.currentWorkingPeriod);
+  }
+  getListForPeriod = (list, workingPeriod) => {
+    let newList = list;
+    if (workingPeriod) {
+      newList = list.filter((item) => {
+        const itemDateStart = new Date(item.dateStart).getTime();
+        const itemDateEnd = new Date(item.dateEnd).getTime();
+        const workingPeriodDateStart = new Date(workingPeriod.dateStart).getTime();
+        const workingPeriodDateEnd = new Date(workingPeriod.dateEnd).getTime();
+        const dateStart = itemDateStart >= workingPeriodDateStart && itemDateStart <= workingPeriodDateEnd;
+        const dateEnd = !item.dateEnd || (itemDateEnd >= workingPeriodDateStart && itemDateEnd <= workingPeriodDateEnd);
+        return dateStart || dateEnd;
+      });
+    }
+    return newList;
+  }
+  getAccountTotalAreaForCurrentPeriod = (account) => {
+    return this.getAccountTotalAreaForPeriod(account, this.props.currentWorkingPeriod);
+  }
+  getAccountTotalAreaForPeriod = (account, workingPeriod) => {
+    let totalArea = account.apartment.totalArea;
+    const currentParameters = this.getListForCurrentPeriod(account.parameters, workingPeriod);
+    currentParameters.forEach((item) => {
+      if (item.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
+        totalArea = item.value;
+      }
+    });
+    return totalArea;
+  }
+  getAccountPhoneNumbersForCurrentPeriod = (account) => {
+    return this.getAccountPhoneNumbersForPeriod(account, this.props.currentWorkingPeriod);
+  }
+  getAccountPhoneNumbersForPeriod = (account, workingPeriod) => {
+    let phoneNumbers = '';
+    const currentParameters = this.getListForCurrentPeriod(account.parameters, workingPeriod);
+    currentParameters.forEach((item) => {
+      if (item.parameterType.code === ParameterType.PHONE_NUMBER_CODE) {
+        phoneNumbers += (phoneNumbers.length === 0 ? '' : ';') + item.value;
+      }
+    });
+    return phoneNumbers;
+  }
 }
 
 ExtendedComponent.propTypes = {

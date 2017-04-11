@@ -25,10 +25,10 @@ class AccountList extends ListComponent {
     ];
     const expandedRowRender = (record) => {
       const messages = this.props.intl.messages;
-      const currentOwners = record.currentOwners.map(owner => (
+      const currentOwners = this.getListForCurrentPeriod(record.owners).map(owner => (
         <div key={owner.id}>{owner.citizen.lastName} {owner.citizen.firstName} {owner.citizen.fatherName}</div>
       ));
-      const currentRegistered = record.currentRegistered.map(registered => (
+      const currentRegistered = this.getListForCurrentPeriod(record.registered).map(registered => (
         <div key={registered.id}>{registered.citizen.lastName} {registered.citizen.firstName} {registered.citizen.fatherName}</div>
       ));
       return (
@@ -53,7 +53,7 @@ class AccountList extends ListComponent {
             </Col>
             <Col className="gutter-row" span={6}>
               <h4>{messages.apartmentFieldTotalArea}</h4>
-              {record.currentTotalArea}
+              {this.getAccountTotalAreaForCurrentPeriod(record)}
             </Col>
           </Row>
         </div>

@@ -112,12 +112,4 @@ public class CitizenEntity extends AbstractEntity {
     public void setDocuments(List<CitizenDocumentEntity> documents) {
         this.documents = documents;
     }
-
-    public List<CitizenDocumentEntity> getCurrentDocuments() {
-        return getDocumentsForPeriod(LocalDate.now());
-    }
-
-    public List<CitizenDocumentEntity> getDocumentsForPeriod(LocalDate period) {
-        return (List<CitizenDocumentEntity>) getListForPeriod(period, this.documents);
-    }
 }

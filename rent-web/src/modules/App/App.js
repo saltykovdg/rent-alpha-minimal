@@ -51,7 +51,7 @@ class App extends ExtendedComponentPage {
         <div className="main">
           <Sidebar />
           <div className="content">
-            {this.props.children}
+            {React.cloneElement(this.props.children, { currentWorkingPeriod: this.props.currentWorkingPeriod })}
           </div>
         </div>
         <BackTop />

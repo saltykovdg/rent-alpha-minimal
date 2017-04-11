@@ -84,6 +84,7 @@ class AccountListPage extends ExtendedComponentPage {
         onSearch={this.onSearch}
         onChangePage={this.onChangePage}
         onDelete={this.onDelete}
+        currentWorkingPeriod={this.props.currentWorkingPeriod}
       />
     );
   }

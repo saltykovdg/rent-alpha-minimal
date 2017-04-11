@@ -2,13 +2,9 @@ package rent.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
-import rent.common.interfaces.UseDateStartDateEnd;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Абстрактная сущьность от которой наследуются все остальные сущьности
@@ -96,17 +92,5 @@ public abstract class AbstractEntity {
     @Override
     public int hashCode() {
         return id.hashCode();
-    }
-
-    protected List<? extends UseDateStartDateEnd> getListForPeriod(LocalDate period, List<? extends UseDateStartDateEnd> list) {
-        List<UseDateStartDateEnd> newList = new ArrayList<>();
-        for (UseDateStartDateEnd obj : list) {
-            LocalDate dateStart = obj.getDateStart();
-            LocalDate dateEnd = obj.getDateEnd();
-            if (dateStart.compareTo(period) <= 0 && (dateEnd == null || dateEnd.compareTo(period) >= 0)) {
-                newList.add(obj);
-            }
-        }
-        return newList;
     }
 }

@@ -16,6 +16,4 @@ public interface BuildingBasic extends AbstractBasic {
     String getHousing();
 
     List<BuildingMeterBasic> getMeters();
-
-    List<BuildingMeterBasic> getCurrentMeters();
 }
