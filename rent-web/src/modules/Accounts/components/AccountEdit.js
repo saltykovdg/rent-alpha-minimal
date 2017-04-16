@@ -146,6 +146,7 @@ class AccountEdit extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormMeterEdit, this.props.onDeleteMeter),
     ];
+    const cancelUrl = object.id ? `${AccountPath.ACCOUNT_CARD}/${object.id}` : AccountPath.ACCOUNT_LIST;
     return (
       <div>
         <Breadcrumb>
@@ -250,7 +251,7 @@ class AccountEdit extends EditComponent {
             />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
-              <Button className="pull-right" onClick={() => this.forwardTo(`${AccountPath.ACCOUNT_CARD}/${object.id}`)}>
+              <Button className="pull-right" onClick={() => this.forwardTo(cancelUrl)}>
                 <FormattedMessage id="buttonCancel" />
               </Button>
             </FormItem>
