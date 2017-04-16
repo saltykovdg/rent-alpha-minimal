@@ -43,6 +43,7 @@ class AccountCard extends EditComponent {
       this.getColumn(this.props.intl.messages.paymentTitle, ''),
       this.getColumn(this.props.intl.messages.closingBalanceTitle, ''),
     ];
+    let owners = '';
     let ownersDataSource = [];
     if (object && object.owners && object.owners.length > 0 && this.props.selectedWorkingPeriod) {
       ownersDataSource = this.getListForPeriod(object.owners, this.props.selectedWorkingPeriod).sort((a, b) => {
@@ -51,6 +52,7 @@ class AccountCard extends EditComponent {
       ownersDataSource.forEach((obj) => {
         const newObj = obj;
         newObj.key = newObj.id;
+        owners += `${owners ? '; ' : ''}${obj.citizen.lastName} ${obj.citizen.firstName} ${obj.citizen.fatherName}`;
       });
     }
     const ownersColumns = [
@@ -61,6 +63,7 @@ class AccountCard extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
     ];
+    let registeredCount = 0;
     let registeredDataSource = [];
     if (object && object.registered && object.registered.length > 0 && this.props.selectedWorkingPeriod) {
       registeredDataSource = this.getListForPeriod(object.registered, this.props.selectedWorkingPeriod).sort((a, b) => {
@@ -70,6 +73,7 @@ class AccountCard extends EditComponent {
         const newObj = obj;
         newObj.key = newObj.id;
       });
+      registeredCount = registeredDataSource.length;
     }
     const registeredColumns = [
       this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
@@ -125,56 +129,71 @@ class AccountCard extends EditComponent {
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <Row gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={20}>
                 <h1>{titleItem}</h1>
               </Col>
-              <Col className="gutter-row" span={8}>
-                {null}
-              </Col>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={4}>
                 <FormItem label={this.props.intl.messages.workingPeriodsTitle}>
                   {this.getSelectField('name', this.props.selectedWorkingPeriod, workingPeriodsList, this.changeWorkingPeriod, false)}
                 </FormItem>
               </Col>
             </Row>
             <Row gutter={16}>
-              <Col className="gutter-row" span={8}>
+              <Col className="gutter-row" span={4}>
                 <FormItem label={this.props.intl.messages.accountFieldAccountNumber}>
                   {this.getInputField('accountNumber', object.accountNumber, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={8}>
-                <FormItem label={this.props.intl.messages.accountFieldDateOpen}>
-                  {this.getInputField('dateOpen', object.dateOpen, false, true)}
-                </FormItem>
-              </Col>
-              <Col className="gutter-row" span={8}>
-                <FormItem label={this.props.intl.messages.accountFieldDateClose}>
-                  {this.getInputField('dateClose', object.dateClose, false, true)}
-                </FormItem>
-              </Col>
-            </Row>
-            <FormItem label={this.props.intl.messages.managementCompanyTitle}>
-              {this.getInputField('contractorFullName', object.contractor.fullName, false, true)}
-            </FormItem>
-            <Row gutter={16}>
-              <Col className="gutter-row" span={8}>
                 <FormItem label={this.props.intl.messages.addressShortTitle}>
                   {this.getInputField('address', address, false, true)}
                 </FormItem>
               </Col>
-              <Col className="gutter-row" span={3}>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={this.props.intl.messages.apartmentFieldRoomsNumber}>
+                  {this.getInputField('roomsNumber', object.apartment.roomsNumber, false, true)}
+                </FormItem>
+              </Col>
+              <Col className="gutter-row" span={4}>
                 <FormItem label={this.props.intl.messages.apartmentFieldTotalArea}>
                   {this.getInputField('accountTotalArea', accountTotalArea, false, true)}
                 </FormItem>
               </Col>
-              <Col className="gutter-row" span={13}>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={this.props.intl.messages.registeredCountTitle}>
+                  {this.getInputField('registeredCount', registeredCount, false, true)}
+                </FormItem>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col className="gutter-row" span={12}>
+                <FormItem label={this.props.intl.messages.ownersTitle}>
+                  {this.getInputField('owners', owners, false, true)}
+                </FormItem>
+              </Col>
+              <Col className="gutter-row" span={12}>
                 <FormItem label={this.props.intl.messages.phoneNumbersTitle}>
                   {this.getInputField('accountPhoneNumbers', accountPhoneNumbers, false, true)}
                 </FormItem>
               </Col>
             </Row>
-
+            <Row gutter={16}>
+              <Col className="gutter-row" span={16}>
+                <FormItem label={this.props.intl.messages.managementCompanyTitle}>
+                  {this.getInputField('contractor', object.contractor.fullName, false, true)}
+                </FormItem>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={this.props.intl.messages.accountFieldDateOpen}>
+                  {this.getInputField('dateOpen', object.dateOpen, false, true)}
+                </FormItem>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={this.props.intl.messages.accountFieldDateClose}>
+                  {this.getInputField('dateClose', object.dateClose, false, true)}
+                </FormItem>
+              </Col>
+            </Row>
             <Tabs>
               <TabPane tab={this.props.intl.messages.calculationsTitle} key="1">
                 <Table

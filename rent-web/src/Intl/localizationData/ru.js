@@ -266,6 +266,7 @@ export default {
     selectRegisteredErrorTitle: 'Укажите прописанного!',
     selectMeterErrorTitle: 'Укажите прибор учета!',
     phoneNumbersTitle: 'Номера телефонов',
+    registeredCountTitle: 'Кол-во прописанных',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',
