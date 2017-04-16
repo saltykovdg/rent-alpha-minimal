@@ -3,7 +3,8 @@ export default {
   messages: {
     headerTitle: 'Квартплата 1.0',
     headerMenuLogout: 'Выйти',
-    currentWorkingPeriod: 'Текущий рабочий период: ',
+    currentWorkingPeriodTitle: 'Текущий рабочий период: ',
+    workingPeriodsTitle: 'Рабочие периоды',
 
     // accounts
     accountsTitle: 'Лицевые счета',
@@ -13,6 +14,15 @@ export default {
     buttonCreateAccount: 'Создать новый лицевой счет',
     editPageCreateAccountTitle: 'Создание лицевого счета',
     editPageEditAccountTitle: 'Редактирование лицевого счета',
+    accountCardTitle: 'Карточка лицевого счета',
+
+    calculationsTitle: 'Расчеты',
+    openingBalanceTitle: 'Сальдо входящее',
+    closingBalanceTitle: 'Сальдо текущее',
+    consumptionTitle: 'Потребление',
+    accrualTitle: 'Начисление',
+    recalculationTitle: 'Перерасчет',
+    paymentTitle: 'Оплата',
 
     // owners
     ownersTitle: 'Собственники',
@@ -146,6 +156,7 @@ export default {
 
     // tariffs
     tariffsTitle: 'Тарифы',
+    tariffTitle: 'Тариф',
     tariffValuesTitle: 'Значения тарифа',
     tariffFieldName: 'Наименование тарифа',
     buttonCreateTariff: 'Создать новый тариф',
@@ -162,6 +173,7 @@ export default {
     editPageEditCalculationTypeTitle: 'Редактирование вида расчета',
     measurementUnitTitle: 'Единицы измерения',
     measurementUnitFieldName: 'Единица измерения',
+    measurementUnitShortTitle: 'Ед. изм.',
     buttonCreateMeasurementUnit: 'Создать новую единицу измерения',
     editPageCreateMeasurementUnitTitle: 'Создание единицы измерения',
     editPageEditMeasurementUnitTitle: 'Редактирование единицы измерения',
@@ -225,6 +237,8 @@ export default {
     buttonApply: 'Применить',
     buttonSelect: 'Выбрать',
     buttonChange: 'Изменить',
+    buttonCard: 'Карточка',
+    buttonGoToAccountList: 'Перейти к списку ЛС',
     tableColumnActions: 'Действия',
     fieldIsEmptyError: 'Поле не должно быть пустым!',
     getRequestErrorTitle: 'Ошибка сети',
@@ -251,6 +265,7 @@ export default {
     selectOwnerErrorTitle: 'Укажите собственника!',
     selectRegisteredErrorTitle: 'Укажите прописанного!',
     selectMeterErrorTitle: 'Укажите прибор учета!',
+    phoneNumbersTitle: 'Номера телефонов',
 
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',

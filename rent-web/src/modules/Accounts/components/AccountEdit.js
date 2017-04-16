@@ -250,7 +250,7 @@ class AccountEdit extends EditComponent {
             />
             <FormItem>
               <Button type="primary" htmlType="submit"><FormattedMessage id="buttonSave" /></Button>
-              <Button className="pull-right" onClick={() => this.forwardTo(AccountPath.ACCOUNT_LIST)}>
+              <Button className="pull-right" onClick={() => this.forwardTo(`${AccountPath.ACCOUNT_CARD}/${object.id}`)}>
                 <FormattedMessage id="buttonCancel" />
               </Button>
             </FormItem>

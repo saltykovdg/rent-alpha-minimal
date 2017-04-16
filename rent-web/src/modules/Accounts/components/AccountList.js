@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Row, Col, Input } from 'antd';
+import { Breadcrumb, Icon, Button, Row, Col, Input, Popconfirm } from 'antd';
 
 import * as AccountPath from './../paths/AccountPath';
 import { ListComponent } from './../../../components/ListComponent';
@@ -15,13 +15,34 @@ class AccountList extends ListComponent {
     const findApartment = this.findApartment.refs.input.value;
     this.props.onSearch(findAccountNumber, findLastName, findStreet, findHouse, findApartment);
   }
+  getActionColumn = () => {
+    const messages = this.props.intl.messages;
+    const onDelete = this.props.onDelete;
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      render(text, record) {
+        return (
+          <span>
+            <Link to={`${AccountPath.ACCOUNT_CARD}/${record.id}`}><FormattedMessage id="buttonCard" /></Link>
+            <span className="ant-divider" />
+            <Link to={`${AccountPath.ACCOUNT_EDIT}/${record.id}`}><FormattedMessage id="buttonEdit" /></Link>
+            <span className="ant-divider" />
+            <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+              <Link><FormattedMessage id="buttonDelete" /></Link>
+            </Popconfirm>
+          </span>
+        );
+      },
+    };
+  }
   render() {
     const columns = [
       this.getColumn(this.props.intl.messages.managementCompanyTitle, 'contractor.name'),
       this.getColumn(this.props.intl.messages.accountFieldAccountNumber, 'accountNumber'),
       this.getColumn(this.props.intl.messages.accountFieldDateOpen, 'dateOpen'),
       this.getColumn(this.props.intl.messages.accountFieldDateClose, 'dateClose'),
-      this.getActionColumn(AccountPath.ACCOUNT_EDIT),
+      this.getActionColumn(),
     ];
     const expandedRowRender = (record) => {
       const messages = this.props.intl.messages;

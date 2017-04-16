@@ -14,6 +14,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { ExtendedComponentPage } from './../../components/ExtendedComponentPage';
 
 import {
+  getWorkingPeriodListData,
   getWorkingPeriodEditData,
   getWorkingPeriodIsLoading,
   getWorkingPeriodIsRequestError,
@@ -51,7 +52,12 @@ class App extends ExtendedComponentPage {
         <div className="main">
           <Sidebar />
           <div className="content">
-            {React.cloneElement(this.props.children, { currentWorkingPeriod: this.props.currentWorkingPeriod })}
+            {
+              React.cloneElement(this.props.children, {
+                workingPeriods: this.props.workingPeriods,
+                currentWorkingPeriod: this.props.currentWorkingPeriod,
+              })
+            }
           </div>
         </div>
         <BackTop />
@@ -64,6 +70,7 @@ class App extends ExtendedComponentPage {
 function mapStateToProps(state, store) {
   return {
     intl: store.intl,
+    workingPeriods: getWorkingPeriodListData(state),
     currentWorkingPeriod: getWorkingPeriodEditData(state),
     isLoading: getWorkingPeriodIsLoading(state),
     isRequestError: getWorkingPeriodIsRequestError(state),

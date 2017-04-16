@@ -9,7 +9,7 @@ export function getAccount(id) {
 }
 
 export function saveAccount(object) {
-  return ApiCaller.callApi('account', 'post', object);
+  return ApiCaller.callApi('account?projection=accountBasic', 'post', object);
 }
 
 export function deleteAccount(object) {
@@ -20,6 +20,7 @@ export function findAccountsByAccountNumber(accountNumber = '', page = 0) {
   const sort = '&sort=accountNumber';
   return ApiCaller.callApi(`account/search/findByAccountNumber?accountNumber=${accountNumber}&page=${page}${sort}`);
 }
+
 export function findAccounts(accountNumber = '', lastName = '', street = '', house = '', apartment = '', page = 0) {
   const query = `&accountNumber=${accountNumber}&lastName=${lastName}&street=${street}&house=${house}&apartment=${apartment}`;
   const sort = '&sort=accountNumber';

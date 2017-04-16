@@ -22,14 +22,14 @@ class EditComponent extends ExtendedComponent {
     fields.push(this.getBaseFormField('version', object.version, <Input key="version" type="hidden" />));
     return fields;
   };
-  getInputField = (name, value, required = true, disabled = false) => {
+  getInputField = (name, value, required = true, readOnly = false) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value,
       rules: [{
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(!disabled ? <Input /> : <Input disabled />);
+    })(!readOnly ? <Input /> : <Input readOnly />);
   };
   getInputNumberField = (name, value, step = 1, required = true) => {
     return this.props.form.getFieldDecorator(name, {
@@ -53,11 +53,11 @@ class EditComponent extends ExtendedComponent {
   getLink = (object) => {
     return ObjectUtil.getLink(object);
   };
-  getSelectWithSearchField = (name, value, values, onChange = () => {}) => {
+  getSelectWithSearchField = (name, value, values, onChange = () => {}, required = true) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value || undefined,
       rules: [{
-        required: true,
+        required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
     })(
@@ -72,11 +72,11 @@ class EditComponent extends ExtendedComponent {
       </Select>
     );
   };
-  getSelectField = (name, value, values) => {
+  getSelectField = (name, value, values, onChange = () => {}, required = true) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value ? this.getLink(value) : undefined,
       rules: [{
-        required: true,
+        required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
     })(
@@ -84,6 +84,7 @@ class EditComponent extends ExtendedComponent {
         showSearch
         placeholder={this.props.intl.messages.findPlaceholder}
         optionFilterProp="children"
+        onChange={onChange}
         notFoundContent=""
       >
         {values}

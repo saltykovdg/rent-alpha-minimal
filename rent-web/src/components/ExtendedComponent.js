@@ -50,9 +50,6 @@ class ExtendedComponent extends Component {
       },
     };
   }
-  forwardTo = (url) => {
-    browserHistory.push(url);
-  }
   getListForCurrentPeriod = (list) => {
     return this.getListForPeriod(list, this.props.currentWorkingPeriod);
   }
@@ -76,7 +73,7 @@ class ExtendedComponent extends Component {
   }
   getAccountTotalAreaForPeriod = (account, workingPeriod) => {
     let totalArea = account.apartment.totalArea;
-    const currentParameters = this.getListForCurrentPeriod(account.parameters, workingPeriod);
+    const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
     currentParameters.forEach((item) => {
       if (item.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
         totalArea = item.value;
@@ -89,18 +86,25 @@ class ExtendedComponent extends Component {
   }
   getAccountPhoneNumbersForPeriod = (account, workingPeriod) => {
     let phoneNumbers = '';
-    const currentParameters = this.getListForCurrentPeriod(account.parameters, workingPeriod);
+    const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
     currentParameters.forEach((item) => {
       if (item.parameterType.code === ParameterType.PHONE_NUMBER_CODE) {
-        phoneNumbers += (phoneNumbers.length === 0 ? '' : ';') + item.value;
+        phoneNumbers += (phoneNumbers.length === 0 ? '' : '; ') + item.value;
       }
     });
     return phoneNumbers;
+  }
+  forwardTo = (url) => {
+    browserHistory.push(url);
+  }
+  forwardToBack = () => {
+    browserHistory.goBack();
   }
 }
 
 ExtendedComponent.propTypes = {
   intl: PropTypes.objectOf(PropTypes.shape),
+  currentWorkingPeriod: PropTypes.objectOf(PropTypes.shape),
   isRequestError: PropTypes.any,
   isSaved: PropTypes.bool,
   isDeleted: PropTypes.bool,

@@ -25,7 +25,7 @@ class Header extends ExtendedComponent {
           </SubMenu>
           <Menu.Item disabled className="header-working-period">
             <Spin spinning={this.props.isLoading}>
-              <FormattedMessage id="currentWorkingPeriod" />
+              <FormattedMessage id="currentWorkingPeriodTitle" />
               {currentWorkingPeriod}
             </Spin>
           </Menu.Item>

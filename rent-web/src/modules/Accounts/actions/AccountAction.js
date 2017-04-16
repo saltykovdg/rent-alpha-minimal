@@ -2,6 +2,7 @@ export const GET_ACCOUNTS = 'GET_ACCOUNTS';
 export const GET_ACCOUNTS_SUCCESS = 'GET_ACCOUNTS_SUCCESS';
 export const GET_ACCOUNTS_FAILED = 'GET_ACCOUNTS_FAILED';
 export const GET_ACCOUNT = 'GET_ACCOUNT';
+export const GET_ACCOUNT_CARD = 'GET_ACCOUNT_CARD';
 export const GET_ACCOUNT_SUCCESS = 'GET_ACCOUNT_SUCCESS';
 export const GET_ACCOUNT_FAILED = 'GET_ACCOUNT_FAILED';
 export const SAVE_ACCOUNT = 'SAVE_ACCOUNT';
@@ -72,6 +73,13 @@ export const getAccountsFailed = () => {
 export const getAccount = (id) => {
   return {
     type: GET_ACCOUNT,
+    id,
+  };
+};
+
+export const getAccountCard = (id) => {
+  return {
+    type: GET_ACCOUNT_CARD,
     id,
   };
 };

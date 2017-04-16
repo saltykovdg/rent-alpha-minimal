@@ -80,6 +80,7 @@ if (process.env.NODE_ENV !== 'production') {
   // Accounts
   require('./modules/Accounts/pages/AccountListPage');
   require('./modules/Accounts/pages/AccountEditPage');
+  require('./modules/Accounts/pages/AccountCardPage');
 
   // Citizens
   require('./modules/Citizens/pages/CitizenListPage');
@@ -396,6 +397,14 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Accounts/pages/AccountEditPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${AccountPath.ACCOUNT_CARD}/:id`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Accounts/pages/AccountCardPage').default);
         });
       }}
     />

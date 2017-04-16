@@ -79,6 +79,19 @@ export function* watchGetAccount() {
   yield takeLatest(AccountAction.GET_ACCOUNT, getAccount);
 }
 
+export function* getAccountCard(action) {
+  const response = yield call(AccountApi.getAccount, action.id);
+  if (response && !response.error && !response.canceled) {
+    yield put(AccountAction.getAccountSuccess(response));
+  } else if (!response.canceled) {
+    yield put(AccountAction.getAccountFailed(action.id));
+  }
+}
+
+export function* watchGetAccountCard() {
+  yield takeLatest(AccountAction.GET_ACCOUNT_CARD, getAccountCard);
+}
+
 export function* saveAccount(action) {
   let sagaAction = null;
   const parameters = action.object.parameters;
@@ -240,7 +253,7 @@ export function* saveAccount(action) {
     const response = yield call(AccountApi.saveAccount, objectAccount);
     if (response && !response.error && !response.canceled) {
       yield put(AccountAction.saveAccountSuccess(objectAccount));
-      yield call(browserHistory.push, AccountPath.ACCOUNT_LIST);
+      yield call(browserHistory.push, `${AccountPath.ACCOUNT_CARD}/${response.id}`);
     } else if (!response.canceled) {
       const data = {
         httpStatus: response.status,
@@ -359,6 +372,7 @@ export function* watchFindAccounts() {
 export const rootAccountSaga = [
   fork(watchGetAccounts),
   fork(watchGetAccount),
+  fork(watchGetAccountCard),
   fork(watchSaveAccount),
   fork(watchDeleteAccount),
   fork(watchNewAccount),

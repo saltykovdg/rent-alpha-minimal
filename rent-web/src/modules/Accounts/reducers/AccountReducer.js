@@ -88,6 +88,11 @@ const emptyEditData = {
       id: '',
       street: {
         id: '',
+        streetType: {
+          id: '',
+          name: '',
+          nameShort: '',
+        },
       },
     },
   },
@@ -101,6 +106,7 @@ const emptyEditData = {
 export const accountReducer = (state, action) => {
   switch (action.type) {
     case AccountAction.GET_ACCOUNT:
+    case AccountAction.GET_ACCOUNT_CARD:
     case AccountAction.SAVE_ACCOUNT: {
       return prepareEdit(state.account.edit.data, true, false, false, false);
     }
