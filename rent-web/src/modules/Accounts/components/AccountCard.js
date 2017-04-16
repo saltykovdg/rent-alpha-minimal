@@ -98,7 +98,7 @@ class AccountCard extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
     ];
     let address = '';
-    if (object) {
+    if (object && object.id) {
       address += `${object.apartment.building.street.streetType.nameShort} `;
       address += `${object.apartment.building.street.name}, `;
       address += `${this.props.intl.messages.buildingFieldHouse.toLowerCase()} `;
