@@ -1,5 +1,7 @@
+const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -9,7 +11,7 @@ module.exports = {
     ]
   },
   output: {
-    path: __dirname + '/build',
+    path: path.join(__dirname, 'build', 'distr'),
     filename: '[name].[chunkhash].bundle.js',
     publicPath: '/'
   },
@@ -56,6 +58,10 @@ module.exports = {
     inline: true
   },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: '.',
+      manifest: require('./build/dll/vendor-manifest.json')
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
@@ -84,6 +90,12 @@ module.exports = {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    })
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, 'build', 'dll', 'dll.vendor.js'),
+        to: path.join(__dirname, 'build', 'distr'),
+      },
+    ])
   ]
 };

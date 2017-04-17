@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "webpack-dev-server --config webpack.config.dev.js --hot --progress --colors --open",
-    "start:prod": "webpack-dev-server --config webpack.config.prod.js --progress --colors --open",
-    "build": "rimraf build && webpack --config webpack.config.prod.js --progress --profile --colors",
+    "build:dll": "rimraf build && webpack --config webpack.config.dll.js --progress --profile --colors",
+    "build": "rimraf build/distr && webpack --config webpack.config.prod.js --progress --profile --colors",
     "lint": "eslint src"
   },
   "devDependencies": {
@@ -35,6 +35,7 @@
     "react-addons-test-utils": "15.5.1",
     "webpack": "2.4.1",
     "webpack-dev-server": "2.4.2",
+    "copy-webpack-plugin": "4.0.1",
     "rimraf": "2.6.1"
   },
   "dependencies": {

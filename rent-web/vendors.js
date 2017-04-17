@@ -1,0 +1,15 @@
+import 'react';
+import 'react-dom';
+import 'react-router';
+import 'react-router-redux';
+import 'react-redux';
+import 'react-intl';
+import 'react-hot-loader';
+import 'intl';
+import 'intl-locales-supported';
+import 'axios';
+import 'redux';
+import 'redux-saga';
+import 'antd';
+import 'moment';
+import 'extend';
