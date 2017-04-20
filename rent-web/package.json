@@ -46,6 +46,7 @@
     "react-redux": "5.0.4",
     "react-intl": "2.2.3",
     "react-hot-loader": "^3.0.0-beta.6",
+    "prop-types": "15.5.8",
     "intl": "1.2.5",
     "intl-locales-supported": "1.0.0",
     "axios": "0.16.1",
