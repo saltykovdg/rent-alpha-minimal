@@ -206,6 +206,8 @@ export default {
     // documents
     documentsTitle: 'Документы',
     documentTitle: 'Документ',
+    documentOwnershipTitle: 'Документ права собственности',
+    documentCitizenTitle: 'Документ человека',
     documentFieldSeries: 'Серия',
     documentFieldNumber: 'Номер',
     documentFieldIssuingAuthority: 'Кем выдан',

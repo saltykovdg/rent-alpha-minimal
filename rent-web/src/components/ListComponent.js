@@ -56,6 +56,7 @@ class ListComponent extends ExtendedComponent {
     }
     return (
       <Table
+        className="table-nested"
         dataSource={dataSource}
         columns={columns}
         expandedRowRender={expandedRowRender}

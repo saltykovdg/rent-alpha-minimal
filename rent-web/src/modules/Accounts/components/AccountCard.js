@@ -4,6 +4,8 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { Breadcrumb, Icon, Button, Form, Spin, Row, Col, Table, Select, Tabs } from 'antd';
 
 import * as AccountPath from './../paths/AccountPath';
+import * as CitizenPath from './../../Citizens/paths/CitizenPath';
+import * as MeterPath from './../../Meters/paths/MeterPath';
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
@@ -15,6 +17,7 @@ class AccountCard extends EditComponent {
     this.props.changeWorkingPeriod(selectedWorkingPeriod);
   }
   render() {
+    const messages = this.props.intl.messages;
     const object = this.props.data;
     const titleItem = <FormattedMessage id="accountCardTitle" />;
     const baseFields = this.getBaseFields(object);
@@ -33,16 +36,97 @@ class AccountCard extends EditComponent {
       });
     }
     const calculationsColumns = [
-      this.getColumn(this.props.intl.messages.serviceFieldName, ''),
-      this.getColumn(this.props.intl.messages.tariffTitle, ''),
-      this.getColumn(this.props.intl.messages.consumptionTitle, ''),
-      this.getColumn(this.props.intl.messages.measurementUnitShortTitle, ''),
-      this.getColumn(this.props.intl.messages.openingBalanceTitle, ''),
-      this.getColumn(this.props.intl.messages.accrualTitle, ''),
-      this.getColumn(this.props.intl.messages.recalculationTitle, ''),
-      this.getColumn(this.props.intl.messages.paymentTitle, ''),
-      this.getColumn(this.props.intl.messages.closingBalanceTitle, ''),
+      this.getColumn(messages.serviceFieldName, ''),
+      this.getColumn(messages.tariffTitle, ''),
+      this.getColumn(messages.consumptionTitle, ''),
+      this.getColumn(messages.measurementUnitShortTitle, ''),
+      this.getColumn(messages.openingBalanceTitle, ''),
+      this.getColumn(messages.accrualTitle, ''),
+      this.getColumn(messages.recalculationTitle, ''),
+      this.getColumn(messages.paymentTitle, ''),
+      this.getColumn(messages.closingBalanceTitle, ''),
     ];
+    const documentCitizenColumns = [
+      this.getColumn(messages.documentTypeFieldName, 'documentType.name'),
+      this.getColumn(messages.documentFieldSeries, 'documentSeries'),
+      this.getColumn(messages.documentFieldNumber, 'documentNumber'),
+      this.getColumn(messages.documentFieldIssuingAuthority, 'documentIssuingAuthority'),
+      this.getDateColumn(messages.documentFieldDateIssue, 'documentDateIssue'),
+      this.getDateColumn(messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
+    ];
+    const getCitizenDocumentsForPeriod = (documents, workingPeriod) => {
+      const documentCitizenDataSource = this.getListForPeriod(documents, workingPeriod).sort((a, b) => {
+        return new Date(b.dateStart) - new Date(a.dateStart);
+      });
+      documentCitizenDataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = newObj.id;
+      });
+      return documentCitizenDataSource;
+    };
+    const expandedOwnerRowRender = (record) => {
+      const newRecord = record;
+      newRecord.key = record.id;
+      const documentOwnershipDataSource = [newRecord];
+      const documentCitizenDataSource = getCitizenDocumentsForPeriod(record.citizen.documents, this.props.selectedWorkingPeriod);
+      return (
+        <div>
+          <Table
+            title={() => <h4>{messages.documentOwnershipTitle}</h4>}
+            dataSource={documentOwnershipDataSource}
+            columns={documentCitizenColumns}
+            pagination={false}
+          />
+          <Table
+            title={() => <h4>{messages.documentCitizenTitle}</h4>}
+            dataSource={documentCitizenDataSource}
+            columns={documentCitizenColumns}
+            pagination={false}
+          />
+        </div>
+      );
+    };
+    const expandedRegisteredRowRender = (record) => {
+      const documentCitizenDataSource = getCitizenDocumentsForPeriod(record.citizen.documents, this.props.selectedWorkingPeriod);
+      return (
+        <div>
+          <Table
+            title={() => <h4>{messages.documentCitizenTitle}</h4>}
+            dataSource={documentCitizenDataSource}
+            columns={documentCitizenColumns}
+            pagination={false}
+          />
+        </div>
+      );
+    };
+    const expandedMeterRowRender = (record) => {
+      const meterValuesColumns = [
+        this.getColumn(this.props.intl.messages.meterFieldValue, 'value'),
+        this.getColumn(this.props.intl.messages.meterFieldConsumption, 'consumption'),
+        this.getDateColumn(this.props.intl.messages.meterFieldDateValue, 'dateValue'),
+      ];
+      let meterValuesDataSource = [];
+      if (record && record.meter && record.meter.values && record.meter.values.length > 0) {
+        meterValuesDataSource = record.meter.values.sort((a, b) => {
+          return new Date(b.dateValue) - new Date(a.dateValue);
+        });
+        meterValuesDataSource.forEach((obj) => {
+          const newObj = obj;
+          newObj.key = newObj.id;
+        });
+      }
+      return (
+        <div>
+          <Table
+            title={() => <h4>{messages.meterValuesTitle}</h4>}
+            dataSource={meterValuesDataSource}
+            columns={meterValuesColumns}
+            pagination={false}
+          />
+        </div>
+      );
+    };
     let owners = '';
     let ownersDataSource = [];
     if (object && object.owners && object.owners.length > 0 && this.props.selectedWorkingPeriod) {
@@ -56,12 +140,13 @@ class AccountCard extends EditComponent {
       });
     }
     const ownersColumns = [
-      this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
-      this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
-      this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
-      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(messages.citizenFieldFirstName, 'citizen.firstName'),
+      this.getColumn(messages.citizenFieldLastName, 'citizen.lastName'),
+      this.getColumn(messages.citizenFieldFatherName, 'citizen.fatherName'),
+      this.getColumn(messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getDateColumn(messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionSimpleColumn('citizen', messages.buttonEdit, CitizenPath.CITIZEN_EDIT),
     ];
     let registeredCount = 0;
     let registeredDataSource = [];
@@ -76,13 +161,14 @@ class AccountCard extends EditComponent {
       registeredCount = registeredDataSource.length;
     }
     const registeredColumns = [
-      this.getColumn(this.props.intl.messages.citizenFieldFirstName, 'citizen.firstName'),
-      this.getColumn(this.props.intl.messages.citizenFieldLastName, 'citizen.lastName'),
-      this.getColumn(this.props.intl.messages.citizenFieldFatherName, 'citizen.fatherName'),
-      this.getColumn(this.props.intl.messages.citizenFieldBirthday, 'citizen.birthday'),
-      this.getColumn(this.props.intl.messages.registrationTypeFieldName, 'registrationType.name'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(messages.citizenFieldFirstName, 'citizen.firstName'),
+      this.getColumn(messages.citizenFieldLastName, 'citizen.lastName'),
+      this.getColumn(messages.citizenFieldFatherName, 'citizen.fatherName'),
+      this.getColumn(messages.citizenFieldBirthday, 'citizen.birthday'),
+      this.getColumn(messages.registrationTypeFieldName, 'registrationType.name'),
+      this.getDateColumn(messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionSimpleColumn('citizen', messages.buttonEdit, CitizenPath.CITIZEN_EDIT),
     ];
     let metersDataSource = [];
     if (object && object.meters && object.meters.length > 0 && this.props.selectedWorkingPeriod) {
@@ -95,19 +181,20 @@ class AccountCard extends EditComponent {
       });
     }
     const metersColumns = [
-      this.getColumn(this.props.intl.messages.serviceFieldName, 'meter.service.name'),
-      this.getColumn(this.props.intl.messages.meterFieldName, 'meter.name'),
-      this.getColumn(this.props.intl.messages.meterFieldSerialNumber, 'meter.serialNumber'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateStart, 'dateStart'),
-      this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
+      this.getColumn(messages.serviceFieldName, 'meter.service.name'),
+      this.getColumn(messages.meterFieldName, 'meter.name'),
+      this.getColumn(messages.meterFieldSerialNumber, 'meter.serialNumber'),
+      this.getDateColumn(messages.commonFieldDateStart, 'dateStart'),
+      this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
+      this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
     ];
     let address = '';
     if (object && object.id) {
       address += `${object.apartment.building.street.streetType.nameShort} `;
       address += `${object.apartment.building.street.name}, `;
-      address += `${this.props.intl.messages.buildingFieldHouse.toLowerCase()} `;
+      address += `${messages.buildingFieldHouse.toLowerCase()} `;
       address += `${object.apartment.building.house}, `;
-      address += `${this.props.intl.messages.apartmentFieldApartment.toLowerCase()} `;
+      address += `${messages.apartmentFieldApartment.toLowerCase()} `;
       address += `${object.apartment.apartment}`;
     }
     let accountTotalArea = '';
@@ -133,69 +220,69 @@ class AccountCard extends EditComponent {
                 <h1>{titleItem}</h1>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.workingPeriodsTitle}>
+                <FormItem label={messages.workingPeriodsTitle}>
                   {this.getSelectField('name', this.props.selectedWorkingPeriod, workingPeriodsList, this.changeWorkingPeriod, false)}
                 </FormItem>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.accountFieldAccountNumber}>
+                <FormItem label={messages.accountFieldAccountNumber}>
                   {this.getInputField('accountNumber', object.accountNumber, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={8}>
-                <FormItem label={this.props.intl.messages.addressShortTitle}>
+                <FormItem label={messages.addressShortTitle}>
                   {this.getInputField('address', address, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.apartmentFieldRoomsNumber}>
+                <FormItem label={messages.apartmentFieldRoomsNumber}>
                   {this.getInputField('roomsNumber', object.apartment.roomsNumber, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.apartmentFieldTotalArea}>
+                <FormItem label={messages.apartmentFieldTotalArea}>
                   {this.getInputField('accountTotalArea', accountTotalArea, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.registeredCountTitle}>
+                <FormItem label={messages.registeredCountTitle}>
                   {this.getInputField('registeredCount', registeredCount, false, true)}
                 </FormItem>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col className="gutter-row" span={12}>
-                <FormItem label={this.props.intl.messages.ownersTitle}>
+                <FormItem label={messages.ownersTitle}>
                   {this.getInputField('owners', owners, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={12}>
-                <FormItem label={this.props.intl.messages.phoneNumbersTitle}>
+                <FormItem label={messages.phoneNumbersTitle}>
                   {this.getInputField('accountPhoneNumbers', accountPhoneNumbers, false, true)}
                 </FormItem>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col className="gutter-row" span={16}>
-                <FormItem label={this.props.intl.messages.managementCompanyTitle}>
+                <FormItem label={messages.managementCompanyTitle}>
                   {this.getInputField('contractor', object.contractor.fullName, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.accountFieldDateOpen}>
+                <FormItem label={messages.accountFieldDateOpen}>
                   {this.getInputField('dateOpen', object.dateOpen, false, true)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={this.props.intl.messages.accountFieldDateClose}>
+                <FormItem label={messages.accountFieldDateClose}>
                   {this.getInputField('dateClose', object.dateClose, false, true)}
                 </FormItem>
               </Col>
             </Row>
             <Tabs>
-              <TabPane tab={this.props.intl.messages.calculationsTitle} key="1">
+              <TabPane tab={messages.calculationsTitle} key="1">
                 <Table
                   dataSource={calculationsDataSource}
                   columns={calculationsColumns}
@@ -203,28 +290,34 @@ class AccountCard extends EditComponent {
                   size="small"
                 />
               </TabPane>
-              <TabPane tab={this.props.intl.messages.ownersTitle} key="2">
+              <TabPane tab={messages.ownersTitle} key="2">
                 <Table
+                  className="table-nested"
                   dataSource={ownersDataSource}
                   columns={ownersColumns}
                   bordered pagination={false}
                   size="small"
+                  expandedRowRender={expandedOwnerRowRender}
                 />
               </TabPane>
-              <TabPane tab={this.props.intl.messages.registeredTitle} key="3">
+              <TabPane tab={messages.registeredTitle} key="3">
                 <Table
+                  className="table-nested"
                   dataSource={registeredDataSource}
                   columns={registeredColumns}
                   bordered pagination={false}
                   size="small"
+                  expandedRowRender={expandedRegisteredRowRender}
                 />
               </TabPane>
-              <TabPane tab={this.props.intl.messages.metersTitle} key="4">
+              <TabPane tab={messages.metersTitle} key="4">
                 <Table
+                  className="table-nested"
                   dataSource={metersDataSource}
                   columns={metersColumns}
                   bordered pagination={false}
                   size="small"
+                  expandedRowRender={expandedMeterRowRender}
                 />
               </TabPane>
             </Tabs>

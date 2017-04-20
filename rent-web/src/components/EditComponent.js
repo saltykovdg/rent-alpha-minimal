@@ -168,6 +168,22 @@ class EditComponent extends ExtendedComponent {
       },
     };
   };
+  getActionSimpleColumn = (linkTitle, link) => {
+    return this.getActionSimpleColumn(null, linkTitle, link);
+  }
+  getActionSimpleColumn = (idField, linkTitle, link) => {
+    return {
+      title: this.props.intl.messages.tableColumnActions,
+      key: 'action',
+      render(text, record) {
+        return (
+          <span>
+            <Link to={`${link}/${idField ? record[idField].id : record.id}`}>{linkTitle}</Link>
+          </span>
+        );
+      },
+    };
+  }
 }
 
 EditComponent.propTypes = {
