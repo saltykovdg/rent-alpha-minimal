@@ -28,6 +28,7 @@ class AccountCardPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
     const id = this.props.params.id;
+    this.props.dispatch(AccountAction.clearLocalDataAccountCalculations());
     if (id) {
       this.props.dispatch(AccountAction.getAccountCard(id));
     }

@@ -50,6 +50,8 @@ export const ADD_NEW_METER_TO_ACCOUNT = 'ADD_NEW_METER_TO_ACCOUNT';
 export const EDIT_METER_IN_ACCOUNT = 'EDIT_METER_IN_ACCOUNT';
 export const REMOVE_METER_FROM_ACCOUNT = 'REMOVE_METER_FROM_ACCOUNT';
 
+// calculations
+export const CLEAR_LOCAL_DATA_ACCOUNT_CALCULATIONS = 'CLEAR_LOCAL_DATA_ACCOUNT_CALCULATIONS';
 export const GET_ACCOUNT_CALCULATIONS = 'GET_ACCOUNT_CALCULATIONS';
 export const GET_ACCOUNT_CALCULATIONS_SUCCESS = 'GET_ACCOUNT_CALCULATIONS_SUCCESS';
 export const GET_ACCOUNT_CALCULATIONS_FAILED = 'GET_ACCOUNT_CALCULATIONS_FAILED';
@@ -339,5 +341,10 @@ export const getAccountCalculationsSuccess = (data) => {
 export const getAccountCalculationsFailed = () => {
   return {
     type: GET_ACCOUNT_CALCULATIONS_FAILED,
+  };
+};
+export const clearLocalDataAccountCalculations = () => {
+  return {
+    type: CLEAR_LOCAL_DATA_ACCOUNT_CALCULATIONS,
   };
 };
