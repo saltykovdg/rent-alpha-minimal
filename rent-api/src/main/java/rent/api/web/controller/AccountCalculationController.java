@@ -1,7 +1,6 @@
 package rent.api.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import rent.common.dtos.AccountCalculationDto;
 import rent.common.repository.CommonRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,10 +20,9 @@ public class AccountCalculationController {
         this.commonRepository = commonRepository;
     }
 
-    @RequestMapping(value = "/getByAccount", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<AccountCalculationDto> getCalculationsByAccount(@RequestParam("accountId") String accountId,
-                                                                @RequestParam("period")
-                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate period) {
-        return commonRepository.getCalculationsByAccount(accountId, period);
+    @RequestMapping(value = "/getAccountCalculations", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public List<AccountCalculationDto> getAccountCalculations(@RequestParam("accountId") String accountId,
+                                                              @RequestParam("workingPeriodId") String workingPeriodId) {
+        return commonRepository.getAccountCalculations(accountId, workingPeriodId);
     }
 }

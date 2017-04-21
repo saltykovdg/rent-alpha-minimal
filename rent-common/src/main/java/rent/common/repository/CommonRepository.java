@@ -3,13 +3,13 @@ package rent.common.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import rent.common.dtos.AccountCalculationDto;
-import rent.common.dtos.ServiceCalculationDto;
+import rent.common.dtos.AccountServiceCalculationDto;
 import rent.common.entity.AbstractEntity;
-import rent.common.entity.ServiceEntity;
+import rent.common.entity.AccountServiceEntity;
+import rent.common.entity.WorkingPeriodEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.util.*;
 
 @Repository
@@ -26,90 +26,108 @@ public class CommonRepository {
         return entityManager.find(abstractEntityClass, id);
     }
 
-    public List<AccountCalculationDto> getCalculationsByAccount(String accountId, LocalDate period) {
+    public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
         List<AccountCalculationDto> results = new ArrayList<>();
-        List<ServiceCalculationDto> openingBalances;
-        List<ServiceCalculationDto> accruals;
-        List<ServiceCalculationDto> recalculations;
-        List<ServiceCalculationDto> payments;
+        List<AccountServiceCalculationDto> openingBalances;
+        List<AccountServiceCalculationDto> accruals;
+        List<AccountServiceCalculationDto> recalculations;
+        List<AccountServiceCalculationDto> payments;
 
-        String hql = "select new rent.common.dtos.ServiceCalculationDto(accountService.service, sum(openingBalances.value)) " +
+        String hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(openingBalances.value)) " +
                 "from AccountOpeningBalanceEntity openingBalances " +
                 "join openingBalances.accountService accountService " +
+                "join openingBalances.workingPeriod workingPeriod " +
                 "join accountService.account account " +
-                "where account.id = :accountId and openingBalances.period = :period " +
-                "group by accountService.service";
-        openingBalances = entityManager.createQuery(hql, ServiceCalculationDto.class)
+                "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
+                "group by accountService";
+        openingBalances = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
-                .setParameter("period", period)
+                .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select new rent.common.dtos.ServiceCalculationDto(accountService.service, sum(accruals.value)) " +
+        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(accruals.value), sum(accruals.consumption)) " +
                 "from AccountAccrualEntity accruals " +
                 "join accruals.accountService accountService " +
+                "join accruals.workingPeriod workingPeriod " +
                 "join accountService.account account " +
-                "where account.id = :accountId and accruals.period = :period " +
-                "group by accountService.service";
-        accruals = entityManager.createQuery(hql, ServiceCalculationDto.class)
+                "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
+                "group by accountService";
+        accruals = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
-                .setParameter("period", period)
+                .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select new rent.common.dtos.ServiceCalculationDto(accountService.service, sum(recalculations.value)) " +
+        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(recalculations.value), sum(recalculations.consumption)) " +
                 "from AccountRecalculationEntity recalculations " +
                 "join recalculations.accountService accountService " +
+                "join recalculations.workingPeriod workingPeriod " +
                 "join accountService.account account " +
-                "where account.id = :accountId and recalculations.period = :period " +
-                "group by accountService.service";
-        recalculations = entityManager.createQuery(hql, ServiceCalculationDto.class)
+                "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
+                "group by accountService";
+        recalculations = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
-                .setParameter("period", period)
+                .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select new rent.common.dtos.ServiceCalculationDto(accountService.service, sum(payments.value)) " +
+        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(payments.value)) " +
                 "from AccountPaymentEntity payments " +
                 "join payments.accountService accountService " +
+                "join payments.workingPeriod workingPeriod " +
                 "join accountService.account account " +
-                "where account.id = :accountId and payments.period = :period " +
-                "group by accountService.service";
-        payments = entityManager.createQuery(hql, ServiceCalculationDto.class)
+                "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
+                "group by accountService";
+        payments = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
-                .setParameter("period", period)
+                .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select distinct service from AccountServiceEntity accountService " +
+        WorkingPeriodEntity workingPeriod = (WorkingPeriodEntity) this.findOne(WorkingPeriodEntity.class, workingPeriodId);
+
+        hql = "select accountService from AccountServiceEntity accountService " +
+                "join accountService.account account " +
                 "join accountService.service service " +
-                "join accountService.account account " +
-                "where account.id = :accountId and " +
-                "accountService.dateStart <= :period and " +
-                "(accountService.dateEnd is null or accountService.dateEnd >= :period)" +
+                "where account.id = :accountId and accountService.dateStart <= :periodEnd and " +
+                "(accountService.dateEnd is null or (accountService.dateEnd >= :periodStart)) " +
                 "order by service.name";
-        List<ServiceEntity> services = entityManager.createQuery(hql, ServiceEntity.class)
+        List<AccountServiceEntity> accountServices = entityManager.createQuery(hql, AccountServiceEntity.class)
                 .setParameter("accountId", accountId)
-                .setParameter("period", period)
+                .setParameter("periodStart", workingPeriod.getDateStart())
+                .setParameter("periodEnd", workingPeriod.getDateEnd())
                 .getResultList();
 
-        for (ServiceEntity service : services) {
+        for (AccountServiceEntity accountService : accountServices) {
             AccountCalculationDto calculation = new AccountCalculationDto();
-            calculation.setService(service);
-            calculation.setOpeningBalances(getServiceCalculation(service.getId(), openingBalances));
-            calculation.setAccruals(getServiceCalculation(service.getId(), accruals));
-            calculation.setRecalculations(getServiceCalculation(service.getId(), recalculations));
-            calculation.setPayments(getServiceCalculation(service.getId(), payments));
+            calculation.setService(accountService.getService());
+            calculation.setTariff(accountService.getTariff());
+            calculation.setOpeningBalances(getServiceCalculation(accountService.getId(), openingBalances));
+            calculation.setConsumption(getServiceConsumption(accountService.getId(), accruals));
+            calculation.setAccruals(getServiceCalculation(accountService.getId(), accruals));
+            calculation.setRecalculations(getServiceCalculation(accountService.getId(), recalculations));
+            calculation.setPayments(getServiceCalculation(accountService.getId(), payments));
             results.add(calculation);
         }
 
         return results;
     }
 
-    private Double getServiceCalculation(String serviceId, List<ServiceCalculationDto> list) {
+    private Double getServiceCalculation(String accountServiceId, List<AccountServiceCalculationDto> list) {
         Double sum = 0D;
-        for (ServiceCalculationDto serviceCalculation : list) {
-            if (serviceCalculation.getService().getId().equals(serviceId)) {
-                sum += serviceCalculation.getSum();
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                sum += accountServiceCalculationDto.getSum();
             }
         }
         return sum;
+    }
+
+    private Double getServiceConsumption(String accountServiceId, List<AccountServiceCalculationDto> list) {
+        Double consumption = 0D;
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                consumption += accountServiceCalculationDto.getConsumption();
+            }
+        }
+        return consumption;
     }
 
     public void deleteCalculationsByAccountServiceId(String accountServiceId) {

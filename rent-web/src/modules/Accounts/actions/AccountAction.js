@@ -50,6 +50,10 @@ export const ADD_NEW_METER_TO_ACCOUNT = 'ADD_NEW_METER_TO_ACCOUNT';
 export const EDIT_METER_IN_ACCOUNT = 'EDIT_METER_IN_ACCOUNT';
 export const REMOVE_METER_FROM_ACCOUNT = 'REMOVE_METER_FROM_ACCOUNT';
 
+export const GET_ACCOUNT_CALCULATIONS = 'GET_ACCOUNT_CALCULATIONS';
+export const GET_ACCOUNT_CALCULATIONS_SUCCESS = 'GET_ACCOUNT_CALCULATIONS_SUCCESS';
+export const GET_ACCOUNT_CALCULATIONS_FAILED = 'GET_ACCOUNT_CALCULATIONS_FAILED';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -315,5 +319,25 @@ export const removeMeterFromAccount = (meter) => {
   return {
     type: REMOVE_METER_FROM_ACCOUNT,
     meter,
+  };
+};
+
+// calculations
+export const getAccountCalculations = (accountId = '', workingPeriodId = '') => {
+  return {
+    type: GET_ACCOUNT_CALCULATIONS,
+    accountId,
+    workingPeriodId,
+  };
+};
+export const getAccountCalculationsSuccess = (data) => {
+  return {
+    type: GET_ACCOUNT_CALCULATIONS_SUCCESS,
+    data,
+  };
+};
+export const getAccountCalculationsFailed = () => {
+  return {
+    type: GET_ACCOUNT_CALCULATIONS_FAILED,
   };
 };

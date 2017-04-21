@@ -17,12 +17,14 @@ import java.util.List;
 public interface AccountRecalculationRepository extends PagingAndSortingRepository<AccountRecalculationEntity, String> {
     @Query("select distinct accountRecalculation from AccountRecalculationEntity accountRecalculation " +
             "join accountRecalculation.accountService accountService " +
-            "join accountService.account account where " +
-            "account.id = :accountId order by accountRecalculation.period")
+            "join accountRecalculation.workingPeriod workingPeriod " +
+            "join accountService.account account " +
+            "where account.id = :accountId order by workingPeriod.dateStart desc")
     List<AccountRecalculationEntity> findByAccountId(@Param("accountId") String accountId);
 
     @Query("select distinct accountRecalculation from AccountRecalculationEntity accountRecalculation " +
-            "join accountRecalculation.accountService accountService where " +
-            "accountService.id = :accountServiceId order by accountRecalculation.period")
+            "join accountRecalculation.accountService accountService " +
+            "join accountRecalculation.workingPeriod workingPeriod " +
+            "where accountService.id = :accountServiceId order by workingPeriod.dateStart desc")
     List<AccountRecalculationEntity> findByAccountServiceId(@Param("accountServiceId") String accountServiceId);
 }

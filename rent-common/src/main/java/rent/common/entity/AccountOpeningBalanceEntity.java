@@ -1,7 +1,6 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * Сальдо на начало периода (входящее сальдо) ЛС
@@ -10,14 +9,14 @@ import java.time.LocalDate;
 @Table(name = AccountOpeningBalanceEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountOpeningBalanceEntity.Columns.ID),
         @Index(columnList = AccountOpeningBalanceEntity.Columns.ACCOUNT_SERVICE),
-        @Index(columnList = AccountOpeningBalanceEntity.Columns.PERIOD),
+        @Index(columnList = AccountOpeningBalanceEntity.Columns.WORKING_PERIOD),
 })
 public class AccountOpeningBalanceEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_opening_balances";
 
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT_SERVICE = "account_service_id";
-        String PERIOD = "period";
+        String WORKING_PERIOD = "working_period_id";
         String VALUE = "value";
     }
 
@@ -29,10 +28,11 @@ public class AccountOpeningBalanceEntity extends AbstractEntity {
     private AccountServiceEntity accountService;
 
     /**
-     * период
+     * рабочий период
      */
-    @Column(name = Columns.PERIOD)
-    private LocalDate period;
+    @JoinColumn(name = Columns.WORKING_PERIOD)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkingPeriodEntity workingPeriod;
 
     /**
      * сумма
@@ -48,12 +48,12 @@ public class AccountOpeningBalanceEntity extends AbstractEntity {
         this.accountService = accountService;
     }
 
-    public LocalDate getPeriod() {
-        return period;
+    public WorkingPeriodEntity getWorkingPeriod() {
+        return workingPeriod;
     }
 
-    public void setPeriod(LocalDate period) {
-        this.period = period;
+    public void setWorkingPeriod(WorkingPeriodEntity workingPeriod) {
+        this.workingPeriod = workingPeriod;
     }
 
     public Double getValue() {

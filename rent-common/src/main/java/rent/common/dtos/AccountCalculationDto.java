@@ -1,10 +1,13 @@
 package rent.common.dtos;
 
 import rent.common.entity.ServiceEntity;
+import rent.common.entity.TariffEntity;
 
 public class AccountCalculationDto {
     private ServiceEntity service;
+    private TariffEntity tariff;
     private Double openingBalances;
+    private Double consumption;
     private Double accruals;
     private Double recalculations;
     private Double payments;
@@ -12,9 +15,11 @@ public class AccountCalculationDto {
     public AccountCalculationDto() {
     }
 
-    public AccountCalculationDto(ServiceEntity service, Double openingBalances, Double accruals, Double recalculations, Double payments) {
+    public AccountCalculationDto(ServiceEntity service, TariffEntity tariff, Double openingBalances, Double consumption, Double accruals, Double recalculations, Double payments) {
         this.service = service;
+        this.tariff = tariff;
         this.openingBalances = openingBalances;
+        this.consumption = consumption;
         this.accruals = accruals;
         this.recalculations = recalculations;
         this.payments = payments;
@@ -28,12 +33,28 @@ public class AccountCalculationDto {
         this.service = service;
     }
 
+    public TariffEntity getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(TariffEntity tariff) {
+        this.tariff = tariff;
+    }
+
     public Double getOpeningBalances() {
         return openingBalances;
     }
 
     public void setOpeningBalances(Double openingBalances) {
         this.openingBalances = openingBalances;
+    }
+
+    public Double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Double consumption) {
+        this.consumption = consumption;
     }
 
     public Double getAccruals() {

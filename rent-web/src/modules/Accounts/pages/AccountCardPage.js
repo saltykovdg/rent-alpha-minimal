@@ -19,6 +19,11 @@ import {
   getIsRequestError as getIsRequestErrorAccounts,
 } from './../AccountsReducer';
 
+import {
+  getAccountCalculationListData,
+  getAccountCalculationIsLoading,
+} from './../reducers/AccountCalculationsReducer';
+
 class AccountCardPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -30,16 +35,26 @@ class AccountCardPage extends ExtendedComponentPage {
   }
   componentWillUpdate(nextProps) {
     if (!this.state.selectedWorkingPeriod && nextProps.currentWorkingPeriod.id) {
-      this.changeWorkingPeriod(nextProps.currentWorkingPeriod);
+      this.setState({ selectedWorkingPeriod: nextProps.currentWorkingPeriod });
+    }
+    const accountId = nextProps.data.id;
+    const workingPeriodId = nextProps.currentWorkingPeriod.id;
+    if (!nextProps.calculations && accountId && workingPeriodId) {
+      this.props.dispatch(AccountAction.getAccountCalculations(accountId, workingPeriodId));
     }
   }
   changeWorkingPeriod = (workingPeriod) => {
     this.setState({ selectedWorkingPeriod: workingPeriod });
+    if (workingPeriod) {
+      this.props.dispatch(AccountAction.getAccountCalculations(this.props.id, workingPeriod.id));
+    }
   }
   render() {
     return (
       <AccountCard
         data={this.props.data}
+        calculations={this.props.calculations}
+        isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
         id={this.props.id}
         isLoading={this.props.isLoading}
         isRequestError={this.props.isRequestError}
@@ -57,6 +72,8 @@ function mapStateToProps(state, props) {
   return {
     data: getAccountEditData(state),
     isLoading: getIsLoadingAccounts(state),
+    calculations: getAccountCalculationListData(state),
+    isLoadingAccountCalculation: getAccountCalculationIsLoading(state),
     isRequestError: getIsRequestErrorAccounts(state),
     id: props.params.id,
   };

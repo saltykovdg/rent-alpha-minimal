@@ -1,7 +1,6 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * Перерасчет ЛС
@@ -10,14 +9,16 @@ import java.time.LocalDate;
 @Table(name = AccountRecalculationEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountRecalculationEntity.Columns.ID),
         @Index(columnList = AccountRecalculationEntity.Columns.ACCOUNT_SERVICE),
-        @Index(columnList = AccountRecalculationEntity.Columns.PERIOD),
+        @Index(columnList = AccountRecalculationEntity.Columns.WORKING_PERIOD),
+        @Index(columnList = AccountRecalculationEntity.Columns.FOR_WORKING_PERIOD),
 })
 public class AccountRecalculationEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_recalculations";
 
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT_SERVICE = "account_service_id";
-        String PERIOD = "period";
+        String WORKING_PERIOD = "working_period_id";
+        String FOR_WORKING_PERIOD = "for_working_period_id";
         String CONSUMPTION = "consumption";
         String VALUE = "value";
     }
@@ -30,10 +31,18 @@ public class AccountRecalculationEntity extends AbstractEntity {
     private AccountServiceEntity accountService;
 
     /**
-     * период
+     * рабочий период
      */
-    @Column(name = Columns.PERIOD)
-    private LocalDate period;
+    @JoinColumn(name = Columns.WORKING_PERIOD)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkingPeriodEntity workingPeriod;
+
+    /**
+     * рабочий период за который выполнялся перерасчет
+     */
+    @JoinColumn(name = Columns.FOR_WORKING_PERIOD)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkingPeriodEntity forWorkingPeriod;
 
     /**
      * расход
@@ -55,12 +64,20 @@ public class AccountRecalculationEntity extends AbstractEntity {
         this.accountService = accountService;
     }
 
-    public LocalDate getPeriod() {
-        return period;
+    public WorkingPeriodEntity getWorkingPeriod() {
+        return workingPeriod;
     }
 
-    public void setPeriod(LocalDate period) {
-        this.period = period;
+    public void setWorkingPeriod(WorkingPeriodEntity workingPeriod) {
+        this.workingPeriod = workingPeriod;
+    }
+
+    public WorkingPeriodEntity getForWorkingPeriod() {
+        return forWorkingPeriod;
+    }
+
+    public void setForWorkingPeriod(WorkingPeriodEntity forWorkingPeriod) {
+        this.forWorkingPeriod = forWorkingPeriod;
     }
 
     public Double getConsumption() {

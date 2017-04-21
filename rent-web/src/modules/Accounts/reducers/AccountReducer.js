@@ -268,6 +268,9 @@ export const accountReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case AccountAction.GET_ACCOUNT_CALCULATIONS:
+    case AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS:
+    case AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED:
     case AccountMeterAction.SAVE_ACCOUNT_METER:
     case AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS:
     case AccountMeterAction.SAVE_ACCOUNT_METER_FAILED:

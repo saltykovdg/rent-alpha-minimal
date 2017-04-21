@@ -46,6 +46,11 @@ import {
   getAccountMeterIsRequestError,
 } from './reducers/AccountMeterReducer';
 
+import {
+  accountCalculationReducer,
+  getAccountCalculationIsRequestError,
+} from './reducers/AccountCalculationsReducer';
+
 // Initial State
 const data = {
   list: {
@@ -71,6 +76,7 @@ const initialState = {
   accountRegistered: data,
   accountRegisteredDocumentAttachment: data,
   accountMeter: data,
+  accountCalculation: data,
 };
 
 const AccountsReducer = (state = initialState, action) => {
@@ -83,6 +89,7 @@ const AccountsReducer = (state = initialState, action) => {
     accountRegistered: accountRegisteredReducer(state, action),
     accountRegisteredDocumentAttachment: accountRegisteredDocumentAttachmentReducer(state, action),
     accountMeter: accountMeterReducer(state, action),
+    accountCalculation: accountCalculationReducer(state, action),
   };
 };
 
@@ -90,7 +97,8 @@ const AccountsReducer = (state = initialState, action) => {
 export const getIsRequestError = state => getAccountIsRequestError(state) || getAccountParameterIsRequestError(state) ||
              getAccountServiceIsRequestError(state) || getAccountOwnerIsRequestError(state) ||
              getAccountOwnerDocumentAttachmentIsRequestError(state) || getAccountRegisteredIsRequestError(state) ||
-             getAccountRegisteredDocumentAttachmentIsRequestError(state) || getAccountMeterIsRequestError(state);
+             getAccountRegisteredDocumentAttachmentIsRequestError(state) || getAccountMeterIsRequestError(state) ||
+             getAccountCalculationIsRequestError(state);
 
 export const getIsLoading = state => getAccountIsLoading(state) || getAccountParameterIsLoading(state) ||
              getAccountServiceIsLoading(state) || getAccountOwnerIsLoading(state) ||

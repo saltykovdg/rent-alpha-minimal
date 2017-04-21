@@ -26,3 +26,7 @@ export function findAccounts(accountNumber = '', lastName = '', street = '', hou
   const sort = '&sort=accountNumber';
   return ApiCaller.callApi(`account/search/find?page=${page}${query}${sort}`);
 }
+
+export function getAccountCalculations(accountId, workingPeriodId) {
+  return ApiCaller.callApi(`account-calculation/getAccountCalculations?accountId=${accountId}&workingPeriodId=${workingPeriodId}`);
+}

@@ -1,7 +1,6 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * Начисление ЛС
@@ -10,14 +9,14 @@ import java.time.LocalDate;
 @Table(name = AccountAccrualEntity.TABLE_NAME, indexes = {
         @Index(columnList = AccountAccrualEntity.Columns.ID),
         @Index(columnList = AccountAccrualEntity.Columns.ACCOUNT_SERVICE),
-        @Index(columnList = AccountAccrualEntity.Columns.PERIOD),
+        @Index(columnList = AccountAccrualEntity.Columns.WORKING_PERIOD),
 })
 public class AccountAccrualEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_accruals";
 
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT_SERVICE = "account_service_id";
-        String PERIOD = "period";
+        String WORKING_PERIOD = "working_period_id";
         String CONSUMPTION = "consumption";
         String VALUE = "value";
     }
@@ -30,10 +29,11 @@ public class AccountAccrualEntity extends AbstractEntity {
     private AccountServiceEntity accountService;
 
     /**
-     * период
+     * рабочий период
      */
-    @Column(name = Columns.PERIOD)
-    private LocalDate period;
+    @JoinColumn(name = Columns.WORKING_PERIOD)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkingPeriodEntity workingPeriod;
 
     /**
      * расход
@@ -55,12 +55,12 @@ public class AccountAccrualEntity extends AbstractEntity {
         this.accountService = accountService;
     }
 
-    public LocalDate getPeriod() {
-        return period;
+    public WorkingPeriodEntity getWorkingPeriod() {
+        return workingPeriod;
     }
 
-    public void setPeriod(LocalDate period) {
-        this.period = period;
+    public void setWorkingPeriod(WorkingPeriodEntity workingPeriod) {
+        this.workingPeriod = workingPeriod;
     }
 
     public Double getConsumption() {

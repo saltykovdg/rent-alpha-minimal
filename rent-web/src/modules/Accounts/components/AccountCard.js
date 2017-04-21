@@ -19,6 +19,7 @@ class AccountCard extends EditComponent {
   render() {
     const messages = this.props.intl.messages;
     const object = this.props.data;
+    const calculations = this.props.calculations;
     const titleItem = <FormattedMessage id="accountCardTitle" />;
     const baseFields = this.getBaseFields(object);
     let workingPeriodsList = null;
@@ -28,22 +29,27 @@ class AccountCard extends EditComponent {
       ));
     }
     let calculationsDataSource = [];
-    if (object && object.calculations && object.calculations.length > 0 && this.props.selectedWorkingPeriod) {
-      calculationsDataSource = object.calculations;
+    if (calculations) {
+      calculationsDataSource = Object.keys(calculations).map(key => calculations[key]);
+      const getListForPeriod = this.getListForPeriod;
       calculationsDataSource.forEach((obj) => {
         const newObj = obj;
         newObj.key = newObj.id;
+        if (newObj.tariff) {
+          newObj.tariff.values = getListForPeriod(newObj.tariff.values, this.props.selectedWorkingPeriod);
+          newObj.tariff.currentValue = newObj.tariff.values.length > 0 ? newObj.tariff.values[0] : null;
+        }
       });
     }
     const calculationsColumns = [
-      this.getColumn(messages.serviceFieldName, ''),
-      this.getColumn(messages.tariffTitle, ''),
-      this.getColumn(messages.consumptionTitle, ''),
-      this.getColumn(messages.measurementUnitShortTitle, ''),
-      this.getColumn(messages.openingBalanceTitle, ''),
-      this.getColumn(messages.accrualTitle, ''),
-      this.getColumn(messages.recalculationTitle, ''),
-      this.getColumn(messages.paymentTitle, ''),
+      this.getColumn(messages.serviceFieldName, 'service.name'),
+      this.getColumn(messages.tariffTitle, 'tariff.currentValue.value'),
+      this.getColumn(messages.consumptionTitle, 'consumption'),
+      this.getColumn(messages.measurementUnitShortTitle, 'tariff.currentValue.measurementUnit.name'),
+      this.getColumn(messages.openingBalanceTitle, 'openingBalances'),
+      this.getColumn(messages.accrualTitle, 'accruals'),
+      this.getColumn(messages.recalculationTitle, 'recalculations'),
+      this.getColumn(messages.paymentTitle, 'payments'),
       this.getColumn(messages.closingBalanceTitle, ''),
     ];
     const documentCitizenColumns = [
@@ -221,7 +227,7 @@ class AccountCard extends EditComponent {
               </Col>
               <Col className="gutter-row" span={4}>
                 <FormItem label={messages.workingPeriodsTitle}>
-                  {this.getSelectField('name', this.props.selectedWorkingPeriod, workingPeriodsList, this.changeWorkingPeriod, false)}
+                  {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
                 </FormItem>
               </Col>
             </Row>
@@ -288,6 +294,7 @@ class AccountCard extends EditComponent {
                   columns={calculationsColumns}
                   bordered pagination={false}
                   size="small"
+                  loading={this.props.isLoadingAccountCalculation}
                 />
               </TabPane>
               <TabPane tab={messages.ownersTitle} key="2">

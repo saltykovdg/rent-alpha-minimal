@@ -369,6 +369,19 @@ export function* watchFindAccounts() {
   yield takeLatest(AccountAction.FIND_ACCOUNTS, findAccounts);
 }
 
+export function* getAccountCalculations(action) {
+  const response = yield call(AccountApi.getAccountCalculations, action.accountId, action.workingPeriodId);
+  if (response && !response.error && !response.canceled) {
+    yield put(AccountAction.getAccountCalculationsSuccess(response));
+  } else if (!response.canceled) {
+    yield put(AccountAction.getAccountCalculationsFailed());
+  }
+}
+
+export function* watchGetAccountCalculations() {
+  yield takeLatest(AccountAction.GET_ACCOUNT_CALCULATIONS, getAccountCalculations);
+}
+
 export const rootAccountSaga = [
   fork(watchGetAccounts),
   fork(watchGetAccount),
@@ -378,4 +391,5 @@ export const rootAccountSaga = [
   fork(watchNewAccount),
   fork(watchFindAccountsByAccountNumber),
   fork(watchFindAccounts),
+  fork(watchGetAccountCalculations),
 ];

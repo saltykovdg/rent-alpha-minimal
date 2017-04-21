@@ -17,12 +17,14 @@ import java.util.List;
 public interface AccountOpeningBalanceRepository extends PagingAndSortingRepository<AccountOpeningBalanceEntity, String> {
     @Query("select distinct accountOpeningBalance from AccountOpeningBalanceEntity accountOpeningBalance " +
             "join accountOpeningBalance.accountService accountService " +
-            "join accountService.account account where " +
-            "account.id = :accountId order by accountOpeningBalance.period")
+            "join accountOpeningBalance.workingPeriod workingPeriod " +
+            "join accountService.account account " +
+            "where account.id = :accountId order by workingPeriod.dateStart desc")
     List<AccountOpeningBalanceEntity> findByAccountId(@Param("accountId") String accountId);
 
     @Query("select distinct accountOpeningBalance from AccountOpeningBalanceEntity accountOpeningBalance " +
-            "join accountOpeningBalance.accountService accountService where " +
-            "accountService.id = :accountServiceId order by accountOpeningBalance.period")
+            "join accountOpeningBalance.accountService accountService " +
+            "join accountOpeningBalance.workingPeriod workingPeriod " +
+            "where accountService.id = :accountServiceId order by workingPeriod.dateStart desc")
     List<AccountOpeningBalanceEntity> findByAccountServiceId(@Param("accountServiceId") String accountServiceId);
 }

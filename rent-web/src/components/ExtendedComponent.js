@@ -62,9 +62,7 @@ class ExtendedComponent extends Component {
         const itemDateEnd = new Date(item.dateEnd).getTime();
         const workingPeriodDateStart = new Date(workingPeriod.dateStart).getTime();
         const workingPeriodDateEnd = new Date(workingPeriod.dateEnd).getTime();
-        const dateStart = itemDateStart >= workingPeriodDateStart && itemDateStart <= workingPeriodDateEnd;
-        const dateEnd = !item.dateEnd || (itemDateEnd >= workingPeriodDateStart && itemDateEnd <= workingPeriodDateEnd);
-        return dateStart || dateEnd;
+        return itemDateStart <= workingPeriodDateEnd && (!item.dateEnd || itemDateEnd >= workingPeriodDateStart);
       });
     }
     return newList;
