@@ -99,11 +99,16 @@ public class CommonRepository {
             AccountCalculationDto calculation = new AccountCalculationDto();
             calculation.setService(accountService.getService());
             calculation.setTariff(accountService.getTariff());
-            calculation.setOpeningBalances(getServiceCalculation(accountService.getId(), openingBalances));
+            calculation.setOpeningBalance(getServiceCalculation(accountService.getId(), openingBalances));
             calculation.setConsumption(getServiceConsumption(accountService.getId(), accruals));
-            calculation.setAccruals(getServiceCalculation(accountService.getId(), accruals));
-            calculation.setRecalculations(getServiceCalculation(accountService.getId(), recalculations));
-            calculation.setPayments(getServiceCalculation(accountService.getId(), payments));
+            calculation.setAccrual(getServiceCalculation(accountService.getId(), accruals));
+            calculation.setRecalculation(getServiceCalculation(accountService.getId(), recalculations));
+            calculation.setPayment(getServiceCalculation(accountService.getId(), payments));
+            Double closingBalance = calculation.getOpeningBalance();
+            closingBalance += calculation.getAccrual();
+            closingBalance -= calculation.getPayment();
+            closingBalance += calculation.getRecalculation();
+            calculation.setClosingBalance(closingBalance);
             results.add(calculation);
         }
 

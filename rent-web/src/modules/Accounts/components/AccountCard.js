@@ -46,11 +46,11 @@ class AccountCard extends EditComponent {
       this.getColumn(messages.tariffTitle, 'tariff.currentValue.value'),
       this.getColumn(messages.consumptionTitle, 'consumption'),
       this.getColumn(messages.measurementUnitShortTitle, 'tariff.currentValue.measurementUnit.name'),
-      this.getColumn(messages.openingBalanceTitle, 'openingBalances'),
-      this.getColumn(messages.accrualTitle, 'accruals'),
-      this.getColumn(messages.recalculationTitle, 'recalculations'),
-      this.getColumn(messages.paymentTitle, 'payments'),
-      this.getColumn(messages.closingBalanceTitle, ''),
+      this.getColumn(messages.openingBalanceTitle, 'openingBalance'),
+      this.getColumn(messages.accrualTitle, 'accrual'),
+      this.getColumn(messages.recalculationTitle, 'recalculation'),
+      this.getColumn(messages.paymentTitle, 'payment'),
+      this.getColumn(messages.closingBalanceTitle, 'closingBalance'),
     ];
     const documentCitizenColumns = [
       this.getColumn(messages.documentTypeFieldName, 'documentType.name'),

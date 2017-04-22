@@ -6,23 +6,24 @@ import rent.common.entity.TariffEntity;
 public class AccountCalculationDto {
     private ServiceEntity service;
     private TariffEntity tariff;
-    private Double openingBalances;
+    private Double openingBalance;
     private Double consumption;
-    private Double accruals;
-    private Double recalculations;
-    private Double payments;
+    private Double accrual;
+    private Double recalculation;
+    private Double payment;
+    private Double closingBalance;
 
     public AccountCalculationDto() {
     }
 
-    public AccountCalculationDto(ServiceEntity service, TariffEntity tariff, Double openingBalances, Double consumption, Double accruals, Double recalculations, Double payments) {
+    public AccountCalculationDto(ServiceEntity service, TariffEntity tariff, Double openingBalance, Double consumption, Double accrual, Double recalculation, Double payment) {
         this.service = service;
         this.tariff = tariff;
-        this.openingBalances = openingBalances;
+        this.openingBalance = openingBalance;
         this.consumption = consumption;
-        this.accruals = accruals;
-        this.recalculations = recalculations;
-        this.payments = payments;
+        this.accrual = accrual;
+        this.recalculation = recalculation;
+        this.payment = payment;
     }
 
     public ServiceEntity getService() {
@@ -41,12 +42,12 @@ public class AccountCalculationDto {
         this.tariff = tariff;
     }
 
-    public Double getOpeningBalances() {
-        return openingBalances;
+    public Double getOpeningBalance() {
+        return openingBalance;
     }
 
-    public void setOpeningBalances(Double openingBalances) {
-        this.openingBalances = openingBalances;
+    public void setOpeningBalance(Double openingBalance) {
+        this.openingBalance = openingBalance;
     }
 
     public Double getConsumption() {
@@ -57,27 +58,35 @@ public class AccountCalculationDto {
         this.consumption = consumption;
     }
 
-    public Double getAccruals() {
-        return accruals;
+    public Double getAccrual() {
+        return accrual;
     }
 
-    public void setAccruals(Double accruals) {
-        this.accruals = accruals;
+    public void setAccrual(Double accrual) {
+        this.accrual = accrual;
     }
 
-    public Double getRecalculations() {
-        return recalculations;
+    public Double getRecalculation() {
+        return recalculation;
     }
 
-    public void setRecalculations(Double recalculations) {
-        this.recalculations = recalculations;
+    public void setRecalculation(Double recalculation) {
+        this.recalculation = recalculation;
     }
 
-    public Double getPayments() {
-        return payments;
+    public Double getPayment() {
+        return payment;
     }
 
-    public void setPayments(Double payments) {
-        this.payments = payments;
+    public void setPayment(Double payment) {
+        this.payment = payment;
+    }
+
+    public Double getClosingBalance() {
+        return closingBalance;
+    }
+
+    public void setClosingBalance(Double closingBalance) {
+        this.closingBalance = closingBalance;
     }
 }
