@@ -40,6 +40,13 @@ class App extends ExtendedComponentPage {
     this.props.dispatch(WorkingPeriodAction.findLastWorkingPeriod());
   }
   render() {
+    let children = null;
+    if (this.props.currentWorkingPeriod && this.props.currentWorkingPeriod.id) {
+      children = React.cloneElement(this.props.children, {
+        workingPeriods: this.props.workingPeriods,
+        currentWorkingPeriod: this.props.currentWorkingPeriod,
+      });
+    }
     return (
       <div className="wrapper">
         {!window.devToolsExtension && process.env.NODE_ENV !== 'production' && process.env.USE_REDUX_DEVTOOLS === 'true' && <DevTools />}
@@ -52,12 +59,7 @@ class App extends ExtendedComponentPage {
         <div className="main">
           <Sidebar />
           <div className="content">
-            {
-              React.cloneElement(this.props.children, {
-                workingPeriods: this.props.workingPeriods,
-                currentWorkingPeriod: this.props.currentWorkingPeriod,
-              })
-            }
+            {children}
           </div>
         </div>
         <BackTop />

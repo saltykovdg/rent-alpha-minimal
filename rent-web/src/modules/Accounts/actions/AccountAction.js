@@ -83,10 +83,11 @@ export const getAccount = (id) => {
   };
 };
 
-export const getAccountCard = (id) => {
+export const getAccountCard = (id, workingPeriodId = '') => {
   return {
     type: GET_ACCOUNT_CARD,
     id,
+    workingPeriodId,
   };
 };
 

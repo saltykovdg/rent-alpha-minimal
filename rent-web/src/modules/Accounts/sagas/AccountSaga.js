@@ -82,7 +82,11 @@ export function* watchGetAccount() {
 export function* getAccountCard(action) {
   const response = yield call(AccountApi.getAccount, action.id);
   if (response && !response.error && !response.canceled) {
-    yield put(AccountAction.getAccountSuccess(response));
+    yield put(AccountAction.getAccountCalculations(action.id, action.workingPeriodId));
+    const sagaAction = yield take([AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS, AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(AccountAction.getAccountSuccess(response));
+    }
   } else if (!response.canceled) {
     yield put(AccountAction.getAccountFailed(action.id));
   }

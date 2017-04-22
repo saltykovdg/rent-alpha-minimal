@@ -30,23 +30,13 @@ class AccountCardPage extends ExtendedComponentPage {
     const id = this.props.params.id;
     this.props.dispatch(AccountAction.clearLocalDataAccountCalculations());
     if (id) {
-      this.props.dispatch(AccountAction.getAccountCard(id));
+      this.props.dispatch(AccountAction.getAccountCard(id, this.props.currentWorkingPeriod.id));
     }
-    this.changeWorkingPeriod(null);
+    this.changeWorkingPeriod(this.props.currentWorkingPeriod, false);
   }
-  componentWillUpdate(nextProps) {
-    if (!this.state.selectedWorkingPeriod && nextProps.currentWorkingPeriod.id) {
-      this.setState({ selectedWorkingPeriod: nextProps.currentWorkingPeriod });
-    }
-    const accountId = nextProps.data.id;
-    const workingPeriodId = nextProps.currentWorkingPeriod.id;
-    if (!nextProps.calculations && accountId && workingPeriodId) {
-      this.props.dispatch(AccountAction.getAccountCalculations(accountId, workingPeriodId));
-    }
-  }
-  changeWorkingPeriod = (workingPeriod) => {
+  changeWorkingPeriod = (workingPeriod, getCalculations = true) => {
     this.setState({ selectedWorkingPeriod: workingPeriod });
-    if (workingPeriod) {
+    if (getCalculations) {
       this.props.dispatch(AccountAction.getAccountCalculations(this.props.id, workingPeriod.id));
     }
   }
