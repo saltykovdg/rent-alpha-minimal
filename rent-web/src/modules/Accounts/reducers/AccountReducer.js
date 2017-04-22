@@ -10,6 +10,7 @@ import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as AddressActions from './../../Address/AddressActions';
 import * as CitizenAction from './../../Citizens/actions/CitizenAction';
 import * as MeterAction from './../../Meters/actions/MeterAction';
+import * as WorkingPeriodAction from './../../Constants//actions/WorkingPeriodAction';
 import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
 
 export const emptyParameter = {
@@ -268,6 +269,9 @@ export const accountReducer = (state, action) => {
       return prepareEdit(newObj, false, false, false, false);
     }
 
+    case WorkingPeriodAction.GET_WORKING_PERIODS:
+    case WorkingPeriodAction.GET_WORKING_PERIODS_SUCCESS:
+    case WorkingPeriodAction.GET_WORKING_PERIODS_FAILED:
     case AccountAction.GET_ACCOUNT_CALCULATIONS:
     case AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS:
     case AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED:
