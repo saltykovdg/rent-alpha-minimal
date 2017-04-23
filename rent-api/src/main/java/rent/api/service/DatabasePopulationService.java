@@ -573,7 +573,7 @@ public class DatabasePopulationService {
 
     private void createNorm(LocalDate dateStart, MeasurementUnitEntity measurementUnit, Double value, ServiceEntity service) {
         NormEntity norm = new NormEntity();
-        norm.setName(String.format("Норматив ну услугу <%s>", service.getName()));
+        norm.setName(String.format("Норматив на услугу <%s>", service.getName()));
         norm.setService(service);
 
         NormValueEntity normValue = new NormValueEntity();
