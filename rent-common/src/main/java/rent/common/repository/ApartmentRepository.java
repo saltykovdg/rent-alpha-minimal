@@ -17,8 +17,11 @@ import java.util.List;
         itemResourceRel = "apartment",
         excerptProjection = ApartmentBasic.class)
 public interface ApartmentRepository extends PagingAndSortingRepository<ApartmentEntity, String> {
-    @Query("select apartment from ApartmentEntity apartment join apartment.building building where " +
-            "building.id = :buildingId order by apartment.apartment")
+    @Query("select apartment from ApartmentEntity apartment " +
+            "join apartment.building building " +
+            "join building.street street " +
+            "where building.id = :buildingId " +
+            "order by street.name, building.houseNumber, apartment.apartmentNumber")
     List<ApartmentEntity> findByBuildingId(@Param("buildingId") String buildingId);
 
     @Query("select apartment from ApartmentEntity apartment " +
@@ -27,7 +30,7 @@ public interface ApartmentRepository extends PagingAndSortingRepository<Apartmen
             "lower(street.name) like concat('%', lower(:street), '%') and " +
             "lower(building.house) like concat('%', lower(:house), '%') and " +
             "lower(apartment.apartment) like concat('%', lower(:apartment), '%') " +
-            "order by street.name, building.house, apartment.apartment")
+            "order by street.name, building.houseNumber, apartment.apartmentNumber")
     Page<ApartmentEntity> find(@Param("street") String street, @Param("house") String house,
                                @Param("apartment") String apartment, Pageable p);
 

@@ -42,19 +42,11 @@ public class DatabasePopulationService {
     private final ApartmentRepository apartmentRepository;
     private final ServiceRepository serviceRepository;
     private final TariffRepository tariffRepository;
-    private final TariffValueRepository tariffValueRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final ContractorRepository contractorRepository;
     private final AccountRepository accountRepository;
-    private final AccountParameterRepository accountParameterRepository;
-    private final AccountServiceRepository accountServiceRepository;
-    private final AccountOwnerRepository accountOwnerRepository;
-    private final AccountRegisteredRepository accountRegisteredRepository;
-    private final AccountMeterRepository accountMeterRepository;
-    private final CitizenDocumentRepository citizenDocumentRepository;
     private final CitizenRepository citizenRepository;
     private final MeterRepository meterRepository;
-    private final MeterValueRepository meterValueRepository;
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale,
@@ -67,13 +59,9 @@ public class DatabasePopulationService {
                                      RegistrationTypeRepository registrationTypeRepository, MeterTypeRepository meterTypeRepository,
                                      ServiceTypeRepository serviceTypeRepository, ContractorTypeRepository contractorTypeRepository,
                                      ApartmentRepository apartmentRepository, ServiceRepository serviceRepository,
-                                     TariffRepository tariffRepository, TariffValueRepository tariffValueRepository,
-                                     WorkingPeriodRepository workingPeriodRepository, ContractorRepository contractorRepository,
-                                     AccountRepository accountRepository, AccountParameterRepository accountParameterRepository,
-                                     AccountServiceRepository accountServiceRepository, AccountOwnerRepository accountOwnerRepository,
-                                     AccountRegisteredRepository accountRegisteredRepository, AccountMeterRepository accountMeterRepository,
-                                     CitizenDocumentRepository citizenDocumentRepository, CitizenRepository citizenRepository,
-                                     MeterRepository meterRepository, MeterValueRepository meterValueRepository) {
+                                     TariffRepository tariffRepository, WorkingPeriodRepository workingPeriodRepository,
+                                     ContractorRepository contractorRepository, AccountRepository accountRepository,
+                                     CitizenRepository citizenRepository, MeterRepository meterRepository) {
         this.appLocale = appLocale;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
@@ -94,19 +82,11 @@ public class DatabasePopulationService {
         this.apartmentRepository = apartmentRepository;
         this.serviceRepository = serviceRepository;
         this.tariffRepository = tariffRepository;
-        this.tariffValueRepository = tariffValueRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.contractorRepository = contractorRepository;
         this.accountRepository = accountRepository;
-        this.accountParameterRepository = accountParameterRepository;
-        this.accountServiceRepository = accountServiceRepository;
-        this.accountOwnerRepository = accountOwnerRepository;
-        this.accountRegisteredRepository = accountRegisteredRepository;
-        this.accountMeterRepository = accountMeterRepository;
-        this.citizenDocumentRepository = citizenDocumentRepository;
         this.citizenRepository = citizenRepository;
         this.meterRepository = meterRepository;
-        this.meterValueRepository = meterValueRepository;
     }
 
     @PostConstruct
@@ -435,22 +415,32 @@ public class DatabasePopulationService {
                         break;
                 }
                 int apartmentIndex = 0;
+                int apartmentIndexFloor = 0;
                 int apartmentAreaIndex = 1;
                 int apartmentEntrance = 1;
-                int apartmentFloor = 0;
+                int apartmentFloor = 1;
                 int apartmentRoomsNumber = 0;
                 Double apartmentArea = 0D;
                 for (int i = 0; i < apartmentsCount; i++) {
                     if (apartmentIndex == 20) {
                         apartmentIndex = 0;
+                        apartmentIndexFloor = 0;
+                        apartmentEntrance++;
+                        apartmentFloor = 1;
+                        apartmentAreaIndex = 1;
                     }
                     apartmentIndex++;
+                    if (apartmentIndexFloor == 4) {
+                        apartmentIndexFloor = 0;
+                        apartmentFloor++;
+                    }
+                    apartmentIndexFloor++;
+
                     switch (apartmentAreaIndex) {
                         case 1:
                             apartmentAreaIndex = 2;
                             apartmentArea = 63.5D;
                             apartmentRoomsNumber = 3;
-                            apartmentFloor++;
                             break;
                         case 2:
                             apartmentAreaIndex = 3;
