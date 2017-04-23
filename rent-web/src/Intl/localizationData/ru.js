@@ -270,6 +270,7 @@ export default {
     phoneNumbersTitle: 'Номера телефонов',
     registeredCountTitle: 'Кол-во прописанных',
 
+    backTopTitle: 'Наверх',
     welcomePageTitle: 'Добро пожаловать',
     welcomePageText: 'Это альфа версия приложения, в данной версии реализован минимальный функционал.',
   },

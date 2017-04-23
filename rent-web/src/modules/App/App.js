@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BackTop } from 'antd';
+import { FormattedMessage } from 'react-intl';
 
 import './App.less';
 
@@ -62,7 +63,11 @@ class App extends ExtendedComponentPage {
             {children}
           </div>
         </div>
-        <BackTop />
+        <BackTop>
+          <div className="ant-back-top-inner">
+            <FormattedMessage id="backTopTitle" />
+          </div>
+        </BackTop>
       </div>
     );
   }
