@@ -17,13 +17,14 @@ import java.util.List;
         itemResourceRel = "building",
         excerptProjection = BuildingBasic.class)
 public interface BuildingRepository extends PagingAndSortingRepository<BuildingEntity, String> {
-    @Query("select distinct building from BuildingEntity building join building.street street where " +
+    @Query("select building from BuildingEntity building join building.street street where " +
             "street.id = :streetId order by building.house")
     List<BuildingEntity> findByStreetId(@Param("streetId") String streetId);
 
-    @Query("select distinct building from BuildingEntity building join building.street street where " +
+    @Query("select building from BuildingEntity building join building.street street where " +
             "lower(street.name) like concat('%', lower(:street), '%') and " +
-            "lower(building.house) like concat('%', lower(:house), '%')")
+            "lower(building.house) like concat('%', lower(:house), '%') " +
+            "order by street.name, building.house")
     Page<BuildingEntity> find(@Param("street") String streetName, @Param("house") String house, Pageable p);
 
     @Query("select building from BuildingEntity building")

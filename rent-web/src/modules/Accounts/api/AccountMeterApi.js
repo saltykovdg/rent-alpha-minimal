@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccountMeters(page = 0) {
-  return ApiCaller.callApi(`account-meter?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account-meter?page=${page}`);
 }
 
 export function getAccountMeter(id) {

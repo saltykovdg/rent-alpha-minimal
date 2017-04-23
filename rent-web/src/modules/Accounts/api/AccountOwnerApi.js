@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccountOwners(page = 0) {
-  return ApiCaller.callApi(`account-owner?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account-owner?page=${page}`);
 }
 
 export function getAccountOwner(id) {

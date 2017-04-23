@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getNormValues(page = 0) {
-  return ApiCaller.callApi(`norm-value?page=${page}&sort=name`);
+  return ApiCaller.callApi(`norm-value?page=${page}`);
 }
 
 export function getNormValue(id) {

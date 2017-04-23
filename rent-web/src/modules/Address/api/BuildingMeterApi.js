@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getBuildingMeters(page = 0) {
-  return ApiCaller.callApi(`building-meter?page=${page}&sort=name`);
+  return ApiCaller.callApi(`building-meter?page=${page}`);
 }
 
 export function getBuildingMeter(id) {

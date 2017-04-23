@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccountRegistereds(page = 0) {
-  return ApiCaller.callApi(`account-registered?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account-registered?page=${page}`);
 }
 
 export function getAccountRegistered(id) {

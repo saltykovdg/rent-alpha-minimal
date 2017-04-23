@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getMeters(page = 0) {
-  return ApiCaller.callApi(`meter?page=${page}&sort=name`);
+  return ApiCaller.callApi(`meter?page=${page}`);
 }
 
 export function getMeter(id) {
@@ -18,18 +18,15 @@ export function deleteMeter(object) {
 
 export function findMeters(meterType = '', service = '', name = '', serialNumber = '', page = 0) {
   const query = `&meterType=${meterType}&service=${service}&name=${name}&serialNumber=${serialNumber}`;
-  const sort = '&sort=meterType&sort=service&sort=name&sort=serialNumber';
-  return ApiCaller.callApi(`meter/search/find?page=${page}${query}${sort}`);
+  return ApiCaller.callApi(`meter/search/find?page=${page}${query}`);
 }
 export function findMetersIndividual(service = '', name = '', serialNumber = '', page = 0, size = 0) {
   const query = `&service=${service}&name=${name}&serialNumber=${serialNumber}`;
-  const sort = '&sort=meterType&sort=service&sort=name&sort=serialNumber';
   const sizeParam = size ? `&size=${size}` : '';
-  return ApiCaller.callApi(`meter/search/findIndividual?page=${page}${query}${sort}${sizeParam}`);
+  return ApiCaller.callApi(`meter/search/findIndividual?page=${page}${query}${sizeParam}`);
 }
 export function findMetersCommonHouse(service = '', name = '', serialNumber = '', page = 0, size = 0) {
   const query = `&service=${service}&name=${name}&serialNumber=${serialNumber}`;
-  const sort = '&sort=meterType&sort=service&sort=name&sort=serialNumber';
   const sizeParam = size ? `&size=${size}` : '';
-  return ApiCaller.callApi(`meter/search/findCommonHouse?page=${page}${query}${sort}${sizeParam}`);
+  return ApiCaller.callApi(`meter/search/findCommonHouse?page=${page}${query}${sizeParam}`);
 }

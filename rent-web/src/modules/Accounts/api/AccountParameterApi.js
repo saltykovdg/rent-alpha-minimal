@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccountParameters(page = 0) {
-  return ApiCaller.callApi(`account-parameter?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account-parameter?page=${page}`);
 }
 
 export function getAccountParameter(id) {

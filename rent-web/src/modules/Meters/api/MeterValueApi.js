@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getMeterValues(page = 0) {
-  return ApiCaller.callApi(`meter-value?page=${page}&sort=name`);
+  return ApiCaller.callApi(`meter-value?page=${page}`);
 }
 
 export function getMeterValue(id) {

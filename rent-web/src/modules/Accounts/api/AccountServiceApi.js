@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getAccountServices(page = 0) {
-  return ApiCaller.callApi(`account-service?page=${page}&sort=name`);
+  return ApiCaller.callApi(`account-service?page=${page}`);
 }
 
 export function getAccountService(id) {

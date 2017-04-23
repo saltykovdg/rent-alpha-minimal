@@ -19,8 +19,9 @@ import java.util.List;
 public interface StreetRepository extends PagingAndSortingRepository<StreetEntity, String> {
     List<StreetEntity> findByNameContainingOrderByName(@Param("name") String name);
 
-    @Query("select distinct street from StreetEntity street join street.streetType streetType where " +
+    @Query("select street from StreetEntity street join street.streetType streetType where " +
             "lower(streetType.name) like concat('%', lower(:streetType), '%') and " +
-            "lower(street.name) like concat('%', lower(:name), '%')")
+            "lower(street.name) like concat('%', lower(:name), '%') " +
+            "order by streetType.name, street.name")
     Page<StreetEntity> find(@Param("streetType") String streetType, @Param("name") String name, Pageable p);
 }

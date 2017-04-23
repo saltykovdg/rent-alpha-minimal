@@ -1,7 +1,8 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getCitizens(page = 0) {
-  return ApiCaller.callApi(`citizen?page=${page}&sort=lastName`);
+  const sort = '&sort=firstName&sort=lastName&sort=fatherName&sort=birthday';
+  return ApiCaller.callApi(`citizen?page=${page}${sort}`);
 }
 
 export function getCitizen(id) {

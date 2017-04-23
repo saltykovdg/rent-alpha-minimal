@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getTariffValues(page = 0) {
-  return ApiCaller.callApi(`tariff-value?page=${page}&sort=name`);
+  return ApiCaller.callApi(`tariff-value?page=${page}`);
 }
 
 export function getTariffValue(id) {
@@ -15,4 +15,3 @@ export function saveTariffValue(object) {
 export function deleteTariffValue(object) {
   return ApiCaller.callApi(`tariff-value/${object.id}`, 'delete');
 }
-
