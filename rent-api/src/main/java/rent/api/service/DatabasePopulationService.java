@@ -458,7 +458,7 @@ public class DatabasePopulationService {
                             apartmentRoomsNumber = 3;
                             break;
                     }
-                    createApartment(building, String.valueOf(i), i, apartmentEntrance, apartmentFloor, apartmentArea, apartmentRoomsNumber);
+                    createApartment(building, String.valueOf(i + 1), i + 1, apartmentEntrance, apartmentFloor, apartmentArea, apartmentRoomsNumber);
                 }
             }
         }
