@@ -19,5 +19,7 @@ public interface WorkingPeriodRepository extends PagingAndSortingRepository<Work
 
     List<WorkingPeriodEntity> findByNameContainingOrderByDateStartDesc(@Param("name") String name);
 
+    WorkingPeriodEntity getFirstByIdIsNotNullOrderByDateStartAsc();
+
     WorkingPeriodEntity getFirstByIdIsNotNullOrderByDateStartDesc();
 }

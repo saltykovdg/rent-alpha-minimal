@@ -27,4 +27,7 @@ public interface ApartmentRepository extends PagingAndSortingRepository<Apartmen
             "lower(apartment.apartment) like concat('%', lower(:apartment), '%')")
     Page<ApartmentEntity> find(@Param("street") String street, @Param("house") String house,
                                @Param("apartment") String apartment, Pageable p);
+
+    @Query("select apartment from ApartmentEntity apartment")
+    List<ApartmentEntity> findAll();
 }

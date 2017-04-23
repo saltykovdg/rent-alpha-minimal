@@ -37,6 +37,7 @@ public class DBConfiguration {
     public LocalContainerEntityManagerFactoryBean rentDBEntityManagerFactory(final EntityManagerFactoryBuilder builder) {
         Map<String, String> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.enable_lazy_load_no_trans", "true");
         return builder
                 .dataSource(rentDBDataSource())
                 .packages("rent.common.entity")
