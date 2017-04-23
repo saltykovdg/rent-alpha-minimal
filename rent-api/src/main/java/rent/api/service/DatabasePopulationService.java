@@ -47,6 +47,7 @@ public class DatabasePopulationService {
     private final AccountRepository accountRepository;
     private final CitizenRepository citizenRepository;
     private final MeterRepository meterRepository;
+    private final NormRepository normRepository;
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale,
@@ -61,7 +62,8 @@ public class DatabasePopulationService {
                                      ApartmentRepository apartmentRepository, ServiceRepository serviceRepository,
                                      TariffRepository tariffRepository, WorkingPeriodRepository workingPeriodRepository,
                                      ContractorRepository contractorRepository, AccountRepository accountRepository,
-                                     CitizenRepository citizenRepository, MeterRepository meterRepository) {
+                                     CitizenRepository citizenRepository, MeterRepository meterRepository,
+                                     NormRepository normRepository) {
         this.appLocale = appLocale;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
@@ -87,6 +89,7 @@ public class DatabasePopulationService {
         this.accountRepository = accountRepository;
         this.citizenRepository = citizenRepository;
         this.meterRepository = meterRepository;
+        this.normRepository = normRepository;
     }
 
     @PostConstruct
@@ -341,6 +344,7 @@ public class DatabasePopulationService {
         createApartments();
         createServices();
         createTariffs();
+        createNorms();
         createContractors();
         createAccounts();
     }
@@ -517,29 +521,31 @@ public class DatabasePopulationService {
             //MeasurementUnitEntity measurementUnitHeating = measurementUnitRepository.findByNameContainingOrderByName("гкал").get(0);
             MeasurementUnitEntity measurementUnitWater = measurementUnitRepository.findByNameContainingOrderByName("куб. м").get(0);
 
+            LocalDate dateStart = getFirstWorkingPeriod().getDateStart();
+
             for (ServiceEntity service : services) {
                 if (service.getName().contains("Содержание жилья")) {
-                    createTariff(calculationTypeTotalArea, measurementUnitArea, 22.5D, service);
+                    createTariff(dateStart, calculationTypeTotalArea, measurementUnitArea, 22.5D, service);
                 } else if (service.getName().contains("Текущий ремонт")) {
-                    createTariff(calculationTypeTotalArea, measurementUnitArea, 2.5D, service);
+                    createTariff(dateStart, calculationTypeTotalArea, measurementUnitArea, 2.5D, service);
                 } else if (service.getName().contains("Отопление")) {
-                    createTariff(calculationTypeTotalArea, measurementUnitArea, 30.5D, service);
+                    createTariff(dateStart, calculationTypeTotalArea, measurementUnitArea, 30.5D, service);
                 } else if (service.getName().contains("Холодная вода")) {
-                    createTariff(calculationTypeMeterReading, measurementUnitWater, 8.5D, service);
+                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 8.5D, service);
                 } else if (service.getName().contains("Горячая вода")) {
-                    createTariff(calculationTypeMeterReading, measurementUnitWater, 40.5D, service);
+                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 40.5D, service);
                 } else if (service.getName().contains("Водоотведение")) {
-                    createTariff(calculationTypeMeterReading, measurementUnitWater, 14.5D, service);
+                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 14.5D, service);
                 }
             }
         }
     }
 
-    private void createTariff(CalculationTypeEntity calculationType, MeasurementUnitEntity measurementUnit,
+    private void createTariff(LocalDate dateStart, CalculationTypeEntity calculationType, MeasurementUnitEntity measurementUnit,
                               Double value, ServiceEntity service) {
         TariffValueEntity tariffValue = new TariffValueEntity();
         tariffValue.setCalculationType(calculationType);
-        tariffValue.setDateStart(getFirstWorkingPeriod().getDateStart());
+        tariffValue.setDateStart(dateStart);
         tariffValue.setMeasurementUnit(measurementUnit);
         tariffValue.setValue(value);
 
@@ -548,6 +554,35 @@ public class DatabasePopulationService {
         tariff.setName(String.format("Тариф ну услугу <%s>", service.getName()));
         tariff.setValues(Collections.singletonList(tariffValue));
         tariffRepository.save(tariff);
+    }
+
+    private void createNorms() {
+        if (normRepository.count() == 0) {
+            List<ServiceEntity> services = serviceRepository.findByNameContainingOrderByName("");
+            MeasurementUnitEntity measurementUnitWater = measurementUnitRepository.findByNameContainingOrderByName("куб. м").get(0);
+            LocalDate dateStart = getFirstWorkingPeriod().getDateStart();
+            for (ServiceEntity service : services) {
+                if (service.getName().contains("Холодная вода")) {
+                    createNorm(dateStart, measurementUnitWater, 7.5D, service);
+                } else if (service.getName().contains("Горячая вода")) {
+                    createNorm(dateStart, measurementUnitWater, 4.5D, service);
+                }
+            }
+        }
+    }
+
+    private void createNorm(LocalDate dateStart, MeasurementUnitEntity measurementUnit, Double value, ServiceEntity service) {
+        NormEntity norm = new NormEntity();
+        norm.setName(String.format("Норматив ну услугу <%s>", service.getName()));
+        norm.setService(service);
+
+        NormValueEntity normValue = new NormValueEntity();
+        normValue.setMeasurementUnit(measurementUnit);
+        normValue.setDateStart(dateStart);
+        normValue.setValue(value);
+
+        norm.setValues(Collections.singletonList(normValue));
+        normRepository.save(norm);
     }
 
     private void createContractors() {
