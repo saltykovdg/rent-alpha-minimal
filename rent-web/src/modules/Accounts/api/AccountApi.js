@@ -18,13 +18,15 @@ export function deleteAccount(object) {
 
 export function findAccountsByAccountNumber(accountNumber = '', page = 0) {
   const sort = '&sort=accountNumber';
-  return ApiCaller.callApi(`account/search/findByAccountNumber?accountNumber=${accountNumber}&page=${page}${sort}`);
+  const projection = '&projection=accountMinimal';
+  return ApiCaller.callApi(`account/search/findByAccountNumber?accountNumber=${accountNumber}&page=${page}${sort}${projection}`);
 }
 
 export function findAccounts(accountNumber = '', lastName = '', street = '', house = '', apartment = '', page = 0) {
   const query = `&accountNumber=${accountNumber}&lastName=${lastName}&street=${street}&house=${house}&apartment=${apartment}`;
   const sort = '&sort=accountNumber';
-  return ApiCaller.callApi(`account/search/find?page=${page}${query}${sort}`);
+  const projection = '&projection=accountMinimal';
+  return ApiCaller.callApi(`account/search/find?page=${page}${query}${sort}${projection}`);
 }
 
 export function getAccountCalculations(accountId, workingPeriodId) {
