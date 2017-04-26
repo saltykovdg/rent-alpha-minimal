@@ -57,22 +57,27 @@ export function findStreetTypesByName(name = '') {
 }
 export function findStreets(streetType = '', name = '', page = 0) {
   const query = `&streetType=${streetType}&name=${name}`;
-  return ApiCaller.callApi(`street/search/find?page=${page}${query}`);
+  const projection = '&projection=streetMinimal';
+  return ApiCaller.callApi(`street/search/find?page=${page}${query}${projection}`);
 }
 export function findStreetsByName(name = '') {
   return ApiCaller.callApi(`street/search/findByNameContainingOrderByName?name=${name}`);
 }
 export function findBuildingsByStreetId(streetId = '') {
-  return ApiCaller.callApi(`building/search/findByStreetId?streetId=${streetId}`);
+  const projection = '&projection=buildingMinimal';
+  return ApiCaller.callApi(`building/search/findByStreetId?streetId=${streetId}${projection}`);
 }
 export function findBuildings(street = '', house = '', page = 0) {
   const query = `&street=${street}&house=${house}`;
-  return ApiCaller.callApi(`building/search/find?page=${page}${query}`);
+  const projection = '&projection=buildingMinimal';
+  return ApiCaller.callApi(`building/search/find?page=${page}${query}${projection}`);
 }
 export function findApartmentsByBuildingId(buildingId = '') {
-  return ApiCaller.callApi(`apartment/search/findByBuildingId?buildingId=${buildingId}`);
+  const projection = '&projection=apartmentMinimal';
+  return ApiCaller.callApi(`apartment/search/findByBuildingId?buildingId=${buildingId}${projection}`);
 }
 export function findApartments(street = '', house = '', apartment = '', page = 0) {
   const query = `&street=${street}&house=${house}&apartment=${apartment}`;
-  return ApiCaller.callApi(`apartment/search/find?page=${page}${query}`);
+  const projection = '&projection=apartmentMinimal';
+  return ApiCaller.callApi(`apartment/search/find?page=${page}${query}${projection}`);
 }

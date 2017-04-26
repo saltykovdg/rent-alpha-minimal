@@ -21,5 +21,6 @@ export function findCitizens(firstName = '', lastName = '', fatherName = '', doc
   const query = `firstName=${firstName}&lastName=${lastName}&fatherName=${fatherName}&documentSeries=${documentSeries}&documentNumber=${documentNumber}`;
   const sort = '&sort=firstName&sort=lastName&sort=fatherName&sort=birthday';
   const sizeParam = size ? `&size=${size}` : '';
-  return ApiCaller.callApi(`citizen/search/find?${query}&page=${page}${sort}${sizeParam}`);
+  const projection = '&projection=citizenMinimal';
+  return ApiCaller.callApi(`citizen/search/find?${query}&page=${page}${sort}${sizeParam}${projection}`);
 }

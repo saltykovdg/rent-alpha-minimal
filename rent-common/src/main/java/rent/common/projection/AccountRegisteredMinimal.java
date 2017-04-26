@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Projection(types = {AccountRegisteredEntity.class})
 public interface AccountRegisteredMinimal {
-    CitizenMinimal getCitizen();
+    CitizenMinimalForAccount getCitizen();
 
     LocalDate getDateStart();
 

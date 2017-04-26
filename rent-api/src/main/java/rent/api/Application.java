@@ -17,8 +17,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 import rent.api.interceptors.LoggingRequestInterceptor;
-import rent.common.entity.AccountEntity;
-import rent.common.projection.AccountMinimal;
+import rent.common.entity.*;
+import rent.common.projection.*;
 
 @Configuration
 @ComponentScan(basePackages = {"rent.api", "rent.common"})
@@ -66,6 +66,31 @@ public class Application extends SpringBootServletInitializer {
                 config.exposeIdsFor(AccountEntity.class)
                         .getProjectionConfiguration()
                         .addProjection(AccountMinimal.class);
+                config.exposeIdsFor(CitizenEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(CitizenMinimal.class);
+                config.exposeIdsFor(MeterEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(MeterMinimal.class)
+                        .addProjection(MeterMinimalWithoutType.class);
+                config.exposeIdsFor(StreetEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(StreetMinimal.class);
+                config.exposeIdsFor(BuildingEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(BuildingMinimal.class);
+                config.exposeIdsFor(ApartmentEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(ApartmentMinimal.class);
+                config.exposeIdsFor(ServiceEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(ServiceMinimal.class);
+                config.exposeIdsFor(TariffEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(TariffMinimal.class);
+                config.exposeIdsFor(NormEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(NormMinimal.class);
             }
         };
     }

@@ -4,10 +4,6 @@ import org.springframework.data.rest.core.config.Projection;
 import rent.common.entity.StreetEntity;
 
 @Projection(types = {StreetEntity.class})
-public interface StreetMinimal {
-    String getId();
-
+public interface StreetMinimalWithoutType {
     String getName();
-
-    StreetTypeMinimal getStreetType();
 }

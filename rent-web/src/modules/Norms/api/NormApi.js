@@ -1,7 +1,8 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getNorms(page = 0) {
-  return ApiCaller.callApi(`norm?page=${page}&sort=name`);
+  const projection = '&projection=normMinimal';
+  return ApiCaller.callApi(`norm?page=${page}&sort=name${projection}`);
 }
 
 export function getNorm(id) {
@@ -17,5 +18,6 @@ export function deleteNorm(object) {
 }
 
 export function findNormsByServiceId(serviceId = '') {
-  return ApiCaller.callApi(`norm/search/findByServiceId?serviceId=${serviceId}`);
+  const projection = '&projection=normMinimal';
+  return ApiCaller.callApi(`norm/search/findByServiceId?serviceId=${serviceId}${projection}`);
 }

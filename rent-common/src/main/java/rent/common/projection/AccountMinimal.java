@@ -18,7 +18,7 @@ public interface AccountMinimal {
 
     ContractorMinimal getContractor();
 
-    ApartmentMinimal getApartment();
+    ApartmentMinimalForAccount getApartment();
 
     List<AccountParameterMinimal> getParameters();
 
