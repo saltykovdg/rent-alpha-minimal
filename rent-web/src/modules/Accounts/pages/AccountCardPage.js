@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 
 // Import Components
+import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 import AccountCard from './../components/AccountCard';
+import CalculationForm from './../../../components/CalculationForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -33,6 +34,20 @@ class AccountCardPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.getAccountCard(id, this.props.currentWorkingPeriod.id));
     }
     this.changeWorkingPeriod(this.props.currentWorkingPeriod, false);
+    this.initFormCalculation(false);
+  }
+  initFormCalculation = (visible) => {
+    this.setState({ formCalculationVisible: visible });
+  }
+  showFormCalculation = () => {
+    this.initFormCalculation(true);
+  }
+  onOkFormCalculation = (object) => {
+    this.initFormCalculation(false);
+    console.log(object);
+  }
+  onCancelFormCalculation = () => {
+    this.initFormCalculation(false);
   }
   changeWorkingPeriod = (workingPeriod, getCalculations = true) => {
     this.setState({ selectedWorkingPeriod: workingPeriod });
@@ -42,18 +57,29 @@ class AccountCardPage extends ExtendedComponentPage {
   }
   render() {
     return (
-      <AccountCard
-        data={this.props.data}
-        calculations={this.props.calculations}
-        isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
-        id={this.props.id}
-        isLoading={this.props.isLoading}
-        isRequestError={this.props.isRequestError}
-        workingPeriods={this.props.workingPeriods}
-        currentWorkingPeriod={this.props.currentWorkingPeriod}
-        selectedWorkingPeriod={this.state.selectedWorkingPeriod}
-        changeWorkingPeriod={this.changeWorkingPeriod}
-      />
+      <div>
+        <AccountCard
+          data={this.props.data}
+          calculations={this.props.calculations}
+          isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
+          id={this.props.id}
+          isLoading={this.props.isLoading}
+          isRequestError={this.props.isRequestError}
+          workingPeriods={this.props.workingPeriods}
+          currentWorkingPeriod={this.props.currentWorkingPeriod}
+          selectedWorkingPeriod={this.state.selectedWorkingPeriod}
+          changeWorkingPeriod={this.changeWorkingPeriod}
+          showFormCalculation={this.showFormCalculation}
+        />
+        <CalculationForm
+          title={this.props.intl.messages.calculationAccountTitle}
+          formCalculationVisible={this.state.formCalculationVisible}
+          workingPeriods={this.props.workingPeriods}
+          currentWorkingPeriod={this.props.currentWorkingPeriod}
+          onOkFormCalculation={this.onOkFormCalculation}
+          onCancelFormCalculation={this.onCancelFormCalculation}
+        />
+      </div>
     );
   }
 }

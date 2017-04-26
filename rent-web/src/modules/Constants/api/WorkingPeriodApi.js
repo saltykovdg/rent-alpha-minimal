@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getWorkingPeriods(page = 0) {
-  return ApiCaller.callApi(`working-period?page=${page}&sort=name`);
+  return ApiCaller.callApi(`working-period?page=${page}&sort=dateStart`);
 }
 
 export function getWorkingPeriod(id) {

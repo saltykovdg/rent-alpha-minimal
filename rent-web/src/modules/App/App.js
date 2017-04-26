@@ -37,7 +37,7 @@ class App extends ExtendedComponentPage {
     this.setState({
       userName: 'Салтыков Д. Г.',
     });
-    this.props.dispatch(WorkingPeriodAction.getWorkingPeriods());
+    this.props.dispatch(WorkingPeriodAction.findWorkingPeriodsByName());
     this.props.dispatch(WorkingPeriodAction.findLastWorkingPeriod());
   }
   render() {

@@ -15,6 +15,7 @@ export default {
     editPageCreateAccountTitle: 'Создание лицевого счета',
     editPageEditAccountTitle: 'Редактирование лицевого счета',
     accountCardTitle: 'Карточка лицевого счета',
+    calculationAccountTitle: 'Произвести начисление / перерасчет на ЛС',
 
     calculationsTitle: 'Расчеты',
     openingBalanceTitle: 'Сальдо входящее',
@@ -239,7 +240,9 @@ export default {
     buttonApply: 'Применить',
     buttonSelect: 'Выбрать',
     buttonChange: 'Изменить',
+    buttonExecuteCalculation: 'Выполнить расчет',
     buttonCard: 'Карточка',
+    buttonCalculateAccount: 'Расчитать ЛС',
     buttonGoToAccountList: 'Перейти к списку ЛС',
     tableColumnActions: 'Действия',
     fieldIsEmptyError: 'Поле не должно быть пустым!',
@@ -269,6 +272,9 @@ export default {
     selectMeterErrorTitle: 'Укажите прибор учета!',
     phoneNumbersTitle: 'Номера телефонов',
     registeredCountTitle: 'Кол-во прописанных',
+    periodStartEndErrorTitle: 'Период С должен быть меньше или равен периоду ПО',
+    commonFieldPeriodStart: 'Период С',
+    commonFieldPeriodEnd: 'Период ПО',
 
     backTopTitle: 'Наверх',
     welcomePageTitle: 'Добро пожаловать',

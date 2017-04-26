@@ -222,8 +222,15 @@ class AccountCard extends EditComponent {
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <Row gutter={16}>
-              <Col className="gutter-row" span={20}>
+              <Col className="gutter-row" span={16}>
                 <h1>{titleItem}</h1>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={' '} colon={false}>
+                  <Button className="full-width" onClick={() => this.props.showFormCalculation()}>
+                    <FormattedMessage id="buttonCalculateAccount" />
+                  </Button>
+                </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
                 <FormItem label={messages.workingPeriodsTitle}>
