@@ -23,6 +23,8 @@ import {
 import {
   getAccountCalculationListData,
   getAccountCalculationIsLoading,
+  accountIsCalculating,
+  accountIsCalculatingError,
 } from './../reducers/AccountCalculationsReducer';
 
 class AccountCardPage extends ExtendedComponentPage {
@@ -44,7 +46,16 @@ class AccountCardPage extends ExtendedComponentPage {
   }
   onOkFormCalculation = (object) => {
     this.initFormCalculation(false);
-    console.log(object);
+    let workingPeriodId = null;
+    if (this.state.selectedWorkingPeriod.id === this.props.currentWorkingPeriod.id) {
+      workingPeriodId = this.props.currentWorkingPeriod.id;
+    }
+    this.props.dispatch(AccountAction.calculateAccount(
+      this.props.id,
+      object.periodStart.id,
+      object.periodEnd.id,
+      workingPeriodId,
+    ));
   }
   onCancelFormCalculation = () => {
     this.initFormCalculation(false);
@@ -62,6 +73,7 @@ class AccountCardPage extends ExtendedComponentPage {
           data={this.props.data}
           calculations={this.props.calculations}
           isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
+          accountIsCalculating={this.props.accountIsCalculating}
           id={this.props.id}
           isLoading={this.props.isLoading}
           isRequestError={this.props.isRequestError}
@@ -91,7 +103,8 @@ function mapStateToProps(state, props) {
     isLoading: getIsLoadingAccounts(state),
     calculations: getAccountCalculationListData(state),
     isLoadingAccountCalculation: getAccountCalculationIsLoading(state),
-    isRequestError: getIsRequestErrorAccounts(state),
+    accountIsCalculating: accountIsCalculating(state),
+    isRequestError: getIsRequestErrorAccounts(state) || accountIsCalculatingError(state),
     id: props.params.id,
   };
 }

@@ -227,15 +227,17 @@ class AccountCard extends EditComponent {
               </Col>
               <Col className="gutter-row" span={4}>
                 <FormItem label={' '} colon={false}>
-                  <Button className="full-width" onClick={() => this.props.showFormCalculation()}>
+                  <Button className="full-width" onClick={() => this.props.showFormCalculation()} loading={this.props.accountIsCalculating}>
                     <FormattedMessage id="buttonCalculateAccount" />
                   </Button>
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
-                <FormItem label={messages.workingPeriodsTitle}>
-                  {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
-                </FormItem>
+                <Spin spinning={this.props.accountIsCalculating}>
+                  <FormItem label={messages.workingPeriodsTitle}>
+                    {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
+                  </FormItem>
+                </Spin>
               </Col>
             </Row>
             <Row gutter={16}>

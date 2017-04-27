@@ -20,7 +20,7 @@ import java.util.*;
 
 @Service
 public class DatabasePopulationService {
-    private final Logger log = LoggerFactory.getLogger(DatabasePopulationService.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final String appLocale;
     private final RoleRepository roleRepository;

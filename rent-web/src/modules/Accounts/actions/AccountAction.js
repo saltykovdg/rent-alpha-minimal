@@ -56,6 +56,10 @@ export const GET_ACCOUNT_CALCULATIONS = 'GET_ACCOUNT_CALCULATIONS';
 export const GET_ACCOUNT_CALCULATIONS_SUCCESS = 'GET_ACCOUNT_CALCULATIONS_SUCCESS';
 export const GET_ACCOUNT_CALCULATIONS_FAILED = 'GET_ACCOUNT_CALCULATIONS_FAILED';
 
+export const CALCULATE_ACCOUNT = 'CALCULATE_ACCOUNT';
+export const CALCULATE_ACCOUNT_SUCCESS = 'CALCULATE_ACCOUNT_SUCCESS';
+export const CALCULATE_ACCOUNT_FAILED = 'CALCULATE_ACCOUNT_FAILED';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -347,5 +351,26 @@ export const getAccountCalculationsFailed = () => {
 export const clearLocalDataAccountCalculations = () => {
   return {
     type: CLEAR_LOCAL_DATA_ACCOUNT_CALCULATIONS,
+  };
+};
+
+export const calculateAccount = (accountId, periodStartId, periodEndId, workingPeriodId) => {
+  return {
+    type: CALCULATE_ACCOUNT,
+    accountId,
+    periodStartId,
+    periodEndId,
+    workingPeriodId,
+  };
+};
+export const calculateAccountSuccess = (data) => {
+  return {
+    type: CALCULATE_ACCOUNT_SUCCESS,
+    data,
+  };
+};
+export const calculateAccountFailed = () => {
+  return {
+    type: CALCULATE_ACCOUNT_FAILED,
   };
 };

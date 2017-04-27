@@ -1,5 +1,5 @@
 import * as AccountAction from './../actions/AccountAction';
-import { prepareList } from './../../../util/ReducerUtil';
+import { prepareList, prepare } from './../../../util/ReducerUtil';
 
 export const accountCalculationReducer = (state, action) => {
   switch (action.type) {
@@ -19,6 +19,33 @@ export const accountCalculationReducer = (state, action) => {
       return prepareList(null, null, false, false, false, false);
     }
 
+    case AccountAction.CALCULATE_ACCOUNT: {
+      const list = state.accountCalculation.list;
+      const edit = {
+        isLoading: true,
+        isRequestError: false,
+      };
+      return prepare(list, edit);
+    }
+
+    case AccountAction.CALCULATE_ACCOUNT_SUCCESS: {
+      const list = state.accountCalculation.list;
+      const edit = {
+        isLoading: false,
+        isRequestError: false,
+      };
+      return prepare(list, edit);
+    }
+
+    case AccountAction.CALCULATE_ACCOUNT_FAILED: {
+      const list = state.accountCalculation.list;
+      const edit = {
+        isLoading: false,
+        isRequestError: true,
+      };
+      return prepare(list, edit);
+    }
+
     default:
       return state.accountCalculation;
   }
@@ -28,3 +55,6 @@ export const accountCalculationReducer = (state, action) => {
 export const getAccountCalculationListData = state => state.accounts.accountCalculation.list.data;
 export const getAccountCalculationIsLoading = state => state.accounts.accountCalculation.list.isLoading;
 export const getAccountCalculationIsRequestError = state => state.accounts.accountCalculation.list.isRequestError;
+
+export const accountIsCalculating = state => state.accounts.accountCalculation.edit.isLoading;
+export const accountIsCalculatingError = state => state.accounts.accountCalculation.edit.isRequestError;

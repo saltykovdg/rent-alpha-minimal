@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 public class FileUploadService {
-    private final Logger log = LoggerFactory.getLogger(FileUploadService.class);
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final String contentDir;
 
     @Autowired

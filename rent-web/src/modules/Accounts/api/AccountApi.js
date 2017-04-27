@@ -30,5 +30,10 @@ export function findAccounts(accountNumber = '', lastName = '', street = '', hou
 }
 
 export function getAccountCalculations(accountId, workingPeriodId) {
-  return ApiCaller.callApi(`account-calculation/getAccountCalculations?accountId=${accountId}&workingPeriodId=${workingPeriodId}`);
+  return ApiCaller.callApi(`calculation/account?accountId=${accountId}&workingPeriodId=${workingPeriodId}`);
+}
+
+export function calculateAccount(accountId, periodStartId, periodEndId) {
+  const query = `?accountId=${accountId}&periodStartId=${periodStartId}&periodEndId=${periodEndId}`;
+  return ApiCaller.callApi(`calculation/calculate-account${query}`);
 }

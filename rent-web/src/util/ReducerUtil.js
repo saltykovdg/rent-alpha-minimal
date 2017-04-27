@@ -46,3 +46,12 @@ export const prepareDefault = (list, newEditData) => {
     isDeleted: false,
   };
 };
+
+export const prepare = (list, edit) => {
+  return {
+    list,
+    edit,
+    isSaved: false,
+    isDeleted: false,
+  };
+};

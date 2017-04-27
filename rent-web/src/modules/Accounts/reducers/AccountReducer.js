@@ -272,6 +272,9 @@ export const accountReducer = (state, action) => {
     case WorkingPeriodAction.GET_WORKING_PERIODS:
     case WorkingPeriodAction.GET_WORKING_PERIODS_SUCCESS:
     case WorkingPeriodAction.GET_WORKING_PERIODS_FAILED:
+    case AccountAction.CALCULATE_ACCOUNT:
+    case AccountAction.CALCULATE_ACCOUNT_SUCCESS:
+    case AccountAction.CALCULATE_ACCOUNT_FAILED:
     case AccountAction.GET_ACCOUNT_CALCULATIONS:
     case AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS:
     case AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED:
