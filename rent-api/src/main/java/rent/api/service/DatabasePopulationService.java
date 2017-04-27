@@ -490,7 +490,8 @@ public class DatabasePopulationService {
             createService(serviceType, "Отопление");
             createService(serviceType, "Холодная вода");
             createService(serviceType, "Горячая вода");
-            createService(serviceType, "Водоотведение");
+            createService(serviceType, "Водоотведение ГВС");
+            createService(serviceType, "Водоотведение ХВС");
         }
     }
 
@@ -535,7 +536,7 @@ public class DatabasePopulationService {
                 } else if (service.getName().contains("Горячая вода")) {
                     createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 40.5D, service);
                 } else if (service.getName().contains("Водоотведение")) {
-                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 14.5D, service);
+                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 7.25D, service);
                 }
             }
         }
@@ -565,6 +566,10 @@ public class DatabasePopulationService {
                 if (service.getName().contains("Холодная вода")) {
                     createNorm(dateStart, measurementUnitWater, 7.5D, service);
                 } else if (service.getName().contains("Горячая вода")) {
+                    createNorm(dateStart, measurementUnitWater, 4.5D, service);
+                } else if (service.getName().contains("Водоотведение ХВС")) {
+                    createNorm(dateStart, measurementUnitWater, 7.5D, service);
+                } else if (service.getName().contains("Водоотведение ГВС")) {
                     createNorm(dateStart, measurementUnitWater, 4.5D, service);
                 }
             }

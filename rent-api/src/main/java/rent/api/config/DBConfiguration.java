@@ -1,6 +1,7 @@
 package rent.api.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,6 +26,9 @@ import java.util.Map;
         transactionManagerRef = "rentDBTransactionManager")
 @EnableTransactionManagement
 public class DBConfiguration {
+    @Value("${datasource.hbm2ddl.auto}")
+    private String datasourceHbm2ddlAuto;
+
     @Bean
     @ConfigurationProperties(prefix = "datasource.rent")
     @Primary
@@ -36,7 +40,7 @@ public class DBConfiguration {
     @Primary
     public LocalContainerEntityManagerFactoryBean rentDBEntityManagerFactory(final EntityManagerFactoryBuilder builder) {
         Map<String, String> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", datasourceHbm2ddlAuto);
         properties.put("hibernate.enable_lazy_load_no_trans", "true");
         return builder
                 .dataSource(rentDBDataSource())
