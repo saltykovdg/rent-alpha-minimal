@@ -14,7 +14,12 @@ public enum CalculationType {
     /**
      * По показаниям счетчика
      */
-    METER_READING("03");
+    METER_READING("03"),
+
+    /**
+     * По показаниям счетчика (водоотведение)
+     */
+    METER_READING_WATER("04");
 
     private String code;
 

@@ -23,6 +23,7 @@ public class DatabasePopulationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final String appLocale;
+    private final Boolean createTestData;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -50,7 +51,7 @@ public class DatabasePopulationService {
     private final NormRepository normRepository;
 
     @Autowired
-    public DatabasePopulationService(@Value("${app.locale}") String appLocale,
+    public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
                                      RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
@@ -65,6 +66,7 @@ public class DatabasePopulationService {
                                      CitizenRepository citizenRepository, MeterRepository meterRepository,
                                      NormRepository normRepository) {
         this.appLocale = appLocale;
+        this.createTestData = createTestData;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -184,6 +186,10 @@ public class DatabasePopulationService {
         calculationType = calculationTypeRepository.findByCode(CalculationType.METER_READING.getCode());
         if (calculationType == null) {
             createCalculationType(CalculationType.METER_READING.getCode(), "По показаниям счетчика");
+        }
+        calculationType = calculationTypeRepository.findByCode(CalculationType.METER_READING_WATER.getCode());
+        if (calculationType == null) {
+            createCalculationType(CalculationType.METER_READING_WATER.getCode(), "По показаниям счетчика (водоотведение)");
         }
     }
 
@@ -339,14 +345,16 @@ public class DatabasePopulationService {
      * Testing data
      */
     private void createTestData() {
-        createStreets();
-        createBuildings();
-        createApartments();
-        createServices();
-        createTariffs();
-        createNorms();
-        createContractors();
-        createAccounts();
+        if (createTestData) {
+            createStreets();
+            createBuildings();
+            createApartments();
+            createServices();
+            createTariffs();
+            createNorms();
+            createContractors();
+            createAccounts();
+        }
     }
 
     private void createStreets() {
@@ -490,8 +498,7 @@ public class DatabasePopulationService {
             createService(serviceType, "Отопление");
             createService(serviceType, "Холодная вода");
             createService(serviceType, "Горячая вода");
-            createService(serviceType, "Водоотведение ГВС");
-            createService(serviceType, "Водоотведение ХВС");
+            createService(serviceType, "Водоотведение");
         }
     }
 
@@ -517,6 +524,7 @@ public class DatabasePopulationService {
             CalculationTypeEntity calculationTypeTotalArea = calculationTypeRepository.findByCode(CalculationType.TOTAL_AREA.getCode());
             //CalculationTypeEntity calculationTypePeoples = calculationTypeRepository.findByCode(CalculationType.PEOPLES.getCode());
             CalculationTypeEntity calculationTypeMeterReading = calculationTypeRepository.findByCode(CalculationType.METER_READING.getCode());
+            CalculationTypeEntity calculationTypeMeterReadingWater = calculationTypeRepository.findByCode(CalculationType.METER_READING_WATER.getCode());
 
             MeasurementUnitEntity measurementUnitArea = measurementUnitRepository.findByNameContainingOrderByName("кв. м").get(0);
             //MeasurementUnitEntity measurementUnitHeating = measurementUnitRepository.findByNameContainingOrderByName("гкал").get(0);
@@ -536,7 +544,7 @@ public class DatabasePopulationService {
                 } else if (service.getName().contains("Горячая вода")) {
                     createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 40.5D, service);
                 } else if (service.getName().contains("Водоотведение")) {
-                    createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 7.25D, service);
+                    createTariff(dateStart, calculationTypeMeterReadingWater, measurementUnitWater, 7.25D, service);
                 }
             }
         }
@@ -566,10 +574,6 @@ public class DatabasePopulationService {
                 if (service.getName().contains("Холодная вода")) {
                     createNorm(dateStart, measurementUnitWater, 7.5D, service);
                 } else if (service.getName().contains("Горячая вода")) {
-                    createNorm(dateStart, measurementUnitWater, 4.5D, service);
-                } else if (service.getName().contains("Водоотведение ХВС")) {
-                    createNorm(dateStart, measurementUnitWater, 7.5D, service);
-                } else if (service.getName().contains("Водоотведение ГВС")) {
                     createNorm(dateStart, measurementUnitWater, 4.5D, service);
                 }
             }
