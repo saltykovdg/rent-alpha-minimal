@@ -1,5 +1,7 @@
 package rent.common.entity;
 
+import rent.common.interfaces.IPeriod;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -13,7 +15,7 @@ import java.time.LocalDate;
         @Index(columnList = AccountParameterEntity.Columns.DATE_START),
         @Index(columnList = AccountParameterEntity.Columns.DATE_END),
 })
-public class AccountParameterEntity extends AbstractEntity {
+public class AccountParameterEntity extends AbstractEntity implements IPeriod {
     public static final String TABLE_NAME = "accounts_parameters";
 
     public interface Columns extends AbstractEntity.Columns {

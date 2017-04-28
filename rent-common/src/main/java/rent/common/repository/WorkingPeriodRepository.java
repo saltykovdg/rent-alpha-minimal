@@ -1,5 +1,6 @@
 package rent.common.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -22,4 +23,8 @@ public interface WorkingPeriodRepository extends PagingAndSortingRepository<Work
     WorkingPeriodEntity getFirstByIdIsNotNullOrderByDateStartAsc();
 
     WorkingPeriodEntity getFirstByIdIsNotNullOrderByDateStartDesc();
+
+    @Query("select workingPeriod from WorkingPeriodEntity workingPeriod " +
+            "where workingPeriod.dateStart between :periodStart and :periodEnd")
+    List<WorkingPeriodEntity> find(@Param("periodStart") LocalDate periodStart, @Param("periodEnd") LocalDate periodEnd);
 }

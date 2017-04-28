@@ -1,5 +1,7 @@
 package rent.common.entity;
 
+import rent.common.interfaces.IPeriod;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -13,7 +15,7 @@ import java.time.LocalDate;
         @Index(columnList = NormValueEntity.Columns.DATE_START),
         @Index(columnList = NormValueEntity.Columns.DATE_END),
 })
-public class NormValueEntity extends AbstractEntity {
+public class NormValueEntity extends AbstractEntity implements IPeriod {
     public static final String TABLE_NAME = "norms_values";
 
     public interface Columns extends AbstractEntity.Columns {
