@@ -12,6 +12,7 @@ import rent.common.enums.ParameterType;
 import rent.common.interfaces.IPeriod;
 import rent.common.repository.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +26,18 @@ public class CalculationService {
     private final WorkingPeriodRepository workingPeriodRepository;
     private final AccountAccrualRepository accountAccrualRepository;
     private final AccountRecalculationRepository accountRecalculationRepository;
+    private final NormRepository normRepository;
 
     @Autowired
     public CalculationService(CommonRepository commonRepository, AccountRepository accountRepository,
                               WorkingPeriodRepository workingPeriodRepository, AccountAccrualRepository accountAccrualRepository,
-                              AccountRecalculationRepository accountRecalculationRepository) {
+                              AccountRecalculationRepository accountRecalculationRepository, NormRepository normRepository) {
         this.commonRepository = commonRepository;
         this.accountRepository = accountRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.accountAccrualRepository = accountAccrualRepository;
         this.accountRecalculationRepository = accountRecalculationRepository;
+        this.normRepository = normRepository;
     }
 
     public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
@@ -133,9 +136,13 @@ public class CalculationService {
             MeterEntity meter = accountMeter.getMeter();
             ServiceEntity service = meter.getService();
             if (service.getId().equals(accountService.getService().getId())) {
+                Double normValue = getNormValueForPeriod(workingPeriod, service);
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
                     consumption += meterValue.getConsumption();
+                }
+                if (meterValues.isEmpty() || consumption > normValue) {
+                    consumption = normValue;
                 }
             }
         }
@@ -217,20 +224,39 @@ public class CalculationService {
         return list;
     }
 
+    private Double getNormValueForPeriod(WorkingPeriodEntity workingPeriod, ServiceEntity service) {
+        Double value = 0D;
+        List<NormEntity> norms = normRepository.findByServiceId(service.getId());
+        for (NormEntity norm : norms) {
+            List<NormValueEntity> normValues = getListForPeriod(workingPeriod, norm.getValues());
+            if (normValues.size() > 0) {
+                NormValueEntity normValue = normValues.get(0);
+                value = normValue.getValue();
+                break;
+            }
+        }
+        return value;
+    }
+
+    private Double roundHalfUp(Double value) {
+        BigDecimal bigDecimal = new BigDecimal(value);
+        return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
     private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod) {
         for (AccountServiceCalculationDto accountServiceCalculationDto : accountCalculations) {
             if (currentWorkingPeriod.getId().equals(forWorkingPeriod.getId())) {
                 AccountAccrualEntity accountAccrual = new AccountAccrualEntity();
                 accountAccrual.setAccountService(accountServiceCalculationDto.getAccountService());
-                accountAccrual.setConsumption(accountServiceCalculationDto.getConsumption());
-                accountAccrual.setValue(accountServiceCalculationDto.getSum());
+                accountAccrual.setConsumption(roundHalfUp(accountServiceCalculationDto.getConsumption()));
+                accountAccrual.setValue(roundHalfUp(accountServiceCalculationDto.getSum()));
                 accountAccrual.setWorkingPeriod(currentWorkingPeriod);
                 accountAccrualRepository.save(accountAccrual);
             } else {
                 AccountRecalculationEntity accountRecalculation = new AccountRecalculationEntity();
                 accountRecalculation.setAccountService(accountServiceCalculationDto.getAccountService());
-                accountRecalculation.setConsumption(accountServiceCalculationDto.getConsumption());
-                accountRecalculation.setValue(accountServiceCalculationDto.getSum());
+                accountRecalculation.setConsumption(roundHalfUp(accountServiceCalculationDto.getConsumption()));
+                accountRecalculation.setValue(roundHalfUp(accountServiceCalculationDto.getSum()));
                 accountRecalculation.setWorkingPeriod(currentWorkingPeriod);
                 accountRecalculation.setForWorkingPeriod(forWorkingPeriod);
                 accountRecalculationRepository.save(accountRecalculation);
