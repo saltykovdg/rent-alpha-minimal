@@ -164,12 +164,18 @@ public class CalculationService {
         List<AccountMeterEntity> accountMeters = getListForPeriod(workingPeriod, account.getMeters());
         for (AccountMeterEntity accountMeter : accountMeters) {
             MeterEntity meter = accountMeter.getMeter();
-            String serviceId = meter.getService().getId();
-            if (servicesWaterIds.contains(serviceId)) {
+            ServiceEntity service = meter.getService();
+            if (servicesWaterIds.contains(service.getId())) {
+                Double normValue = getNormValueForPeriod(workingPeriod, service);
+                Double meterConsumption = 0D;
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
-                    consumption += meterValue.getConsumption();
+                    meterConsumption += meterValue.getConsumption();
                 }
+                if (meterValues.isEmpty() || meterConsumption > normValue) {
+                    meterConsumption = normValue;
+                }
+                consumption += meterConsumption;
             }
         }
 
