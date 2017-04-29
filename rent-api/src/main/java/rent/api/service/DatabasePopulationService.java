@@ -994,6 +994,10 @@ public class DatabasePopulationService {
                     services, tariffs, genderTypes, documentTypes, registrationType, meterType);
 
             account.setAccountNumber(testAccountNumber);
+            List<AccountServiceEntity> accountServices = account.getServices();
+            for (AccountServiceEntity accountService : accountServices) {
+                accountService.setAccount(account);
+            }
 
             accountRepository.save(account);
         }
