@@ -32,6 +32,11 @@ class AccountCard extends EditComponent {
     if (calculations) {
       calculationsDataSource = Object.keys(calculations).map(key => calculations[key]);
       const getListForPeriod = this.getListForPeriod;
+      let openingBalance = 0;
+      let accrual = 0;
+      let recalculation = 0;
+      let payment = 0;
+      let closingBalance = 0;
       calculationsDataSource.forEach((obj) => {
         const newObj = obj;
         newObj.key = newObj.service.id;
@@ -39,6 +44,19 @@ class AccountCard extends EditComponent {
           newObj.tariff.values = getListForPeriod(newObj.tariff.values, this.props.selectedWorkingPeriod);
           newObj.tariff.currentValue = newObj.tariff.values.length > 0 ? newObj.tariff.values[0] : null;
         }
+        openingBalance += newObj.openingBalance;
+        accrual += newObj.accrual;
+        recalculation += newObj.recalculation;
+        payment += newObj.payment;
+        closingBalance += newObj.closingBalance;
+      });
+      calculationsDataSource.push({
+        service: { name: 'Итого' },
+        openingBalance: openingBalance.toFixed(2),
+        accrual: accrual.toFixed(2),
+        recalculation: recalculation.toFixed(2),
+        payment: payment.toFixed(2),
+        closingBalance: closingBalance.toFixed(2),
       });
     }
     const calculationsColumns = [
@@ -303,6 +321,7 @@ class AccountCard extends EditComponent {
                   columns={calculationsColumns}
                   bordered pagination={false}
                   size="small"
+                  className="table-with-aggregation-data"
                   loading={this.props.isLoadingAccountCalculation}
                 />
               </TabPane>
