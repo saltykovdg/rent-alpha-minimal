@@ -50,16 +50,18 @@ class AccountCard extends EditComponent {
         payment += newObj.payment;
         closingBalance += newObj.closingBalance;
       });
-      calculationsDataSource.push({
-        service: {
-          name: messages.commonFieldTotal,
-        },
-        openingBalance: openingBalance.toFixed(2),
-        accrual: accrual.toFixed(2),
-        recalculation: recalculation.toFixed(2),
-        payment: payment.toFixed(2),
-        closingBalance: closingBalance.toFixed(2),
-      });
+      if (calculationsDataSource.length > 0) {
+        calculationsDataSource.push({
+          service: {
+            name: messages.commonFieldTotal,
+          },
+          openingBalance: openingBalance.toFixed(2),
+          accrual: accrual.toFixed(2),
+          recalculation: recalculation.toFixed(2),
+          payment: payment.toFixed(2),
+          closingBalance: closingBalance.toFixed(2),
+        });
+      }
     }
     const calculationsColumns = [
       this.getColumn(messages.serviceFieldName, 'service.name'),
