@@ -20,7 +20,7 @@ public class FileUploadService {
     private final String contentDir;
 
     @Autowired
-    public FileUploadService(@Value("${content.dir}") String contentDir) {
+    public FileUploadService(@Value("${app.content.dir}") String contentDir) {
         this.contentDir = contentDir;
         log.info("Content directory is: {}", contentDir);
     }

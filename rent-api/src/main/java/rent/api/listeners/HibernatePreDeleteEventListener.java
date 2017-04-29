@@ -29,7 +29,7 @@ public class HibernatePreDeleteEventListener implements PreDeleteEventListener {
 
     @Autowired
     public HibernatePreDeleteEventListener(EntityManagerFactory entityManagerFactory,
-                                           @Value("${content.dir}") String contentDir,
+                                           @Value("${app.content.dir}") String contentDir,
                                            CommonRepository commonRepository) {
         this.entityManagerFactory = entityManagerFactory;
         this.commonRepository = commonRepository;

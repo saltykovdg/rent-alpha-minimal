@@ -12,7 +12,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private final String contentDir;
 
     @Autowired
-    public WebConfig(@Value("${content.dir}") String contentDir) {
+    public WebConfig(@Value("${app.content.dir}") String contentDir) {
         this.contentDir = contentDir;
     }
 

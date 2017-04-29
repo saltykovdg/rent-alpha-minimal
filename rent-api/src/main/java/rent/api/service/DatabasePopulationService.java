@@ -824,7 +824,7 @@ public class DatabasePopulationService {
         List<MeterValueEntity> meterValues = new ArrayList<>();
         Double nextVal1 = (double) random.nextInt(10) + 10;
         meterValues.add(createMeterValue(dateStart, nextVal1, 0D));
-        Double nextVal2 = (double) random.nextInt(100) + 50;
+        Double nextVal2 = nextVal1 + (double) random.nextInt(10);
         meterValues.add(createMeterValue(dateEnd, nextVal2, nextVal2 - nextVal1));
         meter.setValues(meterValues);
 
