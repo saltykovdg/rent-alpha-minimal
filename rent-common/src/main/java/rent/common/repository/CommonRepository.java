@@ -120,6 +120,15 @@ public class CommonRepository {
             results.add(calculation);
         }
 
+        boolean accountCalculationsIsEmpty = true;
+        for (AccountCalculationDto accountCalculationDto : results) {
+            if (accountCalculationDto.getTariffValue() > 0) {
+                accountCalculationsIsEmpty = false;
+            }
+        }
+        if (accountCalculationsIsEmpty) {
+            results.clear();
+        }
         return results;
     }
 
