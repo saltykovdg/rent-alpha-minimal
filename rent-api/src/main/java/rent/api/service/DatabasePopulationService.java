@@ -51,6 +51,7 @@ public class DatabasePopulationService {
     private final CitizenRepository citizenRepository;
     private final MeterRepository meterRepository;
     private final NormRepository normRepository;
+    private final CalculationService calculationService;
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
@@ -66,7 +67,7 @@ public class DatabasePopulationService {
                                      TariffRepository tariffRepository, WorkingPeriodRepository workingPeriodRepository,
                                      ContractorRepository contractorRepository, AccountRepository accountRepository,
                                      CitizenRepository citizenRepository, MeterRepository meterRepository,
-                                     NormRepository normRepository) {
+                                     NormRepository normRepository, CalculationService calculationService) {
         this.appLocale = appLocale;
         this.createTestData = createTestData;
         this.roleRepository = roleRepository;
@@ -94,6 +95,7 @@ public class DatabasePopulationService {
         this.citizenRepository = citizenRepository;
         this.meterRepository = meterRepository;
         this.normRepository = normRepository;
+        this.calculationService = calculationService;
     }
 
     @PostConstruct
@@ -335,13 +337,14 @@ public class DatabasePopulationService {
         }
     }
 
-    private void createWorkingPeriod(LocalDate dateStart, LocalDate dateEnd) {
+    private WorkingPeriodEntity createWorkingPeriod(LocalDate dateStart, LocalDate dateEnd) {
         WorkingPeriodEntity workingPeriod = new WorkingPeriodEntity();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
         workingPeriod.setName(dateStart.format(dateTimeFormatter));
         workingPeriod.setDateStart(dateStart);
         workingPeriod.setDateEnd(dateEnd);
         workingPeriodRepository.save(workingPeriod);
+        return workingPeriod;
     }
 
     /**
@@ -967,23 +970,37 @@ public class DatabasePopulationService {
 
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
+            List<AccountEntity> testAccounts = accountRepository.findByAccountNumber("000000-test", new PageRequest(0, 20)).getContent();
+            String testAccountId1 = testAccounts.get(0).getId();
+            String testAccountId2 = testAccounts.get(1).getId();
+
             WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
+            calculationService.calculateAccount(testAccountId1, currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
+            calculationService.calculateAccount(testAccountId2, currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
 
             LocalDate dateStart = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(1);
             LocalDate dateEnd = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(2).lengthOfMonth());
-            createWorkingPeriod(dateStart, dateEnd);
+            WorkingPeriodEntity workingPeriod = createWorkingPeriod(dateStart, dateEnd);
+            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
+            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
 
             dateStart = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(1);
             dateEnd = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(1).lengthOfMonth());
-            createWorkingPeriod(dateStart, dateEnd);
+            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
+            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
+            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
 
             dateStart = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(1);
             dateEnd = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(1).lengthOfMonth());
-            createWorkingPeriod(dateStart, dateEnd);
+            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
+            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
+            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
 
             dateStart = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(1);
             dateEnd = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(2).lengthOfMonth());
-            createWorkingPeriod(dateStart, dateEnd);
+            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
+            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
+            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
         }
     }
 }
