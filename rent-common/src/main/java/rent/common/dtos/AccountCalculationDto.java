@@ -1,11 +1,16 @@
 package rent.common.dtos;
 
+import rent.common.entity.CalculationTypeEntity;
+import rent.common.entity.MeasurementUnitEntity;
 import rent.common.entity.ServiceEntity;
 import rent.common.entity.TariffEntity;
 
 public class AccountCalculationDto {
     private ServiceEntity service;
     private TariffEntity tariff;
+    private CalculationTypeEntity tariffCalculationType;
+    private MeasurementUnitEntity tariffMeasurementUnit;
+    private Double tariffValue;
     private Double openingBalance;
     private Double consumption;
     private Double accrual;
@@ -88,5 +93,29 @@ public class AccountCalculationDto {
 
     public void setClosingBalance(Double closingBalance) {
         this.closingBalance = closingBalance;
+    }
+
+    public CalculationTypeEntity getTariffCalculationType() {
+        return tariffCalculationType;
+    }
+
+    public void setTariffCalculationType(CalculationTypeEntity tariffCalculationType) {
+        this.tariffCalculationType = tariffCalculationType;
+    }
+
+    public MeasurementUnitEntity getTariffMeasurementUnit() {
+        return tariffMeasurementUnit;
+    }
+
+    public void setTariffMeasurementUnit(MeasurementUnitEntity tariffMeasurementUnit) {
+        this.tariffMeasurementUnit = tariffMeasurementUnit;
+    }
+
+    public Double getTariffValue() {
+        return tariffValue;
+    }
+
+    public void setTariffValue(Double tariffValue) {
+        this.tariffValue = tariffValue;
     }
 }

@@ -16,4 +16,12 @@ public interface AccountRecalculationBasic extends AbstractBasic {
     Double getConsumption();
 
     Double getValue();
+
+    TariffBasic getTariff();
+
+    CalculationTypeBasic getTariffCalculationType();
+
+    MeasurementUnitBasic getTariffMeasurementUnit();
+
+    Double getTariffValue();
 }

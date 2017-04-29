@@ -14,4 +14,12 @@ public interface AccountAccrualBasic extends AbstractBasic {
     Double getConsumption();
 
     Double getValue();
+
+    TariffBasic getTariff();
+
+    CalculationTypeBasic getTariffCalculationType();
+
+    MeasurementUnitBasic getTariffMeasurementUnit();
+
+    Double getTariffValue();
 }

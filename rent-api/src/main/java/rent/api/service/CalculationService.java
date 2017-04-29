@@ -80,6 +80,10 @@ public class CalculationService {
                         }
                         if (accountServiceCalculationDto != null) {
                             accountServiceCalculationDto = calculateAccountServiceGivenDaysActive(workingPeriod, accountServiceCalculationDto);
+                            accountServiceCalculationDto.setTariff(tariff);
+                            accountServiceCalculationDto.setTariffCalculationType(tariffValue.getCalculationType());
+                            accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
+                            accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
                             accountCalculations.add(accountServiceCalculationDto);
                         }
                     }
@@ -288,6 +292,10 @@ public class CalculationService {
                 accountAccrual.setConsumption(roundHalfUp(accountServiceCalculationDto.getConsumption()));
                 accountAccrual.setValue(roundHalfUp(accountServiceCalculationDto.getSum()));
                 accountAccrual.setWorkingPeriod(currentWorkingPeriod);
+                accountAccrual.setTariff(accountServiceCalculationDto.getTariff());
+                accountAccrual.setTariffCalculationType(accountServiceCalculationDto.getTariffCalculationType());
+                accountAccrual.setTariffMeasurementUnit(accountServiceCalculationDto.getTariffMeasurementUnit());
+                accountAccrual.setTariffValue(accountServiceCalculationDto.getTariffValue());
                 accountAccrualRepository.save(accountAccrual);
             } else {
                 AccountRecalculationEntity accountRecalculation = new AccountRecalculationEntity();
@@ -296,6 +304,10 @@ public class CalculationService {
                 accountRecalculation.setValue(roundHalfUp(accountServiceCalculationDto.getSum()));
                 accountRecalculation.setWorkingPeriod(currentWorkingPeriod);
                 accountRecalculation.setForWorkingPeriod(forWorkingPeriod);
+                accountRecalculation.setTariff(accountServiceCalculationDto.getTariff());
+                accountRecalculation.setTariffCalculationType(accountServiceCalculationDto.getTariffCalculationType());
+                accountRecalculation.setTariffMeasurementUnit(accountServiceCalculationDto.getTariffMeasurementUnit());
+                accountRecalculation.setTariffValue(accountServiceCalculationDto.getTariffValue());
                 accountRecalculationRepository.save(accountRecalculation);
             }
         }

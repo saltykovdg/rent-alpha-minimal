@@ -31,7 +31,6 @@ class AccountCard extends EditComponent {
     let calculationsDataSource = [];
     if (calculations) {
       calculationsDataSource = Object.keys(calculations).map(key => calculations[key]);
-      const getListForPeriod = this.getListForPeriod;
       let openingBalance = 0;
       let accrual = 0;
       let recalculation = 0;
@@ -40,10 +39,6 @@ class AccountCard extends EditComponent {
       calculationsDataSource.forEach((obj) => {
         const newObj = obj;
         newObj.key = Math.random();
-        if (newObj.tariff) {
-          newObj.tariff.values = getListForPeriod(newObj.tariff.values, this.props.selectedWorkingPeriod);
-          newObj.tariff.currentValue = newObj.tariff.values.length > 0 ? newObj.tariff.values[0] : null;
-        }
         openingBalance += newObj.openingBalance;
         accrual += newObj.accrual;
         recalculation += newObj.recalculation;
@@ -65,9 +60,9 @@ class AccountCard extends EditComponent {
     }
     const calculationsColumns = [
       this.getColumn(messages.serviceFieldName, 'service.name'),
-      this.getColumn(messages.tariffTitle, 'tariff.currentValue.value'),
+      this.getColumn(messages.tariffTitle, 'tariffValue'),
       this.getColumn(messages.consumptionTitle, 'consumption'),
-      this.getColumn(messages.measurementUnitShortTitle, 'tariff.currentValue.measurementUnit.name'),
+      this.getColumn(messages.measurementUnitShortTitle, 'tariffMeasurementUnit.name'),
       this.getColumn(messages.openingBalanceTitle, 'openingBalance'),
       this.getColumn(messages.accrualTitle, 'accrual'),
       this.getColumn(messages.recalculationTitle, 'recalculation'),

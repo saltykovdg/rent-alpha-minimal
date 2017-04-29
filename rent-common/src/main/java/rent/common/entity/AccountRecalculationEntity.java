@@ -21,6 +21,10 @@ public class AccountRecalculationEntity extends AbstractEntity {
         String FOR_WORKING_PERIOD = "for_working_period_id";
         String CONSUMPTION = "consumption";
         String VALUE = "value";
+        String TARIFF = "tariff_id";
+        String TARIFF_VALUE = "tariff_value";
+        String TARIFF_CALCULATION_TYPE = "tariff_calculation_type_id";
+        String TARIFF_MEASUREMENT_UNIT = "tariff_measurement_unit_id";
     }
 
     /**
@@ -55,6 +59,33 @@ public class AccountRecalculationEntity extends AbstractEntity {
      */
     @Column(name = Columns.VALUE)
     private Double value;
+
+    /**
+     * тариф
+     */
+    @JoinColumn(name = Columns.TARIFF)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TariffEntity tariff;
+
+    /**
+     * тариф - вид расчета
+     */
+    @JoinColumn(name = Columns.TARIFF_CALCULATION_TYPE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CalculationTypeEntity tariffCalculationType;
+
+    /**
+     * тариф - единица измерения
+     */
+    @JoinColumn(name = Columns.TARIFF_MEASUREMENT_UNIT)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MeasurementUnitEntity tariffMeasurementUnit;
+
+    /**
+     * тариф - значение
+     */
+    @Column(name = Columns.TARIFF_VALUE)
+    private Double tariffValue;
 
     public AccountServiceEntity getAccountService() {
         return accountService;
@@ -94,5 +125,37 @@ public class AccountRecalculationEntity extends AbstractEntity {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public TariffEntity getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(TariffEntity tariff) {
+        this.tariff = tariff;
+    }
+
+    public CalculationTypeEntity getTariffCalculationType() {
+        return tariffCalculationType;
+    }
+
+    public void setTariffCalculationType(CalculationTypeEntity tariffCalculationType) {
+        this.tariffCalculationType = tariffCalculationType;
+    }
+
+    public MeasurementUnitEntity getTariffMeasurementUnit() {
+        return tariffMeasurementUnit;
+    }
+
+    public void setTariffMeasurementUnit(MeasurementUnitEntity tariffMeasurementUnit) {
+        this.tariffMeasurementUnit = tariffMeasurementUnit;
+    }
+
+    public Double getTariffValue() {
+        return tariffValue;
+    }
+
+    public void setTariffValue(Double tariffValue) {
+        this.tariffValue = tariffValue;
     }
 }

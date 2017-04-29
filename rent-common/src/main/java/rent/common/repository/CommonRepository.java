@@ -4,9 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import rent.common.dtos.AccountCalculationDto;
 import rent.common.dtos.AccountServiceCalculationDto;
-import rent.common.entity.AbstractEntity;
-import rent.common.entity.AccountServiceEntity;
-import rent.common.entity.WorkingPeriodEntity;
+import rent.common.entity.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,25 +43,31 @@ public class CommonRepository {
                 .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(accruals.value), sum(accruals.consumption)) " +
+        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(accruals.value), sum(accruals.consumption), tariff, tariffCalculationType, tariffMeasurementUnit, accruals.tariffValue) " +
                 "from AccountAccrualEntity accruals " +
                 "join accruals.accountService accountService " +
+                "join accruals.tariff tariff " +
+                "join accruals.tariffCalculationType tariffCalculationType " +
+                "join accruals.tariffMeasurementUnit tariffMeasurementUnit " +
                 "join accruals.workingPeriod workingPeriod " +
                 "join accountService.account account " +
                 "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
-                "group by accountService";
+                "group by accountService, tariff, tariffCalculationType, tariffMeasurementUnit, accruals.tariffValue";
         accruals = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
                 .setParameter("workingPeriodId", workingPeriodId)
                 .getResultList();
 
-        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(recalculations.value), sum(recalculations.consumption)) " +
+        hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(recalculations.value), sum(recalculations.consumption), tariff, tariffCalculationType, tariffMeasurementUnit, recalculations.tariffValue) " +
                 "from AccountRecalculationEntity recalculations " +
                 "join recalculations.accountService accountService " +
+                "join recalculations.tariff tariff " +
+                "join recalculations.tariffCalculationType tariffCalculationType " +
+                "join recalculations.tariffMeasurementUnit tariffMeasurementUnit " +
                 "join recalculations.workingPeriod workingPeriod " +
                 "join accountService.account account " +
                 "where account.id = :accountId and workingPeriod.id = :workingPeriodId " +
-                "group by accountService";
+                "group by accountService, tariff, tariffCalculationType, tariffMeasurementUnit, recalculations.tariffValue";
         recalculations = entityManager.createQuery(hql, AccountServiceCalculationDto.class)
                 .setParameter("accountId", accountId)
                 .setParameter("workingPeriodId", workingPeriodId)
@@ -96,14 +100,18 @@ public class CommonRepository {
                 .getResultList();
 
         for (AccountServiceEntity accountService : accountServices) {
+            String accountServiceId = accountService.getId();
             AccountCalculationDto calculation = new AccountCalculationDto();
             calculation.setService(accountService.getService());
-            calculation.setTariff(accountService.getTariff());
-            calculation.setOpeningBalance(getServiceCalculation(accountService.getId(), openingBalances));
-            calculation.setConsumption(getServiceConsumption(accountService.getId(), accruals));
-            calculation.setAccrual(getServiceCalculation(accountService.getId(), accruals));
-            calculation.setRecalculation(getServiceCalculation(accountService.getId(), recalculations));
-            calculation.setPayment(getServiceCalculation(accountService.getId(), payments));
+            calculation.setTariff(getTariffCalculation(accountServiceId, accruals));
+            calculation.setTariffCalculationType(getTariffCalculationTypeCalculation(accountServiceId, accruals));
+            calculation.setTariffMeasurementUnit(getTariffMeasurementUnitCalculation(accountServiceId, accruals));
+            calculation.setTariffValue(getTariffValueCalculation(accountServiceId, accruals));
+            calculation.setOpeningBalance(getServiceCalculation(accountServiceId, openingBalances));
+            calculation.setConsumption(getServiceConsumption(accountServiceId, accruals));
+            calculation.setAccrual(getServiceCalculation(accountServiceId, accruals));
+            calculation.setRecalculation(getServiceCalculation(accountServiceId, recalculations));
+            calculation.setPayment(getServiceCalculation(accountServiceId, payments));
             Double closingBalance = calculation.getOpeningBalance();
             closingBalance += calculation.getAccrual();
             closingBalance -= calculation.getPayment();
@@ -123,6 +131,46 @@ public class CommonRepository {
             }
         }
         return sum;
+    }
+
+    private TariffEntity getTariffCalculation(String accountServiceId, List<AccountServiceCalculationDto> list) {
+        TariffEntity tariff = null;
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                tariff = accountServiceCalculationDto.getTariff();
+            }
+        }
+        return tariff;
+    }
+
+    private CalculationTypeEntity getTariffCalculationTypeCalculation(String accountServiceId, List<AccountServiceCalculationDto> list) {
+        CalculationTypeEntity tariffCalculationType = null;
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                tariffCalculationType = accountServiceCalculationDto.getTariffCalculationType();
+            }
+        }
+        return tariffCalculationType;
+    }
+
+    private MeasurementUnitEntity getTariffMeasurementUnitCalculation(String accountServiceId, List<AccountServiceCalculationDto> list) {
+        MeasurementUnitEntity tariffMeasurementUnit = null;
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                tariffMeasurementUnit = accountServiceCalculationDto.getTariffMeasurementUnit();
+            }
+        }
+        return tariffMeasurementUnit;
+    }
+
+    private Double getTariffValueCalculation(String accountServiceId, List<AccountServiceCalculationDto> list) {
+        Double tariffValue = 0D;
+        for (AccountServiceCalculationDto accountServiceCalculationDto : list) {
+            if (accountServiceCalculationDto.getAccountService().getId().equals(accountServiceId)) {
+                tariffValue = accountServiceCalculationDto.getTariffValue();
+            }
+        }
+        return tariffValue;
     }
 
     private Double getServiceConsumption(String accountServiceId, List<AccountServiceCalculationDto> list) {

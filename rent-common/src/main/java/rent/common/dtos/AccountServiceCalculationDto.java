@@ -1,11 +1,18 @@
 package rent.common.dtos;
 
 import rent.common.entity.AccountServiceEntity;
+import rent.common.entity.CalculationTypeEntity;
+import rent.common.entity.MeasurementUnitEntity;
+import rent.common.entity.TariffEntity;
 
 public class AccountServiceCalculationDto {
     private AccountServiceEntity accountService;
     private Double sum;
     private Double consumption;
+    private TariffEntity tariff;
+    private CalculationTypeEntity tariffCalculationType;
+    private MeasurementUnitEntity tariffMeasurementUnit;
+    private Double tariffValue;
 
     public AccountServiceCalculationDto() {
     }
@@ -20,6 +27,18 @@ public class AccountServiceCalculationDto {
         this.accountService = accountService;
         this.sum = sum;
         this.consumption = consumption;
+    }
+
+    public AccountServiceCalculationDto(AccountServiceEntity accountService, Double sum, Double consumption,
+                                        TariffEntity tariff, CalculationTypeEntity tariffCalculationType,
+                                        MeasurementUnitEntity tariffMeasurementUnit, Double tariffValue) {
+        this.accountService = accountService;
+        this.sum = sum;
+        this.consumption = consumption;
+        this.tariff = tariff;
+        this.tariffCalculationType = tariffCalculationType;
+        this.tariffMeasurementUnit = tariffMeasurementUnit;
+        this.tariffValue = tariffValue;
     }
 
     public AccountServiceEntity getAccountService() {
@@ -44,5 +63,37 @@ public class AccountServiceCalculationDto {
 
     public void setConsumption(Double consumption) {
         this.consumption = consumption;
+    }
+
+    public TariffEntity getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(TariffEntity tariff) {
+        this.tariff = tariff;
+    }
+
+    public CalculationTypeEntity getTariffCalculationType() {
+        return tariffCalculationType;
+    }
+
+    public void setTariffCalculationType(CalculationTypeEntity tariffCalculationType) {
+        this.tariffCalculationType = tariffCalculationType;
+    }
+
+    public MeasurementUnitEntity getTariffMeasurementUnit() {
+        return tariffMeasurementUnit;
+    }
+
+    public void setTariffMeasurementUnit(MeasurementUnitEntity tariffMeasurementUnit) {
+        this.tariffMeasurementUnit = tariffMeasurementUnit;
+    }
+
+    public Double getTariffValue() {
+        return tariffValue;
+    }
+
+    public void setTariffValue(Double tariffValue) {
+        this.tariffValue = tariffValue;
     }
 }
