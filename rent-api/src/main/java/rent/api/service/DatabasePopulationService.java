@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
@@ -326,19 +328,20 @@ public class DatabasePopulationService {
 
     private void createWorkingPeriods() {
         if (workingPeriodRepository.count() == 0) {
-            WorkingPeriodEntity workingPeriod = new WorkingPeriodEntity();
-
             LocalDate initial = LocalDate.now();
             LocalDate dateStart = initial.withDayOfMonth(1);
             LocalDate dateEnd = initial.withDayOfMonth(initial.lengthOfMonth());
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
-            workingPeriod.setName(dateStart.format(dateTimeFormatter));
-
-            workingPeriod.setDateStart(dateStart);
-            workingPeriod.setDateEnd(dateEnd);
-
-            workingPeriodRepository.save(workingPeriod);
+            createWorkingPeriod(dateStart, dateEnd);
         }
+    }
+
+    private void createWorkingPeriod(LocalDate dateStart, LocalDate dateEnd) {
+        WorkingPeriodEntity workingPeriod = new WorkingPeriodEntity();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
+        workingPeriod.setName(dateStart.format(dateTimeFormatter));
+        workingPeriod.setDateStart(dateStart);
+        workingPeriod.setDateEnd(dateEnd);
+        workingPeriodRepository.save(workingPeriod);
     }
 
     /**
@@ -354,6 +357,8 @@ public class DatabasePopulationService {
             createNorms();
             createContractors();
             createAccounts();
+            createTestAccount();
+            createTestWorkingPeriods();
         }
     }
 
@@ -645,11 +650,11 @@ public class DatabasePopulationService {
         }
     }
 
-    private void createAccount(int index, Random random, LocalDate dateStart, LocalDate dateEnd, ContractorEntity contractor, ApartmentEntity apartment,
-                               ParameterTypeEntity parameterTypeTotalArea, ParameterTypeEntity parameterTypePhoneNumber,
-                               List<ServiceEntity> services, List<TariffEntity> tariffs, List<GenderTypeEntity> genderTypes,
-                               List<DocumentTypeEntity> documentTypes, RegistrationTypeEntity registrationType,
-                               MeterTypeEntity meterType) {
+    private AccountEntity createAccount(int index, Random random, LocalDate dateStart, LocalDate dateEnd, ContractorEntity contractor, ApartmentEntity apartment,
+                                        ParameterTypeEntity parameterTypeTotalArea, ParameterTypeEntity parameterTypePhoneNumber,
+                                        List<ServiceEntity> services, List<TariffEntity> tariffs, List<GenderTypeEntity> genderTypes,
+                                        List<DocumentTypeEntity> documentTypes, RegistrationTypeEntity registrationType,
+                                        MeterTypeEntity meterType) {
         AccountEntity account = new AccountEntity();
         String accountNumber = "";
         if (index < 10) {
@@ -678,19 +683,7 @@ public class DatabasePopulationService {
         accountParameters.add(createAccountParameter(parameterTypePhoneNumber, dateStart, phoneNumber.toString()));
         account.setParameters(accountParameters);
 
-        List<AccountServiceEntity> accountServices = new ArrayList<>();
-        for (ServiceEntity service : services) {
-            AccountServiceEntity accountService = new AccountServiceEntity();
-            accountService.setService(service);
-            accountService.setDateStart(dateStart);
-            for (TariffEntity tariff : tariffs) {
-                if (tariff.getService().getId().equals(service.getId())) {
-                    accountService.setTariff(tariff);
-                    break;
-                }
-            }
-            accountServices.add(accountService);
-        }
+        List<AccountServiceEntity> accountServices = createAccountServices(services, tariffs, dateStart, null);
         account.setServices(accountServices);
 
         List<AccountRegisteredEntity> accountRegistered = new ArrayList<>();
@@ -720,6 +713,25 @@ public class DatabasePopulationService {
         account.setMeters(accountMeters);
 
         accountRepository.save(account);
+        return account;
+    }
+
+    private List<AccountServiceEntity> createAccountServices(List<ServiceEntity> services, List<TariffEntity> tariffs, LocalDate dateStart, LocalDate dateEnd) {
+        List<AccountServiceEntity> accountServices = new ArrayList<>();
+        for (ServiceEntity service : services) {
+            AccountServiceEntity accountService = new AccountServiceEntity();
+            accountService.setService(service);
+            accountService.setDateStart(dateStart);
+            accountService.setDateEnd(dateEnd);
+            for (TariffEntity tariff : tariffs) {
+                if (tariff.getService().getId().equals(service.getId())) {
+                    accountService.setTariff(tariff);
+                    break;
+                }
+            }
+            accountServices.add(accountService);
+        }
+        return accountServices;
     }
 
     private DocumentTypeEntity getDocumentTypeByName(List<DocumentTypeEntity> documentTypes, String name) {
@@ -839,5 +851,94 @@ public class DatabasePopulationService {
         meterValue.setValue(value);
         meterValue.setConsumption(consumption);
         return meterValue;
+    }
+
+    private void createTestAccount() {
+        String testAccountNumber = "000000-test";
+        Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
+        if (page.getTotalElements() == 0) {
+            List<ApartmentEntity> apartments = apartmentRepository.findAll();
+            ApartmentEntity apartment = apartments.get(0);
+            ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
+            ParameterTypeEntity parameterTypeTotalArea = parameterTypeRepository.findByCode(ParameterType.TOTAL_AREA.getCode());
+            ParameterTypeEntity parameterTypePhoneNumber = parameterTypeRepository.findByCode(ParameterType.PHONE_NUMBER.getCode());
+            WorkingPeriodEntity workingPeriod = getFirstWorkingPeriod();
+            LocalDate dateStart = workingPeriod.getDateStart();
+            LocalDate dateEnd = workingPeriod.getDateEnd();
+            List<ServiceEntity> services = serviceRepository.findByNameContainingOrderByName("");
+            List<TariffEntity> tariffs = tariffRepository.findByNameContainingOrderByName("");
+            List<GenderTypeEntity> genderTypes = genderTypeRepository.findByNameContainingOrderByName("");
+            List<DocumentTypeEntity> documentTypes = documentTypeRepository.findByNameContainingOrderByName("");
+            RegistrationTypeEntity registrationType = registrationTypeRepository.findByNameContainingOrderByName("Постоянная").get(0);
+            MeterTypeEntity meterType = meterTypeRepository.findByCode(MeterType.INDIVIDUAL.getCode());
+            Random random = new Random();
+
+            AccountEntity account = createAccount(0, random, dateStart, dateEnd, contractor,
+                    apartment, parameterTypeTotalArea, parameterTypePhoneNumber,
+                    services, tariffs, genderTypes, documentTypes, registrationType, meterType);
+
+            account.setAccountNumber(testAccountNumber);
+
+            List<AccountServiceEntity> accountServicesAll = new ArrayList<>();
+
+            LocalDate dateStartCase1 = workingPeriod.getDateStart().minusMonths(1).withDayOfMonth(15);
+            LocalDate dateEndCase1 = workingPeriod.getDateStart().minusMonths(1).withDayOfMonth(20);
+            List<AccountServiceEntity> accountServicesCase1 = createAccountServices(services, tariffs, dateStartCase1, dateEndCase1);
+
+            LocalDate dateStartCase2 = workingPeriod.getDateStart().minusMonths(1).withDayOfMonth(15);
+            LocalDate dateEndCase2 = workingPeriod.getDateStart().withDayOfMonth(15);
+            List<AccountServiceEntity> accountServicesCase2 = createAccountServices(services, tariffs, dateStartCase2, dateEndCase2);
+
+            LocalDate dateStartCase3 = workingPeriod.getDateStart().withDayOfMonth(15);
+            LocalDate dateEndCase3 = workingPeriod.getDateStart().withDayOfMonth(20);
+            List<AccountServiceEntity> accountServicesCase3 = createAccountServices(services, tariffs, dateStartCase3, dateEndCase3);
+
+            LocalDate dateStartCase4 = workingPeriod.getDateStart().withDayOfMonth(15);
+            LocalDate dateEndCase4 = workingPeriod.getDateStart().plusMonths(1).withDayOfMonth(15);
+            List<AccountServiceEntity> accountServicesCase4 = createAccountServices(services, tariffs, dateStartCase4, dateEndCase4);
+
+            LocalDate dateStartCase5 = workingPeriod.getDateStart().plusMonths(1).withDayOfMonth(15);
+            LocalDate dateEndCase5 = workingPeriod.getDateStart().plusMonths(1).withDayOfMonth(20);
+            List<AccountServiceEntity> accountServicesCase5 = createAccountServices(services, tariffs, dateStartCase5, dateEndCase5);
+
+            LocalDate dateStartCase6 = workingPeriod.getDateStart().plusMonths(1).withDayOfMonth(20);
+            List<AccountServiceEntity> accountServicesCase6 = createAccountServices(services, tariffs, dateStartCase6, null);
+
+            LocalDate dateStartCase7 = workingPeriod.getDateStart().minusMonths(1).withDayOfMonth(15);
+            List<AccountServiceEntity> accountServicesCase7 = createAccountServices(services, tariffs, dateStartCase7, null);
+
+            accountServicesAll.addAll(accountServicesCase1);
+            accountServicesAll.addAll(accountServicesCase2);
+            accountServicesAll.addAll(accountServicesCase3);
+            accountServicesAll.addAll(accountServicesCase4);
+            accountServicesAll.addAll(accountServicesCase5);
+            accountServicesAll.addAll(accountServicesCase6);
+            accountServicesAll.addAll(accountServicesCase7);
+            account.setServices(accountServicesAll);
+
+            accountRepository.save(account);
+        }
+    }
+
+    private void createTestWorkingPeriods() {
+        if (workingPeriodRepository.count() == 1) {
+            WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
+
+            LocalDate dateStart = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(1);
+            LocalDate dateEnd = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(2).lengthOfMonth());
+            createWorkingPeriod(dateStart, dateEnd);
+
+            dateStart = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(1);
+            dateEnd = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(1).lengthOfMonth());
+            createWorkingPeriod(dateStart, dateEnd);
+
+            dateStart = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(1);
+            dateEnd = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(1).lengthOfMonth());
+            createWorkingPeriod(dateStart, dateEnd);
+
+            dateStart = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(1);
+            dateEnd = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(2).lengthOfMonth());
+            createWorkingPeriod(dateStart, dateEnd);
+        }
     }
 }
