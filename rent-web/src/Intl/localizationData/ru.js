@@ -275,6 +275,7 @@ export default {
     periodStartEndErrorTitle: 'Период С должен быть меньше или равен периоду ПО',
     commonFieldPeriodStart: 'Период С',
     commonFieldPeriodEnd: 'Период ПО',
+    commonFieldTotal: 'Итого',
 
     backTopTitle: 'Наверх',
     welcomePageTitle: 'Добро пожаловать',

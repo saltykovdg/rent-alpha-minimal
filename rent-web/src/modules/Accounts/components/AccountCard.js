@@ -51,7 +51,9 @@ class AccountCard extends EditComponent {
         closingBalance += newObj.closingBalance;
       });
       calculationsDataSource.push({
-        service: { name: 'Итого' },
+        service: {
+          name: messages.commonFieldTotal,
+        },
         openingBalance: openingBalance.toFixed(2),
         accrual: accrual.toFixed(2),
         recalculation: recalculation.toFixed(2),
