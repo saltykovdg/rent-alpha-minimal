@@ -27,7 +27,7 @@ const calculateConsumption = (meter) => {
       newItem.consumption = 0;
     } else {
       const prevItem = newObj.values[i - 1];
-      newItem.consumption = (newItem.value - prevItem.value).toFixed(2);
+      newItem.consumption = parseFloat((newItem.value - prevItem.value).toFixed(6));
     }
   }
 };

@@ -14,6 +14,7 @@ import rent.common.repository.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class CalculationService {
     }
 
     public void calculateAccount(String accountId, String periodStartId, String periodEndId) {
+        log.info("calculateAccount({}, {}, {})", accountId, periodStartId, periodEndId);
+
         AccountEntity account = accountRepository.findOne(accountId);
         WorkingPeriodEntity periodStart = workingPeriodRepository.findOne(periodStartId);
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
@@ -76,6 +79,7 @@ public class CalculationService {
                             accountServiceCalculationDto = calculateByMeterReadingWater(workingPeriod, account, accountService, tariffValue);
                         }
                         if (accountServiceCalculationDto != null) {
+                            accountServiceCalculationDto = calculateAccountServiceGivenDaysActive(workingPeriod, accountServiceCalculationDto);
                             accountCalculations.add(accountServiceCalculationDto);
                         }
                     }
@@ -83,8 +87,35 @@ public class CalculationService {
             }
             saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod);
         }
+    }
 
-        log.info("calculateAccount({}, {}, {})", accountId, periodStartId, periodEndId);
+    private AccountServiceCalculationDto calculateAccountServiceGivenDaysActive(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
+        int workingPeriodDays = workingPeriod.getDateEnd().getDayOfMonth();
+        int accountServiceDaysActive = getAccountServiceDaysActiveForPeriod(workingPeriod, accountServiceCalculationDto.getAccountService());
+        if (accountServiceDaysActive < workingPeriodDays) {
+            Double sum = accountServiceCalculationDto.getSum();
+            Double sumPerDay = sum / (double) workingPeriodDays;
+            Double sumTotal = sumPerDay * (double) accountServiceDaysActive;
+            accountServiceCalculationDto.setSum(sumTotal);
+        }
+        log.info("workingPeriodDays: {}, accountServiceDaysActive: {}", workingPeriodDays, accountServiceDaysActive);
+        return accountServiceCalculationDto;
+    }
+
+    private int getAccountServiceDaysActiveForPeriod(WorkingPeriodEntity workingPeriod, AccountServiceEntity accountService) {
+        LocalDate periodStart = workingPeriod.getDateStart();
+        LocalDate periodEnd = workingPeriod.getDateEnd();
+        LocalDate serviceStart = accountService.getDateStart();
+        LocalDate serviceEnd = accountService.getDateEnd();
+        if (serviceStart.compareTo(periodStart) < 0) {
+            serviceStart = periodStart;
+        }
+        if (serviceEnd == null) {
+            serviceEnd = periodEnd;
+        } else if (serviceEnd.compareTo(periodEnd) > 0) {
+            serviceEnd = periodEnd;
+        }
+        return (int) ChronoUnit.DAYS.between(serviceStart, serviceEnd.plusDays(1));
     }
 
     private <T> List<T> getListForPeriod(WorkingPeriodEntity workingPeriod, List<? extends IPeriod> list) {
@@ -246,7 +277,7 @@ public class CalculationService {
 
     private Double roundHalfUp(Double value) {
         BigDecimal bigDecimal = new BigDecimal(value);
-        return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bigDecimal.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod) {

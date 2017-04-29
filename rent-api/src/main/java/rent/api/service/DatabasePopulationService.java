@@ -357,7 +357,8 @@ public class DatabasePopulationService {
             createNorms();
             createContractors();
             createAccounts();
-            createTestAccount();
+            createTestAccount1();
+            createTestAccount2();
             createTestWorkingPeriods();
         }
     }
@@ -853,8 +854,8 @@ public class DatabasePopulationService {
         return meterValue;
     }
 
-    private void createTestAccount() {
-        String testAccountNumber = "000000-test";
+    private void createTestAccount1() {
+        String testAccountNumber = "000000-test1";
         Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
         if (page.getTotalElements() == 0) {
             List<ApartmentEntity> apartments = apartmentRepository.findAll();
@@ -914,6 +915,50 @@ public class DatabasePopulationService {
             accountServicesAll.addAll(accountServicesCase5);
             accountServicesAll.addAll(accountServicesCase6);
             accountServicesAll.addAll(accountServicesCase7);
+            account.setServices(accountServicesAll);
+
+            accountRepository.save(account);
+        }
+    }
+
+    private void createTestAccount2() {
+        String testAccountNumber = "000000-test2";
+        Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
+        if (page.getTotalElements() == 0) {
+            List<ApartmentEntity> apartments = apartmentRepository.findAll();
+            ApartmentEntity apartment = apartments.get(0);
+            ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
+            ParameterTypeEntity parameterTypeTotalArea = parameterTypeRepository.findByCode(ParameterType.TOTAL_AREA.getCode());
+            ParameterTypeEntity parameterTypePhoneNumber = parameterTypeRepository.findByCode(ParameterType.PHONE_NUMBER.getCode());
+            WorkingPeriodEntity workingPeriod = getFirstWorkingPeriod();
+            LocalDate dateStart = workingPeriod.getDateStart();
+            LocalDate dateEnd = workingPeriod.getDateEnd();
+            List<ServiceEntity> services = serviceRepository.findByNameContainingOrderByName("");
+            List<TariffEntity> tariffs = tariffRepository.findByNameContainingOrderByName("");
+            List<GenderTypeEntity> genderTypes = genderTypeRepository.findByNameContainingOrderByName("");
+            List<DocumentTypeEntity> documentTypes = documentTypeRepository.findByNameContainingOrderByName("");
+            RegistrationTypeEntity registrationType = registrationTypeRepository.findByNameContainingOrderByName("Постоянная").get(0);
+            MeterTypeEntity meterType = meterTypeRepository.findByCode(MeterType.INDIVIDUAL.getCode());
+            Random random = new Random();
+
+            AccountEntity account = createAccount(0, random, dateStart, dateEnd, contractor,
+                    apartment, parameterTypeTotalArea, parameterTypePhoneNumber,
+                    services, tariffs, genderTypes, documentTypes, registrationType, meterType);
+
+            account.setAccountNumber(testAccountNumber);
+
+            List<AccountServiceEntity> accountServicesAll = new ArrayList<>();
+
+            LocalDate dateStartCase1 = workingPeriod.getDateStart().plusMonths(2).withDayOfMonth(1);
+            LocalDate dateEndCase1 = workingPeriod.getDateStart().plusMonths(2).withDayOfMonth(15);
+            List<AccountServiceEntity> accountServicesCase1 = createAccountServices(services, tariffs, dateStartCase1, dateEndCase1);
+
+            LocalDate dateStartCase2 = workingPeriod.getDateStart().plusMonths(2).withDayOfMonth(16);
+            LocalDate dateEndCase2 = workingPeriod.getDateStart().plusMonths(2).withDayOfMonth(workingPeriod.getDateStart().plusMonths(2).lengthOfMonth());
+            List<AccountServiceEntity> accountServicesCase2 = createAccountServices(services, tariffs, dateStartCase2, dateEndCase2);
+
+            accountServicesAll.addAll(accountServicesCase1);
+            accountServicesAll.addAll(accountServicesCase2);
             account.setServices(accountServicesAll);
 
             accountRepository.save(account);
