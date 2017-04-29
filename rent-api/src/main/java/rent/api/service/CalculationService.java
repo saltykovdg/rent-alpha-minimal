@@ -53,8 +53,8 @@ public class CalculationService {
 
         for (WorkingPeriodEntity workingPeriod : workingPeriods) {
             List<AccountServiceEntity> accountServicesAll = account.getServices();
-            for (AccountServiceEntity serviceEntity : accountServicesAll) {
-                deleteCalculationsForPeriod(serviceEntity.getId(), currentWorkingPeriod.getId(), workingPeriod.getId());
+            for (AccountServiceEntity accountService : accountServicesAll) {
+                deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId());
             }
             List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, accountServicesAll);
             List<AccountServiceCalculationDto> accountCalculations = new ArrayList<>();
