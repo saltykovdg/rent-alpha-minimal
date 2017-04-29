@@ -999,6 +999,19 @@ public class DatabasePopulationService {
                 accountService.setAccount(account);
             }
 
+            List<AccountMeterEntity> accountMeters = account.getMeters();
+            for (AccountMeterEntity accountMeter : accountMeters) {
+                MeterEntity meter = accountMeter.getMeter();
+                List<MeterValueEntity> meterValues = meter.getValues();
+                Double prevValue = meterValues.get(1).getValue();
+                Double nextVal1 = prevValue + (double) random.nextInt(10);
+                meterValues.add(createMeterValue(dateStart.plusMonths(1).withDayOfMonth(1), nextVal1, nextVal1 - prevValue));
+                Double nextVal2 = nextVal1 + (double) random.nextInt(10);
+                meterValues.add(createMeterValue(dateStart.plusMonths(2).withDayOfMonth(1), nextVal2, nextVal2 - nextVal1));
+                meter.setValues(meterValues);
+                meterRepository.save(meter);
+            }
+
             accountRepository.save(account);
         }
     }

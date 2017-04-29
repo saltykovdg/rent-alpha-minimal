@@ -186,7 +186,7 @@ public class CalculationService {
         accountServiceCalculationDto.setSum(consumption * tariff);
 
         log.info("calculateByMeterReading() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
-        return consumption > 0 ? accountServiceCalculationDto : null;
+        return accountServiceCalculationDto;
     }
 
     private AccountServiceCalculationDto calculateByMeterReadingWater(WorkingPeriodEntity workingPeriod, AccountEntity account, AccountServiceEntity accountService, TariffValueEntity tariffValue) {
@@ -218,7 +218,7 @@ public class CalculationService {
         accountServiceCalculationDto.setSum(consumption * tariff);
 
         log.info("calculateByMeterReadingWater() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
-        return consumption > 0 ? accountServiceCalculationDto : null;
+        return accountServiceCalculationDto;
     }
 
     private Double getAccountTotalAreaForPeriod(AccountEntity account, WorkingPeriodEntity workingPeriod) {
