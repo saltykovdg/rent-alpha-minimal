@@ -39,7 +39,7 @@ class AccountCard extends EditComponent {
       let closingBalance = 0;
       calculationsDataSource.forEach((obj) => {
         const newObj = obj;
-        newObj.key = newObj.service.id;
+        newObj.key = Math.random();
         if (newObj.tariff) {
           newObj.tariff.values = getListForPeriod(newObj.tariff.values, this.props.selectedWorkingPeriod);
           newObj.tariff.currentValue = newObj.tariff.values.length > 0 ? newObj.tariff.values[0] : null;
