@@ -180,11 +180,13 @@ public class CalculationService {
         Double tariff = tariffValue.getValue();
 
         List<AccountMeterEntity> accountMeters = getListForPeriod(workingPeriod, account.getMeters());
+        List<AccountRegisteredEntity> accountRegistered = getListForPeriod(workingPeriod, account.getRegistered());
+        int accountRegisteredCount = accountRegistered.size();
         for (AccountMeterEntity accountMeter : accountMeters) {
             MeterEntity meter = accountMeter.getMeter();
             ServiceEntity service = meter.getService();
             if (service.getId().equals(accountService.getService().getId())) {
-                Double normValue = getNormValueForPeriod(workingPeriod, service);
+                Double normValue = getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
                     consumption += meterValue.getConsumption();
@@ -210,11 +212,13 @@ public class CalculationService {
 
         List<String> servicesWaterIds = getServicesWaterIdsForPeriod(workingPeriod, account, tariffValue);
         List<AccountMeterEntity> accountMeters = getListForPeriod(workingPeriod, account.getMeters());
+        List<AccountRegisteredEntity> accountRegistered = getListForPeriod(workingPeriod, account.getRegistered());
+        int accountRegisteredCount = accountRegistered.size();
         for (AccountMeterEntity accountMeter : accountMeters) {
             MeterEntity meter = accountMeter.getMeter();
             ServiceEntity service = meter.getService();
             if (servicesWaterIds.contains(service.getId())) {
-                Double normValue = getNormValueForPeriod(workingPeriod, service);
+                Double normValue = getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
                 Double meterConsumption = 0D;
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
