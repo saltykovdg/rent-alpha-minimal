@@ -21,6 +21,7 @@ import * as AccountPath from '../../../Accounts/paths/AccountPath';
 import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
 import * as NormPath from '../../../Norms/paths/NormPath';
 import * as MeterPath from '../../../Meters/paths/MeterPath';
+import * as CalculationPath from '../../../Operations/paths/CalculationPath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -37,6 +38,8 @@ function Sidebar() {
     defaultOpenKey = 'sidebarServices';
   } else if (location.indexOf('/constants/') !== -1) {
     defaultOpenKey = 'sidebarConstants';
+  } else if (location.indexOf('/operations/') !== -1) {
+    defaultOpenKey = 'sidebarOperations';
   }
 
   return (
@@ -151,6 +154,13 @@ function Sidebar() {
           <Item key={RegistrationTypePath.REGISTRATION_TYPE_LIST}>
             <Link to={RegistrationTypePath.REGISTRATION_TYPE_LIST}>
               <FormattedMessage id="registrationTypeTitle" />
+            </Link>
+          </Item>
+        </SubMenu>
+        <SubMenu key="sidebarOperations" title={<FormattedMessage id="operationsTitle" />}>
+          <Item key={CalculationPath.CALCULATION}>
+            <Link to={CalculationPath.CALCULATION}>
+              <FormattedMessage id="calculationTitle" />
             </Link>
           </Item>
         </SubMenu>

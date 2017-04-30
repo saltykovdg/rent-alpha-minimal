@@ -84,7 +84,7 @@ class AccountCardPage extends ExtendedComponentPage {
           showFormCalculation={this.showFormCalculation}
         />
         <CalculationForm
-          title={this.props.intl.messages.calculationAccountTitle}
+          title={this.props.intl.messages.calculationAccountFormTitle}
           formCalculationVisible={this.state.formCalculationVisible}
           workingPeriods={this.props.workingPeriods}
           currentWorkingPeriod={this.props.currentWorkingPeriod}

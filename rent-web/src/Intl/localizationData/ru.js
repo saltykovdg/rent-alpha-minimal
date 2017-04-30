@@ -15,7 +15,7 @@ export default {
     editPageCreateAccountTitle: 'Создание лицевого счета',
     editPageEditAccountTitle: 'Редактирование лицевого счета',
     accountCardTitle: 'Карточка лицевого счета',
-    calculationAccountTitle: 'Произвести начисление / перерасчет на ЛС',
+    calculationAccountFormTitle: 'Произвести начисление / перерасчет на ЛС',
 
     calculationsTitle: 'Расчеты',
     openingBalanceTitle: 'Сальдо входящее',
@@ -276,6 +276,15 @@ export default {
     commonFieldPeriodStart: 'Период С',
     commonFieldPeriodEnd: 'Период ПО',
     commonFieldTotal: 'Итого',
+
+    // operations
+    operationsTitle: 'Операции',
+    calculationTitle: 'Расчет квартплаты',
+    buttonExecuteCalculations: 'Выполнить начисление / перерасчет',
+    calculationAccountsFormTitle: 'Произвести начисление / перерасчет квартплаты',
+    calculationWorkingPeriodTitle: 'Начисление / перерасчет',
+    closeWorkingPeriodTitle: 'Закрытие месяца и переход на новый рабочий период',
+    buttonGotoNewWorkingPeriod: 'Перейти на новый рабочий период',
 
     backTopTitle: 'Наверх',
     welcomePageTitle: 'Добро пожаловать',

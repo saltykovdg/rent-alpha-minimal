@@ -19,6 +19,7 @@ import * as AccountPath from './modules/Accounts/paths/AccountPath';
 import * as CitizenPath from './modules/Citizens/paths/CitizenPath';
 import * as NormPath from './modules/Norms/paths/NormPath';
 import * as MeterPath from './modules/Meters/paths/MeterPath';
+import * as CalculationPath from './modules/Operations/paths/CalculationPath';
 
 /* Workaround for async react routes to work with react-hot-reloader till
   https://github.com/reactjs/react-router/issues/2182 and
@@ -85,6 +86,9 @@ if (process.env.NODE_ENV !== 'production') {
   // Citizens
   require('./modules/Citizens/pages/CitizenListPage');
   require('./modules/Citizens/pages/CitizenEditPage');
+
+  // Operations
+  require('./modules/Operations/pages/CalculationPage');
 }
 
 // react-router setup with code-splitting
@@ -441,6 +445,16 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Meters/pages/MeterEditPage').default);
+        });
+      }}
+    />
+
+    { /* Operations */ }
+    <Route
+      path={CalculationPath.CALCULATION}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Operations/pages/CalculationPage').default);
         });
       }}
     />

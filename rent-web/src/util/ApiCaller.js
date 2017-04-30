@@ -5,6 +5,7 @@ let sources = [];
 const ignoreCancelRequests = [
   'working-period',
   'calculation/calculate-account',
+  'calculation/calculate-accounts',
 ];
 
 export function cancelAllRequests() {
