@@ -182,11 +182,14 @@ public class CalculationService {
         List<AccountMeterEntity> accountMeters = getListForPeriod(workingPeriod, account.getMeters());
         List<AccountRegisteredEntity> accountRegistered = getListForPeriod(workingPeriod, account.getRegistered());
         int accountRegisteredCount = accountRegistered.size();
+        boolean accountMeterIsNotExistsForService = true;
+        Double normValue = getNormValueForPeriod(workingPeriod, accountService.getService()) * accountRegisteredCount;
+
         for (AccountMeterEntity accountMeter : accountMeters) {
             MeterEntity meter = accountMeter.getMeter();
             ServiceEntity service = meter.getService();
             if (service.getId().equals(accountService.getService().getId())) {
-                Double normValue = getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
+                accountMeterIsNotExistsForService = false;
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
                     consumption += meterValue.getConsumption();
@@ -195,6 +198,10 @@ public class CalculationService {
                     consumption = normValue;
                 }
             }
+        }
+
+        if (accountMeterIsNotExistsForService) {
+            consumption = normValue;
         }
 
         accountServiceCalculationDto.setConsumption(consumption);
@@ -210,16 +217,20 @@ public class CalculationService {
         Double consumption = 0D;
         Double tariff = tariffValue.getValue();
 
-        List<String> servicesWaterIds = getServicesWaterIdsForPeriod(workingPeriod, account, tariffValue);
+        List<ServiceEntity> servicesWater = getServicesWaterForPeriod(workingPeriod, account, tariffValue);
+        List<String> servicesWaterIds = getServicesWaterIds(servicesWater);
         List<AccountMeterEntity> accountMeters = getListForPeriod(workingPeriod, account.getMeters());
         List<AccountRegisteredEntity> accountRegistered = getListForPeriod(workingPeriod, account.getRegistered());
         int accountRegisteredCount = accountRegistered.size();
+        boolean accountMeterIsNotExistsForService = true;
+
         for (AccountMeterEntity accountMeter : accountMeters) {
             MeterEntity meter = accountMeter.getMeter();
             ServiceEntity service = meter.getService();
             if (servicesWaterIds.contains(service.getId())) {
-                Double normValue = getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
+                accountMeterIsNotExistsForService = false;
                 Double meterConsumption = 0D;
+                Double normValue = getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
                 List<MeterValueEntity> meterValues = getMeterValuesForPeriod(meter, workingPeriod);
                 for (MeterValueEntity meterValue : meterValues) {
                     meterConsumption += meterValue.getConsumption();
@@ -228,6 +239,12 @@ public class CalculationService {
                     meterConsumption = normValue;
                 }
                 consumption += meterConsumption;
+            }
+        }
+
+        if (accountMeterIsNotExistsForService) {
+            for (ServiceEntity service : servicesWater) {
+                consumption += getNormValueForPeriod(workingPeriod, service) * accountRegisteredCount;
             }
         }
 
@@ -266,8 +283,8 @@ public class CalculationService {
         return list;
     }
 
-    private List<String> getServicesWaterIdsForPeriod(WorkingPeriodEntity workingPeriod, AccountEntity account, TariffValueEntity tariffValueWater) {
-        List<String> list = new ArrayList<>();
+    private List<ServiceEntity> getServicesWaterForPeriod(WorkingPeriodEntity workingPeriod, AccountEntity account, TariffValueEntity tariffValueWater) {
+        List<ServiceEntity> list = new ArrayList<>();
         List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, account.getServices());
         for (AccountServiceEntity accountService : accountServices) {
             TariffEntity tariff = accountService.getTariff();
@@ -275,9 +292,17 @@ public class CalculationService {
             if (tariffValues.size() > 0) {
                 TariffValueEntity serviceTariffValue = tariffValues.get(0);
                 if (serviceTariffValue.getMeasurementUnit().getId().equals(tariffValueWater.getMeasurementUnit().getId())) {
-                    list.add(accountService.getService().getId());
+                    list.add(accountService.getService());
                 }
             }
+        }
+        return list;
+    }
+
+    private List<String> getServicesWaterIds(List<ServiceEntity> services) {
+        List<String> list = new ArrayList<>();
+        for (ServiceEntity service : services) {
+            list.add(service.getId());
         }
         return list;
     }
