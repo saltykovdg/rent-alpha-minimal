@@ -84,6 +84,9 @@ public class CalculationService {
                             accountServiceCalculationDto.setTariffCalculationType(tariffValue.getCalculationType());
                             accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
                             accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
+                            if (!currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
+                                accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
+                            }
                             accountCalculations.add(accountServiceCalculationDto);
                         }
                     }
@@ -93,9 +96,19 @@ public class CalculationService {
         }
     }
 
+    private AccountServiceCalculationDto calculateAccountServiceGivenPreviousRecalculation(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
+        String accountServiceId = accountServiceCalculationDto.getAccountService().getId();
+        Double sumAccruals = commonRepository.getAccountServiceSumAccrualsForPeriod(accountServiceId, workingPeriod.getId());
+        Double sumRecalculations = commonRepository.getAccountServiceSumRecalculationsForPeriod(accountServiceId, workingPeriod.getId());
+        Double currentSum = accountServiceCalculationDto.getSum() - (sumAccruals + sumRecalculations);
+        accountServiceCalculationDto.setSum(currentSum);
+        return accountServiceCalculationDto;
+    }
+
     private AccountServiceCalculationDto calculateAccountServiceGivenDaysActive(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
         int workingPeriodDays = workingPeriod.getDateEnd().getDayOfMonth();
         int accountServiceDaysActive = getAccountServiceDaysActiveForPeriod(workingPeriod, accountServiceCalculationDto.getAccountService());
+        accountServiceCalculationDto.setAccountServiceDaysActive(accountServiceDaysActive);
         if (accountServiceDaysActive < workingPeriodDays) {
             Double sum = accountServiceCalculationDto.getSum();
             Double sumPerDay = sum / (double) workingPeriodDays;
@@ -296,6 +309,7 @@ public class CalculationService {
                 accountAccrual.setTariffCalculationType(accountServiceCalculationDto.getTariffCalculationType());
                 accountAccrual.setTariffMeasurementUnit(accountServiceCalculationDto.getTariffMeasurementUnit());
                 accountAccrual.setTariffValue(accountServiceCalculationDto.getTariffValue());
+                accountAccrual.setAccountServiceDaysActive(accountServiceCalculationDto.getAccountServiceDaysActive());
                 accountAccrualRepository.save(accountAccrual);
             } else {
                 AccountRecalculationEntity accountRecalculation = new AccountRecalculationEntity();
@@ -308,6 +322,7 @@ public class CalculationService {
                 accountRecalculation.setTariffCalculationType(accountServiceCalculationDto.getTariffCalculationType());
                 accountRecalculation.setTariffMeasurementUnit(accountServiceCalculationDto.getTariffMeasurementUnit());
                 accountRecalculation.setTariffValue(accountServiceCalculationDto.getTariffValue());
+                accountRecalculation.setAccountServiceDaysActive(accountServiceCalculationDto.getAccountServiceDaysActive());
                 accountRecalculationRepository.save(accountRecalculation);
             }
         }

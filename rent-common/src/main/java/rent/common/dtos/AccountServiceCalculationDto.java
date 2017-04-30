@@ -13,6 +13,7 @@ public class AccountServiceCalculationDto {
     private CalculationTypeEntity tariffCalculationType;
     private MeasurementUnitEntity tariffMeasurementUnit;
     private Double tariffValue;
+    private Integer accountServiceDaysActive;
 
     public AccountServiceCalculationDto() {
     }
@@ -95,5 +96,13 @@ public class AccountServiceCalculationDto {
 
     public void setTariffValue(Double tariffValue) {
         this.tariffValue = tariffValue;
+    }
+
+    public Integer getAccountServiceDaysActive() {
+        return accountServiceDaysActive;
+    }
+
+    public void setAccountServiceDaysActive(Integer accountServiceDaysActive) {
+        this.accountServiceDaysActive = accountServiceDaysActive;
     }
 }

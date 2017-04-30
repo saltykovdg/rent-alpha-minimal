@@ -23,6 +23,7 @@ public class AccountAccrualEntity extends AbstractEntity {
         String TARIFF_VALUE = "tariff_value";
         String TARIFF_CALCULATION_TYPE = "tariff_calculation_type_id";
         String TARIFF_MEASUREMENT_UNIT = "tariff_measurement_unit_id";
+        String ACCOUNT_SERVICE_DAYS_ACTIVE = "account_service_days_active";
     }
 
     /**
@@ -77,6 +78,12 @@ public class AccountAccrualEntity extends AbstractEntity {
      */
     @Column(name = Columns.TARIFF_VALUE)
     private Double tariffValue;
+
+    /**
+     * количество дней действия услуги в рабочем периоде
+     */
+    @Column(name = Columns.ACCOUNT_SERVICE_DAYS_ACTIVE)
+    private Integer accountServiceDaysActive;
 
     public AccountServiceEntity getAccountService() {
         return accountService;
@@ -140,5 +147,13 @@ public class AccountAccrualEntity extends AbstractEntity {
 
     public void setTariffValue(Double tariffValue) {
         this.tariffValue = tariffValue;
+    }
+
+    public Integer getAccountServiceDaysActive() {
+        return accountServiceDaysActive;
+    }
+
+    public void setAccountServiceDaysActive(Integer accountServiceDaysActive) {
+        this.accountServiceDaysActive = accountServiceDaysActive;
     }
 }
