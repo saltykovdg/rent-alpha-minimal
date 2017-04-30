@@ -78,15 +78,15 @@ public class CalculationService {
                         } else if (calculationTypeCode.equals(CalculationType.METER_READING_WATER.getCode())) {
                             accountServiceCalculationDto = calculateByMeterReadingWater(workingPeriod, account, accountService, tariffValue);
                         }
+                        if (accountServiceCalculationDto != null && !currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
+                            accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
+                        }
                         if (accountServiceCalculationDto != null) {
                             accountServiceCalculationDto = calculateAccountServiceGivenDaysActive(workingPeriod, accountServiceCalculationDto);
                             accountServiceCalculationDto.setTariff(tariff);
                             accountServiceCalculationDto.setTariffCalculationType(tariffValue.getCalculationType());
                             accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
                             accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
-                            if (!currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
-                                accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
-                            }
                             accountCalculations.add(accountServiceCalculationDto);
                         }
                     }
@@ -102,7 +102,7 @@ public class CalculationService {
         Double sumRecalculations = commonRepository.getAccountServiceSumRecalculationsForPeriod(accountServiceId, workingPeriod.getId());
         Double currentSum = accountServiceCalculationDto.getSum() - (sumAccruals + sumRecalculations);
         accountServiceCalculationDto.setSum(currentSum);
-        return accountServiceCalculationDto;
+        return currentSum == 0 ? null : accountServiceCalculationDto;
     }
 
     private AccountServiceCalculationDto calculateAccountServiceGivenDaysActive(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
