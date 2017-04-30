@@ -8,6 +8,7 @@ import rent.common.entity.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Repository
@@ -116,7 +117,8 @@ public class CommonRepository {
             closingBalance += calculation.getAccrual();
             closingBalance -= calculation.getPayment();
             closingBalance += calculation.getRecalculation();
-            calculation.setClosingBalance(closingBalance);
+            BigDecimal closingBalanceRounded = new BigDecimal(closingBalance);
+            calculation.setClosingBalance(closingBalanceRounded.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue());
             results.add(calculation);
         }
 
