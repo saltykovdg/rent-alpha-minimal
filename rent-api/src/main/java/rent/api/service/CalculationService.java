@@ -16,15 +16,18 @@ import rent.common.repository.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class CalculationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Integer appCalculationThreadsCount;
+    private final String appLocale;
     private final CommonRepository commonRepository;
     private final AccountRepository accountRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
@@ -32,14 +35,18 @@ public class CalculationService {
     private final AccountRecalculationRepository accountRecalculationRepository;
     private final NormRepository normRepository;
     private final SystemPropertyRepository systemPropertyRepository;
+    private final AccountOpeningBalanceRepository accountOpeningBalanceRepository;
+    private final AccountServiceRepository accountServiceRepository;
 
     @Autowired
-    public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount,
+    public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount, @Value("${app.locale}") String appLocale,
                               CommonRepository commonRepository, AccountRepository accountRepository,
                               WorkingPeriodRepository workingPeriodRepository, AccountAccrualRepository accountAccrualRepository,
                               AccountRecalculationRepository accountRecalculationRepository, NormRepository normRepository,
-                              SystemPropertyRepository systemPropertyRepository) {
+                              SystemPropertyRepository systemPropertyRepository, AccountOpeningBalanceRepository accountOpeningBalanceRepository,
+                              AccountServiceRepository accountServiceRepository) {
         this.appCalculationThreadsCount = appCalculationThreadsCount;
+        this.appLocale = appLocale;
         this.commonRepository = commonRepository;
         this.accountRepository = accountRepository;
         this.workingPeriodRepository = workingPeriodRepository;
@@ -47,19 +54,37 @@ public class CalculationService {
         this.accountRecalculationRepository = accountRecalculationRepository;
         this.normRepository = normRepository;
         this.systemPropertyRepository = systemPropertyRepository;
+        this.accountOpeningBalanceRepository = accountOpeningBalanceRepository;
+        this.accountServiceRepository = accountServiceRepository;
     }
 
     public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
         return commonRepository.getAccountCalculations(accountId, workingPeriodId);
     }
 
+    public WorkingPeriodEntity getCurrentWorkingPeriod() {
+        return workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
+    }
+
+    public WorkingPeriodEntity createNewWorkPeriod(WorkingPeriodEntity currentWorkingPeriod) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
+        WorkingPeriodEntity newWorkingPeriod = new WorkingPeriodEntity();
+        LocalDate dateStart = currentWorkingPeriod.getDateEnd().plusDays(1);
+        LocalDate dateEnd = dateStart.withDayOfMonth(dateStart.lengthOfMonth());
+        newWorkingPeriod.setName(dateStart.format(dateTimeFormatter));
+        newWorkingPeriod.setDateStart(dateStart);
+        newWorkingPeriod.setDateEnd(dateEnd);
+        workingPeriodRepository.save(newWorkingPeriod);
+        return newWorkingPeriod;
+    }
+
     public void calculateAccount(String accountId, String periodStartId, String periodEndId) {
-        log.info("calculateAccount({}, {}, {})", accountId, periodStartId, periodEndId);
+        log.debug("calculateAccount({}, {}, {})", accountId, periodStartId, periodEndId);
 
         AccountEntity account = accountRepository.findOne(accountId);
         WorkingPeriodEntity periodStart = workingPeriodRepository.findOne(periodStartId);
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
-        WorkingPeriodEntity currentWorkingPeriod = workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
+        WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
         List<WorkingPeriodEntity> workingPeriods = workingPeriodRepository.find(periodStart.getDateStart(), periodEnd.getDateStart());
         LocalDate accountDateClose = account.getDateClose();
 
@@ -126,7 +151,7 @@ public class CalculationService {
             Double sumTotal = sumPerDay * (double) accountServiceDaysActive;
             accountServiceCalculationDto.setSum(sumTotal);
         }
-        log.info("workingPeriodDays: {}, accountServiceDaysActive: {}", workingPeriodDays, accountServiceDaysActive);
+        log.debug("workingPeriodDays: {}, accountServiceDaysActive: {}", workingPeriodDays, accountServiceDaysActive);
         return accountServiceCalculationDto;
     }
 
@@ -169,7 +194,7 @@ public class CalculationService {
         Double tariff = tariffValue.getValue();
         accountServiceCalculationDto.setConsumption(totalArea);
         accountServiceCalculationDto.setSum(totalArea * tariff);
-        log.info("calculateByTotalArea() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), totalArea, tariffValue.getValue());
+        log.debug("calculateByTotalArea() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), totalArea, tariffValue.getValue());
         return accountServiceCalculationDto;
     }
 
@@ -180,7 +205,7 @@ public class CalculationService {
         Double tariff = tariffValue.getValue();
         accountServiceCalculationDto.setConsumption(peoples);
         accountServiceCalculationDto.setSum(peoples * tariff);
-        log.info("calculateByPeoples() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), peoples, tariffValue.getValue());
+        log.debug("calculateByPeoples() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), peoples, tariffValue.getValue());
         return accountServiceCalculationDto;
     }
 
@@ -218,7 +243,7 @@ public class CalculationService {
         accountServiceCalculationDto.setConsumption(consumption);
         accountServiceCalculationDto.setSum(consumption * tariff);
 
-        log.info("calculateByMeterReading() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
+        log.debug("calculateByMeterReading() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
         return accountServiceCalculationDto;
     }
 
@@ -262,7 +287,7 @@ public class CalculationService {
         accountServiceCalculationDto.setConsumption(consumption);
         accountServiceCalculationDto.setSum(consumption * tariff);
 
-        log.info("calculateByMeterReadingWater() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
+        log.debug("calculateByMeterReadingWater() -> period: {}, service: {}, consumption: {}, tariff: {}", workingPeriod.getDateStart(), accountService.getService().getName(), consumption, tariffValue.getValue());
         return accountServiceCalculationDto;
     }
 
@@ -369,20 +394,39 @@ public class CalculationService {
     }
 
     public void calculateAccounts(String periodStartId, String periodEndId) {
+        List<AccountEntity> accounts = accountRepository.getAccounts();
         setSystemPropertyCalculationActive(true);
-        setSystemPropertyCalculationAccountsCount(30);
+        setSystemPropertyCalculationAccountsCount(accounts.size());
         setSystemPropertyCalculationAccountsCalculated(0);
         for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(this, periodStartId, periodEndId);
+            new CalculationThread(this, accounts, periodStartId, periodEndId);
         }
     }
 
     public void closeWorkingPeriod() {
+        List<AccountEntity> accounts = accountRepository.getAccounts();
         setSystemPropertyCalculationActive(true);
-        setSystemPropertyCalculationAccountsCount(30);
+        setSystemPropertyCalculationAccountsCount(accounts.size());
         setSystemPropertyCalculationAccountsCalculated(0);
+        WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
+        WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
         for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(this);
+            new CalculationThread(this, accounts, currentWorkingPeriod, newWorkingPeriod);
+        }
+    }
+
+    public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
+        List<AccountCalculationDto> accountCalculations = getAccountCalculations(account.getId(), currentWorkingPeriod.getId());
+        for (AccountCalculationDto accountCalculationDto : accountCalculations) {
+            Double closingBalance = accountCalculationDto.getClosingBalance();
+            if (closingBalance != 0) {
+                AccountOpeningBalanceEntity accountOpeningBalance = new AccountOpeningBalanceEntity();
+                accountOpeningBalance.setWorkingPeriod(newWorkingPeriod);
+                accountOpeningBalance.setAccountService(accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId()));
+                accountOpeningBalance.setValue(closingBalance);
+                accountOpeningBalanceRepository.save(accountOpeningBalance);
+            }
+            calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
         }
     }
 
@@ -398,9 +442,9 @@ public class CalculationService {
         systemPropertyRepository.save(systemProperty);
     }
 
-    public void setSystemPropertyCalculationAccountsCalculated(Integer accountsCalculatedCount) {
+    public void setSystemPropertyCalculationAccountsCalculated(Integer accountsCalculated) {
         SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName());
-        systemProperty.setValue(accountsCalculatedCount.toString());
+        systemProperty.setValue(accountsCalculated.toString());
         systemPropertyRepository.save(systemProperty);
     }
 }

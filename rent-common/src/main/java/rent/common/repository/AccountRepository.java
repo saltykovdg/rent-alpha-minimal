@@ -9,6 +9,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import rent.common.entity.AccountEntity;
 import rent.common.projection.AccountBasic;
 
+import java.util.List;
+
 @RepositoryRestResource(
         collectionResourceRel = "accounts",
         path = "account",
@@ -36,4 +38,7 @@ public interface AccountRepository extends PagingAndSortingRepository<AccountEnt
     Page<AccountEntity> find(@Param("accountNumber") String accountNumber, @Param("lastName") String lastName,
                              @Param("street") String street, @Param("house") String house,
                              @Param("apartment") String apartment, Pageable p);
+
+    @Query("select account from AccountEntity account")
+    List<AccountEntity> getAccounts();
 }

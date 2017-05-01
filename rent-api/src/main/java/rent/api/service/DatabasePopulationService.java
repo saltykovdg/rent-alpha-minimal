@@ -23,6 +23,7 @@ public class DatabasePopulationService {
 
     private final String appLocale;
     private final Boolean createTestData;
+    private final LocalDate appDefaultFirstPeriod;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -53,6 +54,7 @@ public class DatabasePopulationService {
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
+                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod,
                                      RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
@@ -69,6 +71,7 @@ public class DatabasePopulationService {
                                      SystemPropertyRepository systemPropertyRepository) {
         this.appLocale = appLocale;
         this.createTestData = createTestData;
+        this.appDefaultFirstPeriod = LocalDate.parse(appDefaultFirstPeriod);
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -331,9 +334,8 @@ public class DatabasePopulationService {
 
     private void createWorkingPeriods() {
         if (workingPeriodRepository.count() == 0) {
-            LocalDate initial = LocalDate.now();
-            LocalDate dateStart = initial.withDayOfMonth(1);
-            LocalDate dateEnd = initial.withDayOfMonth(initial.lengthOfMonth());
+            LocalDate dateStart = appDefaultFirstPeriod.withDayOfMonth(1);
+            LocalDate dateEnd = appDefaultFirstPeriod.withDayOfMonth(appDefaultFirstPeriod.lengthOfMonth());
             createWorkingPeriod(dateStart, dateEnd);
         }
     }

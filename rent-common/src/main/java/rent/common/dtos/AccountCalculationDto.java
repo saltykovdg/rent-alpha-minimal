@@ -6,6 +6,7 @@ import rent.common.entity.ServiceEntity;
 import rent.common.entity.TariffEntity;
 
 public class AccountCalculationDto {
+    private String accountServiceId;
     private ServiceEntity service;
     private TariffEntity tariff;
     private CalculationTypeEntity tariffCalculationType;
@@ -21,14 +22,12 @@ public class AccountCalculationDto {
     public AccountCalculationDto() {
     }
 
-    public AccountCalculationDto(ServiceEntity service, TariffEntity tariff, Double openingBalance, Double consumption, Double accrual, Double recalculation, Double payment) {
-        this.service = service;
-        this.tariff = tariff;
-        this.openingBalance = openingBalance;
-        this.consumption = consumption;
-        this.accrual = accrual;
-        this.recalculation = recalculation;
-        this.payment = payment;
+    public String getAccountServiceId() {
+        return accountServiceId;
+    }
+
+    public void setAccountServiceId(String accountServiceId) {
+        this.accountServiceId = accountServiceId;
     }
 
     public ServiceEntity getService() {

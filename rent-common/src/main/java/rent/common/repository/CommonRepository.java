@@ -103,6 +103,7 @@ public class CommonRepository {
         for (AccountServiceEntity accountService : accountServices) {
             String accountServiceId = accountService.getId();
             AccountCalculationDto calculation = new AccountCalculationDto();
+            calculation.setAccountServiceId(accountServiceId);
             calculation.setService(accountService.getService());
             calculation.setTariff(getTariffCalculation(accountServiceId, accruals));
             calculation.setTariffCalculationType(getTariffCalculationTypeCalculation(accountServiceId, accruals));
