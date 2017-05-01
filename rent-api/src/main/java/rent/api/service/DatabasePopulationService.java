@@ -1036,43 +1036,32 @@ public class DatabasePopulationService {
 
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
-            List<AccountEntity> testAccounts = accountRepository.findByAccountNumber("000000-test", new PageRequest(0, 20)).getContent();
-            String testAccountId1 = testAccounts.get(0).getId();
-            String testAccountId2 = testAccounts.get(1).getId();
-            String testAccountId3 = testAccounts.get(2).getId();
+            createNextTestWorkingPeriod();
+            createNextTestWorkingPeriod();
+            createNextTestWorkingPeriod();
+            createNextTestWorkingPeriod();
+            createNextTestWorkingPeriod();
+        }
+    }
 
-            WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
-            calculationService.calculateAccount(testAccountId1, currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
-            calculationService.calculateAccount(testAccountId2, currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
-            calculationService.calculateAccount(testAccountId3, currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
+    private void createNextTestWorkingPeriod() {
+        long millis = 1000;
+        WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
+        calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
+        while (calculationService.getSystemPropertyCalculationIsActive()) {
+            sleep(millis);
+        }
+        calculationService.closeWorkingPeriod();
+        while (calculationService.getSystemPropertyCalculationIsActive()) {
+            sleep(millis);
+        }
+    }
 
-            LocalDate dateStart = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(1);
-            LocalDate dateEnd = currentWorkingPeriod.getDateStart().minusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(2).lengthOfMonth());
-            WorkingPeriodEntity workingPeriod = createWorkingPeriod(dateStart, dateEnd);
-            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId3, workingPeriod.getId(), workingPeriod.getId());
-
-            dateStart = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(1);
-            dateEnd = currentWorkingPeriod.getDateStart().minusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().minusMonths(1).lengthOfMonth());
-            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
-            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId3, workingPeriod.getId(), workingPeriod.getId());
-
-            dateStart = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(1);
-            dateEnd = currentWorkingPeriod.getDateStart().plusMonths(1).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(1).lengthOfMonth());
-            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
-            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId3, workingPeriod.getId(), workingPeriod.getId());
-
-            dateStart = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(1);
-            dateEnd = currentWorkingPeriod.getDateStart().plusMonths(2).withDayOfMonth(currentWorkingPeriod.getDateStart().plusMonths(2).lengthOfMonth());
-            workingPeriod = createWorkingPeriod(dateStart, dateEnd);
-            calculationService.calculateAccount(testAccountId1, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId2, workingPeriod.getId(), workingPeriod.getId());
-            calculationService.calculateAccount(testAccountId3, workingPeriod.getId(), workingPeriod.getId());
+    private void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

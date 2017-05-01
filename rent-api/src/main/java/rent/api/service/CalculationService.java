@@ -430,6 +430,11 @@ public class CalculationService {
         }
     }
 
+    public boolean getSystemPropertyCalculationIsActive() {
+        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
+        return systemProperty.getValue().equals("1");
+    }
+
     public void setSystemPropertyCalculationActive(Boolean active) {
         SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
         systemProperty.setValue(active ? "1" : "0");
