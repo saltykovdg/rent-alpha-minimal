@@ -285,7 +285,7 @@ export default {
     calculationWorkingPeriodTitle: 'Начисление / перерасчет',
     closeWorkingPeriodTitle: 'Закрытие месяца и переход на новый рабочий период',
     confirmCloseWorkingPeriodTitle: 'Закрытие месяца',
-    confirmCloseWorkingPeriodContent: 'Выполнить закрытие месяца и переход на новый рабочий период?',
+    confirmCloseWorkingPeriodContent: 'Выполнить закрытие месяца и перейти на новый рабочий период?',
     buttonCloseWorkingPeriod: 'Перейти на новый рабочий период',
     calculationsExecuteTitle: 'Выполняется расчет квартплаты',
 
