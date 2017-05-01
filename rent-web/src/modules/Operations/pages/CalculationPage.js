@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
-import * as CalculationPath from './../paths/CalculationPath';
 
 // Import Components
 import Calculation from './../components/Calculation';
