@@ -416,17 +416,20 @@ public class CalculationService {
     }
 
     public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
-        List<AccountCalculationDto> accountCalculations = getAccountCalculations(account.getId(), currentWorkingPeriod.getId());
-        for (AccountCalculationDto accountCalculationDto : accountCalculations) {
-            Double closingBalance = accountCalculationDto.getClosingBalance();
-            if (closingBalance != 0) {
-                AccountOpeningBalanceEntity accountOpeningBalance = new AccountOpeningBalanceEntity();
-                accountOpeningBalance.setWorkingPeriod(newWorkingPeriod);
-                accountOpeningBalance.setAccountService(accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId()));
-                accountOpeningBalance.setValue(closingBalance);
-                accountOpeningBalanceRepository.save(accountOpeningBalance);
+        LocalDate accountDateClose = account.getDateClose();
+        if (accountDateClose == null || accountDateClose.compareTo(newWorkingPeriod.getDateStart()) > 0) {
+            List<AccountCalculationDto> accountCalculations = getAccountCalculations(account.getId(), currentWorkingPeriod.getId());
+            for (AccountCalculationDto accountCalculationDto : accountCalculations) {
+                Double closingBalance = accountCalculationDto.getClosingBalance();
+                if (closingBalance != 0) {
+                    AccountOpeningBalanceEntity accountOpeningBalance = new AccountOpeningBalanceEntity();
+                    accountOpeningBalance.setWorkingPeriod(newWorkingPeriod);
+                    accountOpeningBalance.setAccountService(accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId()));
+                    accountOpeningBalance.setValue(closingBalance);
+                    accountOpeningBalanceRepository.save(accountOpeningBalance);
+                }
+                calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
             }
-            calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
         }
     }
 
