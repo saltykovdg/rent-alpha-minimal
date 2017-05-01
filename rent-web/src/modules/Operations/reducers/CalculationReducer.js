@@ -2,24 +2,27 @@ import * as CalculationAction from './../actions/CalculationAction';
 
 export const calculationReducer = (state, action) => {
   switch (action.type) {
+    case CalculationAction.CLOSE_WORKING_PERIOD:
     case CalculationAction.CALCULATE_ACCOUNTS: {
-      const calculations = state.calculation.calculations;
-      calculations.isLoading = true;
-      calculations.isRequestError = false;
+      const calculation = state.calculation;
+      calculation.isLoading = true;
+      calculation.isRequestError = false;
       return state.calculation;
     }
 
+    case CalculationAction.CLOSE_WORKING_PERIOD_SUCCESS:
     case CalculationAction.CALCULATE_ACCOUNTS_SUCCESS: {
-      const calculations = state.calculation.calculations;
-      calculations.isLoading = false;
-      calculations.isRequestError = false;
+      const calculation = state.calculation;
+      calculation.isLoading = false;
+      calculation.isRequestError = false;
       return state.calculation;
     }
 
+    case CalculationAction.CLOSE_WORKING_PERIOD_FAILED:
     case CalculationAction.CALCULATE_ACCOUNTS_FAILED: {
-      const calculations = state.calculation.calculations;
-      calculations.isLoading = false;
-      calculations.isRequestError = true;
+      const calculation = state.calculation;
+      calculation.isLoading = false;
+      calculation.isRequestError = true;
       return state.calculation;
     }
 
@@ -29,5 +32,5 @@ export const calculationReducer = (state, action) => {
 };
 
 /* Selectors */
-export const getCalculationIsLoading = state => state.operations.calculation.calculations.isLoading;
-export const getCalculationIsRequestError = state => state.operations.calculation.calculations.isRequestError;
+export const getCalculationIsLoading = state => state.operations.calculation.isLoading;
+export const getCalculationIsRequestError = state => state.operations.calculation.isRequestError;

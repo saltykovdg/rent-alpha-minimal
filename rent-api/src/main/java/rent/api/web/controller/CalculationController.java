@@ -38,6 +38,13 @@ public class CalculationController {
     @RequestMapping(value = "/calculate-accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String calculateAccounts(@RequestParam("periodStartId") String periodStartId,
                                     @RequestParam("periodEndId") String periodEndId) {
+        calculationService.calculateAccounts(periodStartId, periodEndId);
+        return HttpStatus.OK.toString();
+    }
+
+    @RequestMapping(value = "/close-working-period", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String closeWorkingPeriod() {
+        calculationService.closeWorkingPeriod();
         return HttpStatus.OK.toString();
     }
 }

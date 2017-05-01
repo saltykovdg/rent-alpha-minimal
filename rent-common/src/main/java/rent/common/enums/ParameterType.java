@@ -27,6 +27,6 @@ public enum ParameterType {
                 return parameterType;
             }
         }
-        throw new IllegalArgumentException("No Enum for code " + code);
+        throw new IllegalArgumentException("No Enum for code: " + code);
     }
 }

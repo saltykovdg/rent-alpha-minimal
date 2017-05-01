@@ -6,6 +6,7 @@ const ignoreCancelRequests = [
   'working-period',
   'calculation/calculate-account',
   'calculation/calculate-accounts',
+  'calculation/close-working-period',
 ];
 
 export function cancelAllRequests() {

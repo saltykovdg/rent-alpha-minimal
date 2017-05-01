@@ -47,6 +47,7 @@ class AccountCard extends EditComponent {
       });
       if (calculationsDataSource.length > 0) {
         calculationsDataSource.push({
+          key: Math.random(),
           service: {
             name: messages.commonFieldTotal,
           },
@@ -84,7 +85,7 @@ class AccountCard extends EditComponent {
       });
       documentCitizenDataSource.forEach((obj) => {
         const newObj = obj;
-        newObj.key = newObj.id;
+        newObj.key = Math.random();
       });
       return documentCitizenDataSource;
     };
@@ -136,7 +137,7 @@ class AccountCard extends EditComponent {
         });
         meterValuesDataSource.forEach((obj) => {
           const newObj = obj;
-          newObj.key = newObj.id;
+          newObj.key = Math.random();
         });
       }
       return (
@@ -158,7 +159,7 @@ class AccountCard extends EditComponent {
       });
       ownersDataSource.forEach((obj) => {
         const newObj = obj;
-        newObj.key = newObj.id;
+        newObj.key = Math.random();
         owners += `${owners ? '; ' : ''}${obj.citizen.lastName} ${obj.citizen.firstName} ${obj.citizen.fatherName}`;
       });
     }
@@ -179,7 +180,7 @@ class AccountCard extends EditComponent {
       });
       registeredDataSource.forEach((obj) => {
         const newObj = obj;
-        newObj.key = newObj.id;
+        newObj.key = Math.random();
       });
       registeredCount = registeredDataSource.length;
     }
@@ -200,7 +201,7 @@ class AccountCard extends EditComponent {
       });
       metersDataSource.forEach((obj) => {
         const newObj = obj;
-        newObj.key = newObj.id;
+        newObj.key = Math.random();
       });
     }
     const metersColumns = [

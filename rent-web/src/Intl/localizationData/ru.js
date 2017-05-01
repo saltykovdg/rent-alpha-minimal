@@ -284,7 +284,10 @@ export default {
     calculationAccountsFormTitle: 'Произвести начисление / перерасчет квартплаты',
     calculationWorkingPeriodTitle: 'Начисление / перерасчет',
     closeWorkingPeriodTitle: 'Закрытие месяца и переход на новый рабочий период',
-    buttonGotoNewWorkingPeriod: 'Перейти на новый рабочий период',
+    confirmCloseWorkingPeriodTitle: 'Закрытие месяца',
+    confirmCloseWorkingPeriodContent: 'Выполнить закрытие месяца и переход на новый рабочий период?',
+    buttonCloseWorkingPeriod: 'Перейти на новый рабочий период',
+    calculationsExecuteTitle: 'Выполняется расчет квартплаты',
 
     backTopTitle: 'Наверх',
     welcomePageTitle: 'Добро пожаловать',

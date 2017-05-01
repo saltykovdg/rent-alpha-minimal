@@ -8,11 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import rent.common.entity.*;
-import rent.common.enums.CalculationType;
-import rent.common.enums.MeterType;
-import rent.common.enums.ParameterType;
+import rent.common.enums.*;
 import rent.common.repository.*;
-import rent.common.enums.RoleType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
@@ -52,6 +49,7 @@ public class DatabasePopulationService {
     private final MeterRepository meterRepository;
     private final NormRepository normRepository;
     private final CalculationService calculationService;
+    private final SystemPropertyRepository systemPropertyRepository;
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
@@ -67,7 +65,8 @@ public class DatabasePopulationService {
                                      TariffRepository tariffRepository, WorkingPeriodRepository workingPeriodRepository,
                                      ContractorRepository contractorRepository, AccountRepository accountRepository,
                                      CitizenRepository citizenRepository, MeterRepository meterRepository,
-                                     NormRepository normRepository, CalculationService calculationService) {
+                                     NormRepository normRepository, CalculationService calculationService,
+                                     SystemPropertyRepository systemPropertyRepository) {
         this.appLocale = appLocale;
         this.createTestData = createTestData;
         this.roleRepository = roleRepository;
@@ -96,6 +95,7 @@ public class DatabasePopulationService {
         this.meterRepository = meterRepository;
         this.normRepository = normRepository;
         this.calculationService = calculationService;
+        this.systemPropertyRepository = systemPropertyRepository;
     }
 
     @PostConstruct
@@ -115,6 +115,7 @@ public class DatabasePopulationService {
         createServiceTypes();
         createContractorTypes();
         createWorkingPeriods();
+        createSystemProperties();
 
         // for testing
         createTestData();
@@ -345,6 +346,21 @@ public class DatabasePopulationService {
         workingPeriod.setDateEnd(dateEnd);
         workingPeriodRepository.save(workingPeriod);
         return workingPeriod;
+    }
+
+    private void createSystemProperties() {
+        if (systemPropertyRepository.count() == 0) {
+            createSystemProperty(SystemPropertyType.CALCULATION_IS_ACTIVE.getName(), "0");
+            createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_COUNT.getName(), "0");
+            createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName(), "0");
+        }
+    }
+
+    private void createSystemProperty(String name, String value) {
+        SystemPropertyEntity systemProperty = new SystemPropertyEntity();
+        systemProperty.setName(name);
+        systemProperty.setValue(value);
+        systemPropertyRepository.save(systemProperty);
     }
 
     /**

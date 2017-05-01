@@ -27,6 +27,6 @@ public enum MeterType {
                 return meterType;
             }
         }
-        throw new IllegalArgumentException("No Enum for code " + code);
+        throw new IllegalArgumentException("No Enum for code: " + code);
     }
 }

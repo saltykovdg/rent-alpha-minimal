@@ -3,12 +3,14 @@ package rent.api.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import rent.common.dtos.AccountCalculationDto;
 import rent.common.dtos.AccountServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
 import rent.common.enums.ParameterType;
+import rent.common.enums.SystemPropertyType;
 import rent.common.interfaces.IPeriod;
 import rent.common.repository.*;
 
@@ -22,23 +24,29 @@ import java.util.List;
 public class CalculationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final Integer appCalculationThreadsCount;
     private final CommonRepository commonRepository;
     private final AccountRepository accountRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final AccountAccrualRepository accountAccrualRepository;
     private final AccountRecalculationRepository accountRecalculationRepository;
     private final NormRepository normRepository;
+    private final SystemPropertyRepository systemPropertyRepository;
 
     @Autowired
-    public CalculationService(CommonRepository commonRepository, AccountRepository accountRepository,
+    public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount,
+                              CommonRepository commonRepository, AccountRepository accountRepository,
                               WorkingPeriodRepository workingPeriodRepository, AccountAccrualRepository accountAccrualRepository,
-                              AccountRecalculationRepository accountRecalculationRepository, NormRepository normRepository) {
+                              AccountRecalculationRepository accountRecalculationRepository, NormRepository normRepository,
+                              SystemPropertyRepository systemPropertyRepository) {
+        this.appCalculationThreadsCount = appCalculationThreadsCount;
         this.commonRepository = commonRepository;
         this.accountRepository = accountRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.accountAccrualRepository = accountAccrualRepository;
         this.accountRecalculationRepository = accountRecalculationRepository;
         this.normRepository = normRepository;
+        this.systemPropertyRepository = systemPropertyRepository;
     }
 
     public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
@@ -53,46 +61,49 @@ public class CalculationService {
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
         WorkingPeriodEntity currentWorkingPeriod = workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
         List<WorkingPeriodEntity> workingPeriods = workingPeriodRepository.find(periodStart.getDateStart(), periodEnd.getDateStart());
+        LocalDate accountDateClose = account.getDateClose();
 
-        for (WorkingPeriodEntity workingPeriod : workingPeriods) {
-            List<AccountServiceEntity> accountServicesAll = account.getServices();
-            for (AccountServiceEntity accountService : accountServicesAll) {
-                deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId());
-            }
-            List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, accountServicesAll);
-            List<AccountServiceCalculationDto> accountCalculations = new ArrayList<>();
-            for (AccountServiceEntity accountService : accountServices) {
-                TariffEntity tariff = accountService.getTariff();
-                if (tariff != null) {
-                    List<TariffValueEntity> tariffValues = getListForPeriod(workingPeriod, tariff.getValues());
-                    if (tariffValues.size() > 0) {
-                        TariffValueEntity tariffValue = tariffValues.get(0);
-                        String calculationTypeCode = tariffValue.getCalculationType().getCode();
-                        AccountServiceCalculationDto accountServiceCalculationDto = null;
-                        if (calculationTypeCode.equals(CalculationType.TOTAL_AREA.getCode())) {
-                            accountServiceCalculationDto = calculateByTotalArea(workingPeriod, account, accountService, tariffValue);
-                        } else if (calculationTypeCode.equals(CalculationType.PEOPLES.getCode())) {
-                            accountServiceCalculationDto = calculateByPeoples(workingPeriod, account, accountService, tariffValue);
-                        } else if (calculationTypeCode.equals(CalculationType.METER_READING.getCode())) {
-                            accountServiceCalculationDto = calculateByMeterReading(workingPeriod, account, accountService, tariffValue);
-                        } else if (calculationTypeCode.equals(CalculationType.METER_READING_WATER.getCode())) {
-                            accountServiceCalculationDto = calculateByMeterReadingWater(workingPeriod, account, accountService, tariffValue);
-                        }
-                        if (accountServiceCalculationDto != null && !currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
-                            accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
-                        }
-                        if (accountServiceCalculationDto != null) {
-                            accountServiceCalculationDto = calculateAccountServiceGivenDaysActive(workingPeriod, accountServiceCalculationDto);
-                            accountServiceCalculationDto.setTariff(tariff);
-                            accountServiceCalculationDto.setTariffCalculationType(tariffValue.getCalculationType());
-                            accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
-                            accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
-                            accountCalculations.add(accountServiceCalculationDto);
+        if (accountDateClose == null || accountDateClose.compareTo(currentWorkingPeriod.getDateStart()) > 0) {
+            for (WorkingPeriodEntity workingPeriod : workingPeriods) {
+                List<AccountServiceEntity> accountServicesAll = account.getServices();
+                for (AccountServiceEntity accountService : accountServicesAll) {
+                    deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId());
+                }
+                List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, accountServicesAll);
+                List<AccountServiceCalculationDto> accountCalculations = new ArrayList<>();
+                for (AccountServiceEntity accountService : accountServices) {
+                    TariffEntity tariff = accountService.getTariff();
+                    if (tariff != null) {
+                        List<TariffValueEntity> tariffValues = getListForPeriod(workingPeriod, tariff.getValues());
+                        if (tariffValues.size() > 0) {
+                            TariffValueEntity tariffValue = tariffValues.get(0);
+                            String calculationTypeCode = tariffValue.getCalculationType().getCode();
+                            AccountServiceCalculationDto accountServiceCalculationDto = null;
+                            if (calculationTypeCode.equals(CalculationType.TOTAL_AREA.getCode())) {
+                                accountServiceCalculationDto = calculateByTotalArea(workingPeriod, account, accountService, tariffValue);
+                            } else if (calculationTypeCode.equals(CalculationType.PEOPLES.getCode())) {
+                                accountServiceCalculationDto = calculateByPeoples(workingPeriod, account, accountService, tariffValue);
+                            } else if (calculationTypeCode.equals(CalculationType.METER_READING.getCode())) {
+                                accountServiceCalculationDto = calculateByMeterReading(workingPeriod, account, accountService, tariffValue);
+                            } else if (calculationTypeCode.equals(CalculationType.METER_READING_WATER.getCode())) {
+                                accountServiceCalculationDto = calculateByMeterReadingWater(workingPeriod, account, accountService, tariffValue);
+                            }
+                            if (accountServiceCalculationDto != null && !currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
+                                accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
+                            }
+                            if (accountServiceCalculationDto != null) {
+                                accountServiceCalculationDto = calculateAccountServiceGivenDaysActive(workingPeriod, accountServiceCalculationDto);
+                                accountServiceCalculationDto.setTariff(tariff);
+                                accountServiceCalculationDto.setTariffCalculationType(tariffValue.getCalculationType());
+                                accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
+                                accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
+                                accountCalculations.add(accountServiceCalculationDto);
+                            }
                         }
                     }
                 }
+                saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod);
             }
-            saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod);
         }
     }
 
@@ -355,5 +366,41 @@ public class CalculationService {
                 accountRecalculationRepository.save(accountRecalculation);
             }
         }
+    }
+
+    public void calculateAccounts(String periodStartId, String periodEndId) {
+        setSystemPropertyCalculationActive(true);
+        setSystemPropertyCalculationAccountsCount(30);
+        setSystemPropertyCalculationAccountsCalculated(0);
+        for (int i = 0; i < appCalculationThreadsCount; i++) {
+            new CalculationThread(this, periodStartId, periodEndId);
+        }
+    }
+
+    public void closeWorkingPeriod() {
+        setSystemPropertyCalculationActive(true);
+        setSystemPropertyCalculationAccountsCount(30);
+        setSystemPropertyCalculationAccountsCalculated(0);
+        for (int i = 0; i < appCalculationThreadsCount; i++) {
+            new CalculationThread(this);
+        }
+    }
+
+    public void setSystemPropertyCalculationActive(Boolean active) {
+        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
+        systemProperty.setValue(active ? "1" : "0");
+        systemPropertyRepository.save(systemProperty);
+    }
+
+    public void setSystemPropertyCalculationAccountsCount(Integer accountsCount) {
+        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_ACCOUNTS_COUNT.getName());
+        systemProperty.setValue(accountsCount.toString());
+        systemPropertyRepository.save(systemProperty);
+    }
+
+    public void setSystemPropertyCalculationAccountsCalculated(Integer accountsCalculatedCount) {
+        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName());
+        systemProperty.setValue(accountsCalculatedCount.toString());
+        systemPropertyRepository.save(systemProperty);
     }
 }

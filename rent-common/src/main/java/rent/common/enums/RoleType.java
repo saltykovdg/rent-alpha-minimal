@@ -20,6 +20,6 @@ public enum RoleType {
                 return roleType;
             }
         }
-        throw new IllegalArgumentException("No Enum for name " + name);
+        throw new IllegalArgumentException("No Enum for name: " + name);
     }
 }

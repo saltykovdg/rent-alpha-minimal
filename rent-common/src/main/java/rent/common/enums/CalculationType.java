@@ -37,6 +37,6 @@ public enum CalculationType {
                 return calculationType;
             }
         }
-        throw new IllegalArgumentException("No Enum for code " + code);
+        throw new IllegalArgumentException("No Enum for code: " + code);
     }
 }

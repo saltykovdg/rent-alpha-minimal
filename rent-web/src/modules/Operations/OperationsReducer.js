@@ -4,21 +4,32 @@ import {
   getCalculationIsRequestError,
 } from './reducers/CalculationReducer';
 
+import {
+  systemPropertyReducer,
+  getSystemPropertyIsLoading,
+  getSystemPropertyIsRequestError,
+} from './reducers/SystemPropertyReducer';
+
 // Initial State
-const data = {
-  calculations: {
-    isLoading: false,
-    isRequestError: false,
-  },
+const calculationData = {
+  isLoading: false,
+  isRequestError: false,
+};
+const systemPropertyData = {
+  data: null,
+  isLoading: false,
+  isRequestError: false,
 };
 
 const initialState = {
-  calculation: data,
+  calculation: calculationData,
+  systemProperty: systemPropertyData,
 };
 
 const OperationsReducer = (state = initialState, action) => {
   return {
     calculation: calculationReducer(state, action),
+    systemProperty: systemPropertyReducer(state, action),
   };
 };
 
