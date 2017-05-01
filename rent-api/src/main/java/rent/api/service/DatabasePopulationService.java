@@ -24,6 +24,7 @@ public class DatabasePopulationService {
     private final String appLocale;
     private final Boolean createTestData;
     private final LocalDate appDefaultFirstPeriod;
+    private final Integer createTestPeriodsCount;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -54,7 +55,7 @@ public class DatabasePopulationService {
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
-                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod,
+                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod ,@Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
                                      RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
@@ -72,6 +73,7 @@ public class DatabasePopulationService {
         this.appLocale = appLocale;
         this.createTestData = createTestData;
         this.appDefaultFirstPeriod = LocalDate.parse(appDefaultFirstPeriod);
+        this.createTestPeriodsCount = createTestPeriodsCount;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -1036,11 +1038,9 @@ public class DatabasePopulationService {
 
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
-            createNextTestWorkingPeriod();
-            createNextTestWorkingPeriod();
-            createNextTestWorkingPeriod();
-            createNextTestWorkingPeriod();
-            createNextTestWorkingPeriod();
+            for (int i = 0; i < createTestPeriodsCount; i++) {
+                createNextTestWorkingPeriod();
+            }
         }
     }
 
