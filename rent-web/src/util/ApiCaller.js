@@ -4,6 +4,7 @@ let sources = [];
 
 const ignoreCancelRequests = [
   'working-period',
+  'system-property',
   'calculation/calculate-account',
   'calculation/calculate-accounts',
   'calculation/close-working-period',
