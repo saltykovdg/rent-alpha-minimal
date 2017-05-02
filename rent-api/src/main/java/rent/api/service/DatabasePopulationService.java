@@ -55,7 +55,7 @@ public class DatabasePopulationService {
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
-                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod ,@Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
+                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod, @Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
                                      RoleRepository roleRepository, UserRepository userRepository,
                                      PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
                                      StreetRepository streetRepository, BuildingRepository buildingRepository,
@@ -1038,22 +1038,18 @@ public class DatabasePopulationService {
 
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
-            for (int i = 0; i < createTestPeriodsCount; i++) {
-                createNextTestWorkingPeriod();
+            long millis = 1000;
+            WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
+            calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
+            while (calculationService.getSystemPropertyCalculationIsActive()) {
+                sleep(1000);
             }
-        }
-    }
-
-    private void createNextTestWorkingPeriod() {
-        long millis = 1000;
-        WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
-        calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
-        while (calculationService.getSystemPropertyCalculationIsActive()) {
-            sleep(millis);
-        }
-        calculationService.closeWorkingPeriod();
-        while (calculationService.getSystemPropertyCalculationIsActive()) {
-            sleep(millis);
+            for (int i = 0; i < createTestPeriodsCount; i++) {
+                calculationService.closeWorkingPeriod();
+                while (calculationService.getSystemPropertyCalculationIsActive()) {
+                    sleep(millis);
+                }
+            }
         }
     }
 
