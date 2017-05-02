@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as GenderTypeAction from './../actions/GenderTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindGenderTypesByName() {
   yield takeLatest(GenderTypeAction.FIND_GENDER_TYPES_BY_NAME, findGenderTypesByName);
 }
 
-export const rootGenderTypeSaga = [
+export const rootGenderTypeSaga = all([
   fork(watchGetGenderTypes),
   fork(watchGetGenderType),
   fork(watchSaveGenderType),
   fork(watchDeleteGenderType),
   fork(watchNewGenderType),
   fork(watchFindGenderTypesByName),
-];
+]);

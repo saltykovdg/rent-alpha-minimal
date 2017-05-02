@@ -1,3 +1,5 @@
+import { all } from 'redux-saga/effects';
+
 // Import Saga
 import { rootAccountSaga } from './sagas/AccountSaga';
 import { rootAccountParameterSaga } from './sagas/AccountParameterSaga';
@@ -9,7 +11,7 @@ import { rootAccountRegisteredDocumentAttachmentSaga } from './sagas/AccountRegi
 import { rootAccountMeterSaga } from './sagas/AccountMeterSaga';
 
 // Export Saga
-export default [
+export default all([
   rootAccountSaga,
   rootAccountParameterSaga,
   rootAccountServiceSaga,
@@ -18,4 +20,4 @@ export default [
   rootAccountRegisteredSaga,
   rootAccountRegisteredDocumentAttachmentSaga,
   rootAccountMeterSaga,
-];
+]);

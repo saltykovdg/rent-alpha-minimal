@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as DocumentTypeAction from './../actions/DocumentTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindDocumentTypesByName() {
   yield takeLatest(DocumentTypeAction.FIND_DOCUMENT_TYPES_BY_NAME, findDocumentTypesByName);
 }
 
-export const rootDocumentTypeSaga = [
+export const rootDocumentTypeSaga = all([
   fork(watchGetDocumentTypes),
   fork(watchGetDocumentType),
   fork(watchSaveDocumentType),
   fork(watchDeleteDocumentType),
   fork(watchNewDocumentType),
   fork(watchFindDocumentTypesByName),
-];
+]);

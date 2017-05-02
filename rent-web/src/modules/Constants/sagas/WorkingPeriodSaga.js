@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as WorkingPeriodAction from './../actions/WorkingPeriodAction';
 import * as WorkingPeriodApi from './../api/WorkingPeriodApi';
@@ -53,9 +53,9 @@ export function* watchFindLastWorkingPeriod() {
   yield takeLatest(WorkingPeriodAction.FIND_LAST_WORKING_PERIOD, findLastWorkingPeriod);
 }
 
-export const rootWorkingPeriodSaga = [
+export const rootWorkingPeriodSaga = all([
   fork(watchGetWorkingPeriods),
   fork(watchGetWorkingPeriod),
   fork(watchFindWorkingPeriodsByName),
   fork(watchFindLastWorkingPeriod),
-];
+]);

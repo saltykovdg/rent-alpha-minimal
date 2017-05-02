@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as RegistrationTypeAction from './../actions/RegistrationTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindRegistrationTypesByName() {
   yield takeLatest(RegistrationTypeAction.FIND_REGISTRATION_TYPES_BY_NAME, findRegistrationTypesByName);
 }
 
-export const rootRegistrationTypeSaga = [
+export const rootRegistrationTypeSaga = all([
   fork(watchGetRegistrationTypes),
   fork(watchGetRegistrationType),
   fork(watchSaveRegistrationType),
   fork(watchDeleteRegistrationType),
   fork(watchNewRegistrationType),
   fork(watchFindRegistrationTypesByName),
-];
+]);

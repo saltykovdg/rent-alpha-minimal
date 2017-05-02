@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as SystemPropertyAction from './../actions/SystemPropertyAction';
 import * as SystemPropertyApi from './../api/SystemPropertyApi';
@@ -86,11 +86,11 @@ export function* watchFindSystemPropertiesByName() {
   yield takeLatest(SystemPropertyAction.FIND_SYSTEM_PROPERTIES_BY_NAME, findSystemPropertiesByName);
 }
 
-export const rootSystemPropertySaga = [
+export const rootSystemPropertySaga = all([
   fork(watchGetSystemProperties),
   fork(watchGetSystemProperty),
   fork(watchSaveSystemProperty),
   fork(watchDeleteSystemProperty),
   fork(watchNewSystemProperty),
   fork(watchFindSystemPropertiesByName),
-];
+]);

@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -175,11 +175,11 @@ export function* watchFindCitizens() {
   yield takeLatest(CitizenAction.FIND_CITIZENS, findCitizens);
 }
 
-export const rootCitizenSaga = [
+export const rootCitizenSaga = all([
   fork(watchGetCitizens),
   fork(watchGetCitizen),
   fork(watchSaveCitizen),
   fork(watchDeleteCitizen),
   fork(watchNewCitizen),
   fork(watchFindCitizens),
-];
+]);

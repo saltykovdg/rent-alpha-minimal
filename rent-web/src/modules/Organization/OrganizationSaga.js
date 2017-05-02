@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -172,7 +172,7 @@ export function* watchFindContractorsByName() {
   yield takeLatest(OrganizationAction.FIND_CONTRACTORS_BY_NAME, findContractorsByName);
 }
 
-export const rootOrganizationSaga = [
+export const rootOrganizationSaga = all([
   // get lists
   fork(watchGetContractorTypes),
   fork(watchGetContractors),
@@ -196,4 +196,4 @@ export const rootOrganizationSaga = [
   // find
   fork(watchFindContractorTypesByName),
   fork(watchFindContractorsByName),
-];
+]);

@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as CalculationTypeAction from './../actions/CalculationTypeAction';
@@ -90,11 +90,11 @@ export function* watchFindCalculationTypesByName() {
   yield takeLatest(CalculationTypeAction.FIND_CALCULATION_TYPES_BY_NAME, findCalculationTypesByName);
 }
 
-export const rootCalculationTypeSaga = [
+export const rootCalculationTypeSaga = all([
   fork(watchGetCalculationTypes),
   fork(watchGetCalculationType),
   fork(watchSaveCalculationType),
   fork(watchDeleteCalculationType),
   fork(watchNewCalculationType),
   fork(watchFindCalculationTypesByName),
-];
+]);

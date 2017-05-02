@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as MeterTypeAction from './../actions/MeterTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindMeterTypesByName() {
   yield takeLatest(MeterTypeAction.FIND_METER_TYPES_BY_NAME, findMeterTypesByName);
 }
 
-export const rootMeterTypeSaga = [
+export const rootMeterTypeSaga = all([
   fork(watchGetMeterTypes),
   fork(watchGetMeterType),
   fork(watchSaveMeterType),
   fork(watchDeleteMeterType),
   fork(watchNewMeterType),
   fork(watchFindMeterTypesByName),
-];
+]);

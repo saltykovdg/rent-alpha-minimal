@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as NormValueAction from './../actions/NormValueAction';
 import * as NormValueApi from './../api/NormValueApi';
@@ -73,10 +73,10 @@ export function* watchNewNormValue() {
   yield takeLatest(NormValueAction.NEW_NORM_VALUE, newNormValue);
 }
 
-export const rootNormValueSaga = [
+export const rootNormValueSaga = all([
   fork(watchGetNormValues),
   fork(watchGetNormValue),
   fork(watchSaveNormValue),
   fork(watchDeleteNormValue),
   fork(watchNewNormValue),
-];
+]);

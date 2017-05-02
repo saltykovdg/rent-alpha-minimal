@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
 import * as AccountOwnerDocumentAttachmentApi from './../api/AccountOwnerDocumentAttachmentApi';
@@ -87,10 +87,10 @@ export function* watchNewAccountOwnerDocumentAttachment() {
   yield takeLatest(AccountOwnerDocumentAttachmentAction.NEW_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT, newAccountOwnerDocumentAttachment);
 }
 
-export const rootAccountOwnerDocumentAttachmentSaga = [
+export const rootAccountOwnerDocumentAttachmentSaga = all([
   fork(watchGetAccountOwnerDocumentAttachments),
   fork(watchGetAccountOwnerDocumentAttachment),
   fork(watchSaveAccountOwnerDocumentAttachment),
   fork(watchDeleteAccountOwnerDocumentAttachment),
   fork(watchNewAccountOwnerDocumentAttachment),
-];
+]);

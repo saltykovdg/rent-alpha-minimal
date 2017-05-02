@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -133,11 +133,11 @@ export function* watchFindNormsByServiceId() {
   yield takeLatest(NormAction.FIND_NORMS_BY_SERVICE_ID, findNormsByServiceId);
 }
 
-export const rootNormSaga = [
+export const rootNormSaga = all([
   fork(watchGetNorms),
   fork(watchGetNorm),
   fork(watchSaveNorm),
   fork(watchDeleteNorm),
   fork(watchNewNorm),
   fork(watchFindNormsByServiceId),
-];
+]);

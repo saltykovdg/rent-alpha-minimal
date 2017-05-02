@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as MeterValueAction from './../actions/MeterValueAction';
 import * as MeterValueApi from './../api/MeterValueApi';
@@ -73,10 +73,10 @@ export function* watchNewMeterValue() {
   yield takeLatest(MeterValueAction.NEW_METER_VALUE, newMeterValue);
 }
 
-export const rootMeterValueSaga = [
+export const rootMeterValueSaga = all([
   fork(watchGetMeterValues),
   fork(watchGetMeterValue),
   fork(watchSaveMeterValue),
   fork(watchDeleteMeterValue),
   fork(watchNewMeterValue),
-];
+]);

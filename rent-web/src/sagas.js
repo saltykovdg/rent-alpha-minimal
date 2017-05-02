@@ -1,3 +1,4 @@
+import { all } from 'redux-saga/effects';
 import { rootAddressSaga } from './modules/Address/AddressSaga';
 import { rootOrganizationSaga } from './modules/Organization/OrganizationSaga';
 import rootServicesSaga from './modules/Services/ServicesSaga';
@@ -10,16 +11,16 @@ import rootMetersSaga from './modules/Meters/MetersSaga';
 import rootOperationsSaga from './modules/Operations/OperationsSaga';
 
 export default function* rootSaga() {
-  yield [
-    ...rootAddressSaga,
-    ...rootOrganizationSaga,
-    ...rootServicesSaga,
-    ...rootConstantsSaga,
-    ...rootTariffsSaga,
-    ...rootAccountsSaga,
-    ...rootCitizensSaga,
-    ...rootNormsSaga,
-    ...rootMetersSaga,
-    ...rootOperationsSaga,
-  ];
+  yield all([
+    rootAddressSaga,
+    rootOrganizationSaga,
+    rootServicesSaga,
+    rootConstantsSaga,
+    rootTariffsSaga,
+    rootAccountsSaga,
+    rootCitizensSaga,
+    rootNormsSaga,
+    rootMetersSaga,
+    rootOperationsSaga,
+  ]);
 }

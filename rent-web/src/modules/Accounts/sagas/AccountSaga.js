@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -399,7 +399,7 @@ export function* watchCalculateAccount() {
   yield takeLatest(AccountAction.CALCULATE_ACCOUNT, calculateAccount);
 }
 
-export const rootAccountSaga = [
+export const rootAccountSaga = all([
   fork(watchGetAccounts),
   fork(watchGetAccount),
   fork(watchGetAccountCard),
@@ -410,4 +410,4 @@ export const rootAccountSaga = [
   fork(watchFindAccounts),
   fork(watchGetAccountCalculations),
   fork(watchCalculateAccount),
-];
+]);

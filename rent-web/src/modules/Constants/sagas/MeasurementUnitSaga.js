@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as MeasurementUnitAction from './../actions/MeasurementUnitAction';
@@ -89,11 +89,11 @@ export function* watchFindMeasurementUnitsByName() {
   yield takeLatest(MeasurementUnitAction.FIND_MEASUREMENT_UNITS_BY_NAME, findMeasurementUnitsByName);
 }
 
-export const rootMeasurementUnitSaga = [
+export const rootMeasurementUnitSaga = all([
   fork(watchGetMeasurementUnits),
   fork(watchGetMeasurementUnit),
   fork(watchSaveMeasurementUnit),
   fork(watchDeleteMeasurementUnit),
   fork(watchNewMeasurementUnit),
   fork(watchFindMeasurementUnitsByName),
-];
+]);

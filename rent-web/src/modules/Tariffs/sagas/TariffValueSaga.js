@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as TariffValueAction from './../actions/TariffValueAction';
 import * as TariffValueApi from './../api/TariffValueApi';
@@ -73,10 +73,10 @@ export function* watchNewTariffValue() {
   yield takeLatest(TariffValueAction.NEW_TARIFF_VALUE, newTariffValue);
 }
 
-export const rootTariffValueSaga = [
+export const rootTariffValueSaga = all([
   fork(watchGetTariffValues),
   fork(watchGetTariffValue),
   fork(watchSaveTariffValue),
   fork(watchDeleteTariffValue),
   fork(watchNewTariffValue),
-];
+]);

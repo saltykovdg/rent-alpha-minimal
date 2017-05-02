@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -143,11 +143,11 @@ export function* watchFindTariffsByServiceId() {
   yield takeLatest(TariffAction.FIND_TARIFFS_BY_SERVICE_ID, findTariffsByServiceId);
 }
 
-export const rootTariffSaga = [
+export const rootTariffSaga = all([
   fork(watchGetTariffs),
   fork(watchGetTariff),
   fork(watchSaveTariff),
   fork(watchDeleteTariff),
   fork(watchNewTariff),
   fork(watchFindTariffsByServiceId),
-];
+]);

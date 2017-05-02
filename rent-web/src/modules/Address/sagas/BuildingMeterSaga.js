@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as BuildingMeterAction from './../actions/BuildingMeterAction';
 import * as BuildingMeterApi from './../api/BuildingMeterApi';
@@ -73,10 +73,10 @@ export function* watchNewBuildingMeter() {
   yield takeLatest(BuildingMeterAction.NEW_BUILDING_METER, newBuildingMeter);
 }
 
-export const rootBuildingMeterSaga = [
+export const rootBuildingMeterSaga = all([
   fork(watchGetBuildingMeters),
   fork(watchGetBuildingMeter),
   fork(watchSaveBuildingMeter),
   fork(watchDeleteBuildingMeter),
   fork(watchNewBuildingMeter),
-];
+]);

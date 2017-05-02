@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -400,7 +400,7 @@ export function* watchFindApartments() {
   yield takeLatest(AddressAction.FIND_APARTMENTS, findApartments);
 }
 
-export const rootAddressSaga = [
+export const rootAddressSaga = all([
   // get lists
   fork(watchGetStreetTypes),
   fork(watchGetStreets),
@@ -441,4 +441,4 @@ export const rootAddressSaga = [
   fork(watchFindApartments),
 
   rootBuildingMeterSaga,
-];
+]);

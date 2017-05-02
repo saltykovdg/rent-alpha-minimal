@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as ParameterTypeAction from './../actions/ParameterTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindParameterTypesByName() {
   yield takeLatest(ParameterTypeAction.FIND_PARAMETER_TYPES_BY_NAME, findParameterTypesByName);
 }
 
-export const rootParameterTypeSaga = [
+export const rootParameterTypeSaga = all([
   fork(watchGetParameterTypes),
   fork(watchGetParameterType),
   fork(watchSaveParameterType),
   fork(watchDeleteParameterType),
   fork(watchNewParameterType),
   fork(watchFindParameterTypesByName),
-];
+]);

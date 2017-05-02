@@ -1,6 +1,6 @@
 // import { root<%= helpers.pascalCase(name) %>Saga } from './sagas/<%= helpers.pascalCase(name) %>Saga';
 
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as <%= helpers.pascalCase(name) %>Action from './../actions/<%= helpers.pascalCase(name) %>Action';
@@ -91,11 +91,11 @@ export function* watchFind<%= helpers.pascalCase(name) %>sByName() {
   yield takeLatest(<%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME, find<%= helpers.pascalCase(name) %>sByName);
 }
 
-export const root<%= helpers.pascalCase(name) %>Saga = [
+export const root<%= helpers.pascalCase(name) %>Saga = all([
   fork(watchGet<%= helpers.pascalCase(name) %>s),
   fork(watchGet<%= helpers.pascalCase(name) %>),
   fork(watchSave<%= helpers.pascalCase(name) %>),
   fork(watchDelete<%= helpers.pascalCase(name) %>),
   fork(watchNew<%= helpers.pascalCase(name) %>),
   fork(watchFind<%= helpers.pascalCase(name) %>sByName),
-];
+]);

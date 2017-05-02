@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -96,11 +96,11 @@ export function* watchFindServicesByName() {
   yield takeLatest(ServiceAction.FIND_SERVICES_BY_NAME, findServicesByName);
 }
 
-export const rootServiceSaga = [
+export const rootServiceSaga = all([
   fork(watchGetServices),
   fork(watchGetService),
   fork(watchSaveService),
   fork(watchDeleteService),
   fork(watchNewService),
   fork(watchFindServicesByName),
-];
+]);

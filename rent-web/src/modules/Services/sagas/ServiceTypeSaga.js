@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 
 import * as ServiceTypeAction from './../actions/ServiceTypeAction';
@@ -89,11 +89,11 @@ export function* watchFindServiceTypesByName() {
   yield takeLatest(ServiceTypeAction.FIND_SERVICE_TYPES_BY_NAME, findServiceTypesByName);
 }
 
-export const rootServiceTypeSaga = [
+export const rootServiceTypeSaga = all([
   fork(watchGetServiceTypes),
   fork(watchGetServiceType),
   fork(watchSaveServiceType),
   fork(watchDeleteServiceType),
   fork(watchNewServiceType),
   fork(watchFindServiceTypesByName),
-];
+]);

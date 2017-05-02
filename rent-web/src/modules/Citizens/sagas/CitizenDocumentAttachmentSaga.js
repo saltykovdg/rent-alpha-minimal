@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as CitizenDocumentAttachmentAction from './../actions/CitizenDocumentAttachmentAction';
 import * as CitizenDocumentAttachmentApi from './../api/CitizenDocumentAttachmentApi';
@@ -87,10 +87,10 @@ export function* watchNewCitizenDocumentAttachment() {
   yield takeLatest(CitizenDocumentAttachmentAction.NEW_CITIZEN_DOCUMENT_ATTACHMENT, newCitizenDocumentAttachment);
 }
 
-export const rootCitizenDocumentAttachmentSaga = [
+export const rootCitizenDocumentAttachmentSaga = all([
   fork(watchGetCitizenDocumentAttachments),
   fork(watchGetCitizenDocumentAttachment),
   fork(watchSaveCitizenDocumentAttachment),
   fork(watchDeleteCitizenDocumentAttachment),
   fork(watchNewCitizenDocumentAttachment),
-];
+]);

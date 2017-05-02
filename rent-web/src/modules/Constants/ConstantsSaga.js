@@ -1,3 +1,5 @@
+import { all } from 'redux-saga/effects';
+
 // Import Saga
 import { rootCalculationTypeSaga } from './sagas/CalculationTypeSaga';
 import { rootMeasurementUnitSaga } from './sagas/MeasurementUnitSaga';
@@ -9,7 +11,7 @@ import { rootMeterTypeSaga } from './sagas/MeterTypeSaga';
 import { rootWorkingPeriodSaga } from './sagas/WorkingPeriodSaga';
 
 // Export Saga
-export default [
+export default all([
   rootCalculationTypeSaga,
   rootMeasurementUnitSaga,
   rootParameterTypeSaga,
@@ -18,4 +20,4 @@ export default [
   rootRegistrationTypeSaga,
   rootMeterTypeSaga,
   rootWorkingPeriodSaga,
-];
+]);

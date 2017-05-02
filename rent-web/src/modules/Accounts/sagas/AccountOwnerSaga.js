@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as AccountOwnerAction from './../actions/AccountOwnerAction';
 import * as AccountOwnerApi from './../api/AccountOwnerApi';
@@ -73,10 +73,10 @@ export function* watchNewAccountOwner() {
   yield takeLatest(AccountOwnerAction.NEW_ACCOUNT_OWNER, newAccountOwner);
 }
 
-export const rootAccountOwnerSaga = [
+export const rootAccountOwnerSaga = all([
   fork(watchGetAccountOwners),
   fork(watchGetAccountOwner),
   fork(watchSaveAccountOwner),
   fork(watchDeleteAccountOwner),
   fork(watchNewAccountOwner),
-];
+]);

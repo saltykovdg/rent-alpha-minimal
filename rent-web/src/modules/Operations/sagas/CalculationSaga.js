@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
 
 import * as CalculationAction from './../actions/CalculationAction';
 import * as SystemPropertyAction from './../actions/SystemPropertyAction';
@@ -33,7 +33,7 @@ export function* watchCloseWorkingPeriod() {
   yield takeLatest(CalculationAction.CLOSE_WORKING_PERIOD, closeWorkingPeriod);
 }
 
-export const rootCalculationSaga = [
+export const rootCalculationSaga = all([
   fork(watchCalculateAccounts),
   fork(watchCloseWorkingPeriod),
-];
+]);

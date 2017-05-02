@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, take, takeLatest, all } from 'redux-saga/effects';
 import { browserHistory } from 'react-router';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -162,7 +162,7 @@ export function* watchFindMetersCommonHouse() {
   yield takeLatest(MeterAction.FIND_METERS_COMMON_HOUSE, findMetersCommonHouse);
 }
 
-export const rootMeterSaga = [
+export const rootMeterSaga = all([
   fork(watchGetMeters),
   fork(watchGetMeter),
   fork(watchSaveMeter),
@@ -171,4 +171,4 @@ export const rootMeterSaga = [
   fork(watchFindMeters),
   fork(watchFindMetersIndividual),
   fork(watchFindMetersCommonHouse),
-];
+]);
