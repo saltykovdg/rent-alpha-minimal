@@ -439,7 +439,7 @@ public class CalculationService {
 
     public boolean getSystemPropertyCalculationIsActive() {
         SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
-        return systemProperty.getValue().equals("1");
+        return systemProperty != null && systemProperty.getValue().equals("1");
     }
 
     public void setSystemPropertyCalculationActive(Boolean active) {
