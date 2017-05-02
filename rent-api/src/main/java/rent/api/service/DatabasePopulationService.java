@@ -1042,7 +1042,7 @@ public class DatabasePopulationService {
             WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
             calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
             while (calculationService.getSystemPropertyCalculationIsActive()) {
-                sleep(1000);
+                sleep(millis);
             }
             for (int i = 0; i < createTestPeriodsCount; i++) {
                 calculationService.closeWorkingPeriod();
