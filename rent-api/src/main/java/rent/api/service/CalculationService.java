@@ -415,6 +415,7 @@ public class CalculationService {
         for (int i = 0; i < appCalculationThreadsCount; i++) {
             new CalculationThread(systemPropertyService, this, accounts, periodStartId, periodEndId);
         }
+        log.info("calculateAccounts() -> periodStartId: {}, periodEndId: {}", periodStartId, periodEndId);
     }
 
     public void closeWorkingPeriod() {
@@ -427,6 +428,7 @@ public class CalculationService {
         for (int i = 0; i < appCalculationThreadsCount; i++) {
             new CalculationThread(systemPropertyService, this, accounts, currentWorkingPeriod, newWorkingPeriod);
         }
+        log.info("closeWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
     }
 
     public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {

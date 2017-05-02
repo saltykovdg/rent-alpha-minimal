@@ -148,6 +148,7 @@ public class DatabasePopulationService {
     private void createRole(String name) {
         RoleEntity role = roleRepository.findByName(name);
         if (role == null) {
+            log.info("createRole({})", name);
             role = new RoleEntity();
             role.setName(name);
             roleRepository.save(role);
@@ -164,6 +165,7 @@ public class DatabasePopulationService {
     private void createUser(String login, String password, RoleEntity role) {
         UserEntity user = userRepository.findByLogin(login);
         if (user == null) {
+            log.info("createUsers({})", login);
             user = new UserEntity();
             user.setBlocked(false);
             user.setLogin(login);
@@ -174,57 +176,44 @@ public class DatabasePopulationService {
     }
 
     private void createParameterTypes() {
-        ParameterTypeEntity parameterType;
-        parameterType = parameterTypeRepository.findByCode(ParameterType.TOTAL_AREA.getCode());
-        if (parameterType == null) {
-            parameterType = createParameterType(ParameterType.TOTAL_AREA.getCode(), "Общая площадь");
-            parameterTypeRepository.save(parameterType);
-        }
-        parameterType = parameterTypeRepository.findByCode(ParameterType.PHONE_NUMBER.getCode());
-        if (parameterType == null) {
-            parameterType = createParameterType(ParameterType.PHONE_NUMBER.getCode(), "Номер телефона");
-            parameterTypeRepository.save(parameterType);
-        }
+        createParameterType(ParameterType.TOTAL_AREA.getCode(), "Общая площадь");
+        createParameterType(ParameterType.PHONE_NUMBER.getCode(), "Номер телефона");
     }
 
-    private ParameterTypeEntity createParameterType(String code, String name) {
-        ParameterTypeEntity parameterType = new ParameterTypeEntity();
-        parameterType.setCode(code);
-        parameterType.setName(name);
-        parameterType.setNameOrigin(name);
-        return parameterType;
+    private void createParameterType(String code, String name) {
+        ParameterTypeEntity parameterType = parameterTypeRepository.findByCode(code);
+        if (parameterType == null) {
+            log.info("createParameterType({}, {})", code, name);
+            parameterType = new ParameterTypeEntity();
+            parameterType.setCode(code);
+            parameterType.setName(name);
+            parameterType.setNameOrigin(name);
+            parameterTypeRepository.save(parameterType);
+        }
     }
 
     private void createCalculationTypes() {
-        CalculationTypeEntity calculationType;
-        calculationType = calculationTypeRepository.findByCode(CalculationType.TOTAL_AREA.getCode());
-        if (calculationType == null) {
-            createCalculationType(CalculationType.TOTAL_AREA.getCode(), "По общей площади");
-        }
-        calculationType = calculationTypeRepository.findByCode(CalculationType.PEOPLES.getCode());
-        if (calculationType == null) {
-            createCalculationType(CalculationType.PEOPLES.getCode(), "По прописанным");
-        }
-        calculationType = calculationTypeRepository.findByCode(CalculationType.METER_READING.getCode());
-        if (calculationType == null) {
-            createCalculationType(CalculationType.METER_READING.getCode(), "По показаниям счетчика");
-        }
-        calculationType = calculationTypeRepository.findByCode(CalculationType.METER_READING_WATER.getCode());
-        if (calculationType == null) {
-            createCalculationType(CalculationType.METER_READING_WATER.getCode(), "По показаниям счетчика (водоотведение)");
-        }
+        createCalculationType(CalculationType.TOTAL_AREA.getCode(), "По общей площади");
+        createCalculationType(CalculationType.PEOPLES.getCode(), "По прописанным");
+        createCalculationType(CalculationType.METER_READING.getCode(), "По показаниям счетчика");
+        createCalculationType(CalculationType.METER_READING_WATER.getCode(), "По показаниям счетчика (водоотведение)");
     }
 
     private void createCalculationType(String code, String name) {
-        CalculationTypeEntity calculationType = new CalculationTypeEntity();
-        calculationType.setCode(code);
-        calculationType.setName(name);
-        calculationType.setNameOrigin(name);
-        calculationTypeRepository.save(calculationType);
+        CalculationTypeEntity calculationType = calculationTypeRepository.findByCode(code);
+        if (calculationType == null) {
+            log.info("createCalculationType({}, {})", code, name);
+            calculationType = new CalculationTypeEntity();
+            calculationType.setCode(code);
+            calculationType.setName(name);
+            calculationType.setNameOrigin(name);
+            calculationTypeRepository.save(calculationType);
+        }
     }
 
     private void createMeasurementUnits() {
         if (measurementUnitRepository.count() == 0) {
+            log.info("createMeasurementUnits()");
             createMeasurementUnit("кв. м");
             createMeasurementUnit("куб. м");
             createMeasurementUnit("кВт*ч");
@@ -241,6 +230,7 @@ public class DatabasePopulationService {
 
     private void createGenderTypes() {
         if (genderTypeRepository.count() == 0) {
+            log.info("createGenderTypes()");
             createGenderType("Мужской");
             createGenderType("Женский");
         }
@@ -255,6 +245,7 @@ public class DatabasePopulationService {
 
     private void createDocumentTypes() {
         if (documentTypeRepository.count() == 0) {
+            log.info("createDocumentTypes()");
             createDocumentType("Паспорт");
             createDocumentType("Свидетельство о рождении");
             createDocumentType("Свидетельство права собственности");
@@ -271,6 +262,7 @@ public class DatabasePopulationService {
 
     private void createRegistrationTypes() {
         if (registrationTypeRepository.count() == 0) {
+            log.info("createRegistrationTypes()");
             createRegistrationType("Временная");
             createRegistrationType("Постоянная");
         }
@@ -283,27 +275,25 @@ public class DatabasePopulationService {
     }
 
     private void createMeterTypes() {
-        MeterTypeEntity meterType;
-        meterType = meterTypeRepository.findByCode(MeterType.INDIVIDUAL.getCode());
-        if (meterType == null) {
-            createMeterType(MeterType.INDIVIDUAL.getCode(), "Индивидуальный");
-        }
-        meterType = meterTypeRepository.findByCode(MeterType.COMMON_HOUSE.getCode());
-        if (meterType == null) {
-            createMeterType(MeterType.COMMON_HOUSE.getCode(), "Общедомовой");
-        }
+        createMeterType(MeterType.INDIVIDUAL.getCode(), "Индивидуальный");
+        createMeterType(MeterType.COMMON_HOUSE.getCode(), "Общедомовой");
     }
 
     private void createMeterType(String code, String name) {
-        MeterTypeEntity meterType = new MeterTypeEntity();
-        meterType.setCode(code);
-        meterType.setName(name);
-        meterType.setNameOrigin(name);
-        meterTypeRepository.save(meterType);
+        MeterTypeEntity meterType = meterTypeRepository.findByCode(code);
+        if (meterType == null) {
+            log.info("createMeterType({}, {})", code, name);
+            meterType = new MeterTypeEntity();
+            meterType.setCode(code);
+            meterType.setName(name);
+            meterType.setNameOrigin(name);
+            meterTypeRepository.save(meterType);
+        }
     }
 
     private void createStreetTypes() {
         if (streetTypeRepository.count() == 0) {
+            log.info("createStreetTypes()");
             createStreetType("Улица", "ул.");
             createStreetType("Бульвар", "б-р");
             createStreetType("Переулок", "пер.");
@@ -322,6 +312,7 @@ public class DatabasePopulationService {
 
     private void createServiceTypes() {
         if (serviceTypeRepository.count() == 0) {
+            log.info("createServiceTypes()");
             createServiceType("Жилищьная");
             createServiceType("Коммунальня");
         }
@@ -335,6 +326,7 @@ public class DatabasePopulationService {
 
     private void createContractorTypes() {
         if (contractorTypeRepository.count() == 0) {
+            log.info("createContractorTypes()");
             createContractorType("Управляющая компания", "УК");
         }
     }
@@ -348,6 +340,7 @@ public class DatabasePopulationService {
 
     private void createWorkingPeriods() {
         if (workingPeriodRepository.count() == 0) {
+            log.info("createWorkingPeriods()");
             LocalDate dateStart = appDefaultFirstPeriod.withDayOfMonth(1);
             LocalDate dateEnd = appDefaultFirstPeriod.withDayOfMonth(appDefaultFirstPeriod.lengthOfMonth());
             createWorkingPeriod(dateStart, dateEnd);
@@ -366,6 +359,7 @@ public class DatabasePopulationService {
 
     private void createSystemProperties() {
         if (systemPropertyService.getCount() == 0) {
+            log.info("createSystemProperties()");
             createSystemProperty(SystemPropertyType.CALCULATION_IS_ACTIVE.getName(), "0");
             createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_COUNT.getName(), "0");
             createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName(), "0");
@@ -384,6 +378,7 @@ public class DatabasePopulationService {
      */
     private void createTestData() {
         if (createTestData) {
+            log.info("createTestData()");
             createStreets();
             createBuildings();
             createApartments();
@@ -401,6 +396,7 @@ public class DatabasePopulationService {
 
     private void createStreets() {
         if (streetRepository.count() == 0) {
+            log.info("createStreets()");
             StreetTypeEntity streetTypeStreet = streetTypeRepository.findByNameContainingOrderByName("Улица").get(0);
             StreetTypeEntity streetTypeMicroDistrict = streetTypeRepository.findByNameContainingOrderByName("Микрорайон").get(0);
             createStreet(streetTypeMicroDistrict, "Космонавтов");
@@ -419,6 +415,7 @@ public class DatabasePopulationService {
 
     private void createBuildings() {
         if (buildingRepository.count() == 0) {
+            log.info("createBuildings()");
             StreetEntity street1 = streetRepository.findByNameContainingOrderByName("Космонавтов").get(0);
             StreetEntity street2 = streetRepository.findByNameContainingOrderByName("Звездный").get(0);
             createBuilding(street1, "1", 1);
@@ -445,6 +442,7 @@ public class DatabasePopulationService {
 
     private void createApartments() {
         if (apartmentRepository.count() == 0) {
+            log.info("createApartments()");
             List<BuildingEntity> buildings = buildingRepository.findAll();
             int apartmentsCount = 0;
             for (BuildingEntity building : buildings) {
@@ -534,6 +532,7 @@ public class DatabasePopulationService {
 
     private void createServices() {
         if (serviceRepository.count() == 0) {
+            log.info("createServices()");
             ServiceTypeEntity serviceType = serviceTypeRepository.findByNameContainingOrderByName("Жилищьная").get(0);
             createService(serviceType, "Текущий ремонт");
             createService(serviceType, "Содержание жилья");
@@ -555,21 +554,16 @@ public class DatabasePopulationService {
         return workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
     }
 
-    private WorkingPeriodEntity getLastWorkingPeriod() {
-        return workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartAsc();
-    }
-
     private void createTariffs() {
         if (tariffRepository.count() == 0) {
+            log.info("createTariffs()");
             List<ServiceEntity> services = serviceRepository.findByNameContainingOrderByName("");
 
             CalculationTypeEntity calculationTypeTotalArea = calculationTypeRepository.findByCode(CalculationType.TOTAL_AREA.getCode());
-            //CalculationTypeEntity calculationTypePeoples = calculationTypeRepository.findByCode(CalculationType.PEOPLES.getCode());
             CalculationTypeEntity calculationTypeMeterReading = calculationTypeRepository.findByCode(CalculationType.METER_READING.getCode());
             CalculationTypeEntity calculationTypeMeterReadingWater = calculationTypeRepository.findByCode(CalculationType.METER_READING_WATER.getCode());
 
             MeasurementUnitEntity measurementUnitArea = measurementUnitRepository.findByNameContainingOrderByName("кв. м").get(0);
-            //MeasurementUnitEntity measurementUnitHeating = measurementUnitRepository.findByNameContainingOrderByName("гкал").get(0);
             MeasurementUnitEntity measurementUnitWater = measurementUnitRepository.findByNameContainingOrderByName("куб. м").get(0);
 
             LocalDate dateStart = getFirstWorkingPeriod().getDateStart();
@@ -609,6 +603,7 @@ public class DatabasePopulationService {
 
     private void createNorms() {
         if (normRepository.count() == 0) {
+            log.info("createNorms()");
             List<ServiceEntity> services = serviceRepository.findByNameContainingOrderByName("");
             MeasurementUnitEntity measurementUnitWater = measurementUnitRepository.findByNameContainingOrderByName("куб. м").get(0);
             LocalDate dateStart = getFirstWorkingPeriod().getDateStart();
@@ -638,6 +633,7 @@ public class DatabasePopulationService {
 
     private void createContractors() {
         if (contractorRepository.count() == 0) {
+            log.info("createContractors()");
             ContractorTypeEntity contractorType = contractorTypeRepository.findByNameContainingOrderByName("Управляющая компания").get(0);
             ContractorEntity contractor = new ContractorEntity();
             contractor.setContractorType(contractorType);
@@ -663,6 +659,7 @@ public class DatabasePopulationService {
 
     private void createAccounts() {
         if (accountRepository.count() == 0) {
+            log.info("createAccounts()");
             List<ApartmentEntity> apartments = apartmentRepository.findAll();
             ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
             ParameterTypeEntity parameterTypeTotalArea = parameterTypeRepository.findByCode(ParameterType.TOTAL_AREA.getCode());
@@ -894,6 +891,7 @@ public class DatabasePopulationService {
         String testAccountNumber = "000000-test1";
         Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
         if (page.getTotalElements() == 0) {
+            log.info("createTestAccount1()");
             List<ApartmentEntity> apartments = apartmentRepository.findAll();
             ApartmentEntity apartment = apartments.get(0);
             ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
@@ -961,6 +959,7 @@ public class DatabasePopulationService {
         String testAccountNumber = "000000-test2";
         Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
         if (page.getTotalElements() == 0) {
+            log.info("createTestAccount2()");
             List<ApartmentEntity> apartments = apartmentRepository.findAll();
             ApartmentEntity apartment = apartments.get(0);
             ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
@@ -1005,6 +1004,7 @@ public class DatabasePopulationService {
         String testAccountNumber = "000000-test3";
         Page<AccountEntity> page = accountRepository.findByAccountNumber(testAccountNumber, new PageRequest(1, 1));
         if (page.getTotalElements() == 0) {
+            log.info("createTestAccount3()");
             List<ApartmentEntity> apartments = apartmentRepository.findAll();
             ApartmentEntity apartment = apartments.get(0);
             ContractorEntity contractor = contractorRepository.findByNameContainingOrderByName("ООО «Перспектива»").get(0);
@@ -1050,6 +1050,7 @@ public class DatabasePopulationService {
 
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
+            log.info("createTestWorkingPeriods()");
             long millis = 1000;
             WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
             calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
