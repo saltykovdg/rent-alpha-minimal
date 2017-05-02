@@ -90,9 +90,7 @@ class AccountCard extends EditComponent {
       return documentCitizenDataSource;
     };
     const expandedOwnerRowRender = (record) => {
-      const newRecord = record;
-      newRecord.key = record.id;
-      const documentOwnershipDataSource = [newRecord];
+      const documentOwnershipDataSource = [record];
       const documentCitizenDataSource = getCitizenDocumentsForPeriod(record.citizen.documents, this.props.selectedWorkingPeriod);
       return (
         <div>

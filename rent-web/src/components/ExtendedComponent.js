@@ -35,13 +35,13 @@ class ExtendedComponent extends Component {
     }
   }
   getColumn = (title, name) => {
-    return { title, dataIndex: name, key: name };
+    return { title, dataIndex: name, key: Math.random() };
   }
   getDateColumn = (title, name) => {
     return {
       title,
       dataIndex: name,
-      key: name,
+      key: Math.random(),
       render(text) {
         let value = text;
         if (value && value.constructor.name === 'Moment') {
