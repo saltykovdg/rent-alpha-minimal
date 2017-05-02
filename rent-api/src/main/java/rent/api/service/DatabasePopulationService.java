@@ -32,7 +32,6 @@ public class DatabasePopulationService {
     private final CalculationTypeRepository calculationTypeRepository;
     private final MeasurementUnitRepository measurementUnitRepository;
     private final ParameterTypeRepository parameterTypeRepository;
-    private final CommonRepository commonRepository;
     private final GenderTypeRepository genderTypeRepository;
     private final DocumentTypeRepository documentTypeRepository;
     private final RegistrationTypeRepository registrationTypeRepository;
@@ -51,25 +50,39 @@ public class DatabasePopulationService {
     private final MeterRepository meterRepository;
     private final NormRepository normRepository;
     private final CalculationService calculationService;
-    private final SystemPropertyRepository systemPropertyRepository;
+    private final SystemPropertyService systemPropertyService;
 
     @Autowired
-    public DatabasePopulationService(@Value("${app.locale}") String appLocale, @Value("${datasource.createTestData}") Boolean createTestData,
-                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod, @Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
-                                     RoleRepository roleRepository, UserRepository userRepository,
-                                     PasswordEncoder passwordEncoder, StreetTypeRepository streetTypeRepository,
-                                     StreetRepository streetRepository, BuildingRepository buildingRepository,
-                                     CalculationTypeRepository calculationTypeRepository, MeasurementUnitRepository measurementUnitRepository,
-                                     ParameterTypeRepository parameterTypeRepository, CommonRepository commonRepository,
-                                     GenderTypeRepository genderTypeRepository, DocumentTypeRepository documentTypeRepository,
-                                     RegistrationTypeRepository registrationTypeRepository, MeterTypeRepository meterTypeRepository,
-                                     ServiceTypeRepository serviceTypeRepository, ContractorTypeRepository contractorTypeRepository,
-                                     ApartmentRepository apartmentRepository, ServiceRepository serviceRepository,
-                                     TariffRepository tariffRepository, WorkingPeriodRepository workingPeriodRepository,
-                                     ContractorRepository contractorRepository, AccountRepository accountRepository,
-                                     CitizenRepository citizenRepository, MeterRepository meterRepository,
-                                     NormRepository normRepository, CalculationService calculationService,
-                                     SystemPropertyRepository systemPropertyRepository) {
+    public DatabasePopulationService(@Value("${app.locale}") String appLocale,
+                                     @Value("${datasource.createTestData}") Boolean createTestData,
+                                     @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod,
+                                     @Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
+                                     RoleRepository roleRepository,
+                                     UserRepository userRepository,
+                                     PasswordEncoder passwordEncoder,
+                                     StreetTypeRepository streetTypeRepository,
+                                     CalculationTypeRepository calculationTypeRepository,
+                                     MeasurementUnitRepository measurementUnitRepository,
+                                     ParameterTypeRepository parameterTypeRepository,
+                                     GenderTypeRepository genderTypeRepository,
+                                     DocumentTypeRepository documentTypeRepository,
+                                     RegistrationTypeRepository registrationTypeRepository,
+                                     MeterTypeRepository meterTypeRepository,
+                                     ServiceTypeRepository serviceTypeRepository,
+                                     ContractorTypeRepository contractorTypeRepository,
+                                     StreetRepository streetRepository,
+                                     BuildingRepository buildingRepository,
+                                     ApartmentRepository apartmentRepository,
+                                     ServiceRepository serviceRepository,
+                                     TariffRepository tariffRepository,
+                                     WorkingPeriodRepository workingPeriodRepository,
+                                     ContractorRepository contractorRepository,
+                                     AccountRepository accountRepository,
+                                     CitizenRepository citizenRepository,
+                                     MeterRepository meterRepository,
+                                     NormRepository normRepository,
+                                     CalculationService calculationService,
+                                     SystemPropertyService systemPropertyService) {
         this.appLocale = appLocale;
         this.createTestData = createTestData;
         this.appDefaultFirstPeriod = LocalDate.parse(appDefaultFirstPeriod);
@@ -78,18 +91,17 @@ public class DatabasePopulationService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.streetTypeRepository = streetTypeRepository;
-        this.streetRepository = streetRepository;
-        this.buildingRepository = buildingRepository;
         this.calculationTypeRepository = calculationTypeRepository;
         this.measurementUnitRepository = measurementUnitRepository;
         this.parameterTypeRepository = parameterTypeRepository;
-        this.commonRepository = commonRepository;
         this.genderTypeRepository = genderTypeRepository;
         this.documentTypeRepository = documentTypeRepository;
         this.registrationTypeRepository = registrationTypeRepository;
         this.meterTypeRepository = meterTypeRepository;
         this.serviceTypeRepository = serviceTypeRepository;
         this.contractorTypeRepository = contractorTypeRepository;
+        this.streetRepository = streetRepository;
+        this.buildingRepository = buildingRepository;
         this.apartmentRepository = apartmentRepository;
         this.serviceRepository = serviceRepository;
         this.tariffRepository = tariffRepository;
@@ -100,7 +112,7 @@ public class DatabasePopulationService {
         this.meterRepository = meterRepository;
         this.normRepository = normRepository;
         this.calculationService = calculationService;
-        this.systemPropertyRepository = systemPropertyRepository;
+        this.systemPropertyService = systemPropertyService;
     }
 
     @PostConstruct
@@ -353,7 +365,7 @@ public class DatabasePopulationService {
     }
 
     private void createSystemProperties() {
-        if (systemPropertyRepository.count() == 0) {
+        if (systemPropertyService.getCount() == 0) {
             createSystemProperty(SystemPropertyType.CALCULATION_IS_ACTIVE.getName(), "0");
             createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_COUNT.getName(), "0");
             createSystemProperty(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName(), "0");
@@ -364,7 +376,7 @@ public class DatabasePopulationService {
         SystemPropertyEntity systemProperty = new SystemPropertyEntity();
         systemProperty.setName(name);
         systemProperty.setValue(value);
-        systemPropertyRepository.save(systemProperty);
+        systemPropertyService.save(systemProperty);
     }
 
     /**
@@ -1041,12 +1053,12 @@ public class DatabasePopulationService {
             long millis = 1000;
             WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
             calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
-            while (calculationService.getSystemPropertyCalculationIsActive()) {
+            while (systemPropertyService.getCalculationIsActive()) {
                 sleep(millis);
             }
             for (int i = 0; i < createTestPeriodsCount; i++) {
                 calculationService.closeWorkingPeriod();
-                while (calculationService.getSystemPropertyCalculationIsActive()) {
+                while (systemPropertyService.getCalculationIsActive()) {
                     sleep(millis);
                 }
             }

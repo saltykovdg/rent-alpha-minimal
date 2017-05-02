@@ -217,28 +217,6 @@ public class CommonRepository {
                 .executeUpdate();
     }
 
-    public void deleteCalculationsForPeriod(String accountServiceId, String currentWorkingPeriodId, String forWorkingPeriodId) {
-        if (currentWorkingPeriodId.equals(forWorkingPeriodId)) {
-            String hql = "delete from AccountAccrualEntity accountAccrual where " +
-                    "accountAccrual.accountService.id = :accountServiceId and " +
-                    "accountAccrual.workingPeriod.id = :currentWorkingPeriodId";
-            entityManager.createQuery(hql)
-                    .setParameter("accountServiceId", accountServiceId)
-                    .setParameter("currentWorkingPeriodId", currentWorkingPeriodId)
-                    .executeUpdate();
-        } else {
-            String hql = "delete from AccountRecalculationEntity accountRecalculation where " +
-                    "accountRecalculation.accountService.id = :accountServiceId and " +
-                    "accountRecalculation.workingPeriod.id = :currentWorkingPeriodId and " +
-                    "accountRecalculation.forWorkingPeriod.id = :forWorkingPeriodId";
-            entityManager.createQuery(hql)
-                    .setParameter("accountServiceId", accountServiceId)
-                    .setParameter("currentWorkingPeriodId", currentWorkingPeriodId)
-                    .setParameter("forWorkingPeriodId", forWorkingPeriodId)
-                    .executeUpdate();
-        }
-    }
-
     public Double getAccountServiceSumRecalculationsForPeriod(String accountServiceId, String workingPeriodId) {
         String hql = "select new rent.common.dtos.AccountServiceCalculationDto(accountService, sum(recalculations.value), sum(recalculations.consumption)) " +
                 "from AccountRecalculationEntity recalculations " +

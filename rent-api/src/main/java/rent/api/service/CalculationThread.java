@@ -10,6 +10,7 @@ import java.util.List;
 public class CalculationThread implements Runnable {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final SystemPropertyService systemPropertyService;
     private final CalculationService calculationService;
     private final List<AccountEntity> accounts;
     private final String periodStartId;
@@ -18,7 +19,8 @@ public class CalculationThread implements Runnable {
     private final WorkingPeriodEntity currentWorkingPeriod;
     private final WorkingPeriodEntity newWorkingPeriod;
 
-    public CalculationThread(CalculationService calculationService, List<AccountEntity> accounts, String periodStartId, String periodEndId) {
+    public CalculationThread(SystemPropertyService systemPropertyService, CalculationService calculationService, List<AccountEntity> accounts, String periodStartId, String periodEndId) {
+        this.systemPropertyService = systemPropertyService;
         this.calculationService = calculationService;
         this.accounts = accounts;
         this.accountsCount = accounts.size();
@@ -29,7 +31,8 @@ public class CalculationThread implements Runnable {
         new Thread(this).start();
     }
 
-    public CalculationThread(CalculationService calculationService, List<AccountEntity> accounts, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
+    public CalculationThread(SystemPropertyService systemPropertyService, CalculationService calculationService, List<AccountEntity> accounts, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
+        this.systemPropertyService = systemPropertyService;
         this.calculationService = calculationService;
         this.accounts = accounts;
         this.accountsCount = accounts.size();
@@ -47,7 +50,6 @@ public class CalculationThread implements Runnable {
                 AccountEntity account;
                 synchronized (accounts) {
                     if (accounts.size() == 0) {
-                        calculationService.setSystemPropertyCalculationActive(false);
                         break;
                     }
                     account = accounts.remove(0);
@@ -57,7 +59,17 @@ public class CalculationThread implements Runnable {
                 } else {
                     calculationService.calculateCloseWorkingPeriod(account, currentWorkingPeriod, newWorkingPeriod);
                 }
-                calculationService.setSystemPropertyCalculationAccountsCalculated(accountsCount - accounts.size());
+                synchronized (systemPropertyService) {
+                    int currentCount = accountsCount - accounts.size();
+                    if (systemPropertyService.getCalculationAccountsCalculated() < currentCount) {
+                        systemPropertyService.setCalculationAccountsCalculated(currentCount);
+                    }
+                }
+            }
+            synchronized (systemPropertyService) {
+                if (systemPropertyService.getCalculationAccountsCalculated() == accountsCount) {
+                    systemPropertyService.setCalculationActive(false);
+                }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

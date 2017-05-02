@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import rent.api.service.CalculationService;
 import rent.common.entity.AccountServiceEntity;
 import rent.common.entity.CitizenDocumentAttachmentEntity;
-import rent.common.repository.*;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
@@ -23,17 +23,17 @@ import java.io.File;
 public class HibernatePreDeleteEventListener implements PreDeleteEventListener {
     private final Logger log = LoggerFactory.getLogger(HibernatePreDeleteEventListener.class);
 
+    private final String appContentDir;
     private final EntityManagerFactory entityManagerFactory;
-    private final CommonRepository commonRepository;
-    private final String contentDir;
+    private final CalculationService calculationService;
 
     @Autowired
-    public HibernatePreDeleteEventListener(EntityManagerFactory entityManagerFactory,
-                                           @Value("${app.content.dir}") String contentDir,
-                                           CommonRepository commonRepository) {
+    public HibernatePreDeleteEventListener(@Value("${app.content.dir}") String appContentDir,
+                                           EntityManagerFactory entityManagerFactory,
+                                           CalculationService calculationService) {
+        this.appContentDir = appContentDir;
         this.entityManagerFactory = entityManagerFactory;
-        this.commonRepository = commonRepository;
-        this.contentDir = contentDir;
+        this.calculationService = calculationService;
     }
 
     @PostConstruct
@@ -49,13 +49,13 @@ public class HibernatePreDeleteEventListener implements PreDeleteEventListener {
         Object entity = preDeleteEvent.getEntity();
         if (entity instanceof CitizenDocumentAttachmentEntity) {
             CitizenDocumentAttachmentEntity attachment = (CitizenDocumentAttachmentEntity) entity;
-            File file = new File(contentDir + "/" + attachment.getUrlLink());
+            File file = new File(appContentDir + "/" + attachment.getUrlLink());
             if (file.delete()) {
                 log.info(attachment.getUrlLink() + " successfully removed.");
             }
         } else if (entity instanceof AccountServiceEntity) {
             AccountServiceEntity accountService = (AccountServiceEntity) entity;
-            commonRepository.deleteCalculationsByAccountServiceId(accountService.getId());
+            calculationService.deleteCalculationsByAccountServiceId(accountService.getId());
         }
         return false;
     }

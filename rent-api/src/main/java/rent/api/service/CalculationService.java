@@ -10,7 +10,6 @@ import rent.common.dtos.AccountServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
 import rent.common.enums.ParameterType;
-import rent.common.enums.SystemPropertyType;
 import rent.common.interfaces.IPeriod;
 import rent.common.repository.*;
 
@@ -34,17 +33,24 @@ public class CalculationService {
     private final AccountAccrualRepository accountAccrualRepository;
     private final AccountRecalculationRepository accountRecalculationRepository;
     private final NormRepository normRepository;
-    private final SystemPropertyRepository systemPropertyRepository;
+    private final SystemPropertyService systemPropertyService;
     private final AccountOpeningBalanceRepository accountOpeningBalanceRepository;
     private final AccountServiceRepository accountServiceRepository;
+    private final AccountPaymentRepository accountPaymentRepository;
 
     @Autowired
-    public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount, @Value("${app.locale}") String appLocale,
-                              CommonRepository commonRepository, AccountRepository accountRepository,
-                              WorkingPeriodRepository workingPeriodRepository, AccountAccrualRepository accountAccrualRepository,
-                              AccountRecalculationRepository accountRecalculationRepository, NormRepository normRepository,
-                              SystemPropertyRepository systemPropertyRepository, AccountOpeningBalanceRepository accountOpeningBalanceRepository,
-                              AccountServiceRepository accountServiceRepository) {
+    public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount,
+                              @Value("${app.locale}") String appLocale,
+                              CommonRepository commonRepository,
+                              AccountRepository accountRepository,
+                              WorkingPeriodRepository workingPeriodRepository,
+                              AccountAccrualRepository accountAccrualRepository,
+                              AccountRecalculationRepository accountRecalculationRepository,
+                              NormRepository normRepository,
+                              SystemPropertyService systemPropertyService,
+                              AccountOpeningBalanceRepository accountOpeningBalanceRepository,
+                              AccountServiceRepository accountServiceRepository,
+                              AccountPaymentRepository accountPaymentRepository) {
         this.appCalculationThreadsCount = appCalculationThreadsCount;
         this.appLocale = appLocale;
         this.commonRepository = commonRepository;
@@ -53,12 +59,12 @@ public class CalculationService {
         this.accountAccrualRepository = accountAccrualRepository;
         this.accountRecalculationRepository = accountRecalculationRepository;
         this.normRepository = normRepository;
-        this.systemPropertyRepository = systemPropertyRepository;
+        this.systemPropertyService = systemPropertyService;
         this.accountOpeningBalanceRepository = accountOpeningBalanceRepository;
         this.accountServiceRepository = accountServiceRepository;
-
-        if (getSystemPropertyCalculationIsActive()) {
-            setSystemPropertyCalculationActive(false);
+        this.accountPaymentRepository = accountPaymentRepository;
+        if (systemPropertyService.getCalculationIsActive()) {
+            systemPropertyService.setCalculationActive(false);
         }
     }
 
@@ -188,7 +194,11 @@ public class CalculationService {
     }
 
     private void deleteCalculationsForPeriod(String accountServiceId, String currentWorkingPeriodId, String forWorkingPeriodId) {
-        commonRepository.deleteCalculationsForPeriod(accountServiceId, currentWorkingPeriodId, forWorkingPeriodId);
+        if (currentWorkingPeriodId.equals(forWorkingPeriodId)) {
+            accountAccrualRepository.deleteByAccountServiceIdAndWorkingPeriodId(accountServiceId, currentWorkingPeriodId);
+        } else {
+            accountRecalculationRepository.deleteByAccountServiceIdAndWorkingPeriodId(accountServiceId, currentWorkingPeriodId, forWorkingPeriodId);
+        }
     }
 
     private AccountServiceCalculationDto calculateByTotalArea(WorkingPeriodEntity workingPeriod, AccountEntity account, AccountServiceEntity accountService, TariffValueEntity tariffValue) {
@@ -399,23 +409,23 @@ public class CalculationService {
 
     public void calculateAccounts(String periodStartId, String periodEndId) {
         List<AccountEntity> accounts = accountRepository.getAccounts();
-        setSystemPropertyCalculationActive(true);
-        setSystemPropertyCalculationAccountsCount(accounts.size());
-        setSystemPropertyCalculationAccountsCalculated(0);
+        systemPropertyService.setCalculationActive(true);
+        systemPropertyService.setCalculationAccountsCount(accounts.size());
+        systemPropertyService.setCalculationAccountsCalculated(0);
         for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(this, accounts, periodStartId, periodEndId);
+            new CalculationThread(systemPropertyService, this, accounts, periodStartId, periodEndId);
         }
     }
 
     public void closeWorkingPeriod() {
         List<AccountEntity> accounts = accountRepository.getAccounts();
-        setSystemPropertyCalculationActive(true);
-        setSystemPropertyCalculationAccountsCount(accounts.size());
-        setSystemPropertyCalculationAccountsCalculated(0);
+        systemPropertyService.setCalculationActive(true);
+        systemPropertyService.setCalculationAccountsCount(accounts.size());
+        systemPropertyService.setCalculationAccountsCalculated(0);
         WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
         WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
         for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(this, accounts, currentWorkingPeriod, newWorkingPeriod);
+            new CalculationThread(systemPropertyService, this, accounts, currentWorkingPeriod, newWorkingPeriod);
         }
     }
 
@@ -432,31 +442,15 @@ public class CalculationService {
                     accountOpeningBalance.setValue(closingBalance);
                     accountOpeningBalanceRepository.save(accountOpeningBalance);
                 }
-                calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
             }
+            calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
         }
     }
 
-    public boolean getSystemPropertyCalculationIsActive() {
-        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
-        return systemProperty != null && systemProperty.getValue().equals("1");
-    }
-
-    public void setSystemPropertyCalculationActive(Boolean active) {
-        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_IS_ACTIVE.getName());
-        systemProperty.setValue(active ? "1" : "0");
-        systemPropertyRepository.save(systemProperty);
-    }
-
-    public void setSystemPropertyCalculationAccountsCount(Integer accountsCount) {
-        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_ACCOUNTS_COUNT.getName());
-        systemProperty.setValue(accountsCount.toString());
-        systemPropertyRepository.save(systemProperty);
-    }
-
-    public void setSystemPropertyCalculationAccountsCalculated(Integer accountsCalculated) {
-        SystemPropertyEntity systemProperty = systemPropertyRepository.findFirstByNameContaining(SystemPropertyType.CALCULATION_ACCOUNTS_CALCULATED.getName());
-        systemProperty.setValue(accountsCalculated.toString());
-        systemPropertyRepository.save(systemProperty);
+    public void deleteCalculationsByAccountServiceId(String accountServiceId) {
+        accountOpeningBalanceRepository.deleteByAccountServiceId(accountServiceId);
+        accountAccrualRepository.deleteByAccountServiceId(accountServiceId);
+        accountRecalculationRepository.deleteByAccountServiceId(accountServiceId);
+        accountPaymentRepository.deleteByAccountServiceId(accountServiceId);
     }
 }

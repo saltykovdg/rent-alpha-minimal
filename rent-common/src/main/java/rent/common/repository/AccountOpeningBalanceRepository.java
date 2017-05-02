@@ -1,9 +1,11 @@
 package rent.common.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.transaction.annotation.Transactional;
 import rent.common.entity.AccountOpeningBalanceEntity;
 import rent.common.projection.AccountOpeningBalanceBasic;
 
@@ -27,4 +29,10 @@ public interface AccountOpeningBalanceRepository extends PagingAndSortingReposit
             "join accountOpeningBalance.workingPeriod workingPeriod " +
             "where accountService.id = :accountServiceId order by workingPeriod.dateStart desc")
     List<AccountOpeningBalanceEntity> findByAccountServiceId(@Param("accountServiceId") String accountServiceId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from AccountOpeningBalanceEntity accountOpeningBalance " +
+            "where accountOpeningBalance.accountService.id = :accountServiceId")
+    void deleteByAccountServiceId(@Param("accountServiceId") String accountServiceId);
 }
