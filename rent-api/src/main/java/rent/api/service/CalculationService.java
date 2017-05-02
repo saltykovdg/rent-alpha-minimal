@@ -56,6 +56,10 @@ public class CalculationService {
         this.systemPropertyRepository = systemPropertyRepository;
         this.accountOpeningBalanceRepository = accountOpeningBalanceRepository;
         this.accountServiceRepository = accountServiceRepository;
+
+        if (getSystemPropertyCalculationIsActive()) {
+            setSystemPropertyCalculationActive(false);
+        }
     }
 
     public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
