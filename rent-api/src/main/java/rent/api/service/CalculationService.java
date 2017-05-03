@@ -412,45 +412,49 @@ public class CalculationService {
     }
 
     public void calculateAccounts(String periodStartId, String periodEndId) {
-        List<AccountEntity> accounts = accountRepository.getAccounts();
-        systemPropertyService.setCalculationActive(true);
-        systemPropertyService.setCalculationAccountsCount(accounts.size());
-        systemPropertyService.setCalculationAccountsCalculated(0);
+        if (!systemPropertyService.getCalculationIsActive()) {
+            List<AccountEntity> accounts = accountRepository.getAccounts();
+            systemPropertyService.setCalculationActive(true);
+            systemPropertyService.setCalculationAccountsCount(accounts.size());
+            systemPropertyService.setCalculationAccountsCalculated(0);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
-        List<Future<Integer>> futures = new ArrayList<>();
-        for (AccountEntity account : accounts) {
-            Callable<Integer> task = new CalculationThread(this, account, periodStartId, periodEndId);
-            Future<Integer> future = executorService.submit(task);
-            futures.add(future);
+            ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
+            List<Future<Integer>> futures = new ArrayList<>();
+            for (AccountEntity account : accounts) {
+                Callable<Integer> task = new CalculationThread(this, account, periodStartId, periodEndId);
+                Future<Integer> future = executorService.submit(task);
+                futures.add(future);
+            }
+
+            executorService.shutdown();
+            createCalculationWatcher(futures, accounts.size());
+
+            log.info("calculateAccounts() -> periodStartId: {}, periodEndId: {}", periodStartId, periodEndId);
         }
-
-        executorService.shutdown();
-        createCalculationWatcher(futures, accounts.size());
-
-        log.info("calculateAccounts() -> periodStartId: {}, periodEndId: {}", periodStartId, periodEndId);
     }
 
     public void closeWorkingPeriod() {
-        List<AccountEntity> accounts = accountRepository.getAccounts();
-        systemPropertyService.setCalculationActive(true);
-        systemPropertyService.setCalculationAccountsCount(accounts.size());
-        systemPropertyService.setCalculationAccountsCalculated(0);
-        WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
-        WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
+        if (!systemPropertyService.getCalculationIsActive()) {
+            List<AccountEntity> accounts = accountRepository.getAccounts();
+            systemPropertyService.setCalculationActive(true);
+            systemPropertyService.setCalculationAccountsCount(accounts.size());
+            systemPropertyService.setCalculationAccountsCalculated(0);
+            WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
+            WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
-        List<Future<Integer>> futures = new ArrayList<>();
-        for (AccountEntity account : accounts) {
-            Callable<Integer> task = new CalculationThread(this, account, currentWorkingPeriod, newWorkingPeriod);
-            Future<Integer> future = executorService.submit(task);
-            futures.add(future);
+            ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
+            List<Future<Integer>> futures = new ArrayList<>();
+            for (AccountEntity account : accounts) {
+                Callable<Integer> task = new CalculationThread(this, account, currentWorkingPeriod, newWorkingPeriod);
+                Future<Integer> future = executorService.submit(task);
+                futures.add(future);
+            }
+
+            executorService.shutdown();
+            createCalculationWatcher(futures, accounts.size());
+
+            log.info("closeWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
         }
-
-        executorService.shutdown();
-        createCalculationWatcher(futures, accounts.size());
-
-        log.info("closeWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
     }
 
     public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
