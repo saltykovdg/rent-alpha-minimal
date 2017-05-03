@@ -66,7 +66,7 @@ class EditComponent extends ExtendedComponent {
         showSearch
         placeholder={this.props.intl.messages.findPlaceholder}
         optionFilterProp="children"
-        filterOption={(inputValue, option) => option.props.children.toLowerCase().indexOf(inputValue.toLowerCase()) >= 0}
+        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={onChange}
         notFoundContent=""
       >
