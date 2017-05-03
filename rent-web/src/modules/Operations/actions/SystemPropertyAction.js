@@ -103,9 +103,10 @@ export const newSystemProperty = () => {
   };
 };
 
-export const findSystemPropertiesByName = (name = '') => {
+export const findSystemPropertiesByName = (name = '', useDelay = false) => {
   return {
     type: FIND_SYSTEM_PROPERTIES_BY_NAME,
     name,
+    useDelay,
   };
 };

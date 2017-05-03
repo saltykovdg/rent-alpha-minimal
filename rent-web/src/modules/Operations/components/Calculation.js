@@ -47,11 +47,6 @@ class Calculation extends EditComponent {
     if (calculationIsActive && calculationAccountsCount > 0) {
       percentComplete = Math.round((calculationAccountsCalculated / calculationAccountsCount) * 100);
     }
-    setTimeout(() => {
-      if (calculationIsActive) {
-        this.props.getSystemProperties();
-      }
-    }, 1000);
     return (
       <div>
         <Breadcrumb>

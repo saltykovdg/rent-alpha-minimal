@@ -1,4 +1,5 @@
 import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import * as SystemPropertyAction from './../actions/SystemPropertyAction';
 import * as SystemPropertyApi from './../api/SystemPropertyApi';
@@ -76,6 +77,9 @@ export function* watchNewSystemProperty() {
 export function* findSystemPropertiesByName(action) {
   const response = yield call(SystemPropertyApi.findSystemPropertiesByName, action.name);
   if (response && !response.error && !response.canceled) {
+    if (action.useDelay) {
+      yield delay(1000);
+    }
     yield put(SystemPropertyAction.getSystemPropertiesSuccess(response));
   } else if (!response.canceled) {
     yield put(SystemPropertyAction.getSystemPropertiesFailed());

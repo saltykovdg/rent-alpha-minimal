@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 
+import * as SystemPropertyType from './../../../util/SystemPropertyType';
+
 // Import Components
 import Calculation from './../components/Calculation';
 import CalculationForm from './../../../components/CalculationForm';
@@ -19,6 +21,7 @@ import {
 
 import {
   getSystemPropertyData,
+  getSystemPropertyIsLoading,
   getSystemPropertyIsRequestError,
 } from './../reducers/SystemPropertyReducer';
 
@@ -28,8 +31,16 @@ class CalculationPage extends ExtendedComponentPage {
     this.initFormCalculation(false);
     this.getSystemProperties();
   }
-  getSystemProperties = () => {
-    this.props.dispatch(SystemPropertyAction.findSystemPropertiesByName());
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.systemProperties) {
+      const prop = nextProps.systemProperties.content.filter(systemProperty => systemProperty.name === SystemPropertyType.CALCULATION_IS_ACTIVE)[0];
+      if (prop.value === '1' && !nextProps.isLoadingSystemProperty) {
+        this.getSystemProperties(true);
+      }
+    }
+  }
+  getSystemProperties = (useDelay = false) => {
+    this.props.dispatch(SystemPropertyAction.findSystemPropertiesByName('', useDelay));
   }
   initFormCalculation = (visible) => {
     this.setState({ formCalculationVisible: visible });
@@ -61,6 +72,7 @@ class CalculationPage extends ExtendedComponentPage {
           isRequestError={this.props.isRequestError}
           systemProperties={this.props.systemProperties}
           getSystemProperties={this.getSystemProperties}
+          isLoadingSystemProperty={this.isLoadingSystemProperty}
         />
         <CalculationForm
           title={this.props.intl.messages.calculationAccountsFormTitle}
@@ -80,6 +92,7 @@ function mapStateToProps(state) {
   return {
     systemProperties: getSystemPropertyData(state),
     isLoading: getIsLoading(state),
+    isLoadingSystemProperty: getSystemPropertyIsLoading(state),
     isRequestError: getIsRequestError(state) || getSystemPropertyIsRequestError(state),
   };
 }
