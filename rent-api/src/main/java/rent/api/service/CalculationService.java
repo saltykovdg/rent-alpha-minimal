@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.*;
 
 @Service
 public class CalculationService {
@@ -412,9 +413,18 @@ public class CalculationService {
         systemPropertyService.setCalculationActive(true);
         systemPropertyService.setCalculationAccountsCount(accounts.size());
         systemPropertyService.setCalculationAccountsCalculated(0);
-        for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(systemPropertyService, this, accounts, periodStartId, periodEndId);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
+        List<Future<Integer>> futures = new ArrayList<>();
+        for (AccountEntity account : accounts) {
+            Callable<Integer> task = new CalculationThread(this, account, periodStartId, periodEndId);
+            Future<Integer> future = executorService.submit(task);
+            futures.add(future);
         }
+
+        executorService.shutdown();
+        createCalculationWatcher(futures, accounts.size());
+
         log.info("calculateAccounts() -> periodStartId: {}, periodEndId: {}", periodStartId, periodEndId);
     }
 
@@ -425,9 +435,18 @@ public class CalculationService {
         systemPropertyService.setCalculationAccountsCalculated(0);
         WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
         WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
-        for (int i = 0; i < appCalculationThreadsCount; i++) {
-            new CalculationThread(systemPropertyService, this, accounts, currentWorkingPeriod, newWorkingPeriod);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
+        List<Future<Integer>> futures = new ArrayList<>();
+        for (AccountEntity account : accounts) {
+            Callable<Integer> task = new CalculationThread(this, account, currentWorkingPeriod, newWorkingPeriod);
+            Future<Integer> future = executorService.submit(task);
+            futures.add(future);
         }
+
+        executorService.shutdown();
+        createCalculationWatcher(futures, accounts.size());
+
         log.info("closeWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
     }
 
@@ -447,6 +466,33 @@ public class CalculationService {
             }
             calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
         }
+    }
+
+    private Future<Integer> createCalculationWatcher(List<Future<Integer>> futures, int accountsCount) {
+        ExecutorService executorServiceWatcher = Executors.newSingleThreadExecutor();
+        Callable<Integer> taskWatcher = () -> {
+            try {
+                while (true) {
+                    int accountsCalculated = 0;
+                    for (Future<Integer> future : futures) {
+                        if (future.isDone() || future.isCancelled()) {
+                            accountsCalculated++;
+                        }
+                    }
+                    systemPropertyService.setCalculationAccountsCalculated(accountsCalculated);
+                    if (accountsCalculated == accountsCount) {
+                        systemPropertyService.setCalculationActive(false);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+            return 0;
+        };
+        Future<Integer> future = executorServiceWatcher.submit(taskWatcher);
+        executorServiceWatcher.shutdown();
+        return future;
     }
 
     public void deleteCalculationsByAccountServiceId(String accountServiceId) {

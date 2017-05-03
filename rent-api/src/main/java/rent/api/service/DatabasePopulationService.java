@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class DatabasePopulationService {
@@ -1051,26 +1052,26 @@ public class DatabasePopulationService {
     private void createTestWorkingPeriods() {
         if (workingPeriodRepository.count() == 1) {
             log.info("createTestWorkingPeriods()");
-            long millis = 1000;
+            long seconds = 1;
             WorkingPeriodEntity currentWorkingPeriod = getFirstWorkingPeriod();
             calculationService.calculateAccounts(currentWorkingPeriod.getId(), currentWorkingPeriod.getId());
             while (systemPropertyService.getCalculationIsActive()) {
-                sleep(millis);
+                sleep(seconds);
             }
             for (int i = 0; i < createTestPeriodsCount; i++) {
                 calculationService.closeWorkingPeriod();
                 while (systemPropertyService.getCalculationIsActive()) {
-                    sleep(millis);
+                    sleep(seconds);
                 }
             }
         }
     }
 
-    private void sleep(long millis) {
+    private void sleep(long seconds) {
         try {
-            Thread.sleep(millis);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 }
