@@ -147,9 +147,11 @@ public class CalculationService {
 
     private AccountServiceCalculationDto calculateAccountServiceGivenPreviousRecalculation(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
         String accountServiceId = accountServiceCalculationDto.getAccountService().getId();
-        Double sumAccruals = commonRepository.getAccountServiceSumAccrualsForPeriod(accountServiceId, workingPeriod.getId());
-        Double sumRecalculations = commonRepository.getAccountServiceSumRecalculationsForPeriod(accountServiceId, workingPeriod.getId());
+        Double sumAccruals = accountAccrualRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountServiceId, workingPeriod.getId());
+        Double sumRecalculations = accountRecalculationRepository.getSumByAccountServiceIdAndForWorkingPeriodId(accountServiceId, workingPeriod.getId());
         Double currentSum = roundHalfUp(accountServiceCalculationDto.getSum());
+        if (sumAccruals == null) sumAccruals = 0D;
+        if (sumRecalculations == null) sumRecalculations = 0D;
         Double newSum = currentSum - (sumAccruals + sumRecalculations);
         accountServiceCalculationDto.setSum(newSum);
         return newSum == 0 ? null : accountServiceCalculationDto;
@@ -460,13 +462,21 @@ public class CalculationService {
     public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
         LocalDate accountDateClose = account.getDateClose();
         if (accountDateClose == null || accountDateClose.compareTo(newWorkingPeriod.getDateStart()) > 0) {
-            List<AccountCalculationDto> accountCalculations = getAccountCalculations(account.getId(), currentWorkingPeriod.getId());
-            for (AccountCalculationDto accountCalculationDto : accountCalculations) {
-                Double closingBalance = accountCalculationDto.getClosingBalance();
+            List<AccountServiceEntity> accountServices = getListForPeriod(newWorkingPeriod, account.getServices());
+            for (AccountServiceEntity accountService : accountServices) {
+                Double openingBalance = accountOpeningBalanceRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), currentWorkingPeriod.getId());
+                Double accrual = accountAccrualRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), currentWorkingPeriod.getId());
+                Double recalculation = accountRecalculationRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), currentWorkingPeriod.getId());
+                Double payment = accountPaymentRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), currentWorkingPeriod.getId());
+                if (openingBalance == null) openingBalance = 0D;
+                if (accrual == null) accrual = 0D;
+                if (recalculation == null) recalculation = 0D;
+                if (payment == null) payment = 0D;
+                Double closingBalance = roundHalfUp(openingBalance + accrual + recalculation - payment);
                 if (closingBalance != 0) {
                     AccountOpeningBalanceEntity accountOpeningBalance = new AccountOpeningBalanceEntity();
                     accountOpeningBalance.setWorkingPeriod(newWorkingPeriod);
-                    accountOpeningBalance.setAccountService(accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId()));
+                    accountOpeningBalance.setAccountService(accountService);
                     accountOpeningBalance.setValue(closingBalance);
                     accountOpeningBalanceRepository.save(accountOpeningBalance);
                 }

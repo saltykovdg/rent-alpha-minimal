@@ -45,4 +45,16 @@ public interface AccountRecalculationRepository extends PagingAndSortingReposito
     void deleteByAccountServiceIdAndWorkingPeriodId(@Param("accountServiceId") String accountServiceId,
                                                     @Param("workingPeriodId") String workingPeriodId,
                                                     @Param("forWorkingPeriodId") String forWorkingPeriodId);
+
+    @Query("select sum(accountRecalculation.value) from AccountRecalculationEntity accountRecalculation where " +
+            "accountRecalculation.accountService.id = :accountServiceId and " +
+            "accountRecalculation.forWorkingPeriod.id = :forWorkingPeriodId")
+    Double getSumByAccountServiceIdAndForWorkingPeriodId(@Param("accountServiceId") String accountServiceId,
+                                                         @Param("forWorkingPeriodId") String forWorkingPeriodId);
+
+    @Query("select sum(accountRecalculation.value) from AccountRecalculationEntity accountRecalculation where " +
+            "accountRecalculation.accountService.id = :accountServiceId and " +
+            "accountRecalculation.workingPeriod.id = :workingPeriodId")
+    Double getSumByAccountServiceIdAndWorkingPeriodId(@Param("accountServiceId") String accountServiceId,
+                                                      @Param("workingPeriodId") String workingPeriodId);
 }
