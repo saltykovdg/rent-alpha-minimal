@@ -427,7 +427,7 @@ public class CalculationService {
             }
 
             executorService.shutdown();
-            createCalculationWatcher(futures, accounts.size());
+            createCalculationWatcher(futures);
 
             log.info("calculateAccounts() -> periodStartId: {}, periodEndId: {}", periodStartId, periodEndId);
         }
@@ -451,7 +451,7 @@ public class CalculationService {
             }
 
             executorService.shutdown();
-            createCalculationWatcher(futures, accounts.size());
+            createCalculationWatcher(futures);
 
             log.info("closeWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
         }
@@ -475,7 +475,7 @@ public class CalculationService {
         }
     }
 
-    private Future<Integer> createCalculationWatcher(List<Future<Integer>> futures, int accountsCount) {
+    private void createCalculationWatcher(List<Future<Integer>> futures) {
         ExecutorService executorServiceWatcher = Executors.newSingleThreadExecutor();
         Callable<Integer> taskWatcher = () -> {
             try {
@@ -487,7 +487,7 @@ public class CalculationService {
                         }
                     }
                     systemPropertyService.setCalculationAccountsCalculated(accountsCalculated);
-                    if (accountsCalculated == accountsCount) {
+                    if (accountsCalculated == futures.size()) {
                         systemPropertyService.setCalculationActive(false);
                         break;
                     }
@@ -497,9 +497,8 @@ public class CalculationService {
             }
             return 0;
         };
-        Future<Integer> future = executorServiceWatcher.submit(taskWatcher);
+        executorServiceWatcher.submit(taskWatcher);
         executorServiceWatcher.shutdown();
-        return future;
     }
 
     public void deleteCalculationsByAccountServiceId(String accountServiceId) {
