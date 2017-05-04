@@ -28,7 +28,6 @@ public class CalculationService {
 
     private final Integer appCalculationThreadsCount;
     private final String appLocale;
-    private final CommonRepository commonRepository;
     private final AccountRepository accountRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final AccountAccrualRepository accountAccrualRepository;
@@ -36,13 +35,11 @@ public class CalculationService {
     private final NormRepository normRepository;
     private final SystemPropertyService systemPropertyService;
     private final AccountOpeningBalanceRepository accountOpeningBalanceRepository;
-    private final AccountServiceRepository accountServiceRepository;
     private final AccountPaymentRepository accountPaymentRepository;
 
     @Autowired
     public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount,
                               @Value("${app.locale}") String appLocale,
-                              CommonRepository commonRepository,
                               AccountRepository accountRepository,
                               WorkingPeriodRepository workingPeriodRepository,
                               AccountAccrualRepository accountAccrualRepository,
@@ -50,11 +47,9 @@ public class CalculationService {
                               NormRepository normRepository,
                               SystemPropertyService systemPropertyService,
                               AccountOpeningBalanceRepository accountOpeningBalanceRepository,
-                              AccountServiceRepository accountServiceRepository,
                               AccountPaymentRepository accountPaymentRepository) {
         this.appCalculationThreadsCount = appCalculationThreadsCount;
         this.appLocale = appLocale;
-        this.commonRepository = commonRepository;
         this.accountRepository = accountRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.accountAccrualRepository = accountAccrualRepository;
@@ -62,7 +57,6 @@ public class CalculationService {
         this.normRepository = normRepository;
         this.systemPropertyService = systemPropertyService;
         this.accountOpeningBalanceRepository = accountOpeningBalanceRepository;
-        this.accountServiceRepository = accountServiceRepository;
         this.accountPaymentRepository = accountPaymentRepository;
         if (systemPropertyService.getCalculationIsActive()) {
             systemPropertyService.setCalculationActive(false);
@@ -70,7 +64,41 @@ public class CalculationService {
     }
 
     public List<AccountCalculationDto> getAccountCalculations(String accountId, String workingPeriodId) {
-        return commonRepository.getAccountCalculations(accountId, workingPeriodId);
+        AccountEntity account = accountRepository.findOne(accountId);
+        WorkingPeriodEntity workingPeriod = workingPeriodRepository.findOne(workingPeriodId);
+        LocalDate accountDateClose = account.getDateClose();
+        List<AccountCalculationDto> list = new ArrayList<>();
+        if (accountDateClose == null || accountDateClose.compareTo(workingPeriod.getDateStart()) > 0) {
+            List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, account.getServices());
+            for (AccountServiceEntity accountService : accountServices) {
+                AccountAccrualEntity accountAccrual = accountAccrualRepository.findByAccountServiceIdAndWorkingPeriodId(accountService.getId(), workingPeriod.getId());
+                if (accountAccrual != null) {
+                    Double openingBalance = accountOpeningBalanceRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), workingPeriod.getId());
+                    Double accrual = accountAccrual.getValue();
+                    Double recalculation = accountRecalculationRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), workingPeriod.getId());
+                    Double payment = accountPaymentRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountService.getId(), workingPeriod.getId());
+                    if (openingBalance == null) openingBalance = 0D;
+                    if (recalculation == null) recalculation = 0D;
+                    if (payment == null) payment = 0D;
+                    Double closingBalance = roundHalfUp(openingBalance + accrual + recalculation - payment);
+                    AccountCalculationDto accountCalculationDto = new AccountCalculationDto();
+                    accountCalculationDto.setAccountServiceId(accountService.getId());
+                    accountCalculationDto.setService(accountService.getService());
+                    accountCalculationDto.setTariff(accountAccrual.getTariff());
+                    accountCalculationDto.setTariffCalculationType(accountAccrual.getTariffCalculationType());
+                    accountCalculationDto.setTariffMeasurementUnit(accountAccrual.getTariffMeasurementUnit());
+                    accountCalculationDto.setTariffValue(accountAccrual.getTariffValue());
+                    accountCalculationDto.setConsumption(accountAccrual.getConsumption());
+                    accountCalculationDto.setOpeningBalance(openingBalance);
+                    accountCalculationDto.setAccrual(accrual);
+                    accountCalculationDto.setRecalculation(recalculation);
+                    accountCalculationDto.setPayment(payment);
+                    accountCalculationDto.setClosingBalance(closingBalance);
+                    list.add(accountCalculationDto);
+                }
+            }
+        }
+        return list;
     }
 
     public WorkingPeriodEntity getCurrentWorkingPeriod() {
