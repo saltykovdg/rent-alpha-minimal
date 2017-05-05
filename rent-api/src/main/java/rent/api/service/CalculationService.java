@@ -548,12 +548,14 @@ public class CalculationService {
 
     public void rollbackCurrentWorkingPeriod() {
         if (!systemPropertyService.getCalculationIsActive()) {
-            WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
-            accountOpeningBalanceRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
-            accountAccrualRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
-            accountRecalculationRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
-            accountPaymentRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
-            workingPeriodRepository.deleteById(currentWorkingPeriod.getId());
+            if (workingPeriodRepository.count() > 1) {
+                WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
+                accountOpeningBalanceRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+                accountAccrualRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+                accountRecalculationRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+                accountPaymentRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+                workingPeriodRepository.deleteById(currentWorkingPeriod.getId());
+            }
         }
     }
 }
