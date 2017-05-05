@@ -52,11 +52,6 @@ module.exports = {
       }
     ]
   },
-  devServer: {
-    port: 8090,
-    historyApiFallback: true,
-    inline: true
-  },
   plugins: [
     new webpack.DllReferencePlugin({
       context: '.',
@@ -64,10 +59,10 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
-        'RENT_API_URL': JSON.stringify('/rent-api'),
-        'RENT_API_CONTENT_URL': JSON.stringify('/content'),
-        'RENT_API_MAX_FILE_SIZE': JSON.stringify('15728640')
+        NODE_ENV: JSON.stringify('production'),
+        RENT_API_URL: JSON.stringify('/rent-api'),
+        RENT_API_CONTENT_URL: JSON.stringify('/content'),
+        RENT_API_MAX_FILE_SIZE: JSON.stringify('15728640')
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
@@ -78,7 +73,21 @@ module.exports = {
     new HtmlWebpackPlugin({
       favicon: './src/favicon.ico',
       template: './src/index.html',
-      title: 'Rent 1.0'
+      title: 'Rent 1.0',
+      inject: true,
+      production: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
