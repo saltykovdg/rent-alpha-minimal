@@ -46,6 +46,9 @@ class AccountCard extends EditComponent {
         closingBalance += newObj.closingBalance;
       });
       if (calculationsDataSource.length > 0) {
+        calculationsDataSource = calculationsDataSource.sort((a, b) => {
+          return a.service.name.localeCompare(b.service.name);
+        });
         calculationsDataSource.push({
           key: Math.random(),
           service: {

@@ -31,7 +31,7 @@ class CalculationPage extends ExtendedComponentPage {
     this.initFormCalculation(false);
     this.getSystemProperties();
   }
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     if (nextProps.systemProperties) {
       const prop = nextProps.systemProperties.content.filter(systemProperty => systemProperty.name === SystemPropertyType.CALCULATION_IS_ACTIVE)[0];
       if (prop.value === '1' && !nextProps.isLoadingSystemProperty) {

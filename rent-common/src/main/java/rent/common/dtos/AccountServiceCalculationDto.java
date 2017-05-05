@@ -15,33 +15,6 @@ public class AccountServiceCalculationDto {
     private Double tariffValue;
     private Integer accountServiceDaysActive;
 
-    public AccountServiceCalculationDto() {
-    }
-
-    public AccountServiceCalculationDto(AccountServiceEntity accountService, Double sum) {
-        this.accountService = accountService;
-        this.sum = sum;
-        this.consumption = 0D;
-    }
-
-    public AccountServiceCalculationDto(AccountServiceEntity accountService, Double sum, Double consumption) {
-        this.accountService = accountService;
-        this.sum = sum;
-        this.consumption = consumption;
-    }
-
-    public AccountServiceCalculationDto(AccountServiceEntity accountService, Double sum, Double consumption,
-                                        TariffEntity tariff, CalculationTypeEntity tariffCalculationType,
-                                        MeasurementUnitEntity tariffMeasurementUnit, Double tariffValue) {
-        this.accountService = accountService;
-        this.sum = sum;
-        this.consumption = consumption;
-        this.tariff = tariff;
-        this.tariffCalculationType = tariffCalculationType;
-        this.tariffMeasurementUnit = tariffMeasurementUnit;
-        this.tariffValue = tariffValue;
-    }
-
     public AccountServiceEntity getAccountService() {
         return accountService;
     }
