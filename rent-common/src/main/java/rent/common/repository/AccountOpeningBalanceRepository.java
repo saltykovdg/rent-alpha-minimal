@@ -36,6 +36,12 @@ public interface AccountOpeningBalanceRepository extends PagingAndSortingReposit
             "where accountOpeningBalance.accountService.id = :accountServiceId")
     void deleteByAccountServiceId(@Param("accountServiceId") String accountServiceId);
 
+    @Modifying
+    @Transactional
+    @Query("delete from AccountOpeningBalanceEntity accountOpeningBalance " +
+            "where accountOpeningBalance.workingPeriod.id = :workingPeriodId")
+    void deleteByWorkingPeriodId(@Param("workingPeriodId") String workingPeriodId);
+
     @Query("select sum(accountOpeningBalance.value) from AccountOpeningBalanceEntity accountOpeningBalance where " +
             "accountOpeningBalance.accountService.id = :accountServiceId and " +
             "accountOpeningBalance.workingPeriod.id = :workingPeriodId")

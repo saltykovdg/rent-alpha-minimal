@@ -61,6 +61,9 @@ class CalculationPage extends ExtendedComponentPage {
   onCloseWorkingPeriod = () => {
     this.props.dispatch(CalculationAction.closeWorkingPeriod());
   }
+  onRollbackCurrentWorkingPeriod = () => {
+    this.props.dispatch(CalculationAction.rollbackCurrentWorkingPeriod());
+  }
   render() {
     return (
       !this.props.systemProperties ? null :
@@ -68,6 +71,7 @@ class CalculationPage extends ExtendedComponentPage {
         <Calculation
           showFormCalculation={this.showFormCalculation}
           onCloseWorkingPeriod={this.onCloseWorkingPeriod}
+          onRollbackCurrentWorkingPeriod={this.onRollbackCurrentWorkingPeriod}
           isLoading={this.props.isLoading}
           isRequestError={this.props.isRequestError}
           systemProperties={this.props.systemProperties}

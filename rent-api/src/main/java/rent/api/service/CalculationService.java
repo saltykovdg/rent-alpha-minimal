@@ -545,4 +545,15 @@ public class CalculationService {
         accountRecalculationRepository.deleteByAccountServiceId(accountServiceId);
         accountPaymentRepository.deleteByAccountServiceId(accountServiceId);
     }
+
+    public void rollbackCurrentWorkingPeriod() {
+        if (!systemPropertyService.getCalculationIsActive()) {
+            WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
+            accountOpeningBalanceRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+            accountAccrualRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+            accountRecalculationRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+            accountPaymentRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
+            workingPeriodRepository.deleteById(currentWorkingPeriod.getId());
+        }
+    }
 }

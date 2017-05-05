@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Spin, Progress, Modal } from 'antd';
+import { Breadcrumb, Icon, Button, Spin, Progress } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 import * as SystemPropertyType from './../../../util/SystemPropertyType';
+
+const ButtonGroup = Button.Group;
 
 class Calculation extends EditComponent {
   getSystemPropertyByName = (systemProperties, name) => {
@@ -27,15 +29,19 @@ class Calculation extends EditComponent {
   }
   confirmCloseWorkingPeriod = (props) => {
     const messages = props.intl.messages;
-    Modal.confirm({
-      title: messages.confirmCloseWorkingPeriodTitle,
-      content: messages.confirmCloseWorkingPeriodContent,
-      onOk() {
-        props.onCloseWorkingPeriod();
-      },
-      onCancel() {
-      },
-    });
+    this.confirmModal(
+      messages.confirmCloseWorkingPeriodTitle,
+      messages.confirmCloseWorkingPeriodContent,
+      props.onCloseWorkingPeriod,
+    );
+  }
+  confirmRollbackCurrentWorkingPeriod = (props) => {
+    const messages = props.intl.messages;
+    this.confirmModal(
+      messages.confirmRollbackCurrentWorkingPeriodTitle,
+      messages.confirmRollbackCurrentWorkingPeriodContent,
+      props.onRollbackCurrentWorkingPeriod,
+    );
   }
   render() {
     const titleItem = <FormattedMessage id="calculationTitle" />;
@@ -66,9 +72,14 @@ class Calculation extends EditComponent {
                 <FormattedMessage id="buttonExecuteCalculations" />
               </Button>
               <h2><FormattedMessage id="closeWorkingPeriodTitle" /></h2>
-              <Button type="danger" onClick={() => this.confirmCloseWorkingPeriod(this.props)}>
-                <FormattedMessage id="buttonCloseWorkingPeriod" />
-              </Button>
+              <ButtonGroup>
+                <Button type="danger" onClick={() => this.confirmRollbackCurrentWorkingPeriod(this.props)}>
+                  <FormattedMessage id="buttonRollbackCurrentWorkingPeriod" />
+                </Button>
+                <Button type="danger" onClick={() => this.confirmCloseWorkingPeriod(this.props)}>
+                  <FormattedMessage id="buttonCloseWorkingPeriod" />
+                </Button>
+              </ButtonGroup>
             </Spin>
           </div> :
           <div>

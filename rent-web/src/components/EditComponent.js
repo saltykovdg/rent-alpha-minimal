@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { Input, InputNumber, Select, DatePicker, Popconfirm } from 'antd';
+import { Input, InputNumber, Select, DatePicker, Popconfirm, Modal } from 'antd';
 import moment from 'moment';
 
 import { ExtendedComponent } from './ExtendedComponent';
@@ -186,6 +186,17 @@ class EditComponent extends ExtendedComponent {
         );
       },
     };
+  }
+  confirmModal = (title, content, onOk) => {
+    Modal.confirm({
+      title,
+      content,
+      onOk() {
+        onOk();
+      },
+      onCancel() {
+      },
+    });
   }
 }
 

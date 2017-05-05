@@ -33,7 +33,22 @@ export function* watchCloseWorkingPeriod() {
   yield takeLatest(CalculationAction.CLOSE_WORKING_PERIOD, closeWorkingPeriod);
 }
 
+export function* rollbackCurrentWorkingPeriod() {
+  const response = yield call(CalculationApi.rollbackCurrentWorkingPeriod);
+  if (response && !response.error && !response.canceled) {
+    yield put(CalculationAction.rollbackCurrentWorkingPeriodSuccess(response));
+    yield put(WorkingPeriodAction.findWorkingPeriodsByName());
+    yield put(WorkingPeriodAction.findLastWorkingPeriod());
+  } else if (!response.canceled) {
+    yield put(CalculationAction.rollbackCurrentWorkingPeriodFailed());
+  }
+}
+export function* watchRollbackCurrentWorkingPeriod() {
+  yield takeLatest(CalculationAction.ROLLBACK_CURRENT_WORKING_PERIOD, rollbackCurrentWorkingPeriod);
+}
+
 export const rootCalculationSaga = all([
   fork(watchCalculateAccounts),
   fork(watchCloseWorkingPeriod),
+  fork(watchRollbackCurrentWorkingPeriod),
 ]);

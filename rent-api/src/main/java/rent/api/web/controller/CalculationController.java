@@ -47,4 +47,10 @@ public class CalculationController {
         calculationService.closeWorkingPeriod();
         return HttpStatus.OK.toString();
     }
+
+    @RequestMapping(value = "/rollback-current-working-period", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String rollbackCurrentWorkingPeriod() {
+        calculationService.rollbackCurrentWorkingPeriod();
+        return HttpStatus.OK.toString();
+    }
 }

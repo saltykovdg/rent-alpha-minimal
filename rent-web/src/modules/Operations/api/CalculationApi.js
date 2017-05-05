@@ -8,3 +8,7 @@ export function calculateAccounts(periodStartId, periodEndId) {
 export function closeWorkingPeriod() {
   return ApiCaller.callApi('calculation/close-working-period');
 }
+
+export function rollbackCurrentWorkingPeriod() {
+  return ApiCaller.callApi('calculation/rollback-current-working-period');
+}

@@ -287,6 +287,9 @@ export default {
     confirmCloseWorkingPeriodTitle: 'Закрытие месяца',
     confirmCloseWorkingPeriodContent: 'Выполнить закрытие месяца и перейти на новый рабочий период?',
     buttonCloseWorkingPeriod: 'Перейти на новый рабочий период',
+    confirmRollbackCurrentWorkingPeriodTitle: 'Откат месяца',
+    confirmRollbackCurrentWorkingPeriodContent: 'Выполнить откат на предыдущий месяц, в этом случае все расчеты и внесенные оплаты в текущем месяце будут удалены?',
+    buttonRollbackCurrentWorkingPeriod: 'Выполнить откат на предыдущий месяц',
     calculationsExecuteTitle: 'Выполняется расчет квартплаты',
 
     backTopTitle: 'Наверх',

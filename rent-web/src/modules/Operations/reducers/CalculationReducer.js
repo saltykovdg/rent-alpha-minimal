@@ -2,6 +2,7 @@ import * as CalculationAction from './../actions/CalculationAction';
 
 export const calculationReducer = (state, action) => {
   switch (action.type) {
+    case CalculationAction.ROLLBACK_CURRENT_WORKING_PERIOD:
     case CalculationAction.CLOSE_WORKING_PERIOD:
     case CalculationAction.CALCULATE_ACCOUNTS: {
       const calculation = state.calculation;
@@ -10,6 +11,7 @@ export const calculationReducer = (state, action) => {
       return state.calculation;
     }
 
+    case CalculationAction.ROLLBACK_CURRENT_WORKING_PERIOD_SUCCESS:
     case CalculationAction.CLOSE_WORKING_PERIOD_SUCCESS:
     case CalculationAction.CALCULATE_ACCOUNTS_SUCCESS: {
       const calculation = state.calculation;
@@ -18,6 +20,7 @@ export const calculationReducer = (state, action) => {
       return state.calculation;
     }
 
+    case CalculationAction.ROLLBACK_CURRENT_WORKING_PERIOD_FAILED:
     case CalculationAction.CLOSE_WORKING_PERIOD_FAILED:
     case CalculationAction.CALCULATE_ACCOUNTS_FAILED: {
       const calculation = state.calculation;
