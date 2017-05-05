@@ -11,5 +11,6 @@ import 'axios';
 import 'redux';
 import 'redux-saga';
 import 'antd';
+import 'antd/dist/antd.less';
 import 'moment';
 import 'extend';

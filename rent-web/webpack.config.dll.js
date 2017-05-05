@@ -10,6 +10,39 @@ module.exports = {
     path: path.join(__dirname, 'build', 'dll'),
     library: '[name]',
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }, {
+        test: /\.less$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: false
+            }
+          }
+        ]
+      }, {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10240
+            }
+          }
+        ]
+      }
+    ]
+  },
   plugins: [
     new webpack.DllPlugin({
       path: path.join(__dirname, 'build', 'dll', '[name]-manifest.json'),
