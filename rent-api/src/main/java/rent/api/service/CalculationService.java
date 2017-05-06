@@ -101,11 +101,11 @@ public class CalculationService {
         return list;
     }
 
-    public WorkingPeriodEntity getCurrentWorkingPeriod() {
+    private WorkingPeriodEntity getCurrentWorkingPeriod() {
         return workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
     }
 
-    public WorkingPeriodEntity createNewWorkPeriod(WorkingPeriodEntity currentWorkingPeriod) {
+    private WorkingPeriodEntity createNewWorkPeriod(WorkingPeriodEntity currentWorkingPeriod) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
         WorkingPeriodEntity newWorkingPeriod = new WorkingPeriodEntity();
         LocalDate dateStart = currentWorkingPeriod.getDateEnd().plusDays(1);
@@ -443,15 +443,15 @@ public class CalculationService {
 
     public void calculateAccounts(String periodStartId, String periodEndId) {
         if (!systemPropertyService.getCalculationIsActive()) {
-            List<AccountEntity> accounts = accountRepository.getAccounts();
+            List<String> accountsIds = accountRepository.getAccountsIds();
             systemPropertyService.setCalculationActive(true);
-            systemPropertyService.setCalculationAccountsCount(accounts.size());
+            systemPropertyService.setCalculationAccountsCount(accountsIds.size());
             systemPropertyService.setCalculationAccountsCalculated(0);
 
             ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
             List<Future<Integer>> futures = new ArrayList<>();
-            for (AccountEntity account : accounts) {
-                Callable<Integer> task = new CalculationThread(this, account, periodStartId, periodEndId);
+            for (String accountId : accountsIds) {
+                Callable<Integer> task = new CalculationThread(this, accountId, periodStartId, periodEndId);
                 Future<Integer> future = executorService.submit(task);
                 futures.add(future);
             }
@@ -465,17 +465,17 @@ public class CalculationService {
 
     public void closeWorkingPeriod() {
         if (!systemPropertyService.getCalculationIsActive()) {
-            List<AccountEntity> accounts = accountRepository.getAccounts();
+            List<String> accountsIds = accountRepository.getAccountsIds();
             systemPropertyService.setCalculationActive(true);
-            systemPropertyService.setCalculationAccountsCount(accounts.size());
+            systemPropertyService.setCalculationAccountsCount(accountsIds.size());
             systemPropertyService.setCalculationAccountsCalculated(0);
             WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
             WorkingPeriodEntity newWorkingPeriod = createNewWorkPeriod(currentWorkingPeriod);
 
             ExecutorService executorService = Executors.newFixedThreadPool(appCalculationThreadsCount);
             List<Future<Integer>> futures = new ArrayList<>();
-            for (AccountEntity account : accounts) {
-                Callable<Integer> task = new CalculationThread(this, account, currentWorkingPeriod, newWorkingPeriod);
+            for (String accountId : accountsIds) {
+                Callable<Integer> task = new CalculationThread(this, accountId, currentWorkingPeriod, newWorkingPeriod);
                 Future<Integer> future = executorService.submit(task);
                 futures.add(future);
             }
@@ -487,7 +487,8 @@ public class CalculationService {
         }
     }
 
-    public void calculateCloseWorkingPeriod(AccountEntity account, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
+    void calculateCloseWorkingPeriod(String accountId, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity newWorkingPeriod) {
+        AccountEntity account = accountRepository.findOne(accountId);
         LocalDate accountDateClose = account.getDateClose();
         if (accountDateClose == null || accountDateClose.compareTo(newWorkingPeriod.getDateStart()) > 0) {
             List<AccountServiceEntity> accountServices = getListForPeriod(newWorkingPeriod, account.getServices());
@@ -509,7 +510,7 @@ public class CalculationService {
                     accountOpeningBalanceRepository.save(accountOpeningBalance);
                 }
             }
-            calculateAccount(account.getId(), newWorkingPeriod.getId(), newWorkingPeriod.getId());
+            calculateAccount(accountId, newWorkingPeriod.getId(), newWorkingPeriod.getId());
         }
     }
 
@@ -555,6 +556,7 @@ public class CalculationService {
                 accountRecalculationRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
                 accountPaymentRepository.deleteByWorkingPeriodId(currentWorkingPeriod.getId());
                 workingPeriodRepository.deleteById(currentWorkingPeriod.getId());
+                log.info("rollbackCurrentWorkingPeriod() -> name: {}, dateStart: {}", currentWorkingPeriod.getName(), currentWorkingPeriod.getDateStart());
             }
         }
     }

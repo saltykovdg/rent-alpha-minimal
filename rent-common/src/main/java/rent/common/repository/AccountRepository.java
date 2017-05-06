@@ -39,6 +39,6 @@ public interface AccountRepository extends PagingAndSortingRepository<AccountEnt
                              @Param("street") String street, @Param("house") String house,
                              @Param("apartment") String apartment, Pageable p);
 
-    @Query("select account from AccountEntity account")
-    List<AccountEntity> getAccounts();
+    @Query("select account.id from AccountEntity account")
+    List<String> getAccountsIds();
 }

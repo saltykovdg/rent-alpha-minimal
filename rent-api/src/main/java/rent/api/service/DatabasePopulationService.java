@@ -23,9 +23,9 @@ public class DatabasePopulationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final String appLocale;
-    private final Boolean createTestData;
+    private final Boolean appCreateTestData;
     private final LocalDate appDefaultFirstPeriod;
-    private final Integer createTestPeriodsCount;
+    private final Integer appCreateTestPeriodsCount;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -55,9 +55,9 @@ public class DatabasePopulationService {
 
     @Autowired
     public DatabasePopulationService(@Value("${app.locale}") String appLocale,
-                                     @Value("${datasource.createTestData}") Boolean createTestData,
+                                     @Value("${app.createTestData}") Boolean appCreateTestData,
                                      @Value("${app.default.firstPeriod}") String appDefaultFirstPeriod,
-                                     @Value("${datasource.createTestPeriodsCount}") Integer createTestPeriodsCount,
+                                     @Value("${app.createTestPeriodsCount}") Integer appCreateTestPeriodsCount,
                                      RoleRepository roleRepository,
                                      UserRepository userRepository,
                                      PasswordEncoder passwordEncoder,
@@ -85,9 +85,9 @@ public class DatabasePopulationService {
                                      CalculationService calculationService,
                                      SystemPropertyService systemPropertyService) {
         this.appLocale = appLocale;
-        this.createTestData = createTestData;
+        this.appCreateTestData = appCreateTestData;
         this.appDefaultFirstPeriod = LocalDate.parse(appDefaultFirstPeriod);
-        this.createTestPeriodsCount = createTestPeriodsCount;
+        this.appCreateTestPeriodsCount = appCreateTestPeriodsCount;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -348,14 +348,13 @@ public class DatabasePopulationService {
         }
     }
 
-    private WorkingPeriodEntity createWorkingPeriod(LocalDate dateStart, LocalDate dateEnd) {
+    private void createWorkingPeriod(LocalDate dateStart, LocalDate dateEnd) {
         WorkingPeriodEntity workingPeriod = new WorkingPeriodEntity();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.forLanguageTag(appLocale));
         workingPeriod.setName(dateStart.format(dateTimeFormatter));
         workingPeriod.setDateStart(dateStart);
         workingPeriod.setDateEnd(dateEnd);
         workingPeriodRepository.save(workingPeriod);
-        return workingPeriod;
     }
 
     private void createSystemProperties() {
@@ -378,7 +377,7 @@ public class DatabasePopulationService {
      * Testing data
      */
     private void createTestData() {
-        if (createTestData) {
+        if (appCreateTestData) {
             log.info("createTestData()");
             createStreets();
             createBuildings();
@@ -1058,7 +1057,7 @@ public class DatabasePopulationService {
             while (systemPropertyService.getCalculationIsActive()) {
                 sleep(seconds);
             }
-            for (int i = 0; i < createTestPeriodsCount; i++) {
+            for (int i = 0; i < appCreateTestPeriodsCount; i++) {
                 calculationService.closeWorkingPeriod();
                 while (systemPropertyService.getCalculationIsActive()) {
                     sleep(seconds);
