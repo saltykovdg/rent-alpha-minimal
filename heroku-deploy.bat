@@ -1,0 +1,1 @@
+heroku deploy:war --war rent-api-3.0.war --app rent-demo
