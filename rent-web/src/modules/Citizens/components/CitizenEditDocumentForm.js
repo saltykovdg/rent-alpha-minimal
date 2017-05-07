@@ -48,12 +48,12 @@ class CitizenEditDocumentForm extends EditComponent {
     this.setState({ attachmentsFileNameError: false, activeTab: '1' });
   }
   onViewDocumentAttachment = (attachment) => {
-    const otherWindow = window.open();
-    otherWindow.opener = null;
     let fileUrl = `${process.env.RENT_API_URL}${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
     if (attachment.file) {
       fileUrl = URL.createObjectURL(attachment.file);
     }
+    const otherWindow = window.open();
+    otherWindow.opener = null;
     otherWindow.location = fileUrl;
   }
   onDeleteDocumentAttachment = (attachment) => {
