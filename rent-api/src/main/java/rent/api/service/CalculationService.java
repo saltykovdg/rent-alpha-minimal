@@ -518,6 +518,7 @@ public class CalculationService {
         ExecutorService executorServiceWatcher = Executors.newSingleThreadExecutor();
         Callable<Integer> taskWatcher = () -> {
             try {
+                int accountsCalculatedPrev = 0;
                 while (true) {
                     int accountsCalculated = 0;
                     for (Future<Integer> future : futures) {
@@ -525,7 +526,10 @@ public class CalculationService {
                             accountsCalculated++;
                         }
                     }
-                    systemPropertyService.setCalculationAccountsCalculated(accountsCalculated);
+                    if (accountsCalculated != accountsCalculatedPrev){
+                        systemPropertyService.setCalculationAccountsCalculated(accountsCalculated);
+                        accountsCalculatedPrev = accountsCalculated;
+                    }
                     if (accountsCalculated == futures.size()) {
                         systemPropertyService.setCalculationActive(false);
                         break;
