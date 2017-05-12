@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
   output: {
-    path: '/build',
+    filename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -71,7 +71,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: "commons",
       minChunks: Infinity,
-      filename: "commons.js",
+      filename: "commons.js"
     }),
     new HtmlWebpackPlugin({
       favicon: './src/favicon.ico',

@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 module.exports = {
   entry: {
@@ -104,8 +105,12 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, 'build', 'dll', 'dll.vendor.js'),
-        to: path.join(__dirname, 'build', 'distr'),
+        to: path.join(__dirname, 'build', 'distr')
       },
-    ])
+    ]),
+    new HtmlWebpackIncludeAssetsPlugin({
+      assets: ['dll.vendor.js'],
+      append: false
+    })
   ]
 };
