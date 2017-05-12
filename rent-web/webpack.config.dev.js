@@ -5,7 +5,6 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     main: [
-      'react-hot-loader/patch',
       'babel-polyfill',
       'webpack-dev-server/client?http://localhost:8090',
       'webpack/hot/only-dev-server',

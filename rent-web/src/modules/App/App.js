@@ -26,9 +26,11 @@ class App extends ExtendedComponentPage {
   constructor(props) {
     super(props);
     const loaderPage = document.getElementsByClassName('loader_page')[0];
-    loaderPage.style.opacity = 0;
+    if (loaderPage) {
+      loaderPage.style.opacity = 0;
+    }
     setTimeout(() => {
-      if (loaderPage.remove) {
+      if (loaderPage && loaderPage.remove) {
         loaderPage.remove();
       }
     }, 1000);
