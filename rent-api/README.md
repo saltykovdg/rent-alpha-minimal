@@ -17,7 +17,7 @@ Example:
            connectionTimeout="20000"
            redirectPort="8443"
            compression="on"
-           compressableMimeType="application/json"/>
+           compressableMimeType="application/javascript,application/x-javascript,application/json"/>
 ```
 
 ### Tomcat set default location for error page
