@@ -32,6 +32,7 @@ class StreetEditPage extends ExtendedComponentPage {
     this.props.dispatch(AddressAction.saveStreet(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <StreetEdit
         data={this.props.data}

@@ -31,6 +31,7 @@ class MeasurementUnitEditPage extends ExtendedComponentPage {
     this.props.dispatch(MeasurementUnitAction.saveMeasurementUnit(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <MeasurementUnitEdit
         data={this.props.data}

@@ -1,5 +1,13 @@
 import * as CitizenDocumentAction from './../actions/CitizenDocumentAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const citizenDocumentReducer = (state, action) => {
   switch (action.type) {
-    case CitizenDocumentAction.GET_CITIZEN_DOCUMENT:
+    case CitizenDocumentAction.GET_CITIZEN_DOCUMENT: {
+      return prepareEditLoading(state.citizenDocument.list.data, emptyEditData);
+    }
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT: {
-      return prepareEdit(state.citizenDocument.edit.data, true, false, false, false);
+      return prepareEditLoading(state.citizenDocument.list.data, state.citizenDocument.edit.data);
     }
     case CitizenDocumentAction.GET_CITIZEN_DOCUMENTS:
     case CitizenDocumentAction.DELETE_CITIZEN_DOCUMENT: {
-      return prepareList(state.citizenDocument.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.citizenDocument.list.data, emptyEditData);
     }
 
     case CitizenDocumentAction.GET_CITIZEN_DOCUMENT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.citizenDocument.list.data, action.data);
     }
     case CitizenDocumentAction.GET_CITIZEN_DOCUMENTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case CitizenDocumentAction.GET_CITIZEN_DOCUMENT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.citizenDocument.list.data, emptyEditData);
     }
     case CitizenDocumentAction.GET_CITIZEN_DOCUMENTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.citizenDocument.list.data, emptyEditData);
     }
 
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.citizenDocument.list.data, emptyEditData);
     }
     case CitizenDocumentAction.DELETE_CITIZEN_DOCUMENT_SUCCESS: {
-      return prepareList(state.citizenDocument.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.citizenDocument.list.data, emptyEditData);
     }
 
     case CitizenDocumentAction.SAVE_CITIZEN_DOCUMENT_FAILED: {
-      return prepareEdit(state.citizenDocument.edit.data, false, true, false, false);
+      return prepareEditFailed(state.citizenDocument.list.data, state.citizenDocument.edit.data);
     }
     case CitizenDocumentAction.DELETE_CITIZEN_DOCUMENT_FAILED: {
-      return prepareList(state.citizenDocument.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.citizenDocument.list.data, emptyEditData);
     }
 
     case CitizenDocumentAction.NEW_CITIZEN_DOCUMENT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.citizenDocument.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.citizenDocument.list, emptyEditData);
+      return state.citizenDocument;
   }
 };
 

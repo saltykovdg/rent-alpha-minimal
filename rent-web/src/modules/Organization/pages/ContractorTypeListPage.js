@@ -37,6 +37,7 @@ class ContractorTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(OrganizationAction.deleteContractorType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ContractorTypeList
         data={this.props.data}

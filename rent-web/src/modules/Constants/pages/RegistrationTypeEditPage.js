@@ -31,6 +31,7 @@ class RegistrationTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(RegistrationTypeAction.saveRegistrationType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <RegistrationTypeEdit
         data={this.props.data}

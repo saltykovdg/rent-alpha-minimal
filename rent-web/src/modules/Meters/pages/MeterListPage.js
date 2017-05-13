@@ -69,6 +69,7 @@ class MeterListPage extends ExtendedComponentPage {
     ));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <MeterList
         data={this.props.data}

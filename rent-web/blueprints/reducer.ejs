@@ -21,7 +21,15 @@ export const getIsLoading = state => get<%= helpers.pascalCase(name) %>IsLoading
 */
 
 import * as <%= helpers.pascalCase(name) %>Action from './../actions/<%= helpers.pascalCase(name) %>Action';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -30,50 +38,52 @@ const emptyEditData = {
 
 export const <%= helpers.camelCase(name) %>Reducer = (state, action) => {
   switch (action.type) {
-    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>:
+    case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>: {
+      return prepareEditLoading(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
+    }
     case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>: {
-      return prepareEdit(state.<%= helpers.camelCase(name) %>.edit.data, true, false, false, false);
+      return prepareEditLoading(state.<%= helpers.camelCase(name) %>.list.data, state.<%= helpers.camelCase(name) %>.edit.data);
     }
     case <%= helpers.pascalCase(name) %>Action.FIND_<%= helpers.constantCase(name) %>S_BY_NAME:
     case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S:
     case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>: {
-      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
 
     case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.<%= helpers.camelCase(name) %>.list.data, action.data);
     }
     case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
     case <%= helpers.pascalCase(name) %>Action.GET_<%= helpers.constantCase(name) %>S_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
 
     case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
     case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>_SUCCESS: {
-      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
 
     case <%= helpers.pascalCase(name) %>Action.SAVE_<%= helpers.constantCase(name) %>_FAILED: {
-      return prepareEdit(state.<%= helpers.camelCase(name) %>.edit.data, false, true, false, false);
+      return prepareEditFailed(state.<%= helpers.camelCase(name) %>.list.data, state.<%= helpers.camelCase(name) %>.edit.data);
     }
     case <%= helpers.pascalCase(name) %>Action.DELETE_<%= helpers.constantCase(name) %>_FAILED: {
-      return prepareList(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
 
     case <%= helpers.pascalCase(name) %>Action.NEW_<%= helpers.constantCase(name) %>: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.<%= helpers.camelCase(name) %>.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.<%= helpers.camelCase(name) %>.list, emptyEditData);
+      return state.<%= helpers.camelCase(name) %>;
   }
 };
 

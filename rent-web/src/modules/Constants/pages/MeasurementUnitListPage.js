@@ -37,6 +37,7 @@ class MeasurementUnitListPage extends ExtendedComponentPage {
     this.props.dispatch(MeasurementUnitAction.deleteMeasurementUnit(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <MeasurementUnitList
         data={this.props.data}

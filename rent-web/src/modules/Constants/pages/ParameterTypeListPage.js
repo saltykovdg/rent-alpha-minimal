@@ -37,6 +37,7 @@ class ParameterTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(ParameterTypeAction.deleteParameterType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ParameterTypeList
         data={this.props.data}

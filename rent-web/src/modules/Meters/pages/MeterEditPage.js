@@ -76,6 +76,7 @@ class MeterEditPage extends ExtendedComponentPage {
     this.forceUpdate();
   }
   render() {
+    if (!this.props.data) return null;
     return (
       <div>
         <MeterEdit

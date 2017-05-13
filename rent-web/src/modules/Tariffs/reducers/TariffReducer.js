@@ -1,6 +1,13 @@
 import * as TariffAction from './../actions/TariffAction';
-import * as TariffValueAction from './../actions/TariffValueAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 export const emptyTariffValue = {
   id: '',
@@ -25,79 +32,75 @@ const emptyEditData = {
 
 export const tariffReducer = (state, action) => {
   switch (action.type) {
-    case TariffAction.GET_TARIFF:
+    case TariffAction.GET_TARIFF: {
+      return prepareEditLoading(state.tariff.list.data, emptyEditData);
+    }
     case TariffAction.SAVE_TARIFF: {
-      return prepareEdit(state.tariff.edit.data, true, false, false, false);
+      return prepareEditLoading(state.tariff.list.data, state.tariff.edit.data);
     }
     case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
     case TariffAction.GET_TARIFFS:
     case TariffAction.DELETE_TARIFF: {
-      return prepareList(state.tariff.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.tariff.list.data, emptyEditData);
     }
 
     case TariffAction.GET_TARIFF_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.tariff.list.data, action.data);
     }
     case TariffAction.GET_TARIFFS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case TariffAction.GET_TARIFF_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.tariff.list.data, emptyEditData);
     }
     case TariffAction.GET_TARIFFS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.tariff.list.data, emptyEditData);
     }
 
     case TariffAction.SAVE_TARIFF_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.tariff.list.data, emptyEditData);
     }
     case TariffAction.DELETE_TARIFF_SUCCESS: {
-      return prepareList(state.tariff.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.tariff.list.data, emptyEditData);
     }
 
     case TariffAction.SAVE_TARIFF_FAILED: {
-      return prepareEdit(state.tariff.edit.data, false, action.showError, false, false);
+      return prepareEditFailed(state.tariff.list.data, state.tariff.edit.data, action.showError);
     }
     case TariffAction.DELETE_TARIFF_FAILED: {
-      return prepareList(state.tariff.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.tariff.list.data, emptyEditData);
     }
 
     case TariffAction.NEW_TARIFF: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.tariff.list.data, emptyEditData);
     }
 
     case TariffAction.ADD_NEW_VALUE_TO_TARIFF: {
       const newObj = state.tariff.edit.data;
       newObj.values.push(action.tariffValue);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.tariff.list.data, newObj);
     }
 
     case TariffAction.EDIT_VALUE_IN_TARIFF: {
       const newObj = state.tariff.edit.data;
       newObj.values = newObj.values.filter(value => value.id !== action.tariffValue.id);
       newObj.values.push(action.tariffValue);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.tariff.list.data, newObj);
     }
 
     case TariffAction.REMOVE_VALUE_FROM_TARIFF: {
       const newObj = state.tariff.edit.data;
       newObj.values = newObj.values.filter(value => value.id !== action.tariffValue.id);
-      return prepareEdit(newObj, false, false, false, false);
-    }
-
-    case TariffValueAction.SAVE_TARIFF_VALUE:
-    case TariffValueAction.SAVE_TARIFF_VALUE_SUCCESS:
-    case TariffValueAction.SAVE_TARIFF_VALUE_FAILED: {
-      return state.tariff;
+      return prepareSuccess(state.tariff.list.data, newObj);
     }
 
     case TariffAction.CLEAR_LOCAL_DATA_TARIFFS: {
-      return prepareList(null, emptyEditData, false, false, false, false);
+      return prepareSuccess(null, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.tariff.list, emptyEditData);
+      return state.tariff;
   }
 };
 

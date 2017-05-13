@@ -1,42 +1,21 @@
 import * as ObjectUtil from './ObjectUtil';
 
-export const prepareEdit = (newData, isLoading, isRequestError, isSaved, isDeleted) => {
+export const prepare = (list, edit) => {
   return {
-    list: {
-      data: null,
-      isLoading: false,
-      isRequestError: false,
-    },
-    edit: {
-      data: ObjectUtil.cloneObject(newData),
-      isLoading,
-      isRequestError,
-    },
-    isSaved,
-    isDeleted,
+    list: ObjectUtil.cloneObject(list),
+    edit: ObjectUtil.cloneObject(edit),
+    isSaved: false,
+    isDeleted: false,
   };
 };
 
-export const prepareList = (newListData, newEditData, isLoading, isRequestError, isSaved, isDeleted) => {
+export const prepareListLoading = (newListData, newEditData) => {
   return {
     list: {
       data: ObjectUtil.cloneObject(newListData),
-      isLoading,
-      isRequestError,
-    },
-    edit: {
-      data: ObjectUtil.cloneObject(newEditData),
-      isLoading: false,
+      isLoading: true,
       isRequestError: false,
     },
-    isSaved,
-    isDeleted,
-  };
-};
-
-export const prepareDefault = (list, newEditData) => {
-  return {
-    list,
     edit: {
       data: ObjectUtil.cloneObject(newEditData),
       isLoading: false,
@@ -47,11 +26,104 @@ export const prepareDefault = (list, newEditData) => {
   };
 };
 
-export const prepare = (list, edit) => {
+export const prepareEditLoading = (newListData, newEditData) => {
   return {
-    list,
-    edit,
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: true,
+      isRequestError: false,
+    },
     isSaved: false,
     isDeleted: false,
+  };
+};
+
+export const prepareSuccess = (newListData, newEditData) => {
+  return {
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    isSaved: false,
+    isDeleted: false,
+  };
+};
+
+export const prepareListFailed = (newListData, newEditData) => {
+  return {
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: true,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    isSaved: false,
+    isDeleted: false,
+  };
+};
+
+export const prepareEditFailed = (newListData, newEditData, showError = true) => {
+  return {
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: false,
+      isRequestError: showError,
+    },
+    isSaved: false,
+    isDeleted: false,
+  };
+};
+
+export const prepareSaveSuccess = (newListData, newEditData) => {
+  return {
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    isSaved: true,
+    isDeleted: false,
+  };
+};
+
+export const prepareDeleteSuccess = (newListData, newEditData) => {
+  return {
+    list: {
+      data: ObjectUtil.cloneObject(newListData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    edit: {
+      data: ObjectUtil.cloneObject(newEditData),
+      isLoading: false,
+      isRequestError: false,
+    },
+    isSaved: false,
+    isDeleted: true,
   };
 };

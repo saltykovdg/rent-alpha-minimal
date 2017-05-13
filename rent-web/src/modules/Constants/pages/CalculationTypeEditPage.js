@@ -31,6 +31,7 @@ class CalculationTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(CalculationTypeAction.saveCalculationType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <CalculationTypeEdit
         data={this.props.data}

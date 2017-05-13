@@ -1,5 +1,13 @@
 import * as AddressAction from './../AddressActions';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,51 +16,53 @@ const emptyEditData = {
 
 const streetReducer = (state, action) => {
   switch (action.type) {
-    case AddressAction.GET_STREET:
+    case AddressAction.GET_STREET: {
+      return prepareEditLoading(state.street.list.data, emptyEditData);
+    }
     case AddressAction.SAVE_STREET: {
-      return prepareEdit(state.street.edit.data, true, false, false, false);
+      return prepareEditLoading(state.street.list.data, state.street.edit.data);
     }
     case AddressAction.FIND_STREETS:
     case AddressAction.FIND_STREETS_BY_NAME:
     case AddressAction.GET_STREETS:
     case AddressAction.DELETE_STREET: {
-      return prepareList(state.street.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.street.list.data, emptyEditData);
     }
 
     case AddressAction.GET_STREET_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.street.list.data, action.data);
     }
     case AddressAction.GET_STREETS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AddressAction.GET_STREET_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.street.list.data, emptyEditData);
     }
     case AddressAction.GET_STREETS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.street.list.data, emptyEditData);
     }
 
     case AddressAction.SAVE_STREET_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.street.list.data, emptyEditData);
     }
     case AddressAction.DELETE_STREET_SUCCESS: {
-      return prepareList(state.street.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.street.list.data, emptyEditData);
     }
 
     case AddressAction.SAVE_STREET_FAILED: {
-      return prepareEdit(state.street.edit.data, false, true, false, false);
+      return prepareEditFailed(state.street.list.data, state.street.edit.data);
     }
     case AddressAction.DELETE_STREET_FAILED: {
-      return prepareList(state.street.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.street.list.data, emptyEditData);
     }
 
     case AddressAction.NEW_STREET: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.street.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.street.list, emptyEditData);
+      return state.street;
   }
 };
 

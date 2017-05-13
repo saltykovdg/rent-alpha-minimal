@@ -146,7 +146,7 @@ class AccountEdit extends EditComponent {
       this.getDateColumn(this.props.intl.messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionColumn(this.props.showFormMeterEdit, this.props.onDeleteMeter),
     ];
-    const cancelUrl = object.id ? `${AccountPath.ACCOUNT_CARD}/${object.id}` : AccountPath.ACCOUNT_LIST;
+    const cancelUrl = this.props.id ? `${AccountPath.ACCOUNT_CARD}/${this.props.id}` : AccountPath.ACCOUNT_LIST;
     return (
       <div>
         <Breadcrumb>
@@ -179,23 +179,23 @@ class AccountEdit extends EditComponent {
             </Row>
             <h2>{this.props.intl.messages.managementCompanyTitle}</h2>
             <FormItem label={this.props.intl.messages.contractorFieldName}>
-              {this.getSelectWithSearchField('contractor', this.getLink(object.contractor), contractorsList)}
+              {this.getSelectWithSearchField('contractor', contractorsList ? this.getLink(object.contractor) : null, contractorsList)}
             </FormItem>
             <h2>{this.props.intl.messages.addressShortTitle}</h2>
             <Row gutter={16}>
               <Col className="gutter-row" span={8}>
                 <FormItem label={this.props.intl.messages.streetFieldName}>
-                  {this.getSelectWithSearchField('street', object.apartment.building.street.id, streetList, this.onStreetChange)}
+                  {this.getSelectWithSearchField('street', streetList ? object.apartment.building.street.id : null, streetList, this.onStreetChange)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={8}>
                 <FormItem label={this.props.intl.messages.buildingFieldHouse}>
-                  {this.getSelectWithSearchField('building', object.apartment.building.id, buildingList, this.onBuildingChange)}
+                  {this.getSelectWithSearchField('building', buildingList ? object.apartment.building.id : null, buildingList, this.onBuildingChange)}
                 </FormItem>
               </Col>
               <Col className="gutter-row" span={8}>
                 <FormItem label={this.props.intl.messages.apartmentFieldApartment}>
-                  {this.getSelectWithSearchField('apartment', this.getLink(object.apartment), apartmentList)}
+                  {this.getSelectWithSearchField('apartment', apartmentList ? this.getLink(object.apartment) : null, apartmentList)}
                 </FormItem>
               </Col>
             </Row>

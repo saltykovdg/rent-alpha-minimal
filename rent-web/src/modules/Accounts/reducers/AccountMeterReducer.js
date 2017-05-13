@@ -1,5 +1,13 @@
 import * as AccountMeterAction from './../actions/AccountMeterAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const accountMeterReducer = (state, action) => {
   switch (action.type) {
-    case AccountMeterAction.GET_ACCOUNT_METER:
+    case AccountMeterAction.GET_ACCOUNT_METER: {
+      return prepareEditLoading(state.accountMeter.list.data, emptyEditData);
+    }
     case AccountMeterAction.SAVE_ACCOUNT_METER: {
-      return prepareEdit(state.accountMeter.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountMeter.list.data, state.accountMeter.edit.data);
     }
     case AccountMeterAction.GET_ACCOUNT_METERS:
     case AccountMeterAction.DELETE_ACCOUNT_METER: {
-      return prepareList(state.accountMeter.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountMeter.list.data, emptyEditData);
     }
 
     case AccountMeterAction.GET_ACCOUNT_METER_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountMeter.list.data, action.data);
     }
     case AccountMeterAction.GET_ACCOUNT_METERS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountMeterAction.GET_ACCOUNT_METER_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountMeter.list.data, emptyEditData);
     }
     case AccountMeterAction.GET_ACCOUNT_METERS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountMeter.list.data, emptyEditData);
     }
 
     case AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountMeter.list.data, emptyEditData);
     }
     case AccountMeterAction.DELETE_ACCOUNT_METER_SUCCESS: {
-      return prepareList(state.accountMeter.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountMeter.list.data, emptyEditData);
     }
 
     case AccountMeterAction.SAVE_ACCOUNT_METER_FAILED: {
-      return prepareEdit(state.accountMeter.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountMeter.list.data, state.accountMeter.edit.data);
     }
     case AccountMeterAction.DELETE_ACCOUNT_METER_FAILED: {
-      return prepareList(state.accountMeter.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountMeter.list.data, emptyEditData);
     }
 
     case AccountMeterAction.NEW_ACCOUNT_METER: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountMeter.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountMeter.list, emptyEditData);
+      return state.accountMeter;
   }
 };
 

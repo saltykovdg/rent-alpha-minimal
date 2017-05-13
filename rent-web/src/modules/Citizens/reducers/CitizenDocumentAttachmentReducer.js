@@ -1,5 +1,13 @@
 import * as CitizenDocumentAttachmentAction from './../actions/CitizenDocumentAttachmentAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,56 +16,60 @@ const emptyEditData = {
 
 export const citizenDocumentAttachmentReducer = (state, action) => {
   switch (action.type) {
-    case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENT:
+    case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENT: {
+      return prepareEditLoading(state.citizenDocumentAttachment.list.data, emptyEditData);
+    }
     case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(state.citizenDocumentAttachment.edit.data, true, false, false, false);
+      return prepareEditLoading(state.citizenDocumentAttachment.list.data, state.citizenDocumentAttachment.edit.data);
     }
     case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENTS:
     case CitizenDocumentAttachmentAction.DELETE_CITIZEN_DOCUMENT_ATTACHMENT: {
-      return prepareList(state.citizenDocumentAttachment.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
 
     case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.citizenDocumentAttachment.list.data, action.data);
     }
     case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
     case CitizenDocumentAttachmentAction.GET_CITIZEN_DOCUMENT_ATTACHMENTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
 
     case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
     case CitizenDocumentAttachmentAction.DELETE_CITIZEN_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(state.citizenDocumentAttachment.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
 
     case CitizenDocumentAttachmentAction.SAVE_CITIZEN_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(state.citizenDocumentAttachment.edit.data, false, true, false, false);
+      return prepareEditFailed(state.citizenDocumentAttachment.list.data, state.citizenDocumentAttachment.edit.data);
     }
     case CitizenDocumentAttachmentAction.DELETE_CITIZEN_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareList(state.citizenDocumentAttachment.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
 
     case CitizenDocumentAttachmentAction.NEW_CITIZEN_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.citizenDocumentAttachment.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.citizenDocumentAttachment.list, emptyEditData);
+      return state.citizenDocumentAttachment;
   }
 };
 
 /* Selectors */
 export const getCitizenDocumentAttachmentEditData = state => state.citizens.citizenDocumentAttachment.edit.data;
 export const getCitizenDocumentAttachmentListData = state => state.citizens.citizenDocumentAttachment.list.data;
-export const getCitizenDocumentAttachmentIsLoading = state => state.citizens.citizenDocumentAttachment.list.isLoading || state.citizens.citizenDocumentAttachment.edit.isLoading;
-export const getCitizenDocumentAttachmentIsRequestError = state => state.citizens.citizenDocumentAttachment.list.isRequestError || state.citizens.citizenDocumentAttachment.edit.isRequestError;
+export const getCitizenDocumentAttachmentIsLoading = state => state.citizens.citizenDocumentAttachment.list.isLoading ||
+                                                              state.citizens.citizenDocumentAttachment.edit.isLoading;
+export const getCitizenDocumentAttachmentIsRequestError = state => state.citizens.citizenDocumentAttachment.list.isRequestError ||
+                                                                   state.citizens.citizenDocumentAttachment.edit.isRequestError;
 export const getCitizenDocumentAttachmentIsSaved = state => state.citizens.citizenDocumentAttachment.isSaved;
 export const getCitizenDocumentAttachmentIsDeleted = state => state.citizens.citizenDocumentAttachment.isDeleted;

@@ -76,6 +76,7 @@ class NormEditPage extends ExtendedComponentPage {
     this.forceUpdate();
   }
   render() {
+    if (!this.props.data) return null;
     return (
       <div>
         <NormEdit

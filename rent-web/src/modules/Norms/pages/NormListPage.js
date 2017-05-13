@@ -37,6 +37,7 @@ class NormListPage extends ExtendedComponentPage {
     this.props.dispatch(NormAction.deleteNorm(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <NormList
         data={this.props.data}

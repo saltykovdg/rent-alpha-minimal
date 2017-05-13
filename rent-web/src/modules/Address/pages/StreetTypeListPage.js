@@ -37,6 +37,7 @@ class StreetTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(AddressAction.deleteStreetType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <StreetTypeList
         data={this.props.data}

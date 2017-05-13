@@ -56,7 +56,7 @@ class ExtendedComponent extends Component {
   }
   getListForPeriod = (list, workingPeriod) => {
     let newList = list;
-    if (workingPeriod) {
+    if (list && workingPeriod) {
       newList = list.filter((item) => {
         const itemDateStart = new Date(item.dateStart).getTime();
         const itemDateEnd = new Date(item.dateEnd).getTime();
@@ -71,13 +71,16 @@ class ExtendedComponent extends Component {
     return this.getAccountTotalAreaForPeriod(account, this.props.currentWorkingPeriod);
   }
   getAccountTotalAreaForPeriod = (account, workingPeriod) => {
-    let totalArea = account.apartment.totalArea;
-    const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
-    currentParameters.forEach((item) => {
-      if (item.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
-        totalArea = item.value;
-      }
-    });
+    let totalArea = 0;
+    if (account && account.apartment && workingPeriod) {
+      totalArea = account.apartment.totalArea;
+      const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
+      currentParameters.forEach((item) => {
+        if (item.parameterType.code === ParameterType.TOTAL_AREA_CODE) {
+          totalArea = item.value;
+        }
+      });
+    }
     return totalArea;
   }
   getAccountPhoneNumbersForCurrentPeriod = (account) => {
@@ -85,12 +88,14 @@ class ExtendedComponent extends Component {
   }
   getAccountPhoneNumbersForPeriod = (account, workingPeriod) => {
     let phoneNumbers = '';
-    const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
-    currentParameters.forEach((item) => {
-      if (item.parameterType.code === ParameterType.PHONE_NUMBER_CODE) {
-        phoneNumbers += (phoneNumbers.length === 0 ? '' : '; ') + item.value;
-      }
-    });
+    if (account && account.parameters && workingPeriod) {
+      const currentParameters = this.getListForPeriod(account.parameters, workingPeriod);
+      currentParameters.forEach((item) => {
+        if (item.parameterType.code === ParameterType.PHONE_NUMBER_CODE) {
+          phoneNumbers += (phoneNumbers.length === 0 ? '' : '; ') + item.value;
+        }
+      });
+    }
     return phoneNumbers;
   }
   forwardTo = (url) => {

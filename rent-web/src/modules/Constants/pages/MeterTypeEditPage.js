@@ -31,6 +31,7 @@ class MeterTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(MeterTypeAction.saveMeterType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <MeterTypeEdit
         data={this.props.data}

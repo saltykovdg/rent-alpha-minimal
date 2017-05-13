@@ -74,6 +74,7 @@ class CitizenListPage extends ExtendedComponentPage {
     ));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <CitizenList
         data={this.props.data}

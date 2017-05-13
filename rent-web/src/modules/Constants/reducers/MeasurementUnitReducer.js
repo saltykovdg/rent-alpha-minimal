@@ -1,5 +1,13 @@
 import * as MeasurementUnitAction from './../actions/MeasurementUnitAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,50 +16,52 @@ const emptyEditData = {
 
 export const measurementUnitReducer = (state, action) => {
   switch (action.type) {
-    case MeasurementUnitAction.GET_MEASUREMENT_UNIT:
+    case MeasurementUnitAction.GET_MEASUREMENT_UNIT: {
+      return prepareEditLoading(state.measurementUnit.list.data, emptyEditData);
+    }
     case MeasurementUnitAction.SAVE_MEASUREMENT_UNIT: {
-      return prepareEdit(state.measurementUnit.edit.data, true, false, false, false);
+      return prepareEditLoading(state.measurementUnit.list.data, state.measurementUnit.edit.data);
     }
     case MeasurementUnitAction.FIND_MEASUREMENT_UNITS_BY_NAME:
     case MeasurementUnitAction.GET_MEASUREMENT_UNITS:
     case MeasurementUnitAction.DELETE_MEASUREMENT_UNIT: {
-      return prepareList(state.measurementUnit.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.measurementUnit.list.data, emptyEditData);
     }
 
     case MeasurementUnitAction.GET_MEASUREMENT_UNIT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.measurementUnit.list.data, action.data);
     }
     case MeasurementUnitAction.GET_MEASUREMENT_UNITS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case MeasurementUnitAction.GET_MEASUREMENT_UNIT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.measurementUnit.list.data, emptyEditData);
     }
     case MeasurementUnitAction.GET_MEASUREMENT_UNITS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.measurementUnit.list.data, emptyEditData);
     }
 
     case MeasurementUnitAction.SAVE_MEASUREMENT_UNIT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.measurementUnit.list.data, emptyEditData);
     }
     case MeasurementUnitAction.DELETE_MEASUREMENT_UNIT_SUCCESS: {
-      return prepareList(state.measurementUnit.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.measurementUnit.list.data, emptyEditData);
     }
 
     case MeasurementUnitAction.SAVE_MEASUREMENT_UNIT_FAILED: {
-      return prepareEdit(state.measurementUnit.edit.data, false, true, false, false);
+      return prepareEditFailed(state.measurementUnit.list.data, state.measurementUnit.edit.data);
     }
     case MeasurementUnitAction.DELETE_MEASUREMENT_UNIT_FAILED: {
-      return prepareList(state.measurementUnit.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.measurementUnit.list.data, emptyEditData);
     }
 
     case MeasurementUnitAction.NEW_MEASUREMENT_UNIT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.measurementUnit.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.measurementUnit.list, emptyEditData);
+      return state.measurementUnit;
   }
 };
 

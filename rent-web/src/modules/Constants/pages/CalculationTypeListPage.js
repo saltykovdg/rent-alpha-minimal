@@ -37,6 +37,7 @@ class CalculationTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(CalculationTypeAction.deleteCalculationType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <CalculationTypeList
         data={this.props.data}

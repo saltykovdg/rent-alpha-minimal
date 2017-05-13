@@ -1,5 +1,13 @@
 import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,56 +15,60 @@ const emptyEditData = {
 
 export const accountOwnerDocumentAttachmentReducer = (state, action) => {
   switch (action.type) {
-    case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT:
+    case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT: {
+      return prepareEditLoading(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
+    }
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(state.accountOwnerDocumentAttachment.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountOwnerDocumentAttachment.list.data, state.accountOwnerDocumentAttachment.edit.data);
     }
     case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENTS:
     case AccountOwnerDocumentAttachmentAction.DELETE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT: {
-      return prepareList(state.accountOwnerDocumentAttachment.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountOwnerDocumentAttachment.list.data, action.data);
     }
     case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
     case AccountOwnerDocumentAttachmentAction.GET_ACCOUNT_OWNER_DOCUMENT_ATTACHMENTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
     case AccountOwnerDocumentAttachmentAction.DELETE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(state.accountOwnerDocumentAttachment.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(state.accountOwnerDocumentAttachment.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountOwnerDocumentAttachment.list.data, state.accountOwnerDocumentAttachment.edit.data);
     }
     case AccountOwnerDocumentAttachmentAction.DELETE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareList(state.accountOwnerDocumentAttachment.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountOwnerDocumentAttachmentAction.NEW_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountOwnerDocumentAttachment.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountOwnerDocumentAttachment.list, emptyEditData);
+      return state.accountOwnerDocumentAttachment;
   }
 };
 
 /* Selectors */
 export const getAccountOwnerDocumentAttachmentEditData = state => state.accounts.accountOwnerDocumentAttachment.edit.data;
 export const getAccountOwnerDocumentAttachmentListData = state => state.accounts.accountOwnerDocumentAttachment.list.data;
-export const getAccountOwnerDocumentAttachmentIsLoading = state => state.accounts.accountOwnerDocumentAttachment.list.isLoading || state.accounts.accountOwnerDocumentAttachment.edit.isLoading;
-export const getAccountOwnerDocumentAttachmentIsRequestError = state => state.accounts.accountOwnerDocumentAttachment.list.isRequestError || state.accounts.accountOwnerDocumentAttachment.edit.isRequestError;
+export const getAccountOwnerDocumentAttachmentIsLoading = state => state.accounts.accountOwnerDocumentAttachment.list.isLoading ||
+                                                                   state.accounts.accountOwnerDocumentAttachment.edit.isLoading;
+export const getAccountOwnerDocumentAttachmentIsRequestError = state => state.accounts.accountOwnerDocumentAttachment.list.isRequestError ||
+                                                                        state.accounts.accountOwnerDocumentAttachment.edit.isRequestError;
 export const getAccountOwnerDocumentAttachmentIsSaved = state => state.accounts.accountOwnerDocumentAttachment.isSaved;
 export const getAccountOwnerDocumentAttachmentIsDeleted = state => state.accounts.accountOwnerDocumentAttachment.isDeleted;

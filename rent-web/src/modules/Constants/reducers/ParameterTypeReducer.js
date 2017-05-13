@@ -1,5 +1,13 @@
 import * as ParameterTypeAction from './../actions/ParameterTypeAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -9,50 +17,52 @@ const emptyEditData = {
 
 export const parameterTypeReducer = (state, action) => {
   switch (action.type) {
-    case ParameterTypeAction.GET_PARAMETER_TYPE:
+    case ParameterTypeAction.GET_PARAMETER_TYPE: {
+      return prepareEditLoading(state.parameterType.list.data, emptyEditData);
+    }
     case ParameterTypeAction.SAVE_PARAMETER_TYPE: {
-      return prepareEdit(state.parameterType.edit.data, true, false, false, false);
+      return prepareEditLoading(state.parameterType.list.data, state.parameterType.edit.data);
     }
     case ParameterTypeAction.FIND_PARAMETER_TYPES_BY_NAME:
     case ParameterTypeAction.GET_PARAMETER_TYPES:
     case ParameterTypeAction.DELETE_PARAMETER_TYPE: {
-      return prepareList(state.parameterType.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.parameterType.list.data, emptyEditData);
     }
 
     case ParameterTypeAction.GET_PARAMETER_TYPE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.parameterType.list.data, action.data);
     }
     case ParameterTypeAction.GET_PARAMETER_TYPES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case ParameterTypeAction.GET_PARAMETER_TYPE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.parameterType.list.data, emptyEditData);
     }
     case ParameterTypeAction.GET_PARAMETER_TYPES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.parameterType.list.data, emptyEditData);
     }
 
     case ParameterTypeAction.SAVE_PARAMETER_TYPE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.parameterType.list.data, emptyEditData);
     }
     case ParameterTypeAction.DELETE_PARAMETER_TYPE_SUCCESS: {
-      return prepareList(state.parameterType.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.parameterType.list.data, emptyEditData);
     }
 
     case ParameterTypeAction.SAVE_PARAMETER_TYPE_FAILED: {
-      return prepareEdit(state.parameterType.edit.data, false, true, false, false);
+      return prepareEditFailed(state.parameterType.list.data, state.parameterType.edit.data);
     }
     case ParameterTypeAction.DELETE_PARAMETER_TYPE_FAILED: {
-      return prepareList(state.parameterType.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.parameterType.list.data, emptyEditData);
     }
 
     case ParameterTypeAction.NEW_PARAMETER_TYPE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.parameterType.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.parameterType.list, emptyEditData);
+      return state.parameterType;
   }
 };
 

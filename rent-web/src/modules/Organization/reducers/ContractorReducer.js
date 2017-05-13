@@ -1,5 +1,13 @@
 import * as OrganizationAction from './../OrganizationActions';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -12,50 +20,52 @@ const emptyEditData = {
 
 const contractorReducer = (state, action) => {
   switch (action.type) {
-    case OrganizationAction.GET_CONTRACTOR:
+    case OrganizationAction.GET_CONTRACTOR: {
+      return prepareEditLoading(state.contractor.list.data, emptyEditData);
+    }
     case OrganizationAction.SAVE_CONTRACTOR: {
-      return prepareEdit(state.contractor.edit.data, true, false, false, false);
+      return prepareEditLoading(state.contractor.list.data, state.contractor.edit.data);
     }
     case OrganizationAction.FIND_CONTRACTORS_BY_NAME:
     case OrganizationAction.GET_CONTRACTORS:
     case OrganizationAction.DELETE_CONTRACTOR: {
-      return prepareList(state.contractor.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.contractor.list.data, emptyEditData);
     }
 
     case OrganizationAction.GET_CONTRACTOR_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.contractor.list.data, action.data);
     }
     case OrganizationAction.GET_CONTRACTORS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case OrganizationAction.GET_CONTRACTOR_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.contractor.list.data, emptyEditData);
     }
     case OrganizationAction.GET_CONTRACTORS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.contractor.list.data, emptyEditData);
     }
 
     case OrganizationAction.SAVE_CONTRACTOR_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.contractor.list.data, emptyEditData);
     }
     case OrganizationAction.DELETE_CONTRACTOR_SUCCESS: {
-      return prepareList(state.contractor.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.contractor.list.data, emptyEditData);
     }
 
     case OrganizationAction.SAVE_CONTRACTOR_FAILED: {
-      return prepareEdit(state.contractor.edit.data, false, true, false, false);
+      return prepareEditFailed(state.contractor.list.data, state.contractor.edit.data);
     }
     case OrganizationAction.DELETE_CONTRACTOR_FAILED: {
-      return prepareList(state.contractor.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.contractor.list.data, emptyEditData);
     }
 
     case OrganizationAction.NEW_CONTRACTOR: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.contractor.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.contractor.list, emptyEditData);
+      return state.contractor;
   }
 };
 

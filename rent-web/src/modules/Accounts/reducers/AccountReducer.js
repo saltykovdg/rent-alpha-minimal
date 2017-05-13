@@ -1,17 +1,13 @@
 import * as AccountAction from './../actions/AccountAction';
-import * as AccountParameterAction from './../actions/AccountParameterAction';
-import * as AccountServiceAction from './../actions/AccountServiceAction';
-import * as AccountOwnerDocumentAttachmentAction from './../actions/AccountOwnerDocumentAttachmentAction';
-import * as AccountOwnerAction from './../actions/AccountOwnerAction';
-import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
-import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
-import * as AccountMeterAction from './../actions/AccountMeterAction';
-import * as TariffAction from './../../Tariffs/actions/TariffAction';
-import * as AddressActions from './../../Address/AddressActions';
-import * as CitizenAction from './../../Citizens/actions/CitizenAction';
-import * as MeterAction from './../../Meters/actions/MeterAction';
-import * as WorkingPeriodAction from './../../Constants//actions/WorkingPeriodAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 export const emptyParameter = {
   id: '',
@@ -107,98 +103,102 @@ const emptyEditData = {
 export const accountReducer = (state, action) => {
   switch (action.type) {
     case AccountAction.GET_ACCOUNT:
-    case AccountAction.GET_ACCOUNT_CARD:
-    case AccountAction.SAVE_ACCOUNT: {
-      return prepareEdit(state.account.edit.data, true, false, false, false);
+    case AccountAction.GET_ACCOUNT_CARD: {
+      return prepareEditLoading(state.account.list.data, emptyEditData);
     }
+
+    case AccountAction.SAVE_ACCOUNT: {
+      return prepareEditLoading(state.account.list.data, state.account.edit.data);
+    }
+
     case AccountAction.FIND_ACCOUNTS_BY_ACCOUNT_NUMBER:
     case AccountAction.FIND_ACCOUNTS:
     case AccountAction.GET_ACCOUNTS:
     case AccountAction.DELETE_ACCOUNT: {
-      return prepareList(state.account.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.account.list.data, emptyEditData);
     }
 
     case AccountAction.GET_ACCOUNT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.account.list.data, action.data);
     }
     case AccountAction.GET_ACCOUNTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountAction.GET_ACCOUNT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.account.list.data, emptyEditData);
     }
     case AccountAction.GET_ACCOUNTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.account.list.data, emptyEditData);
     }
 
     case AccountAction.SAVE_ACCOUNT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.account.list.data, emptyEditData);
     }
     case AccountAction.DELETE_ACCOUNT_SUCCESS: {
-      return prepareList(state.account.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.account.list.data, emptyEditData);
     }
 
     case AccountAction.SAVE_ACCOUNT_FAILED: {
-      return prepareEdit(state.account.edit.data, false, action.showError, false, false);
+      return prepareEditFailed(state.account.list.data, state.account.edit.data, action.showError);
     }
     case AccountAction.DELETE_ACCOUNT_FAILED: {
-      return prepareList(state.account.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.account.list.data, emptyEditData);
     }
 
     case AccountAction.NEW_ACCOUNT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.account.list.data, emptyEditData);
     }
 
     case AccountAction.ADD_NEW_PARAMETER_TO_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.parameters.push(action.parameter);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.EDIT_PARAMETER_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
       newObj.parameters.push(action.parameter);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.REMOVE_PARAMETER_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.parameters = newObj.parameters.filter(parameter => parameter.id !== action.parameter.id);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
 
     case AccountAction.ADD_NEW_SERVICE_TO_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.services.push(action.service);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.EDIT_SERVICE_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.services = newObj.services.filter(service => service.id !== action.service.id);
       newObj.services.push(action.service);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.REMOVE_SERVICE_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.services = newObj.services.filter(service => service.id !== action.service.id);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
 
     case AccountAction.ADD_NEW_OWNER_TO_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.owners.push(action.owner);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.EDIT_OWNER_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.owners = newObj.owners.filter(owner => owner.id !== action.owner.id);
       newObj.owners.push(action.owner);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.REMOVE_OWNER_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.owners = newObj.owners.filter(owner => owner.id !== action.owner.id);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
 
     case AccountAction.ADD_NEW_ATTACHMENT_TO_OWNER: {
@@ -221,18 +221,18 @@ export const accountReducer = (state, action) => {
     case AccountAction.ADD_NEW_REGISTERED_TO_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.registered.push(action.registered);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.EDIT_REGISTERED_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.registered = newObj.registered.filter(registered => registered.id !== action.registered.id);
       newObj.registered.push(action.registered);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.REMOVE_REGISTERED_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.registered = newObj.registered.filter(registered => registered.id !== action.registered.id);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
 
     case AccountAction.ADD_NEW_ATTACHMENT_TO_REGISTERED: {
@@ -255,74 +255,22 @@ export const accountReducer = (state, action) => {
     case AccountAction.ADD_NEW_METER_TO_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.meters.push(action.meter);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.EDIT_METER_IN_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
       newObj.meters.push(action.meter);
-      return prepareEdit(newObj, false, false, false, false);
+      return prepareSuccess(state.account.list.data, newObj);
     }
     case AccountAction.REMOVE_METER_FROM_ACCOUNT: {
       const newObj = state.account.edit.data;
       newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
-      return prepareEdit(newObj, false, false, false, false);
-    }
-
-    case WorkingPeriodAction.GET_WORKING_PERIODS:
-    case WorkingPeriodAction.GET_WORKING_PERIODS_SUCCESS:
-    case WorkingPeriodAction.GET_WORKING_PERIODS_FAILED:
-    case AccountAction.CALCULATE_ACCOUNT:
-    case AccountAction.CALCULATE_ACCOUNT_SUCCESS:
-    case AccountAction.CALCULATE_ACCOUNT_FAILED:
-    case AccountAction.GET_ACCOUNT_CALCULATIONS:
-    case AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS:
-    case AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED:
-    case AccountMeterAction.SAVE_ACCOUNT_METER:
-    case AccountMeterAction.SAVE_ACCOUNT_METER_SUCCESS:
-    case AccountMeterAction.SAVE_ACCOUNT_METER_FAILED:
-    case MeterAction.CLEAR_LOCAL_DATA_METERS:
-    case MeterAction.FIND_METERS_INDIVIDUAL:
-    case MeterAction.GET_METERS_SUCCESS:
-    case MeterAction.GET_METERS_FAILED:
-    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED:
-    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS:
-    case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_FAILED:
-    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT:
-    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS:
-    case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED:
-    case AccountOwnerAction.SAVE_ACCOUNT_OWNER:
-    case AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS:
-    case AccountOwnerAction.SAVE_ACCOUNT_OWNER_FAILED:
-    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT:
-    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_SUCCESS:
-    case AccountOwnerDocumentAttachmentAction.SAVE_ACCOUNT_OWNER_DOCUMENT_ATTACHMENT_FAILED:
-    case AddressActions.CLEAR_LOCAL_DATA_APARTMENTS:
-    case AddressActions.FIND_APARTMENTS_BY_BUILDING_ID:
-    case AddressActions.GET_APARTMENTS_SUCCESS:
-    case AddressActions.GET_APARTMENTS_FAILED:
-    case AddressActions.FIND_BUILDINGS_BY_STREET_ID:
-    case AddressActions.GET_BUILDINGS_SUCCESS:
-    case AddressActions.GET_BUILDINGS_FAILED:
-    case TariffAction.CLEAR_LOCAL_DATA_TARIFFS:
-    case TariffAction.FIND_TARIFFS_BY_SERVICE_ID:
-    case TariffAction.GET_TARIFFS_SUCCESS:
-    case TariffAction.GET_TARIFFS_FAILED:
-    case CitizenAction.CLEAR_LOCAL_DATA_CITIZENS:
-    case CitizenAction.FIND_CITIZENS:
-    case CitizenAction.GET_CITIZENS_SUCCESS:
-    case CitizenAction.GET_CITIZENS_FAILED:
-    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER:
-    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_SUCCESS:
-    case AccountParameterAction.SAVE_ACCOUNT_PARAMETER_FAILED:
-    case AccountServiceAction.SAVE_ACCOUNT_SERVICE:
-    case AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS:
-    case AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED: {
-      return state.account;
+      return prepareSuccess(state.account.list.data, newObj);
     }
 
     default:
-      return prepareDefault(state.account.list, emptyEditData);
+      return state.account;
   }
 };
 

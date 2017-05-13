@@ -37,6 +37,7 @@ class RegistrationTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(RegistrationTypeAction.deleteRegistrationType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <RegistrationTypeList
         data={this.props.data}

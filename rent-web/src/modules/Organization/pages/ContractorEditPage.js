@@ -32,6 +32,7 @@ class ContractorEditPage extends ExtendedComponentPage {
     this.props.dispatch(OrganizationAction.saveContractor(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ContractorEdit
         data={this.props.data}

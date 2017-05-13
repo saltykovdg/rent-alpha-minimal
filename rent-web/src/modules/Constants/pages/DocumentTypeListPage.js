@@ -37,6 +37,7 @@ class DocumentTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(DocumentTypeAction.deleteDocumentType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <DocumentTypeList
         data={this.props.data}

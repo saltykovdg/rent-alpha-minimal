@@ -31,6 +31,7 @@ class ParameterTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(ParameterTypeAction.saveParameterType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ParameterTypeEdit
         data={this.props.data}

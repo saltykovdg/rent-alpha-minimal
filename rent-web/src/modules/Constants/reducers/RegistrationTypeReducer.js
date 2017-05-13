@@ -1,5 +1,13 @@
 import * as RegistrationTypeAction from './../actions/RegistrationTypeAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,50 +16,52 @@ const emptyEditData = {
 
 export const registrationTypeReducer = (state, action) => {
   switch (action.type) {
-    case RegistrationTypeAction.GET_REGISTRATION_TYPE:
+    case RegistrationTypeAction.GET_REGISTRATION_TYPE: {
+      return prepareEditLoading(state.registrationType.list.data, emptyEditData);
+    }
     case RegistrationTypeAction.SAVE_REGISTRATION_TYPE: {
-      return prepareEdit(state.registrationType.edit.data, true, false, false, false);
+      return prepareEditLoading(state.registrationType.list.data, state.registrationType.edit.data);
     }
     case RegistrationTypeAction.FIND_REGISTRATION_TYPES_BY_NAME:
     case RegistrationTypeAction.GET_REGISTRATION_TYPES:
     case RegistrationTypeAction.DELETE_REGISTRATION_TYPE: {
-      return prepareList(state.registrationType.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.registrationType.list.data, emptyEditData);
     }
 
     case RegistrationTypeAction.GET_REGISTRATION_TYPE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.registrationType.list.data, action.data);
     }
     case RegistrationTypeAction.GET_REGISTRATION_TYPES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case RegistrationTypeAction.GET_REGISTRATION_TYPE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.registrationType.list.data, emptyEditData);
     }
     case RegistrationTypeAction.GET_REGISTRATION_TYPES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.registrationType.list.data, emptyEditData);
     }
 
     case RegistrationTypeAction.SAVE_REGISTRATION_TYPE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.registrationType.list.data, emptyEditData);
     }
     case RegistrationTypeAction.DELETE_REGISTRATION_TYPE_SUCCESS: {
-      return prepareList(state.registrationType.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.registrationType.list.data, emptyEditData);
     }
 
     case RegistrationTypeAction.SAVE_REGISTRATION_TYPE_FAILED: {
-      return prepareEdit(state.registrationType.edit.data, false, true, false, false);
+      return prepareEditFailed(state.registrationType.list.data, state.registrationType.edit.data);
     }
     case RegistrationTypeAction.DELETE_REGISTRATION_TYPE_FAILED: {
-      return prepareList(state.registrationType.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.registrationType.list.data, emptyEditData);
     }
 
     case RegistrationTypeAction.NEW_REGISTRATION_TYPE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.registrationType.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.registrationType.list, emptyEditData);
+      return state.registrationType;
   }
 };
 

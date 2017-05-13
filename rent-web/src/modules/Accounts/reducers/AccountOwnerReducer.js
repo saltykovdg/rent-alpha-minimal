@@ -1,5 +1,13 @@
 import * as AccountOwnerAction from './../actions/AccountOwnerAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const accountOwnerReducer = (state, action) => {
   switch (action.type) {
-    case AccountOwnerAction.GET_ACCOUNT_OWNER:
+    case AccountOwnerAction.GET_ACCOUNT_OWNER: {
+      return prepareEditLoading(state.accountOwner.list.data, emptyEditData);
+    }
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER: {
-      return prepareEdit(state.accountOwner.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountOwner.list.data, state.accountOwner.edit.data);
     }
     case AccountOwnerAction.GET_ACCOUNT_OWNERS:
     case AccountOwnerAction.DELETE_ACCOUNT_OWNER: {
-      return prepareList(state.accountOwner.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountOwner.list.data, emptyEditData);
     }
 
     case AccountOwnerAction.GET_ACCOUNT_OWNER_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountOwner.list.data, action.data);
     }
     case AccountOwnerAction.GET_ACCOUNT_OWNERS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountOwnerAction.GET_ACCOUNT_OWNER_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountOwner.list.data, emptyEditData);
     }
     case AccountOwnerAction.GET_ACCOUNT_OWNERS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountOwner.list.data, emptyEditData);
     }
 
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountOwner.list.data, emptyEditData);
     }
     case AccountOwnerAction.DELETE_ACCOUNT_OWNER_SUCCESS: {
-      return prepareList(state.accountOwner.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountOwner.list.data, emptyEditData);
     }
 
     case AccountOwnerAction.SAVE_ACCOUNT_OWNER_FAILED: {
-      return prepareEdit(state.accountOwner.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountOwner.list.data, state.accountOwner.edit.data);
     }
     case AccountOwnerAction.DELETE_ACCOUNT_OWNER_FAILED: {
-      return prepareList(state.accountOwner.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountOwner.list.data, emptyEditData);
     }
 
     case AccountOwnerAction.NEW_ACCOUNT_OWNER: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountOwner.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountOwner.list, emptyEditData);
+      return state.accountOwner;
   }
 };
 

@@ -1,5 +1,13 @@
 import * as NormValueAction from './../actions/NormValueAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const normValueReducer = (state, action) => {
   switch (action.type) {
-    case NormValueAction.GET_NORM_VALUE:
+    case NormValueAction.GET_NORM_VALUE: {
+      return prepareEditLoading(state.normValue.list.data, emptyEditData);
+    }
     case NormValueAction.SAVE_NORM_VALUE: {
-      return prepareEdit(state.normValue.edit.data, true, false, false, false);
+      return prepareEditLoading(state.normValue.list.data, state.normValue.edit.data);
     }
     case NormValueAction.GET_NORM_VALUES:
     case NormValueAction.DELETE_NORM_VALUE: {
-      return prepareList(state.normValue.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.normValue.list.data, emptyEditData);
     }
 
     case NormValueAction.GET_NORM_VALUE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.normValue.list.data, action.data);
     }
     case NormValueAction.GET_NORM_VALUES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case NormValueAction.GET_NORM_VALUE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.normValue.list.data, emptyEditData);
     }
     case NormValueAction.GET_NORM_VALUES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.normValue.list.data, emptyEditData);
     }
 
     case NormValueAction.SAVE_NORM_VALUE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.normValue.list.data, emptyEditData);
     }
     case NormValueAction.DELETE_NORM_VALUE_SUCCESS: {
-      return prepareList(state.normValue.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.normValue.list.data, emptyEditData);
     }
 
     case NormValueAction.SAVE_NORM_VALUE_FAILED: {
-      return prepareEdit(state.normValue.edit.data, false, true, false, false);
+      return prepareEditFailed(state.normValue.list.data, state.normValue.edit.data);
     }
     case NormValueAction.DELETE_NORM_VALUE_FAILED: {
-      return prepareList(state.normValue.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.normValue.list.data, emptyEditData);
     }
 
     case NormValueAction.NEW_NORM_VALUE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.normValue.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.normValue.list, emptyEditData);
+      return state.normValue;
   }
 };
 

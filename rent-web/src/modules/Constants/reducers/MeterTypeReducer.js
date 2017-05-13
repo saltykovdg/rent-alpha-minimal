@@ -1,5 +1,13 @@
 import * as MeterTypeAction from './../actions/MeterTypeAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,50 +16,52 @@ const emptyEditData = {
 
 export const meterTypeReducer = (state, action) => {
   switch (action.type) {
-    case MeterTypeAction.GET_METER_TYPE:
+    case MeterTypeAction.GET_METER_TYPE: {
+      return prepareEditLoading(state.meterType.list.data, emptyEditData);
+    }
     case MeterTypeAction.SAVE_METER_TYPE: {
-      return prepareEdit(state.meterType.edit.data, true, false, false, false);
+      return prepareEditLoading(state.meterType.list.data, state.meterType.edit.data);
     }
     case MeterTypeAction.FIND_METER_TYPES_BY_NAME:
     case MeterTypeAction.GET_METER_TYPES:
     case MeterTypeAction.DELETE_METER_TYPE: {
-      return prepareList(state.meterType.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.meterType.list.data, emptyEditData);
     }
 
     case MeterTypeAction.GET_METER_TYPE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.meterType.list.data, action.data);
     }
     case MeterTypeAction.GET_METER_TYPES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case MeterTypeAction.GET_METER_TYPE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.meterType.list.data, emptyEditData);
     }
     case MeterTypeAction.GET_METER_TYPES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.meterType.list.data, emptyEditData);
     }
 
     case MeterTypeAction.SAVE_METER_TYPE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.meterType.list.data, emptyEditData);
     }
     case MeterTypeAction.DELETE_METER_TYPE_SUCCESS: {
-      return prepareList(state.meterType.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.meterType.list.data, emptyEditData);
     }
 
     case MeterTypeAction.SAVE_METER_TYPE_FAILED: {
-      return prepareEdit(state.meterType.edit.data, false, true, false, false);
+      return prepareEditFailed(state.meterType.list.data, state.meterType.edit.data);
     }
     case MeterTypeAction.DELETE_METER_TYPE_FAILED: {
-      return prepareList(state.meterType.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.meterType.list.data, emptyEditData);
     }
 
     case MeterTypeAction.NEW_METER_TYPE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.meterType.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.meterType.list, emptyEditData);
+      return state.meterType;
   }
 };
 

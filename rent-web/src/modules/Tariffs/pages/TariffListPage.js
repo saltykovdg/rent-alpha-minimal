@@ -37,6 +37,7 @@ class TariffListPage extends ExtendedComponentPage {
     this.props.dispatch(TariffAction.deleteTariff(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <TariffList
         data={this.props.data}

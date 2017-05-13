@@ -82,6 +82,7 @@ class BuildingEditPage extends ExtendedComponentPage {
     this.props.dispatch(MeterAction.findMetersCommonHouse(service, name, serialNumber, page, size));
   }
   render() {
+    if (!this.props.data) return null;
     const messages = this.props.intl.messages;
     return (
       <div>

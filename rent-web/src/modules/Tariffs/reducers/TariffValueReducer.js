@@ -1,5 +1,13 @@
 import * as TariffValueAction from './../actions/TariffValueAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const tariffValueReducer = (state, action) => {
   switch (action.type) {
-    case TariffValueAction.GET_TARIFF_VALUE:
+    case TariffValueAction.GET_TARIFF_VALUE: {
+      return prepareEditLoading(state.tariffValue.list.data, emptyEditData);
+    }
     case TariffValueAction.SAVE_TARIFF_VALUE: {
-      return prepareEdit(state.tariffValue.edit.data, true, false, false, false);
+      return prepareEditLoading(state.tariffValue.list.data, state.tariffValue.edit.data);
     }
     case TariffValueAction.GET_TARIFF_VALUES:
     case TariffValueAction.DELETE_TARIFF_VALUE: {
-      return prepareList(state.tariffValue.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.tariffValue.list.data, emptyEditData);
     }
 
     case TariffValueAction.GET_TARIFF_VALUE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.tariffValue.list.data, action.data);
     }
     case TariffValueAction.GET_TARIFF_VALUES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case TariffValueAction.GET_TARIFF_VALUE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.tariffValue.list.data, emptyEditData);
     }
     case TariffValueAction.GET_TARIFF_VALUES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.tariffValue.list.data, emptyEditData);
     }
 
     case TariffValueAction.SAVE_TARIFF_VALUE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.tariffValue.list.data, emptyEditData);
     }
     case TariffValueAction.DELETE_TARIFF_VALUE_SUCCESS: {
-      return prepareList(state.tariffValue.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.tariffValue.list.data, emptyEditData);
     }
 
     case TariffValueAction.SAVE_TARIFF_VALUE_FAILED: {
-      return prepareEdit(state.tariffValue.edit.data, false, true, false, false);
+      return prepareEditFailed(state.tariffValue.list.data, state.tariffValue.edit.data);
     }
     case TariffValueAction.DELETE_TARIFF_VALUE_FAILED: {
-      return prepareList(state.tariffValue.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.tariffValue.list.data, emptyEditData);
     }
 
     case TariffValueAction.NEW_TARIFF_VALUE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.tariffValue.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.tariffValue.list, emptyEditData);
+      return state.tariffValue;
   }
 };
 

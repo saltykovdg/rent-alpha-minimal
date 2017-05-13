@@ -1,5 +1,13 @@
 import * as AddressAction from './../AddressActions';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -21,61 +29,57 @@ const emptyEditData = {
 
 const apartmentReducer = (state, action) => {
   switch (action.type) {
-    case AddressAction.GET_APARTMENT:
+    case AddressAction.GET_APARTMENT: {
+      return prepareEditLoading(state.apartment.list.data, emptyEditData);
+    }
     case AddressAction.SAVE_APARTMENT: {
-      return prepareEdit(state.apartment.edit.data, true, false, false, false);
+      return prepareEditLoading(state.apartment.list.data, state.apartment.edit.data);
     }
     case AddressAction.FIND_APARTMENTS_BY_BUILDING_ID:
     case AddressAction.FIND_APARTMENTS:
     case AddressAction.GET_APARTMENTS:
     case AddressAction.DELETE_APARTMENT: {
-      return prepareList(state.apartment.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.apartment.list.data, emptyEditData);
     }
 
     case AddressAction.GET_APARTMENT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.apartment.list.data, action.data);
     }
     case AddressAction.GET_APARTMENTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AddressAction.GET_APARTMENT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.apartment.list.data, emptyEditData);
     }
     case AddressAction.GET_APARTMENTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.apartment.list.data, emptyEditData);
     }
 
     case AddressAction.SAVE_APARTMENT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.apartment.list.data, emptyEditData);
     }
     case AddressAction.DELETE_APARTMENT_SUCCESS: {
-      return prepareList(state.apartment.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.apartment.list.data, emptyEditData);
     }
 
     case AddressAction.SAVE_APARTMENT_FAILED: {
-      return prepareEdit(state.apartment.edit.data, false, true, false, false);
+      return prepareEditFailed(state.apartment.list.data, state.apartment.edit.data);
     }
     case AddressAction.DELETE_APARTMENT_FAILED: {
-      return prepareList(state.apartment.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.apartment.list.data, emptyEditData);
     }
 
     case AddressAction.NEW_APARTMENT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
-    }
-
-    case AddressAction.FIND_BUILDINGS_BY_STREET_ID:
-    case AddressAction.GET_BUILDINGS_SUCCESS:
-    case AddressAction.GET_BUILDINGS_FAILED: {
-      return state.apartment;
+      return prepareSuccess(state.apartment.list.data, emptyEditData);
     }
 
     case AddressAction.CLEAR_LOCAL_DATA_APARTMENTS: {
-      return prepareList(null, emptyEditData, false, false, false, false);
+      return prepareSuccess(null, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.apartment.list, emptyEditData);
+      return state.apartment;
   }
 };
 

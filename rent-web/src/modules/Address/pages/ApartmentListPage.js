@@ -64,6 +64,7 @@ class ApartmentListPage extends ExtendedComponentPage {
     ));
   }
   render() {
+    if (!this.props.data) return null;
     return (
       <ApartmentList
         data={this.props.data}

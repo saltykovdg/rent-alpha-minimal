@@ -1,5 +1,13 @@
 import * as ServiceAction from './../actions/ServiceAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -8,50 +16,52 @@ const emptyEditData = {
 
 export const serviceReducer = (state, action) => {
   switch (action.type) {
-    case ServiceAction.GET_SERVICE:
+    case ServiceAction.GET_SERVICE: {
+      return prepareEditLoading(state.service.list.data, emptyEditData);
+    }
     case ServiceAction.SAVE_SERVICE: {
-      return prepareEdit(state.service.edit.data, true, false, false, false);
+      return prepareEditLoading(state.service.list.data, state.service.edit.data);
     }
     case ServiceAction.FIND_SERVICES_BY_NAME:
     case ServiceAction.GET_SERVICES:
     case ServiceAction.DELETE_SERVICE: {
-      return prepareList(state.service.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.service.list.data, emptyEditData);
     }
 
     case ServiceAction.GET_SERVICE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.service.list.data, action.data);
     }
     case ServiceAction.GET_SERVICES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case ServiceAction.GET_SERVICE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.service.list.data, emptyEditData);
     }
     case ServiceAction.GET_SERVICES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.service.list.data, emptyEditData);
     }
 
     case ServiceAction.SAVE_SERVICE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.service.list.data, emptyEditData);
     }
     case ServiceAction.DELETE_SERVICE_SUCCESS: {
-      return prepareList(state.service.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.service.list.data, emptyEditData);
     }
 
     case ServiceAction.SAVE_SERVICE_FAILED: {
-      return prepareEdit(state.service.edit.data, false, true, false, false);
+      return prepareEditFailed(state.service.list.data, state.service.edit.data);
     }
     case ServiceAction.DELETE_SERVICE_FAILED: {
-      return prepareList(state.service.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.service.list.data, emptyEditData);
     }
 
     case ServiceAction.NEW_SERVICE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.service.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.service.list, emptyEditData);
+      return state.service;
   }
 };
 

@@ -36,6 +36,7 @@ class ApartmentEditPage extends ExtendedComponentPage {
     this.props.dispatch(AddressAction.findBuildingsByStreetId(streetId));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ApartmentEdit
         data={this.props.data}

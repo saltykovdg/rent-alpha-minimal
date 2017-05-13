@@ -1,5 +1,13 @@
 import * as AccountServiceAction from './../actions/AccountServiceAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const accountServiceReducer = (state, action) => {
   switch (action.type) {
-    case AccountServiceAction.GET_ACCOUNT_SERVICE:
+    case AccountServiceAction.GET_ACCOUNT_SERVICE: {
+      return prepareEditLoading(state.accountService.list.data, emptyEditData);
+    }
     case AccountServiceAction.SAVE_ACCOUNT_SERVICE: {
-      return prepareEdit(state.accountService.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountService.list.data, state.accountService.edit.data);
     }
     case AccountServiceAction.GET_ACCOUNT_SERVICES:
     case AccountServiceAction.DELETE_ACCOUNT_SERVICE: {
-      return prepareList(state.accountService.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountService.list.data, emptyEditData);
     }
 
     case AccountServiceAction.GET_ACCOUNT_SERVICE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountService.list.data, action.data);
     }
     case AccountServiceAction.GET_ACCOUNT_SERVICES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountServiceAction.GET_ACCOUNT_SERVICE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountService.list.data, emptyEditData);
     }
     case AccountServiceAction.GET_ACCOUNT_SERVICES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountService.list.data, emptyEditData);
     }
 
     case AccountServiceAction.SAVE_ACCOUNT_SERVICE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountService.list.data, emptyEditData);
     }
     case AccountServiceAction.DELETE_ACCOUNT_SERVICE_SUCCESS: {
-      return prepareList(state.accountService.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountService.list.data, emptyEditData);
     }
 
     case AccountServiceAction.SAVE_ACCOUNT_SERVICE_FAILED: {
-      return prepareEdit(state.accountService.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountService.list.data, state.accountService.edit.data);
     }
     case AccountServiceAction.DELETE_ACCOUNT_SERVICE_FAILED: {
-      return prepareList(state.accountService.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountService.list.data, emptyEditData);
     }
 
     case AccountServiceAction.NEW_ACCOUNT_SERVICE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountService.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountService.list, emptyEditData);
+      return state.accountService;
   }
 };
 

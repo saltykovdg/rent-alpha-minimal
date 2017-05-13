@@ -75,6 +75,7 @@ class AccountListPage extends ExtendedComponentPage {
     ));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <AccountList
         data={this.props.data}

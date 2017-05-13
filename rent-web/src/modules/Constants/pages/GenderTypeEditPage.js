@@ -31,6 +31,7 @@ class GenderTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(GenderTypeAction.saveGenderType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <GenderTypeEdit
         data={this.props.data}

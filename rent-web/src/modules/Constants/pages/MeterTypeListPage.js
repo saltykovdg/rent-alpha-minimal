@@ -37,6 +37,7 @@ class MeterTypeListPage extends ExtendedComponentPage {
     this.props.dispatch(MeterTypeAction.deleteMeterType(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <MeterTypeList
         data={this.props.data}

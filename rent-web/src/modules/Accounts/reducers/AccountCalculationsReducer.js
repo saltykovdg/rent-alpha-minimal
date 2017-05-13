@@ -1,22 +1,27 @@
 import * as AccountAction from './../actions/AccountAction';
-import { prepareList, prepare } from './../../../util/ReducerUtil';
+import {
+  prepare,
+  prepareListLoading,
+  prepareSuccess,
+  prepareListFailed,
+} from './../../../util/ReducerUtil';
 
 export const accountCalculationReducer = (state, action) => {
   switch (action.type) {
     case AccountAction.GET_ACCOUNT_CALCULATIONS: {
-      return prepareList(state.accountCalculation.list.data, null, true, false, false, false);
+      return prepareListLoading(state.accountCalculation.list.data, null);
     }
 
     case AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS: {
-      return prepareList(action.data, null, false, false, false, false);
+      return prepareSuccess(action.data, null);
     }
 
     case AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED: {
-      return prepareList(state.accountCalculation.list.data, null, false, true, false, false);
+      return prepareListFailed(state.accountCalculation.list.data, null);
     }
 
     case AccountAction.CLEAR_LOCAL_DATA_ACCOUNT_CALCULATIONS: {
-      return prepareList(null, null, false, false, false, false);
+      return prepareSuccess(null, null);
     }
 
     case AccountAction.CALCULATE_ACCOUNT: {

@@ -31,6 +31,7 @@ class ServiceTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(ServiceTypeAction.saveServiceType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ServiceTypeEdit
         data={this.props.data}

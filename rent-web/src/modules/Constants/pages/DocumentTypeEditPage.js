@@ -31,6 +31,7 @@ class DocumentTypeEditPage extends ExtendedComponentPage {
     this.props.dispatch(DocumentTypeAction.saveDocumentType(object));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <DocumentTypeEdit
         data={this.props.data}

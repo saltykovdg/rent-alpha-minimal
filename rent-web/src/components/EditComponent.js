@@ -17,10 +17,12 @@ class EditComponent extends ExtendedComponent {
   };
   getBaseFields = (object) => {
     const fields = [];
-    fields.push(this.getBaseFormField('id', object.id, <Input key="id" type="hidden" />));
-    fields.push(this.getBaseFormField('creationDate', object.creationDate, <Input key="creationDate" type="hidden" />));
-    fields.push(this.getBaseFormField('lastModifiedDate', object.lastModifiedDate, <Input key="lastModifiedDate" type="hidden" />));
-    fields.push(this.getBaseFormField('version', object.version, <Input key="version" type="hidden" />));
+    if (object) {
+      fields.push(this.getBaseFormField('id', object.id, <Input key="id" type="hidden" />));
+      fields.push(this.getBaseFormField('creationDate', object.creationDate, <Input key="creationDate" type="hidden" />));
+      fields.push(this.getBaseFormField('lastModifiedDate', object.lastModifiedDate, <Input key="lastModifiedDate" type="hidden" />));
+      fields.push(this.getBaseFormField('version', object.version, <Input key="version" type="hidden" />));
+    }
     return fields;
   };
   getInputField = (name, value, required = true, readOnly = false) => {

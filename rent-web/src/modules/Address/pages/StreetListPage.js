@@ -60,6 +60,7 @@ class StreetListPage extends ExtendedComponentPage {
     ));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <StreetList
         data={this.props.data}

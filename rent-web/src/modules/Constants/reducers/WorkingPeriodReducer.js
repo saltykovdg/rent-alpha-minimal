@@ -1,5 +1,11 @@
 import * as WorkingPeriodAction from './../actions/WorkingPeriodAction';
-import { prepareList } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -11,25 +17,25 @@ export const workingPeriodReducer = (state, action) => {
     case WorkingPeriodAction.FIND_LAST_WORKING_PERIOD:
     case WorkingPeriodAction.GET_WORKING_PERIOD:
     case WorkingPeriodAction.SAVE_WORKING_PERIOD: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, true, false, false, false);
+      return prepareEditLoading(state.workingPeriod.list.data, state.workingPeriod.edit.data);
     }
     case WorkingPeriodAction.FIND_WORKING_PERIODS_BY_NAME:
     case WorkingPeriodAction.GET_WORKING_PERIODS: {
-      return prepareList(state.workingPeriod.list.data, state.workingPeriod.edit.data, true, false, false, false);
+      return prepareListLoading(state.workingPeriod.list.data, state.workingPeriod.edit.data);
     }
 
     case WorkingPeriodAction.GET_WORKING_PERIOD_SUCCESS: {
-      return prepareList(state.workingPeriod.list.data, action.data, false, false, false, false);
+      return prepareSuccess(state.workingPeriod.list.data, action.data);
     }
     case WorkingPeriodAction.GET_WORKING_PERIODS_SUCCESS: {
-      return prepareList(action.data, state.workingPeriod.edit.data, false, false, false, false);
+      return prepareSuccess(action.data, state.workingPeriod.edit.data);
     }
 
     case WorkingPeriodAction.GET_WORKING_PERIOD_FAILED: {
-      return prepareList(state.workingPeriod.list.data, emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.workingPeriod.list.data, emptyEditData);
     }
     case WorkingPeriodAction.GET_WORKING_PERIODS_FAILED: {
-      return prepareList(null, state.workingPeriod.edit.data, false, true, false, false);
+      return prepareListFailed(state.workingPeriod.list.data, state.workingPeriod.edit.data);
     }
 
     default:

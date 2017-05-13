@@ -60,6 +60,7 @@ class BuildingListPage extends ExtendedComponentPage {
     ));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <BuildingList
         data={this.props.data}

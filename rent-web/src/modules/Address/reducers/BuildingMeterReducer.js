@@ -1,5 +1,13 @@
 import * as BuildingMeterAction from './../actions/BuildingMeterAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const buildingMeterReducer = (state, action) => {
   switch (action.type) {
-    case BuildingMeterAction.GET_BUILDING_METER:
+    case BuildingMeterAction.GET_BUILDING_METER: {
+      return prepareEditLoading(state.buildingMeter.list.data, emptyEditData);
+    }
     case BuildingMeterAction.SAVE_BUILDING_METER: {
-      return prepareEdit(state.buildingMeter.edit.data, true, false, false, false);
+      return prepareEditLoading(state.buildingMeter.list.data, state.buildingMeter.edit.data);
     }
     case BuildingMeterAction.GET_BUILDING_METERS:
     case BuildingMeterAction.DELETE_BUILDING_METER: {
-      return prepareList(state.buildingMeter.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.buildingMeter.list.data, emptyEditData);
     }
 
     case BuildingMeterAction.GET_BUILDING_METER_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.buildingMeter.list.data, action.data);
     }
     case BuildingMeterAction.GET_BUILDING_METERS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case BuildingMeterAction.GET_BUILDING_METER_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.buildingMeter.list.data, emptyEditData);
     }
     case BuildingMeterAction.GET_BUILDING_METERS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.buildingMeter.list.data, emptyEditData);
     }
 
     case BuildingMeterAction.SAVE_BUILDING_METER_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.buildingMeter.list.data, emptyEditData);
     }
     case BuildingMeterAction.DELETE_BUILDING_METER_SUCCESS: {
-      return prepareList(state.buildingMeter.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.buildingMeter.list.data, emptyEditData);
     }
 
     case BuildingMeterAction.SAVE_BUILDING_METER_FAILED: {
-      return prepareEdit(state.buildingMeter.edit.data, false, true, false, false);
+      return prepareEditFailed(state.buildingMeter.list.data, state.buildingMeter.edit.data);
     }
     case BuildingMeterAction.DELETE_BUILDING_METER_FAILED: {
-      return prepareList(state.buildingMeter.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.buildingMeter.list.data, emptyEditData);
     }
 
     case BuildingMeterAction.NEW_BUILDING_METER: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.buildingMeter.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.buildingMeter.list, emptyEditData);
+      return state.buildingMeter;
   }
 };
 

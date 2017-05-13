@@ -1,5 +1,13 @@
 import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const accountRegisteredReducer = (state, action) => {
   switch (action.type) {
-    case AccountRegisteredAction.GET_ACCOUNT_REGISTERED:
+    case AccountRegisteredAction.GET_ACCOUNT_REGISTERED: {
+      return prepareEditLoading(state.accountRegistered.list.data, emptyEditData);
+    }
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED: {
-      return prepareEdit(state.accountRegistered.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountRegistered.list.data, state.accountRegistered.edit.data);
     }
     case AccountRegisteredAction.GET_ACCOUNT_REGISTEREDS:
     case AccountRegisteredAction.DELETE_ACCOUNT_REGISTERED: {
-      return prepareList(state.accountRegistered.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountRegistered.list.data, emptyEditData);
     }
 
     case AccountRegisteredAction.GET_ACCOUNT_REGISTERED_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountRegistered.list.data, action.data);
     }
     case AccountRegisteredAction.GET_ACCOUNT_REGISTEREDS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountRegisteredAction.GET_ACCOUNT_REGISTERED_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountRegistered.list.data, emptyEditData);
     }
     case AccountRegisteredAction.GET_ACCOUNT_REGISTEREDS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountRegistered.list.data, emptyEditData);
     }
 
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountRegistered.list.data, emptyEditData);
     }
     case AccountRegisteredAction.DELETE_ACCOUNT_REGISTERED_SUCCESS: {
-      return prepareList(state.accountRegistered.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountRegistered.list.data, emptyEditData);
     }
 
     case AccountRegisteredAction.SAVE_ACCOUNT_REGISTERED_FAILED: {
-      return prepareEdit(state.accountRegistered.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountRegistered.list.data, state.accountRegistered.edit.data);
     }
     case AccountRegisteredAction.DELETE_ACCOUNT_REGISTERED_FAILED: {
-      return prepareList(state.accountRegistered.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountRegistered.list.data, emptyEditData);
     }
 
     case AccountRegisteredAction.NEW_ACCOUNT_REGISTERED: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountRegistered.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountRegistered.list, emptyEditData);
+      return state.accountRegistered;
   }
 };
 

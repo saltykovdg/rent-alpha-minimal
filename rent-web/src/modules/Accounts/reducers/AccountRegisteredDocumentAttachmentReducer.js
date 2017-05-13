@@ -1,5 +1,13 @@
 import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,56 +15,60 @@ const emptyEditData = {
 
 export const accountRegisteredDocumentAttachmentReducer = (state, action) => {
   switch (action.type) {
-    case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT:
+    case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT: {
+      return prepareEditLoading(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
+    }
     case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(state.accountRegisteredDocumentAttachment.edit.data, true, false, false, false);
+      return prepareEditLoading(state.accountRegisteredDocumentAttachment.list.data, state.accountRegisteredDocumentAttachment.edit.data);
     }
     case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENTS:
     case AccountRegisteredDocumentAttachmentAction.DELETE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT: {
-      return prepareList(state.accountRegisteredDocumentAttachment.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.accountRegisteredDocumentAttachment.list.data, action.data);
     }
     case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENTS_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
     case AccountRegisteredDocumentAttachmentAction.GET_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENTS_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
     case AccountRegisteredDocumentAttachmentAction.DELETE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_SUCCESS: {
-      return prepareList(state.accountRegisteredDocumentAttachment.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountRegisteredDocumentAttachmentAction.SAVE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareEdit(state.accountRegisteredDocumentAttachment.edit.data, false, true, false, false);
+      return prepareEditFailed(state.accountRegisteredDocumentAttachment.list.data, state.accountRegisteredDocumentAttachment.edit.data);
     }
     case AccountRegisteredDocumentAttachmentAction.DELETE_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT_FAILED: {
-      return prepareList(state.accountRegisteredDocumentAttachment.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
 
     case AccountRegisteredDocumentAttachmentAction.NEW_ACCOUNT_REGISTERED_DOCUMENT_ATTACHMENT: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.accountRegisteredDocumentAttachment.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.accountRegisteredDocumentAttachment.list, emptyEditData);
+      return state.accountRegisteredDocumentAttachment;
   }
 };
 
 /* Selectors */
 export const getAccountRegisteredDocumentAttachmentEditData = state => state.accounts.accountRegisteredDocumentAttachment.edit.data;
 export const getAccountRegisteredDocumentAttachmentListData = state => state.accounts.accountRegisteredDocumentAttachment.list.data;
-export const getAccountRegisteredDocumentAttachmentIsLoading = state => state.accounts.accountRegisteredDocumentAttachment.list.isLoading || state.accounts.accountRegisteredDocumentAttachment.edit.isLoading;
-export const getAccountRegisteredDocumentAttachmentIsRequestError = state => state.accounts.accountRegisteredDocumentAttachment.list.isRequestError || state.accounts.accountRegisteredDocumentAttachment.edit.isRequestError;
+export const getAccountRegisteredDocumentAttachmentIsLoading = state => state.accounts.accountRegisteredDocumentAttachment.list.isLoading ||
+                                                                        state.accounts.accountRegisteredDocumentAttachment.edit.isLoading;
+export const getAccountRegisteredDocumentAttachmentIsRequestError = state => state.accounts.accountRegisteredDocumentAttachment.list.isRequestError ||
+                                                                             state.accounts.accountRegisteredDocumentAttachment.edit.isRequestError;
 export const getAccountRegisteredDocumentAttachmentIsSaved = state => state.accounts.accountRegisteredDocumentAttachment.isSaved;
 export const getAccountRegisteredDocumentAttachmentIsDeleted = state => state.accounts.accountRegisteredDocumentAttachment.isDeleted;

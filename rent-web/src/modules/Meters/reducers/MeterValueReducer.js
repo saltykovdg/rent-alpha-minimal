@@ -1,5 +1,13 @@
 import * as MeterValueAction from './../actions/MeterValueAction';
-import { prepareEdit, prepareList, prepareDefault } from './../../../util/ReducerUtil';
+import {
+  prepareListLoading,
+  prepareEditLoading,
+  prepareSuccess,
+  prepareListFailed,
+  prepareEditFailed,
+  prepareSaveSuccess,
+  prepareDeleteSuccess,
+} from './../../../util/ReducerUtil';
 
 const emptyEditData = {
   id: '',
@@ -7,49 +15,51 @@ const emptyEditData = {
 
 export const meterValueReducer = (state, action) => {
   switch (action.type) {
-    case MeterValueAction.GET_METER_VALUE:
+    case MeterValueAction.GET_METER_VALUE: {
+      return prepareEditLoading(state.meterValue.list.data, emptyEditData);
+    }
     case MeterValueAction.SAVE_METER_VALUE: {
-      return prepareEdit(state.meterValue.edit.data, true, false, false, false);
+      return prepareEditLoading(state.meterValue.list.data, state.meterValue.edit.data);
     }
     case MeterValueAction.GET_METER_VALUES:
     case MeterValueAction.DELETE_METER_VALUE: {
-      return prepareList(state.meterValue.list.data, emptyEditData, true, false, false, false);
+      return prepareListLoading(state.meterValue.list.data, emptyEditData);
     }
 
     case MeterValueAction.GET_METER_VALUE_SUCCESS: {
-      return prepareEdit(action.data, false, false, false, false);
+      return prepareSuccess(state.meterValue.list.data, action.data);
     }
     case MeterValueAction.GET_METER_VALUES_SUCCESS: {
-      return prepareList(action.data, emptyEditData, false, false, false, false);
+      return prepareSuccess(action.data, emptyEditData);
     }
 
     case MeterValueAction.GET_METER_VALUE_FAILED: {
-      return prepareEdit(emptyEditData, false, true, false, false);
+      return prepareEditFailed(state.meterValue.list.data, emptyEditData);
     }
     case MeterValueAction.GET_METER_VALUES_FAILED: {
-      return prepareList(null, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.meterValue.list.data, emptyEditData);
     }
 
     case MeterValueAction.SAVE_METER_VALUE_SUCCESS: {
-      return prepareList(null, emptyEditData, false, false, true, false);
+      return prepareSaveSuccess(state.meterValue.list.data, emptyEditData);
     }
     case MeterValueAction.DELETE_METER_VALUE_SUCCESS: {
-      return prepareList(state.meterValue.list.data, emptyEditData, false, false, false, true);
+      return prepareDeleteSuccess(state.meterValue.list.data, emptyEditData);
     }
 
     case MeterValueAction.SAVE_METER_VALUE_FAILED: {
-      return prepareEdit(state.meterValue.edit.data, false, true, false, false);
+      return prepareEditFailed(state.meterValue.list.data, state.meterValue.edit.data);
     }
     case MeterValueAction.DELETE_METER_VALUE_FAILED: {
-      return prepareList(state.meterValue.list.data, emptyEditData, false, true, false, false);
+      return prepareListFailed(state.meterValue.list.data, emptyEditData);
     }
 
     case MeterValueAction.NEW_METER_VALUE: {
-      return prepareEdit(emptyEditData, false, false, false, false);
+      return prepareSuccess(state.meterValue.list.data, emptyEditData);
     }
 
     default:
-      return prepareDefault(state.meterValue.list, emptyEditData);
+      return state.meterValue;
   }
 };
 

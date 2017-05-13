@@ -37,6 +37,7 @@ class ServiceListPage extends ExtendedComponentPage {
     this.props.dispatch(ServiceAction.deleteService(object, this.getActualPageAfterDelete()));
   };
   render() {
+    if (!this.props.data) return null;
     return (
       <ServiceList
         data={this.props.data}
