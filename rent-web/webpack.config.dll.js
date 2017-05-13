@@ -63,6 +63,6 @@ module.exports = {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
-    }),
+    })
   ],
 };
