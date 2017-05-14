@@ -1,6 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * Оплата ЛС
@@ -17,7 +18,9 @@ public class AccountPaymentEntity extends AbstractEntity {
     public interface Columns extends AbstractEntity.Columns {
         String ACCOUNT_SERVICE = "account_service_id";
         String WORKING_PERIOD = "working_period_id";
+        String DATE = "date";
         String VALUE = "value";
+        String BUNDLE_ID = "bundle_id";
     }
 
     /**
@@ -33,6 +36,18 @@ public class AccountPaymentEntity extends AbstractEntity {
     @JoinColumn(name = Columns.WORKING_PERIOD)
     @ManyToOne(fetch = FetchType.LAZY)
     private WorkingPeriodEntity workingPeriod;
+
+    /**
+     * дата оплаты
+     */
+    @Column(name = Columns.DATE)
+    private LocalDate date;
+
+    /**
+     * Идентификатор пачки
+     */
+    @Column(name = Columns.BUNDLE_ID)
+    private String bundleId;
 
     /**
      * сумма
@@ -54,6 +69,22 @@ public class AccountPaymentEntity extends AbstractEntity {
 
     public void setWorkingPeriod(WorkingPeriodEntity workingPeriod) {
         this.workingPeriod = workingPeriod;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    public void setBundleId(String bundleId) {
+        this.bundleId = bundleId;
     }
 
     public Double getValue() {

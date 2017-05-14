@@ -101,7 +101,7 @@ public class CalculationService {
         return list;
     }
 
-    private WorkingPeriodEntity getCurrentWorkingPeriod() {
+    public WorkingPeriodEntity getCurrentWorkingPeriod() {
         return workingPeriodRepository.getFirstByIdIsNotNullOrderByDateStartDesc();
     }
 
