@@ -15,8 +15,7 @@ const emptyEditData = {
 export const workingPeriodReducer = (state, action) => {
   switch (action.type) {
     case WorkingPeriodAction.FIND_LAST_WORKING_PERIOD:
-    case WorkingPeriodAction.GET_WORKING_PERIOD:
-    case WorkingPeriodAction.SAVE_WORKING_PERIOD: {
+    case WorkingPeriodAction.GET_WORKING_PERIOD: {
       return prepareEditLoading(state.workingPeriod.list.data, state.workingPeriod.edit.data);
     }
     case WorkingPeriodAction.FIND_WORKING_PERIODS_BY_NAME:

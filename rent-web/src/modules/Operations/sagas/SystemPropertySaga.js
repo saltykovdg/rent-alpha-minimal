@@ -52,7 +52,7 @@ export function* deleteSystemProperty(action) {
   const response = yield call(SystemPropertyApi.deleteSystemProperty, action.object);
   if (response === '') {
     yield put(SystemPropertyAction.deleteSystemPropertySuccess(action.object));
-    yield put(SystemPropertyAction.getSystemPropertys(action.page));
+    yield put(SystemPropertyAction.getSystemProperties(action.page));
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

@@ -21,7 +21,6 @@ export const accountParameterReducer = (state, action) => {
     case AccountParameterAction.SAVE_ACCOUNT_PARAMETER: {
       return prepareEditLoading(state.accountParameter.list.data, state.accountParameter.edit.data);
     }
-    case AccountParameterAction.FIND_ACCOUNT_PARAMETERS_BY_NAME:
     case AccountParameterAction.GET_ACCOUNT_PARAMETERS:
     case AccountParameterAction.DELETE_ACCOUNT_PARAMETER: {
       return prepareListLoading(state.accountParameter.list.data, emptyEditData);

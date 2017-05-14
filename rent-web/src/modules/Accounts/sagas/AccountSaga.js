@@ -306,7 +306,7 @@ export function* newAccount() {
   let sagaAction = yield take([OrganizationAction.GET_CONTRACTORS_SUCCESS, OrganizationAction.GET_CONTRACTORS_FAILED, LOCATION_CHANGE]);
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findStreetsByName());
-    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, OrganizationAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
+    sagaAction = yield take([AddressAction.GET_STREETS_SUCCESS, AddressAction.GET_STREETS_FAILED, LOCATION_CHANGE]);
   }
   if (sagaAction.type !== LOCATION_CHANGE) {
     yield put(AddressAction.findBuildingsByStreetId());
