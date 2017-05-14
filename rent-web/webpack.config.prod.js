@@ -94,7 +94,9 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
       mangle: false,
-      output: { comments: false },
+      output: {
+        comments: false
+      },
       compressor: {
         warnings: false
       }

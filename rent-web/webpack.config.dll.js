@@ -56,10 +56,12 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
       mangle: false,
-      output: { comments: false },
-      compressor: {
-        warnings: false,
+      output: {
+        comments: false
       },
+      compressor: {
+        warnings: false
+      }
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
