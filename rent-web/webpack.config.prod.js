@@ -33,23 +33,11 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              sourceMap: false
-            }
-          }
+          'less-loader'
         ]
       }, {
-        test: /\.(jpe?g|png|gif|svg)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10240
-            }
-          }
-        ]
+        test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)$/,
+        use: [{ loader: 'url-loader' }]
       }
     ]
   },
