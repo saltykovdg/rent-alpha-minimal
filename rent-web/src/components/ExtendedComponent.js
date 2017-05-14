@@ -44,7 +44,7 @@ class ExtendedComponent extends Component {
       key: Math.random(),
       render(text) {
         let value = text;
-        if (value && value.constructor.name === 'Moment') {
+        if (value && value instanceof Object) {
           value = value.format(DATE_FORMAT);
         }
         return value;
