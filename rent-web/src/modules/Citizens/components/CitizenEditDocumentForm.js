@@ -168,7 +168,8 @@ class CitizenEditDocumentForm extends EditComponent {
                 dataSource={attachmentsDataSource}
                 columns={attachmentsColumns}
                 loading={this.props.isLoading}
-                bordered pagination={false}
+                bordered
+                pagination={false}
                 size="small"
               />
             </div>

@@ -62,7 +62,8 @@ class NormEdit extends EditComponent {
             <Table
               dataSource={normValuesDataSource}
               columns={normValuesColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

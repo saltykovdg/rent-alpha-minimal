@@ -107,7 +107,8 @@ class EditTiedMeterForm extends EditComponent {
         columns={columns}
         pagination={pagination}
         loading={this.props.isLoading}
-        size="small" bordered
+        size="small"
+        bordered
       />
     );
   }

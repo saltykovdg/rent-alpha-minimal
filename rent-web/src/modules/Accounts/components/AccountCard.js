@@ -320,7 +320,8 @@ class AccountCard extends EditComponent {
                 <Table
                   dataSource={calculationsDataSource}
                   columns={calculationsColumns}
-                  bordered pagination={false}
+                  bordered
+                  pagination={false}
                   size="small"
                   className="table-with-aggregation-data"
                   loading={this.props.isLoadingAccountCalculation}
@@ -331,7 +332,8 @@ class AccountCard extends EditComponent {
                   className="table-nested"
                   dataSource={ownersDataSource}
                   columns={ownersColumns}
-                  bordered pagination={false}
+                  bordered
+                  pagination={false}
                   size="small"
                   expandedRowRender={expandedOwnerRowRender}
                 />
@@ -341,7 +343,8 @@ class AccountCard extends EditComponent {
                   className="table-nested"
                   dataSource={registeredDataSource}
                   columns={registeredColumns}
-                  bordered pagination={false}
+                  bordered
+                  pagination={false}
                   size="small"
                   expandedRowRender={expandedRegisteredRowRender}
                 />
@@ -351,7 +354,8 @@ class AccountCard extends EditComponent {
                   className="table-nested"
                   dataSource={metersDataSource}
                   columns={metersColumns}
-                  bordered pagination={false}
+                  bordered
+                  pagination={false}
                   size="small"
                   expandedRowRender={expandedMeterRowRender}
                 />

@@ -73,7 +73,8 @@ class MeterEdit extends EditComponent {
             <Table
               dataSource={meterValuesDataSource}
               columns={meterValuesColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

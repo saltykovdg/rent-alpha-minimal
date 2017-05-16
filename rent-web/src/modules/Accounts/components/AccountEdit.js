@@ -206,7 +206,8 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={parametersDataSource}
               columns={parametersColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <h2>{this.props.intl.messages.servicesTitle}</h2>
@@ -216,7 +217,8 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={servicesDataSource}
               columns={servicesColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <h2>{this.props.intl.messages.ownersTitle}</h2>
@@ -226,7 +228,8 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={ownersDataSource}
               columns={ownersColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <h2>{this.props.intl.messages.registeredTitle}</h2>
@@ -236,7 +239,8 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={registeredDataSource}
               columns={registeredColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <h2>{this.props.intl.messages.metersTitle}</h2>
@@ -246,7 +250,8 @@ class AccountEdit extends EditComponent {
             <Table
               dataSource={metersDataSource}
               columns={metersColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

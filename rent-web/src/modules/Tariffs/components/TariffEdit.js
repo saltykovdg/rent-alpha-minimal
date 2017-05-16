@@ -63,7 +63,8 @@ class TariffEdit extends EditComponent {
             <Table
               dataSource={tariffValuesDataSource}
               columns={tariffValuesColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

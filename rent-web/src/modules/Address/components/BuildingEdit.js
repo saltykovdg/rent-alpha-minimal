@@ -70,7 +70,8 @@ class BuildingEdit extends EditComponent {
             <Table
               dataSource={metersDataSource}
               columns={metersColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

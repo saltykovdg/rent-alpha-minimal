@@ -74,7 +74,8 @@ class CitizenEdit extends EditComponent {
             <Table
               dataSource={documentsDataSource}
               columns={documentsColumns}
-              bordered pagination={false}
+              bordered
+              pagination={false}
               size="small"
             />
             <FormItem>

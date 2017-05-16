@@ -172,7 +172,8 @@ class AccountEditOwnerForm extends EditComponent {
         columns={columns}
         pagination={pagination}
         loading={this.props.isLoading}
-        size="small" bordered
+        size="small"
+        bordered
       />
     );
   }
@@ -328,7 +329,8 @@ class AccountEditOwnerForm extends EditComponent {
                 dataSource={attachmentsDataSource}
                 columns={attachmentsColumns}
                 loading={this.props.isLoading}
-                bordered pagination={false}
+                bordered
+                pagination={false}
                 size="small"
               />
             </div>
