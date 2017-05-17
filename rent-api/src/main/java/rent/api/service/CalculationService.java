@@ -26,6 +26,8 @@ import java.util.concurrent.*;
 public class CalculationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final int ROUND_SCALE = 6;
+
     private final Integer appCalculationThreadsCount;
     private final String appLocale;
     private final AccountRepository accountRepository;
@@ -407,7 +409,7 @@ public class CalculationService {
 
     private Double roundHalfUp(Double value) {
         BigDecimal bigDecimal = new BigDecimal(value);
-        return bigDecimal.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bigDecimal.setScale(ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod) {
@@ -526,7 +528,7 @@ public class CalculationService {
                             accountsCalculated++;
                         }
                     }
-                    if (accountsCalculated != accountsCalculatedPrev){
+                    if (accountsCalculated != accountsCalculatedPrev) {
                         systemPropertyService.setCalculationAccountsCalculated(accountsCalculated);
                         accountsCalculatedPrev = accountsCalculated;
                     }
