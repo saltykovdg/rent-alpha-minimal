@@ -45,74 +45,35 @@ public class PaymentService {
         WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
         String currentWorkingPeriodId = currentWorkingPeriod.getId();
         calculationService.calculateAccount(accountId, currentWorkingPeriodId, currentWorkingPeriodId);
-        List<AccountCalculationDto> accountCalculationDtos = calculationService.getAccountCalculations(accountId, currentWorkingPeriod.getId());
+        List<AccountCalculationDto> accountCalculationList = calculationService.getAccountCalculations(accountId, currentWorkingPeriod.getId());
 
+        Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments = new HashMap<>();
         String paymentBundleId = UUID.randomUUID().toString();
         LocalDate paymentDate = LocalDate.now();
 
-        Map<String, Map.Entry<AccountServiceEntity, Double>> servicePaymentsMap = new HashMap<>();
+        sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
 
-        for (AccountCalculationDto accountCalculationDto : accountCalculationDtos) {
-            if (accountCalculationDto.getClosingBalance() > 0 && sum > 0) {
-                AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
-
-                Double paymentSum = sum;
-                Double accrualSum = accountCalculationDto.getAccrual();
-                if (accrualSum < sum) {
-                    paymentSum = accrualSum;
-                    sum = sum - accrualSum;
-                } else {
-                    sum = 0D;
-                }
-
-                updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
-
-                if (sum == 0) {
-                    break;
-                }
-            }
+        if (sum > 0) {
+            sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, false);
         }
 
         if (sum > 0) {
-            for (AccountCalculationDto accountCalculationDto : accountCalculationDtos) {
-                if (accountCalculationDto.getClosingBalance() > 0 && sum > 0) {
-                    AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
-
-                    Double paymentSum = sum;
-                    Double closingBalanceSum = accountCalculationDto.getClosingBalance();
-                    if (closingBalanceSum < sum) {
-                        paymentSum = closingBalanceSum;
-                        sum = sum - closingBalanceSum;
-                    } else {
-                        sum = 0D;
-                    }
-
-                    updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
-
-                    if (sum == 0) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (sum > 0) {
-            int accountServicesCount = accountCalculationDtos.size();
+            int accountServicesCount = accountCalculationList.size();
             if (accountServicesCount > 0) {
                 Double paymentSum = roundFloor(sum / (double) accountServicesCount);
-                for (AccountCalculationDto accountCalculationDto : accountCalculationDtos) {
+                for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
                     AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
                     sum = sum - paymentSum;
-                    updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
+                    updateServicesPayments(servicesPayments, accountService, paymentSum);
                 }
                 if (sum > 0) {
-                    AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDtos.get(0).getAccountServiceId());
-                    updateServicePaymentsMap(servicePaymentsMap, accountService, sum);
+                    AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationList.get(0).getAccountServiceId());
+                    updateServicesPayments(servicesPayments, accountService, sum);
                 }
             }
         }
 
-        for (Map.Entry<String, Map.Entry<AccountServiceEntity, Double>> entry : servicePaymentsMap.entrySet()) {
+        for (Map.Entry<String, Map.Entry<AccountServiceEntity, Double>> entry : servicesPayments.entrySet()) {
             Map.Entry<AccountServiceEntity, Double> entryValue = entry.getValue();
             AccountServiceEntity accountService = entryValue.getKey();
             Double paymentSum = entryValue.getValue();
@@ -120,11 +81,31 @@ public class PaymentService {
         }
     }
 
-    private void updateServicePaymentsMap(Map<String, Map.Entry<AccountServiceEntity, Double>> servicePaymentsMap, AccountServiceEntity accountService, Double sum) {
-        Map.Entry<AccountServiceEntity, Double> servicePayment = servicePaymentsMap.get(accountService.getId());
+    private Double addPaymentsToServices(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, List<AccountCalculationDto> accountCalculationList, Double sum, boolean isAccrual) {
+        for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
+            if (accountCalculationDto.getClosingBalance() > 0 && sum > 0) {
+                AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
+                Double debt = isAccrual ? accountCalculationDto.getAccrual() : (accountCalculationDto.getClosingBalance() - accountCalculationDto.getAccrual());
+                if (debt < sum) {
+                    sum = sum - debt;
+                } else {
+                    debt = sum;
+                    sum = 0D;
+                }
+                updateServicesPayments(servicesPayments, accountService, debt);
+                if (sum == 0) {
+                    break;
+                }
+            }
+        }
+        return sum;
+    }
+
+    private void updateServicesPayments(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, AccountServiceEntity accountService, Double sum) {
+        Map.Entry<AccountServiceEntity, Double> servicePayment = servicesPayments.get(accountService.getId());
         if (servicePayment == null) {
             servicePayment = new AbstractMap.SimpleEntry<>(accountService, sum);
-            servicePaymentsMap.put(accountService.getId(), servicePayment);
+            servicesPayments.put(accountService.getId(), servicePayment);
         } else {
             servicePayment.setValue(servicePayment.getValue() + sum);
         }
