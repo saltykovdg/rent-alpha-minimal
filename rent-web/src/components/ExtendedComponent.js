@@ -1,7 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import { notification } from 'antd';
+import { notification, Table } from 'antd';
 
 import * as HttpStatus from './../util/HttpStatus';
 import * as ParameterType from './../util/ParameterType';
@@ -50,6 +50,42 @@ class ExtendedComponent extends Component {
         return value;
       },
     };
+  }
+  getTableComponent(columns, expandedRowRender = null, data = this.props.data, isLoading = this.props.isLoading, onChangePage = this.props.onChangePage, bordered = false, size = 'default') {
+    let dataSource = [];
+    let pagination = false;
+    if (data && data.content) {
+      dataSource = data.content;
+      dataSource.forEach((obj) => {
+        const newObj = obj;
+        newObj.key = Math.random();
+      });
+      if (data.page) {
+        if (data.page.totalPages > 1) {
+          pagination = {
+            total: data.page.totalElements,
+            current: data.page.number + 1,
+            pageSize: data.page.size,
+            onChange(current) {
+              pagination.current = current;
+              onChangePage(current - 1);
+            },
+          };
+        }
+      }
+    }
+    return (
+      <Table
+        className="table-nested"
+        dataSource={dataSource}
+        columns={columns}
+        expandedRowRender={expandedRowRender}
+        pagination={pagination}
+        loading={isLoading}
+        bordered={bordered}
+        size={size}
+      />
+    );
   }
   getListForCurrentPeriod = (list) => {
     return this.getListForPeriod(list, this.props.currentWorkingPeriod);
@@ -108,10 +144,24 @@ class ExtendedComponent extends Component {
 
 ExtendedComponent.propTypes = {
   intl: PropTypes.objectOf(PropTypes.shape),
+  data: PropTypes.objectOf(PropTypes.shape),
   currentWorkingPeriod: PropTypes.objectOf(PropTypes.shape),
   isRequestError: PropTypes.any,
   isSaved: PropTypes.bool,
   isDeleted: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  onChangePage: PropTypes.func,
+};
+
+ExtendedComponent.defaultProps = {
+  intl: {},
+  data: null,
+  currentWorkingPeriod: null,
+  isRequestError: null,
+  isSaved: false,
+  isDeleted: false,
+  isLoading: true,
+  onChangePage: null,
 };
 
 ExtendedComponent.contextTypes = {

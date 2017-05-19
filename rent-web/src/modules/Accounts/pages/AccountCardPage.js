@@ -9,6 +9,7 @@ import CalculationForm from './../../../components/CalculationForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
+import * as AccountPaymentAction from './../actions/AccountPaymentAction';
 
 // Import Selectors
 import {
@@ -26,6 +27,11 @@ import {
   accountIsCalculating,
   accountIsCalculatingError,
 } from './../reducers/AccountCalculationsReducer';
+
+import {
+  getAccountPaymentListData,
+  getAccountPaymentIsLoading,
+} from './../reducers/AccountPaymentReducer';
 
 class AccountCardPage extends ExtendedComponentPage {
   componentWillMount() {
@@ -66,6 +72,9 @@ class AccountCardPage extends ExtendedComponentPage {
       this.props.dispatch(AccountAction.getAccountCalculations(this.props.id, workingPeriod.id));
     }
   }
+  onChangeAccountPaymentPage = (page) => {
+    this.props.dispatch(AccountPaymentAction.getAccountPayments(this.props.id, page));
+  };
   render() {
     if (!this.props.data) return null;
     return (
@@ -75,6 +84,9 @@ class AccountCardPage extends ExtendedComponentPage {
           calculations={this.props.calculations}
           isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
           accountIsCalculating={this.props.accountIsCalculating}
+          payments={this.props.payments}
+          isLoadingAccountPayment={this.props.isLoadingAccountPayment}
+          onChangeAccountPaymentPage={this.onChangeAccountPaymentPage}
           id={this.props.id}
           isLoading={this.props.isLoading}
           isRequestError={this.props.isRequestError}
@@ -104,6 +116,8 @@ function mapStateToProps(state, props) {
     isLoading: getIsLoadingAccounts(state),
     calculations: getAccountCalculationListData(state),
     isLoadingAccountCalculation: getAccountCalculationIsLoading(state),
+    payments: getAccountPaymentListData(state),
+    isLoadingAccountPayment: getAccountPaymentIsLoading(state),
     accountIsCalculating: accountIsCalculating(state),
     isRequestError: getIsRequestErrorAccounts(state) || accountIsCalculatingError(state),
     id: props.params.id,

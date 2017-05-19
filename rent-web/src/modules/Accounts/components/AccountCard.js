@@ -152,6 +152,32 @@ class AccountCard extends EditComponent {
         </div>
       );
     };
+    const expandedPaymentRowRender = (record) => {
+      const serviceCalculationInfoColumns = [
+        this.getColumn(this.props.intl.messages.serviceFieldName, 'service.name'),
+        this.getColumn(this.props.intl.messages.paymentFieldSum, 'sum'),
+      ];
+      let serviceCalculationInfoDataSource = [];
+      if (record && record.serviceCalculationInfoList) {
+        serviceCalculationInfoDataSource = record.serviceCalculationInfoList.sort((a, b) => {
+          return a.service.name.localeCompare(b.service.name);
+        });
+        serviceCalculationInfoDataSource.forEach((obj) => {
+          const newObj = obj;
+          newObj.key = Math.random();
+        });
+      }
+      return (
+        <div>
+          <Table
+            title={() => <h4>{messages.paymentsServicesTitle}</h4>}
+            dataSource={serviceCalculationInfoDataSource}
+            columns={serviceCalculationInfoColumns}
+            pagination={false}
+          />
+        </div>
+      );
+    };
     let owners = '';
     let ownersDataSource = [];
     if (object && object.owners && object.owners.length > 0 && this.props.selectedWorkingPeriod) {
@@ -212,6 +238,12 @@ class AccountCard extends EditComponent {
       this.getDateColumn(messages.commonFieldDateStart, 'dateStart'),
       this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
+    ];
+    const paymentsColumns = [
+      this.getDateColumn(messages.paymentFieldDate, 'date'),
+      this.getColumn(messages.paymentFieldSum, 'sum'),
+      this.getColumn(messages.workingPeriodFieldTitle, 'workingPeriod.name'),
+      // this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
     ];
     let address = '';
     if (object && object.id) {
@@ -327,7 +359,20 @@ class AccountCard extends EditComponent {
                   loading={this.props.isLoadingAccountCalculation}
                 />
               </TabPane>
-              <TabPane tab={messages.ownersTitle} key="2">
+              <TabPane tab={messages.paymentsTitle} key="2">
+                {
+                  this.getTableComponent(
+                    paymentsColumns,
+                    expandedPaymentRowRender,
+                    this.props.payments,
+                    this.props.isLoadingAccountPayment,
+                    this.props.onChangeAccountPaymentPage,
+                    true,
+                    'small'
+                  )
+                }
+              </TabPane>
+              <TabPane tab={messages.ownersTitle} key="3">
                 <Table
                   className="table-nested"
                   dataSource={ownersDataSource}
@@ -338,7 +383,7 @@ class AccountCard extends EditComponent {
                   expandedRowRender={expandedOwnerRowRender}
                 />
               </TabPane>
-              <TabPane tab={messages.registeredTitle} key="3">
+              <TabPane tab={messages.registeredTitle} key="4">
                 <Table
                   className="table-nested"
                   dataSource={registeredDataSource}
@@ -349,7 +394,7 @@ class AccountCard extends EditComponent {
                   expandedRowRender={expandedRegisteredRowRender}
                 />
               </TabPane>
-              <TabPane tab={messages.metersTitle} key="4">
+              <TabPane tab={messages.metersTitle} key="5">
                 <Table
                   className="table-nested"
                   dataSource={metersDataSource}

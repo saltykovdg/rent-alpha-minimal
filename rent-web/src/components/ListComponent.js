@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
-import { Popconfirm, Table } from 'antd';
+import { Popconfirm } from 'antd';
 
 import { ExtendedComponent } from './ExtendedComponent';
 
@@ -30,41 +30,6 @@ class ListComponent extends ExtendedComponent {
         );
       },
     };
-  }
-  getTableComponent(columns, expandedRowRender = null) {
-    let dataSource = [];
-    const onChangePage = this.props.onChangePage;
-    let pagination = false;
-    if (this.props.data && this.props.data.content) {
-      dataSource = this.props.data.content;
-      dataSource.forEach((obj) => {
-        const newObj = obj;
-        newObj.key = newObj.id;
-      });
-      if (this.props.data.page) {
-        if (this.props.data.page.totalPages > 1) {
-          pagination = {
-            total: this.props.data.page.totalElements,
-            current: this.props.data.page.number + 1,
-            pageSize: this.props.data.page.size,
-            onChange(current) {
-              pagination.current = current;
-              onChangePage(current - 1);
-            },
-          };
-        }
-      }
-    }
-    return (
-      <Table
-        className="table-nested"
-        dataSource={dataSource}
-        columns={columns}
-        expandedRowRender={expandedRowRender}
-        pagination={pagination}
-        loading={this.props.isLoading}
-      />
-    );
   }
 }
 

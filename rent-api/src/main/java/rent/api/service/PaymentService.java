@@ -121,8 +121,8 @@ public class PaymentService {
         accountPaymentRepository.save(accountPayment);
     }
 
-    public void removePayment(String paymentBundleId) {
-        log.info("removePayment({})", paymentBundleId);
+    public void deletePayment(String paymentBundleId) {
+        log.info("deletePayment({})", paymentBundleId);
         accountPaymentRepository.deleteByBundleId(paymentBundleId);
     }
 

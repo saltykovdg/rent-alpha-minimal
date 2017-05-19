@@ -5,6 +5,7 @@ export default {
     headerMenuLogout: 'Выйти',
     currentWorkingPeriodTitle: 'Текущий рабочий период: ',
     workingPeriodsTitle: 'Рабочие периоды',
+    workingPeriodFieldTitle: 'Рабочий период',
 
     // accounts
     accountsTitle: 'Лицевые счета',
@@ -165,6 +166,12 @@ export default {
     editPageEditTariffTitle: 'Редактирование тарифа',
     editPageAddValueOnTariffTitle: 'Добавление значения на тириф',
     editPageEditValueOnTariffTitle: 'Редактирование значения на тирифе',
+
+    // payments
+    paymentsTitle: 'Оплаты',
+    paymentsServicesTitle: 'Оплаты по услугам',
+    paymentFieldDate: 'Дата оплаты',
+    paymentFieldSum: 'Сумма (руб.)',
 
     // constants
     constantsTitle: 'Константы',
