@@ -126,13 +126,11 @@ public class PaymentService {
         accountPaymentRepository.deleteByBundleId(paymentBundleId);
     }
 
-    public List<ServiceCalculationDto> getAccountPayments(String accountId, Pageable p) {
+    public Page<ServiceCalculationDto> getAccountPayments(String accountId, Pageable p) {
         log.info("getAccountPayments({}, {})", accountId, p);
-        List<ServiceCalculationDto> list = new ArrayList<>();
         Page<ServiceCalculationDto> page = accountPaymentRepository.getSumByAccountIdPageable(accountId, p);
         if (page != null && page.hasContent()) {
-            list.addAll(page.getContent());
-            for (ServiceCalculationDto serviceCalculationDto : list) {
+            for (ServiceCalculationDto serviceCalculationDto : page.getContent()) {
                 List<ServiceCalculationInfoDto> serviceCalculationInfoList = accountPaymentRepository.getSumInfoByBundleId(serviceCalculationDto.getBundleId());
                 if (serviceCalculationInfoList == null) {
                     serviceCalculationInfoList = Collections.emptyList();
@@ -140,6 +138,6 @@ public class PaymentService {
                 serviceCalculationDto.setServiceCalculationInfoList(serviceCalculationInfoList);
             }
         }
-        return list;
+        return page;
     }
 }
