@@ -16,10 +16,7 @@ import rent.common.repository.AccountServiceRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PaymentService {
@@ -53,6 +50,8 @@ public class PaymentService {
         String paymentBundleId = UUID.randomUUID().toString();
         LocalDate paymentDate = LocalDate.now();
 
+        Map<String, Map.Entry<AccountServiceEntity, Double>> servicePaymentsMap = new HashMap<>();
+
         for (AccountCalculationDto accountCalculationDto : accountCalculationDtos) {
             if (accountCalculationDto.getClosingBalance() > 0 && sum > 0) {
                 AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
@@ -66,7 +65,7 @@ public class PaymentService {
                     sum = 0D;
                 }
 
-                savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+                updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
 
                 if (sum == 0) {
                     break;
@@ -88,7 +87,7 @@ public class PaymentService {
                         sum = 0D;
                     }
 
-                    savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+                    updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
 
                     if (sum == 0) {
                         break;
@@ -104,13 +103,30 @@ public class PaymentService {
                 for (AccountCalculationDto accountCalculationDto : accountCalculationDtos) {
                     AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
                     sum = sum - paymentSum;
-                    savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+                    updateServicePaymentsMap(servicePaymentsMap, accountService, paymentSum);
                 }
                 if (sum > 0) {
                     AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDtos.get(0).getAccountServiceId());
-                    savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, sum);
+                    updateServicePaymentsMap(servicePaymentsMap, accountService, sum);
                 }
             }
+        }
+
+        for (Map.Entry<String, Map.Entry<AccountServiceEntity, Double>> entry : servicePaymentsMap.entrySet()) {
+            Map.Entry<AccountServiceEntity, Double> entryValue = entry.getValue();
+            AccountServiceEntity accountService = entryValue.getKey();
+            Double paymentSum = entryValue.getValue();
+            savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+        }
+    }
+
+    private void updateServicePaymentsMap(Map<String, Map.Entry<AccountServiceEntity, Double>> servicePaymentsMap, AccountServiceEntity accountService, Double sum) {
+        Map.Entry<AccountServiceEntity, Double> servicePayment = servicePaymentsMap.get(accountService.getId());
+        if (servicePayment == null) {
+            servicePayment = new AbstractMap.SimpleEntry<>(accountService, sum);
+            servicePaymentsMap.put(accountService.getId(), servicePayment);
+        } else {
+            servicePayment.setValue(servicePayment.getValue() + sum);
         }
     }
 
@@ -125,11 +141,12 @@ public class PaymentService {
     }
 
     public void removePayment(String paymentBundleId) {
-        accountPaymentRepository.deleteByBundleId(paymentBundleId);
         log.info("removePayment({})", paymentBundleId);
+        accountPaymentRepository.deleteByBundleId(paymentBundleId);
     }
 
     public List<ServiceCalculationDto> getAccountPayments(String accountId, Pageable p) {
+        log.info("getAccountPayments({}, {})", accountId, p);
         List<ServiceCalculationDto> list = new ArrayList<>();
         Page<ServiceCalculationDto> page = accountPaymentRepository.getSumByAccountIdPageable(accountId, p);
         if (page != null && page.hasContent()) {
@@ -142,7 +159,6 @@ public class PaymentService {
                 serviceCalculationDto.setServiceCalculationInfoList(serviceCalculationInfoList);
             }
         }
-        log.info("getAccountPayments({}, {})", accountId, p);
         return list;
     }
 }
