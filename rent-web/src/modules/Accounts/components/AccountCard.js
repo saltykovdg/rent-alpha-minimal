@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Form, Spin, Row, Col, Table, Select, Tabs } from 'antd';
+import { Breadcrumb, Icon, Button, Form, Spin, Row, Col, Table, Select, Tabs, Popconfirm } from 'antd';
 
 import * as AccountPath from './../paths/AccountPath';
 import * as CitizenPath from './../../Citizens/paths/CitizenPath';
@@ -239,11 +239,27 @@ class AccountCard extends EditComponent {
       this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
     ];
+    const getActionPaymentColumn = (onDelete, currentWorkingPeriod) => {
+      return {
+        title: messages.tableColumnActions,
+        key: 'action',
+        render(text, record) {
+          if (record.workingPeriod.id !== currentWorkingPeriod.id) return null;
+          return (
+            <span>
+              <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
+                <Link><FormattedMessage id="buttonDelete" /></Link>
+              </Popconfirm>
+            </span>
+          );
+        },
+      };
+    };
     const paymentsColumns = [
       this.getDateColumn(messages.paymentFieldDate, 'date'),
       this.getColumn(messages.paymentFieldSum, 'sum'),
       this.getColumn(messages.workingPeriodFieldTitle, 'workingPeriod.name'),
-      // this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
+      getActionPaymentColumn(this.props.onDeleteAccountPayment, this.props.currentWorkingPeriod),
     ];
     let address = '';
     if (object && object.id) {
@@ -273,8 +289,15 @@ class AccountCard extends EditComponent {
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <Row gutter={16}>
-              <Col className="gutter-row" span={16}>
+              <Col className="gutter-row" span={12}>
                 <h1>{titleItem}</h1>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={' '} colon={false}>
+                  <Button className="full-width" onClick={() => this.props.showFormAddPayment()} loading={this.props.isLoadingAddAccountPayment}>
+                    <FormattedMessage id="buttonAddPayment" />
+                  </Button>
+                </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
                 <FormItem label={' '} colon={false}>
@@ -365,7 +388,7 @@ class AccountCard extends EditComponent {
                     paymentsColumns,
                     expandedPaymentRowRender,
                     this.props.payments,
-                    this.props.isLoadingAccountPayment,
+                    this.props.isLoadingAccountPayments,
                     this.props.onChangeAccountPaymentPage,
                     true,
                     'small'

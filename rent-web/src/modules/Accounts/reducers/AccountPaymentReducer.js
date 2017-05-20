@@ -48,7 +48,8 @@ export const accountPaymentReducer = (state, action) => {
 
 /* Selectors */
 export const getAccountPaymentListData = state => state.accounts.accountPayment.list.data;
-export const getAccountPaymentIsLoading = state => state.accounts.accountPayment.list.isLoading || state.accounts.accountPayment.edit.isLoading;
+export const getAccountPaymentIsLoadingEdit = state => state.accounts.accountPayment.edit.isLoading;
+export const getAccountPaymentIsLoadingList = state => state.accounts.accountPayment.list.isLoading;
 export const getAccountPaymentIsRequestError = state => state.accounts.accountPayment.list.isRequestError || state.accounts.accountPayment.edit.isRequestError;
 export const getAccountPaymentIsSaved = state => state.accounts.accountPayment.isSaved;
 export const getAccountPaymentIsDeleted = state => state.accounts.accountPayment.isDeleted;

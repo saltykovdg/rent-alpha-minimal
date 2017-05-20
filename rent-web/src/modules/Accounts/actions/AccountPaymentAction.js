@@ -30,11 +30,12 @@ export const getAccountPaymentsFailed = () => {
 };
 
 // add account payment
-export const addAccountPayment = (accountId = '', sum = 0) => {
+export const addAccountPayment = (accountId = '', sum = 0, workingPeriodId) => {
   return {
     type: ADD_ACCOUNT_PAYMENT,
     accountId,
     sum,
+    workingPeriodId,
   };
 };
 export const addAccountPaymentSuccess = (data) => {
@@ -50,10 +51,11 @@ export const addAccountPaymentFailed = () => {
 };
 
 // delete account payment
-export const deleteAccountPayment = (accountId = '', paymentBundleId = '') => {
+export const deleteAccountPayment = (accountId = '', paymentBundleId = '', workingPeriodId) => {
   return {
     type: DELETE_ACCOUNT_PAYMENT,
     paymentBundleId,
+    workingPeriodId,
   };
 };
 export const deleteAccountPaymentSuccess = (data) => {

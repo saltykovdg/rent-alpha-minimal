@@ -15,7 +15,7 @@ import rent.common.repository.AccountPaymentRepository;
 import rent.common.repository.AccountServiceRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -49,7 +49,7 @@ public class PaymentService {
 
         Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments = new HashMap<>();
         String paymentBundleId = UUID.randomUUID().toString();
-        LocalDate paymentDate = LocalDate.now();
+        LocalDateTime paymentDate = LocalDateTime.now();
 
         sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
 
@@ -111,7 +111,7 @@ public class PaymentService {
         }
     }
 
-    private void savePayment(AccountServiceEntity accountService, WorkingPeriodEntity workingPeriod, LocalDate paymentDate, String paymentBundleId, Double paymentSum) {
+    private void savePayment(AccountServiceEntity accountService, WorkingPeriodEntity workingPeriod, LocalDateTime paymentDate, String paymentBundleId, Double paymentSum) {
         AccountPaymentEntity accountPayment = new AccountPaymentEntity();
         accountPayment.setAccountService(accountService);
         accountPayment.setWorkingPeriod(workingPeriod);
@@ -121,9 +121,14 @@ public class PaymentService {
         accountPaymentRepository.save(accountPayment);
     }
 
+    /**
+     * Удалять оплаты можно только за текущий рабочий период
+     * @param paymentBundleId бандл оплаты
+     */
     public void deletePayment(String paymentBundleId) {
         log.info("deletePayment({})", paymentBundleId);
-        accountPaymentRepository.deleteByBundleId(paymentBundleId);
+        String workingPeriodId = calculationService.getCurrentWorkingPeriod().getId();
+        accountPaymentRepository.deleteByBundleId(paymentBundleId, workingPeriodId);
     }
 
     public Page<ServiceCalculationDto> getAccountPayments(String accountId, Pageable p) {

@@ -24,7 +24,6 @@ export default {
     consumptionTitle: 'Потребление',
     accrualTitle: 'Начисление',
     recalculationTitle: 'Перерасчет',
-    paymentTitle: 'Оплата',
 
     // owners
     ownersTitle: 'Собственники',
@@ -169,9 +168,12 @@ export default {
 
     // payments
     paymentsTitle: 'Оплаты',
+    paymentTitle: 'Оплата',
     paymentsServicesTitle: 'Оплаты по услугам',
     paymentFieldDate: 'Дата оплаты',
     paymentFieldSum: 'Сумма (руб.)',
+    buttonAddPayment: 'Внести оплату',
+    formAddPaymentTitle: 'Внести оплату на лицевой счет',
 
     // constants
     constantsTitle: 'Константы',

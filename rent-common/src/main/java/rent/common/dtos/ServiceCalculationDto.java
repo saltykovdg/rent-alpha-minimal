@@ -1,13 +1,14 @@
 package rent.common.dtos;
 
+import org.springframework.hateoas.ResourceSupport;
 import rent.common.entity.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class ServiceCalculationDto {
+public class ServiceCalculationDto extends ResourceSupport {
     private WorkingPeriodEntity workingPeriod;
-    private LocalDate date;
+    private LocalDateTime date;
     private String bundleId;
     private Double sum;
     private List<ServiceCalculationInfoDto> serviceCalculationInfoList;
@@ -15,7 +16,7 @@ public class ServiceCalculationDto {
     public ServiceCalculationDto() {
     }
 
-    public ServiceCalculationDto(WorkingPeriodEntity workingPeriod, LocalDate date, String bundleId, Double sum) {
+    public ServiceCalculationDto(WorkingPeriodEntity workingPeriod, LocalDateTime date, String bundleId, Double sum) {
         this.workingPeriod = workingPeriod;
         this.date = date;
         this.bundleId = bundleId;
@@ -30,11 +31,11 @@ public class ServiceCalculationDto {
         this.workingPeriod = workingPeriod;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

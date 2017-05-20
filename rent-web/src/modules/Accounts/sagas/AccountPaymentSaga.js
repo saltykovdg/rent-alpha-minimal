@@ -1,6 +1,8 @@
-import { call, put, fork, takeLatest, all } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, all, take } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as AccountPaymentAction from './../actions/AccountPaymentAction';
+import * as AccountAction from './../actions/AccountAction';
 import * as AccountPaymentApi from './../api/AccountPaymentApi';
 
 export function* getAccountPayments(action) {
@@ -20,6 +22,12 @@ export function* addAccountPayment(action) {
   if (response && !response.error && !response.canceled) {
     yield put(AccountPaymentAction.addAccountPaymentSuccess(response));
     yield put(AccountPaymentAction.getAccountPayments(action.accountId));
+    if (action.workingPeriodId) {
+      const sagaAction = yield take([AccountPaymentAction.GET_ACCOUNT_PAYMENTS_SUCCESS, AccountPaymentAction.GET_ACCOUNT_PAYMENTS_FAILED, LOCATION_CHANGE]);
+      if (sagaAction.type !== LOCATION_CHANGE) {
+        yield put(AccountAction.getAccountCalculations(action.accountId, action.workingPeriodId));
+      }
+    }
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,
@@ -37,6 +45,12 @@ export function* deleteAccountPayment(action) {
   if (response === '') {
     yield put(AccountPaymentAction.deleteAccountPaymentSuccess(action.paymentBundleId));
     yield put(AccountPaymentAction.getAccountPayments(action.accountId));
+    if (action.workingPeriodId) {
+      const sagaAction = yield take([AccountPaymentAction.GET_ACCOUNT_PAYMENTS_SUCCESS, AccountPaymentAction.GET_ACCOUNT_PAYMENTS_FAILED, LOCATION_CHANGE]);
+      if (sagaAction.type !== LOCATION_CHANGE) {
+        yield put(AccountAction.getAccountCalculations(action.accountId, action.workingPeriodId));
+      }
+    }
   } else if (!response.canceled) {
     const data = {
       httpStatus: response.status,

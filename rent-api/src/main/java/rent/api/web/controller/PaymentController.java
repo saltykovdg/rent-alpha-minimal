@@ -24,7 +24,8 @@ public class PaymentController {
     private final PagedResourcesAssembler pagedResourcesAssembler;
 
     @Autowired
-    public PaymentController(PaymentService paymentService, PagedResourcesAssembler pagedResourcesAssembler) {
+    public PaymentController(PaymentService paymentService,
+                             PagedResourcesAssembler pagedResourcesAssembler) {
         this.paymentService = paymentService;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }

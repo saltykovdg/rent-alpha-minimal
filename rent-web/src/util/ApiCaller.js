@@ -46,13 +46,7 @@ export function callApi(endpoint, method = 'get', body) {
     cancelToken: currentSource.token,
   })
   .then((response) => {
-    const data = response.data;
-    if (data && data.content && data.content.length === 1) {
-      if (!data.content[0].id) {
-        data.content = [];
-      }
-    }
-    return data;
+    return response.data;
   })
   .catch((thrown) => {
     if (axios.isCancel(thrown)) {

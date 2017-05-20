@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 // Import Components
 import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 import AccountCard from './../components/AccountCard';
+import AccountAddPaymentForm from './../components/AccountAddPaymentForm';
 import CalculationForm from './../../../components/CalculationForm';
 
 // Import Actions
@@ -30,7 +31,8 @@ import {
 
 import {
   getAccountPaymentListData,
-  getAccountPaymentIsLoading,
+  getAccountPaymentIsLoadingEdit,
+  getAccountPaymentIsLoadingList,
 } from './../reducers/AccountPaymentReducer';
 
 class AccountCardPage extends ExtendedComponentPage {
@@ -43,28 +45,38 @@ class AccountCardPage extends ExtendedComponentPage {
     }
     this.changeWorkingPeriod(this.props.currentWorkingPeriod, false);
     this.initFormCalculation(false);
+    this.initFormAddPayment(false);
   }
   initFormCalculation = (visible) => {
     this.setState({ formCalculationVisible: visible });
+  }
+  initFormAddPayment = (visible) => {
+    this.setState({ formAddPaymentVisible: visible });
   }
   showFormCalculation = () => {
     this.initFormCalculation(true);
   }
   onOkFormCalculation = (object) => {
     this.initFormCalculation(false);
-    let workingPeriodId = null;
-    if (this.state.selectedWorkingPeriod.id === this.props.currentWorkingPeriod.id) {
-      workingPeriodId = this.props.currentWorkingPeriod.id;
-    }
     this.props.dispatch(AccountAction.calculateAccount(
       this.props.id,
       object.periodStart.id,
       object.periodEnd.id,
-      workingPeriodId,
+      this.isCurrentWorkingPeriod(),
     ));
   }
   onCancelFormCalculation = () => {
     this.initFormCalculation(false);
+  }
+  showFormAddPayment = () => {
+    this.initFormAddPayment(true);
+  }
+  onOkFormAddPayment = (sum) => {
+    this.initFormAddPayment(false);
+    this.props.dispatch(AccountPaymentAction.addAccountPayment(this.props.id, sum, this.isCurrentWorkingPeriod()));
+  }
+  onCancelFormAddPayment = () => {
+    this.initFormAddPayment(false);
   }
   changeWorkingPeriod = (workingPeriod, getCalculations = true) => {
     this.setState({ selectedWorkingPeriod: workingPeriod });
@@ -75,6 +87,20 @@ class AccountCardPage extends ExtendedComponentPage {
   onChangeAccountPaymentPage = (page) => {
     this.props.dispatch(AccountPaymentAction.getAccountPayments(this.props.id, page));
   };
+  onDeleteAccountPayment = (payment) => {
+    this.props.dispatch(AccountPaymentAction.deleteAccountPayment(
+      this.props.id,
+      payment.paymentBundleId,
+      this.isCurrentWorkingPeriod()
+    ));
+  }
+  isCurrentWorkingPeriod = () => {
+    let workingPeriodId = null;
+    if (this.state.selectedWorkingPeriod.id === this.props.currentWorkingPeriod.id) {
+      workingPeriodId = this.props.currentWorkingPeriod.id;
+    }
+    return workingPeriodId;
+  }
   render() {
     if (!this.props.data) return null;
     return (
@@ -85,7 +111,8 @@ class AccountCardPage extends ExtendedComponentPage {
           isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
           accountIsCalculating={this.props.accountIsCalculating}
           payments={this.props.payments}
-          isLoadingAccountPayment={this.props.isLoadingAccountPayment}
+          isLoadingAccountPayments={this.props.isLoadingAccountPayments}
+          isLoadingAddAccountPayment={this.props.isLoadingAddAccountPayment}
           onChangeAccountPaymentPage={this.onChangeAccountPaymentPage}
           id={this.props.id}
           isLoading={this.props.isLoading}
@@ -95,6 +122,8 @@ class AccountCardPage extends ExtendedComponentPage {
           selectedWorkingPeriod={this.state.selectedWorkingPeriod}
           changeWorkingPeriod={this.changeWorkingPeriod}
           showFormCalculation={this.showFormCalculation}
+          onDeleteAccountPayment={this.onDeleteAccountPayment}
+          showFormAddPayment={this.showFormAddPayment}
         />
         <CalculationForm
           title={this.props.intl.messages.calculationAccountFormTitle}
@@ -103,6 +132,11 @@ class AccountCardPage extends ExtendedComponentPage {
           currentWorkingPeriod={this.props.currentWorkingPeriod}
           onOkFormCalculation={this.onOkFormCalculation}
           onCancelFormCalculation={this.onCancelFormCalculation}
+        />
+        <AccountAddPaymentForm
+          formAddPaymentVisible={this.state.formAddPaymentVisible}
+          onOkFormAddPayment={this.onOkFormAddPayment}
+          onCancelFormAddPayment={this.onCancelFormAddPayment}
         />
       </div>
     );
@@ -117,7 +151,8 @@ function mapStateToProps(state, props) {
     calculations: getAccountCalculationListData(state),
     isLoadingAccountCalculation: getAccountCalculationIsLoading(state),
     payments: getAccountPaymentListData(state),
-    isLoadingAccountPayment: getAccountPaymentIsLoading(state),
+    isLoadingAccountPayments: getAccountPaymentIsLoadingList(state),
+    isLoadingAddAccountPayment: getAccountPaymentIsLoadingEdit(state),
     accountIsCalculating: accountIsCalculating(state),
     isRequestError: getIsRequestErrorAccounts(state) || accountIsCalculatingError(state),
     id: props.params.id,

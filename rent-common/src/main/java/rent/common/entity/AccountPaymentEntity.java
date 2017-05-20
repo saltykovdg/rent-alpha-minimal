@@ -1,7 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Оплата ЛС
@@ -11,6 +11,8 @@ import java.time.LocalDate;
         @Index(columnList = AccountPaymentEntity.Columns.ID),
         @Index(columnList = AccountPaymentEntity.Columns.ACCOUNT_SERVICE),
         @Index(columnList = AccountPaymentEntity.Columns.WORKING_PERIOD),
+        @Index(columnList = AccountPaymentEntity.Columns.BUNDLE_ID),
+        @Index(columnList = AccountPaymentEntity.Columns.DATE),
 })
 public class AccountPaymentEntity extends AbstractEntity {
     public static final String TABLE_NAME = "accounts_payments";
@@ -41,7 +43,7 @@ public class AccountPaymentEntity extends AbstractEntity {
      * дата оплаты
      */
     @Column(name = Columns.DATE)
-    private LocalDate date;
+    private LocalDateTime date;
 
     /**
      * Идентификатор пачки
@@ -71,11 +73,11 @@ public class AccountPaymentEntity extends AbstractEntity {
         this.workingPeriod = workingPeriod;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

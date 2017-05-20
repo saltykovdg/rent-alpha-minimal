@@ -35,9 +35,11 @@ public interface AccountPaymentRepository extends PagingAndSortingRepository<Acc
 
     @Modifying
     @Transactional
-    @Query("delete from AccountPaymentEntity accountPayment " +
-            "where accountPayment.bundleId = :paymentBundleId")
-    void deleteByBundleId(@Param("paymentBundleId") String paymentBundleId);
+    @Query("delete from AccountPaymentEntity accountPayment where " +
+            "accountPayment.bundleId = :paymentBundleId and " +
+            "accountPayment.workingPeriod.id = :workingPeriodId")
+    void deleteByBundleId(@Param("paymentBundleId") String paymentBundleId,
+                          @Param("workingPeriodId") String workingPeriodId);
 
     @Query("select sum(accountPayment.value) from AccountPaymentEntity accountPayment where " +
             "accountPayment.accountService.id = :accountServiceId and " +

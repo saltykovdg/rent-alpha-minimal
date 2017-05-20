@@ -157,10 +157,10 @@ ExtendedComponent.defaultProps = {
   intl: {},
   data: null,
   currentWorkingPeriod: null,
-  isRequestError: null,
+  isRequestError: false,
   isSaved: false,
   isDeleted: false,
-  isLoading: true,
+  isLoading: false,
   onChangePage: null,
 };
 
