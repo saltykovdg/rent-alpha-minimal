@@ -61,10 +61,12 @@ public class PaymentService {
             int accountServicesCount = accountCalculationList.size();
             if (accountServicesCount > 0) {
                 Double paymentSum = roundFloor(sum / (double) accountServicesCount);
-                for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
-                    AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
-                    sum = sum - paymentSum;
-                    updateServicesPayments(servicesPayments, accountService, paymentSum);
+                if (paymentSum > 0) {
+                    for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
+                        AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
+                        sum = sum - paymentSum;
+                        updateServicesPayments(servicesPayments, accountService, paymentSum);
+                    }
                 }
                 if (sum > 0) {
                     AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationList.get(0).getAccountServiceId());
