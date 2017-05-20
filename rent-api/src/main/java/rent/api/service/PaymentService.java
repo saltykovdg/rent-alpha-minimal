@@ -81,12 +81,19 @@ public class PaymentService {
         }
     }
 
-    private Double addPaymentsToServices(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, List<AccountCalculationDto> accountCalculationList, Double sum, boolean isOpeningBalance) {
+    private Double addPaymentsToServices(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, List<AccountCalculationDto> accountCalculationList, Double sum, boolean isClosingBalance) {
         for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
             Double accrual = accountCalculationDto.getAccrual();
             Double recalculation = accountCalculationDto.getRecalculation();
+
             Double payment = accountCalculationDto.getPayment();
-            Double debt = !isOpeningBalance ? calculationService.roundHalfUp(accrual + recalculation - payment) : accountCalculationDto.getOpeningBalance();
+            Double currentPayments = 0D;
+            Map.Entry<AccountServiceEntity, Double> entry = servicesPayments.get(accountCalculationDto.getAccountServiceId());
+            if (entry != null && isClosingBalance) {
+                currentPayments = entry.getValue();
+            }
+            Double closingBalance = accountCalculationDto.getClosingBalance();
+            Double debt = !isClosingBalance ? calculationService.roundHalfUp(accrual + recalculation - payment) : calculationService.roundHalfUp(closingBalance - currentPayments);
             if (debt > 0 && sum > 0) {
                 AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
                 if (debt < sum) {
