@@ -256,7 +256,7 @@ class AccountCard extends EditComponent {
       };
     };
     const paymentsColumns = [
-      this.getDateColumn(messages.paymentFieldDate, 'date'),
+      this.getDateTimeColumn(messages.paymentFieldDate, 'date'),
       this.getColumn(messages.paymentFieldSum, 'sum'),
       this.getColumn(messages.workingPeriodFieldTitle, 'workingPeriod.name'),
       getActionPaymentColumn(this.props.onDeleteAccountPayment, this.props.currentWorkingPeriod),

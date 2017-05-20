@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { notification, Table } from 'antd';
+import moment from 'moment';
 
 import * as HttpStatus from './../util/HttpStatus';
 import * as ParameterType from './../util/ParameterType';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 class ExtendedComponent extends Component {
   componentDidUpdate() {
@@ -46,6 +48,22 @@ class ExtendedComponent extends Component {
         let value = text;
         if (value && value instanceof Object) {
           value = value.format(DATE_FORMAT);
+        }
+        return value;
+      },
+    };
+  }
+  getDateTimeColumn = (title, name) => {
+    return {
+      title,
+      dataIndex: name,
+      key: Math.random(),
+      render(text) {
+        let value = text;
+        if (value && value instanceof Object) {
+          value = value.format(DATE_TIME_FORMAT);
+        } else if (value) {
+          value = moment.utc(value).format(DATE_TIME_FORMAT);
         }
         return value;
       },
