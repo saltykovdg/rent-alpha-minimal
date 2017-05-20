@@ -42,7 +42,7 @@ export function* watchAddAccountPayment() {
 
 export function* deleteAccountPayment(action) {
   const response = yield call(AccountPaymentApi.deleteAccountPayment, action.paymentBundleId);
-  if (response === '') {
+  if (response === '200') {
     yield put(AccountPaymentAction.deleteAccountPaymentSuccess(action.paymentBundleId));
     yield put(AccountPaymentAction.getAccountPayments(action.accountId));
     if (action.workingPeriodId) {

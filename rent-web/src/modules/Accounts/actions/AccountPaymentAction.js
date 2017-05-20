@@ -54,6 +54,7 @@ export const addAccountPaymentFailed = () => {
 export const deleteAccountPayment = (accountId = '', paymentBundleId = '', workingPeriodId) => {
   return {
     type: DELETE_ACCOUNT_PAYMENT,
+    accountId,
     paymentBundleId,
     workingPeriodId,
   };

@@ -90,7 +90,7 @@ class AccountCardPage extends ExtendedComponentPage {
   onDeleteAccountPayment = (payment) => {
     this.props.dispatch(AccountPaymentAction.deleteAccountPayment(
       this.props.id,
-      payment.paymentBundleId,
+      payment.bundleId,
       this.isCurrentWorkingPeriod()
     ));
   }

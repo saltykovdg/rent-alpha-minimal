@@ -95,6 +95,9 @@ public class Application extends SpringBootServletInitializer {
                 config.exposeIdsFor(NormEntity.class)
                         .getProjectionConfiguration()
                         .addProjection(NormMinimal.class);
+                config.exposeIdsFor(WorkingPeriodEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(WorkingPeriodBasic.class);
             }
         };
     }
