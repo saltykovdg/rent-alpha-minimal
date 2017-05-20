@@ -407,7 +407,7 @@ public class CalculationService {
         return value;
     }
 
-    private Double roundHalfUp(Double value) {
+    public Double roundHalfUp(Double value) {
         BigDecimal bigDecimal = new BigDecimal(value);
         return bigDecimal.setScale(ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
     }

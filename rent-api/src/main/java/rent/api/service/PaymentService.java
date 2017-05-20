@@ -51,10 +51,10 @@ public class PaymentService {
         String paymentBundleId = UUID.randomUUID().toString();
         LocalDateTime paymentDate = LocalDateTime.now();
 
-        sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
+        sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, false);
 
         if (sum > 0) {
-            sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, false);
+            sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
         }
 
         if (sum > 0) {
@@ -81,13 +81,16 @@ public class PaymentService {
         }
     }
 
-    private Double addPaymentsToServices(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, List<AccountCalculationDto> accountCalculationList, Double sum, boolean isAccrual) {
+    private Double addPaymentsToServices(Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments, List<AccountCalculationDto> accountCalculationList, Double sum, boolean isOpeningBalance) {
         for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
-            if (accountCalculationDto.getClosingBalance() > 0 && sum > 0) {
+            Double accrual = accountCalculationDto.getAccrual();
+            Double recalculation = accountCalculationDto.getRecalculation();
+            Double payment = accountCalculationDto.getPayment();
+            Double debt = !isOpeningBalance ? calculationService.roundHalfUp(accrual + recalculation - payment) : accountCalculationDto.getOpeningBalance();
+            if (debt > 0 && sum > 0) {
                 AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
-                Double debt = isAccrual ? accountCalculationDto.getAccrual() : (accountCalculationDto.getClosingBalance() - accountCalculationDto.getAccrual());
                 if (debt < sum) {
-                    sum = sum - debt;
+                    sum = calculationService.roundHalfUp(sum - debt);
                 } else {
                     debt = sum;
                     sum = 0D;
