@@ -41,45 +41,46 @@ public class PaymentService {
 
     public void addPayment(String accountId, Double sum) {
         log.info("addPayment({}, {})", accountId, sum);
+        if (sum != 0D) {
+            WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
+            String currentWorkingPeriodId = currentWorkingPeriod.getId();
+            calculationService.calculateAccount(accountId, currentWorkingPeriodId, currentWorkingPeriodId);
+            List<AccountCalculationDto> accountCalculationList = calculationService.getAccountCalculations(accountId, currentWorkingPeriod.getId());
 
-        WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
-        String currentWorkingPeriodId = currentWorkingPeriod.getId();
-        calculationService.calculateAccount(accountId, currentWorkingPeriodId, currentWorkingPeriodId);
-        List<AccountCalculationDto> accountCalculationList = calculationService.getAccountCalculations(accountId, currentWorkingPeriod.getId());
+            Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments = new HashMap<>();
+            String paymentBundleId = UUID.randomUUID().toString();
+            LocalDateTime paymentDate = LocalDateTime.now();
 
-        Map<String, Map.Entry<AccountServiceEntity, Double>> servicesPayments = new HashMap<>();
-        String paymentBundleId = UUID.randomUUID().toString();
-        LocalDateTime paymentDate = LocalDateTime.now();
+            sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, false);
 
-        sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, false);
+            if (sum > 0) {
+                sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
+            }
 
-        if (sum > 0) {
-            sum = addPaymentsToServices(servicesPayments, accountCalculationList, sum, true);
-        }
-
-        if (sum > 0) {
-            int accountServicesCount = accountCalculationList.size();
-            if (accountServicesCount > 0) {
-                Double paymentSum = roundFloor(sum / (double) accountServicesCount);
-                if (paymentSum > 0) {
-                    for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
-                        AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
-                        sum = sum - paymentSum;
-                        updateServicesPayments(servicesPayments, accountService, paymentSum);
+            if (sum > 0) {
+                int accountServicesCount = accountCalculationList.size();
+                if (accountServicesCount > 0) {
+                    Double paymentSum = roundFloor(sum / (double) accountServicesCount);
+                    if (paymentSum > 0) {
+                        for (AccountCalculationDto accountCalculationDto : accountCalculationList) {
+                            AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationDto.getAccountServiceId());
+                            sum = sum - paymentSum;
+                            updateServicesPayments(servicesPayments, accountService, paymentSum);
+                        }
+                    }
+                    if (sum > 0) {
+                        AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationList.get(0).getAccountServiceId());
+                        updateServicesPayments(servicesPayments, accountService, sum);
                     }
                 }
-                if (sum > 0) {
-                    AccountServiceEntity accountService = accountServiceRepository.findOne(accountCalculationList.get(0).getAccountServiceId());
-                    updateServicesPayments(servicesPayments, accountService, sum);
-                }
             }
-        }
 
-        for (Map.Entry<String, Map.Entry<AccountServiceEntity, Double>> entry : servicesPayments.entrySet()) {
-            Map.Entry<AccountServiceEntity, Double> entryValue = entry.getValue();
-            AccountServiceEntity accountService = entryValue.getKey();
-            Double paymentSum = entryValue.getValue();
-            savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+            for (Map.Entry<String, Map.Entry<AccountServiceEntity, Double>> entry : servicesPayments.entrySet()) {
+                Map.Entry<AccountServiceEntity, Double> entryValue = entry.getValue();
+                AccountServiceEntity accountService = entryValue.getKey();
+                Double paymentSum = entryValue.getValue();
+                savePayment(accountService, currentWorkingPeriod, paymentDate, paymentBundleId, paymentSum);
+            }
         }
     }
 

@@ -1,11 +1,14 @@
 package rent.common.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
+import rent.common.dtos.ServiceCalculationDto;
 import rent.common.dtos.ServiceCalculationInfoDto;
 import rent.common.entity.AccountRecalculationEntity;
 import rent.common.projection.AccountRecalculationBasic;
@@ -69,4 +72,13 @@ public interface AccountRecalculationRepository extends PagingAndSortingReposito
             "where accountRecalculation.bundleId = :bundleId " +
             "group by accountService.service")
     List<ServiceCalculationInfoDto> getSumInfoByBundleId(@Param("bundleId") String bundleId);
+
+    @Query("select new rent.common.dtos.ServiceCalculationDto(accountRecalculation.recalculationType, accountRecalculation.note, accountRecalculation.forWorkingPeriod, accountRecalculation.workingPeriod, accountRecalculation.date, accountRecalculation.bundleId, sum(accountRecalculation.value)) from AccountRecalculationEntity accountRecalculation " +
+            "join accountRecalculation.accountService accountService " +
+            "join accountRecalculation.workingPeriod workingPeriod " +
+            "join accountService.account account " +
+            "where account.id = :accountId " +
+            "group by accountRecalculation.recalculationType, accountRecalculation.note, accountRecalculation.forWorkingPeriod, accountRecalculation.workingPeriod, accountRecalculation.date, accountRecalculation.bundleId " +
+            "order by accountRecalculation.date desc")
+    Page<ServiceCalculationDto> getSumByAccountIdPageable(@Param("accountId") String accountId, Pageable p);
 }
