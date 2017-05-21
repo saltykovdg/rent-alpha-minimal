@@ -46,6 +46,12 @@ import {
   getWorkingPeriodIsRequestError,
 } from './reducers/WorkingPeriodReducer';
 
+import {
+  recalculationTypeReducer,
+  getRecalculationTypeIsLoading,
+  getRecalculationTypeIsRequestError,
+} from './reducers/RecalculationTypeReducer';
+
 // Initial State
 const data = {
   list: {
@@ -71,6 +77,7 @@ const initialState = {
   registrationType: data,
   meterType: data,
   workingPeriod: data,
+  recalculationType: data,
 };
 
 const ConstantsReducer = (state = initialState, action) => {
@@ -83,6 +90,7 @@ const ConstantsReducer = (state = initialState, action) => {
     registrationType: registrationTypeReducer(state, action),
     meterType: meterTypeReducer(state, action),
     workingPeriod: workingPeriodReducer(state, action),
+    recalculationType: recalculationTypeReducer(state, action),
   };
 };
 
@@ -91,13 +99,15 @@ export const getIsRequestError = state =>
   getCalculationTypeIsRequestError(state) || getMeasurementUnitIsRequestError(state) ||
   getParameterTypeIsRequestError(state) || getDocumentTypeIsRequestError(state) ||
   getGenderTypeIsRequestError(state) || getRegistrationTypeIsRequestError(state) ||
-  getMeterTypeIsRequestError(state) || getWorkingPeriodIsRequestError(state);
+  getMeterTypeIsRequestError(state) || getWorkingPeriodIsRequestError(state) ||
+  getRecalculationTypeIsRequestError(state);
 
 export const getIsLoading = state =>
   getCalculationTypeIsLoading(state) || getMeasurementUnitIsLoading(state) ||
   getParameterTypeIsLoading(state) || getDocumentTypeIsLoading(state) ||
   getGenderTypeIsLoading(state) || getRegistrationTypeIsLoading(state) ||
-  getMeterTypeIsLoading(state) || getWorkingPeriodIsLoading(state);
+  getMeterTypeIsLoading(state) || getWorkingPeriodIsLoading(state) ||
+  getRecalculationTypeIsLoading(state);
 
 // Export Reducer
 export default ConstantsReducer;

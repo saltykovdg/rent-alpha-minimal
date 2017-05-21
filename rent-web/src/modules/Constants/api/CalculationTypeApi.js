@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getCalculationTypes(page = 0) {
-  return ApiCaller.callApi(`calculation-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`calculation-type?page=${page}&sort=name&projection=calculationTypeMinimal`);
 }
 
 export function getCalculationType(id) {
@@ -17,5 +17,5 @@ export function deleteCalculationType(object) {
 }
 
 export function findCalculationTypesByName(name = '') {
-  return ApiCaller.callApi(`calculation-type/search/findByNameContainingOrderByCode?name=${name}`);
+  return ApiCaller.callApi(`calculation-type/search/findByNameContainingOrderByCode?name=${name}&projection=calculationTypeMinimal`);
 }

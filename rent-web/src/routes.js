@@ -8,6 +8,7 @@ import * as ServiceTypePath from './modules/Services/paths/ServiceTypePath';
 import * as ServicePath from './modules/Services/paths/ServicePath';
 import * as TariffPath from './modules/Tariffs/paths/TariffPath';
 import * as CalculationTypePath from './modules/Constants/paths/CalculationTypePath';
+import * as RecalculationTypePath from './modules/Constants/paths/RecalculationTypePath';
 import * as MeasurementUnitPath from './modules/Constants/paths/MeasurementUnitPath';
 import * as DocumentTypePath from './modules/Constants/paths/DocumentTypePath';
 import * as RegistrationTypePath from './modules/Constants/paths/RegistrationTypePath';
@@ -216,6 +217,22 @@ export default (
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
           cb(null, require('./modules/Constants/pages/CalculationTypeEditPage').default);
+        });
+      }}
+    />
+    <Route
+      path={RecalculationTypePath.RECALCULATION_TYPE_LIST}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/RecalculationTypeListPage').default);
+        });
+      }}
+    />
+    <Route
+      path={`${RecalculationTypePath.RECALCULATION_TYPE_EDIT}/:id`}
+      getComponent={(nextState, cb) => {
+        require.ensure([], (require) => {
+          cb(null, require('./modules/Constants/pages/RecalculationTypeEditPage').default);
         });
       }}
     />

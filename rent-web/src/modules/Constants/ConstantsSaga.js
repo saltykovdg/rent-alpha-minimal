@@ -9,6 +9,7 @@ import { rootGenderTypeSaga } from './sagas/GenderTypeSaga';
 import { rootRegistrationTypeSaga } from './sagas/RegistrationTypeSaga';
 import { rootMeterTypeSaga } from './sagas/MeterTypeSaga';
 import { rootWorkingPeriodSaga } from './sagas/WorkingPeriodSaga';
+import { rootRecalculationTypeSaga } from './sagas/RecalculationTypeSaga';
 
 // Export Saga
 export default all([
@@ -20,4 +21,5 @@ export default all([
   rootRegistrationTypeSaga,
   rootMeterTypeSaga,
   rootWorkingPeriodSaga,
+  rootRecalculationTypeSaga,
 ]);

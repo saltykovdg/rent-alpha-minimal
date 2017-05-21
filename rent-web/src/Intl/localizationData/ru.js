@@ -212,6 +212,10 @@ export default {
     meterTypeFieldName: 'Вид прибора учета',
     meterTypeFieldNameOrigin: 'Вид прибора учета (значение по умолчанию)',
     editPageEditMeterTypeTitle: 'Редактирование вида прибора учета',
+    recalculationTypeTitle: 'Виды перерасчета',
+    recalculationTypeFieldName: 'Вид перерасчета',
+    recalculationTypeFieldNameOrigin: 'Вид перерасчета (значение по умолчанию)',
+    editPageEditRecalculationTypeTitle: 'Редактирование вида перерасчета',
 
     // documents
     documentsTitle: 'Документы',

@@ -97,7 +97,31 @@ public class Application extends SpringBootServletInitializer {
                         .addProjection(NormMinimal.class);
                 config.exposeIdsFor(WorkingPeriodEntity.class)
                         .getProjectionConfiguration()
-                        .addProjection(WorkingPeriodBasic.class);
+                        .addProjection(WorkingPeriodMinimal.class);
+                config.exposeIdsFor(CalculationTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(CalculationTypeMinimal.class);
+                config.exposeIdsFor(RecalculationTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(RecalculationTypeMinimal.class);
+                config.exposeIdsFor(MeasurementUnitEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(MeasurementUnitMinimal.class);
+                config.exposeIdsFor(DocumentTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(DocumentTypeMinimal.class);
+                config.exposeIdsFor(GenderTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(GenderTypeMinimal.class);
+                config.exposeIdsFor(MeterTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(MeterTypeMinimal.class);
+                config.exposeIdsFor(ParameterTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(ParameterTypeMinimal.class);
+                config.exposeIdsFor(RegistrationTypeEntity.class)
+                        .getProjectionConfiguration()
+                        .addProjection(RegistrationTypeMinimal.class);
             }
         };
     }

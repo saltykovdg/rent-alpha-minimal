@@ -16,6 +16,7 @@ import * as ParameterTypePath from '../../../Constants/paths/ParameterTypePath';
 import * as GenderTypePath from '../../../Constants/paths/GenderTypePath';
 import * as DocumentTypePath from '../../../Constants/paths/DocumentTypePath';
 import * as RegistrationTypePath from '../../../Constants/paths/RegistrationTypePath';
+import * as RecalculationTypePath from '../../../Constants/paths/RecalculationTypePath';
 import * as MeterTypePath from '../../../Constants/paths/MeterTypePath';
 import * as AccountPath from '../../../Accounts/paths/AccountPath';
 import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
@@ -124,6 +125,11 @@ function Sidebar() {
           <Item key={CalculationTypePath.CALCULATION_TYPE_LIST}>
             <Link to={CalculationTypePath.CALCULATION_TYPE_LIST}>
               <FormattedMessage id="calculationTypeTitle" />
+            </Link>
+          </Item>
+          <Item key={RecalculationTypePath.RECALCULATION_TYPE_LIST}>
+            <Link to={RecalculationTypePath.RECALCULATION_TYPE_LIST}>
+              <FormattedMessage id="recalculationTypeTitle" />
             </Link>
           </Item>
           <Item key={ParameterTypePath.PARAMETER_TYPE_LIST}>

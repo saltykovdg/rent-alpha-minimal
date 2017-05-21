@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getGenderTypes(page = 0) {
-  return ApiCaller.callApi(`gender-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`gender-type?page=${page}&sort=name&projection=genderTypeMinimal`);
 }
 
 export function getGenderType(id) {
@@ -17,5 +17,5 @@ export function deleteGenderType(object) {
 }
 
 export function findGenderTypesByName(name = '') {
-  return ApiCaller.callApi(`gender-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`gender-type/search/findByNameContainingOrderByName?name=${name}&projection=genderTypeMinimal`);
 }

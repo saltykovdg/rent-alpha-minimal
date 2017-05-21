@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getParameterTypes(page = 0) {
-  return ApiCaller.callApi(`parameter-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`parameter-type?page=${page}&sort=name&projection=parameterTypeMinimal`);
 }
 
 export function getParameterType(id) {
@@ -17,5 +17,5 @@ export function deleteParameterType(object) {
 }
 
 export function findParameterTypesByName(name = '') {
-  return ApiCaller.callApi(`parameter-type/search/findByNameContainingOrderByCode?name=${name}`);
+  return ApiCaller.callApi(`parameter-type/search/findByNameContainingOrderByCode?name=${name}&projection=parameterTypeMinimal`);
 }

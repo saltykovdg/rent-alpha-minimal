@@ -5,6 +5,8 @@ import rent.common.entity.StreetTypeEntity;
 
 @Projection(types = {StreetTypeEntity.class})
 public interface StreetTypeMinimal {
+    String getId();
+
     String getName();
 
     String getNameShort();

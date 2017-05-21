@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getMeterTypes(page = 0) {
-  return ApiCaller.callApi(`meter-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`meter-type?page=${page}&sort=name&projection=meterTypeMinimal`);
 }
 
 export function getMeterType(id) {
@@ -17,5 +17,5 @@ export function deleteMeterType(object) {
 }
 
 export function findMeterTypesByName(name = '') {
-  return ApiCaller.callApi(`meter-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`meter-type/search/findByNameContainingOrderByName?name=${name}&projection=meterTypeMinimal`);
 }

@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getDocumentTypes(page = 0) {
-  return ApiCaller.callApi(`document-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`document-type?page=${page}&sort=name&projection=documentTypeMinimal`);
 }
 
 export function getDocumentType(id) {
@@ -17,5 +17,5 @@ export function deleteDocumentType(object) {
 }
 
 export function findDocumentTypesByName(name = '') {
-  return ApiCaller.callApi(`document-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`document-type/search/findByNameContainingOrderByName?name=${name}&projection=documentTypeMinimal`);
 }

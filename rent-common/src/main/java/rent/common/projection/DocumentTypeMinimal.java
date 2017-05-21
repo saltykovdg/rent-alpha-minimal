@@ -1,10 +1,10 @@
 package rent.common.projection;
 
 import org.springframework.data.rest.core.config.Projection;
-import rent.common.entity.MeterTypeEntity;
+import rent.common.entity.DocumentTypeEntity;
 
-@Projection(types = {MeterTypeEntity.class})
-public interface MeterTypeMinimal {
+@Projection(types = {DocumentTypeEntity.class})
+public interface DocumentTypeMinimal {
     String getId();
 
     String getName();

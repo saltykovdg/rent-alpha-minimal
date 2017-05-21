@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getRegistrationTypes(page = 0) {
-  return ApiCaller.callApi(`registration-type?page=${page}&sort=name`);
+  return ApiCaller.callApi(`registration-type?page=${page}&sort=name&projection=registrationTypeMinimal`);
 }
 
 export function getRegistrationType(id) {
@@ -17,5 +17,5 @@ export function deleteRegistrationType(object) {
 }
 
 export function findRegistrationTypesByName(name = '') {
-  return ApiCaller.callApi(`registration-type/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`registration-type/search/findByNameContainingOrderByName?name=${name}&projection=registrationTypeMinimal`);
 }

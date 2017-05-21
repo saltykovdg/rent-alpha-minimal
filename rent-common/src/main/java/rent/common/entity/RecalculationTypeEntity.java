@@ -6,16 +6,16 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 
 /**
- * Вид параметра
+ * Вид перерасчета
  */
 @Entity
-@Table(name = ParameterTypeEntity.TABLE_NAME, indexes = {
-        @Index(columnList = ParameterTypeEntity.Columns.ID),
-        @Index(columnList = ParameterTypeEntity.Columns.CODE),
-        @Index(columnList = ParameterTypeEntity.Columns.NAME),
+@Table(name = RecalculationTypeEntity.TABLE_NAME, indexes = {
+        @Index(columnList = RecalculationTypeEntity.Columns.ID),
+        @Index(columnList = RecalculationTypeEntity.Columns.CODE),
+        @Index(columnList = RecalculationTypeEntity.Columns.NAME),
 })
-public class ParameterTypeEntity extends AbstractEntity {
-    public static final String TABLE_NAME = "const_parameter_types";
+public class RecalculationTypeEntity extends AbstractEntity {
+    public static final String TABLE_NAME = "const_recalculation_types";
 
     public interface Columns extends AbstractEntity.Columns {
         String CODE = "code";
@@ -24,13 +24,13 @@ public class ParameterTypeEntity extends AbstractEntity {
     }
 
     /**
-     * код параметра
+     * код перерасчета
      */
     @Column(name = Columns.CODE)
     private String code;
 
     /**
-     * название параметра
+     * название перерасчета
      */
     @Column(name = Columns.NAME)
     private String name;

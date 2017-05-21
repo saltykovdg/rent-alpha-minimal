@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getMeasurementUnits(page = 0) {
-  return ApiCaller.callApi(`measurement-unit?page=${page}&sort=name`);
+  return ApiCaller.callApi(`measurement-unit?page=${page}&sort=name&projection=measurementUnitMinimal`);
 }
 
 export function getMeasurementUnit(id) {
@@ -17,5 +17,5 @@ export function deleteMeasurementUnit(object) {
 }
 
 export function findMeasurementUnitsByName(name = '') {
-  return ApiCaller.callApi(`measurement-unit/search/findByNameContainingOrderByName?name=${name}`);
+  return ApiCaller.callApi(`measurement-unit/search/findByNameContainingOrderByName?name=${name}&projection=measurementUnitMinimal`);
 }

@@ -37,6 +37,7 @@ public class DatabasePopulationService {
     private final DocumentTypeRepository documentTypeRepository;
     private final RegistrationTypeRepository registrationTypeRepository;
     private final MeterTypeRepository meterTypeRepository;
+    private final RecalculationTypeRepository recalculationTypeRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final ContractorTypeRepository contractorTypeRepository;
     private final StreetRepository streetRepository;
@@ -69,6 +70,7 @@ public class DatabasePopulationService {
                                      DocumentTypeRepository documentTypeRepository,
                                      RegistrationTypeRepository registrationTypeRepository,
                                      MeterTypeRepository meterTypeRepository,
+                                     RecalculationTypeRepository recalculationTypeRepository,
                                      ServiceTypeRepository serviceTypeRepository,
                                      ContractorTypeRepository contractorTypeRepository,
                                      StreetRepository streetRepository,
@@ -99,6 +101,7 @@ public class DatabasePopulationService {
         this.documentTypeRepository = documentTypeRepository;
         this.registrationTypeRepository = registrationTypeRepository;
         this.meterTypeRepository = meterTypeRepository;
+        this.recalculationTypeRepository = recalculationTypeRepository;
         this.serviceTypeRepository = serviceTypeRepository;
         this.contractorTypeRepository = contractorTypeRepository;
         this.streetRepository = streetRepository;
@@ -129,6 +132,7 @@ public class DatabasePopulationService {
         createDocumentTypes();
         createRegistrationTypes();
         createMeterTypes();
+        createRecalculationTypes();
         createStreetTypes();
         createServiceTypes();
         createContractorTypes();
@@ -289,6 +293,23 @@ public class DatabasePopulationService {
             meterType.setName(name);
             meterType.setNameOrigin(name);
             meterTypeRepository.save(meterType);
+        }
+    }
+
+    private void createRecalculationTypes() {
+        createRecalculationType(RecalculationType.AUTO.getCode(), "Автоматический перерасчет");
+        createRecalculationType(RecalculationType.CORRECTION_AMOUNT.getCode(), "Коррекционная сумма");
+    }
+
+    private void createRecalculationType(String code, String name) {
+        RecalculationTypeEntity recalculationType = recalculationTypeRepository.findByCode(code);
+        if (recalculationType == null) {
+            log.info("createRecalculationType({}, {})", code, name);
+            recalculationType = new RecalculationTypeEntity();
+            recalculationType.setCode(code);
+            recalculationType.setName(name);
+            recalculationType.setNameOrigin(name);
+            recalculationTypeRepository.save(recalculationType);
         }
     }
 

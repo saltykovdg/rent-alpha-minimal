@@ -5,5 +5,7 @@ import rent.common.entity.GenderTypeEntity;
 
 @Projection(types = {GenderTypeEntity.class})
 public interface GenderTypeMinimal {
+    String getId();
+
     String getName();
 }
