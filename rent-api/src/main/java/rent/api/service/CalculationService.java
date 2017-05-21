@@ -16,11 +16,13 @@ import rent.common.repository.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 @Service
@@ -136,6 +138,8 @@ public class CalculationService {
             RecalculationTypeEntity recalculationTypeAuto = recalculationTypeRepository.findByCode(RecalculationType.AUTO.getCode());
             List<WorkingPeriodEntity> workingPeriods = workingPeriodRepository.find(periodStart.getDateStart(), periodEnd.getDateStart());
             for (WorkingPeriodEntity workingPeriod : workingPeriods) {
+                String bundleId = UUID.randomUUID().toString();
+                LocalDateTime date = LocalDateTime.now();
                 List<AccountServiceEntity> accountServicesAll = account.getServices();
                 for (AccountServiceEntity accountService : accountServicesAll) {
                     deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId(), recalculationTypeAuto);
@@ -175,7 +179,14 @@ public class CalculationService {
                         }
                     }
                 }
-                saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod, recalculationTypeAuto);
+                saveAccountCalculations(
+                        accountCalculations,
+                        currentWorkingPeriod,
+                        workingPeriod,
+                        recalculationTypeAuto,
+                        bundleId,
+                        date
+                );
             }
         }
     }
@@ -422,7 +433,12 @@ public class CalculationService {
         return bigDecimal.setScale(ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod, RecalculationTypeEntity recalculationType) {
+    private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations,
+                                         WorkingPeriodEntity currentWorkingPeriod,
+                                         WorkingPeriodEntity forWorkingPeriod,
+                                         RecalculationTypeEntity recalculationType,
+                                         String bundleId,
+                                         LocalDateTime date) {
         for (AccountServiceCalculationDto accountServiceCalculationDto : accountCalculations) {
             if (currentWorkingPeriod.getId().equals(forWorkingPeriod.getId())) {
                 AccountAccrualEntity accountAccrual = new AccountAccrualEntity();
@@ -445,6 +461,8 @@ public class CalculationService {
                 accountRecalculation.setNote("-");
                 accountRecalculation.setWorkingPeriod(currentWorkingPeriod);
                 accountRecalculation.setForWorkingPeriod(forWorkingPeriod);
+                accountRecalculation.setDate(date);
+                accountRecalculation.setBundleId(bundleId);
                 accountRecalculation.setTariff(accountServiceCalculationDto.getTariff());
                 accountRecalculation.setTariffCalculationType(accountServiceCalculationDto.getTariffCalculationType());
                 accountRecalculation.setTariffMeasurementUnit(accountServiceCalculationDto.getTariffMeasurementUnit());

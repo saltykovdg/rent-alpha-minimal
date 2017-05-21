@@ -1,6 +1,7 @@
 package rent.common.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Перерасчет ЛС
@@ -20,6 +21,8 @@ public class AccountRecalculationEntity extends AbstractEntity {
         String ACCOUNT_SERVICE = "account_service_id";
         String WORKING_PERIOD = "working_period_id";
         String FOR_WORKING_PERIOD = "for_working_period_id";
+        String DATE = "date";
+        String BUNDLE_ID = "bundle_id";
         String CONSUMPTION = "consumption";
         String VALUE = "value";
         String NOTE = "note";
@@ -57,6 +60,18 @@ public class AccountRecalculationEntity extends AbstractEntity {
     @JoinColumn(name = Columns.FOR_WORKING_PERIOD)
     @ManyToOne(fetch = FetchType.LAZY)
     private WorkingPeriodEntity forWorkingPeriod;
+
+    /**
+     * дата перерасчета
+     */
+    @Column(name = Columns.DATE)
+    private LocalDateTime date;
+
+    /**
+     * Идентификатор пачки
+     */
+    @Column(name = Columns.BUNDLE_ID)
+    private String bundleId;
 
     /**
      * расход
@@ -139,6 +154,22 @@ public class AccountRecalculationEntity extends AbstractEntity {
 
     public void setForWorkingPeriod(WorkingPeriodEntity forWorkingPeriod) {
         this.forWorkingPeriod = forWorkingPeriod;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    public void setBundleId(String bundleId) {
+        this.bundleId = bundleId;
     }
 
     public Double getConsumption() {

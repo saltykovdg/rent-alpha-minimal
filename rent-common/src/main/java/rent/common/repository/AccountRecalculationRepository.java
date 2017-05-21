@@ -6,8 +6,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.transaction.annotation.Transactional;
+import rent.common.dtos.ServiceCalculationInfoDto;
 import rent.common.entity.AccountRecalculationEntity;
 import rent.common.projection.AccountRecalculationBasic;
+
+import java.util.List;
 
 @RepositoryRestResource(
         collectionResourceRel = "account-recalculations",
@@ -39,6 +42,14 @@ public interface AccountRecalculationRepository extends PagingAndSortingReposito
             "where accountRecalculation.workingPeriod.id = :workingPeriodId")
     void deleteByWorkingPeriodId(@Param("workingPeriodId") String workingPeriodId);
 
+    @Modifying
+    @Transactional
+    @Query("delete from AccountRecalculationEntity accountRecalculation where " +
+            "accountRecalculation.bundleId = :bundleId and " +
+            "accountRecalculation.workingPeriod.id = :workingPeriodId")
+    void deleteByBundleId(@Param("bundleId") String bundleId,
+                          @Param("workingPeriodId") String workingPeriodId);
+
     @Query("select sum(accountRecalculation.value) from AccountRecalculationEntity accountRecalculation where " +
             "accountRecalculation.accountService.id = :accountServiceId and " +
             "accountRecalculation.forWorkingPeriod.id = :forWorkingPeriodId and " +
@@ -52,4 +63,10 @@ public interface AccountRecalculationRepository extends PagingAndSortingReposito
             "accountRecalculation.workingPeriod.id = :workingPeriodId")
     Double getSumByAccountServiceIdAndWorkingPeriodId(@Param("accountServiceId") String accountServiceId,
                                                       @Param("workingPeriodId") String workingPeriodId);
+
+    @Query("select new rent.common.dtos.ServiceCalculationInfoDto(accountService.service, sum(accountRecalculation.value)) from AccountRecalculationEntity accountRecalculation " +
+            "join accountRecalculation.accountService accountService " +
+            "where accountRecalculation.bundleId = :bundleId " +
+            "group by accountService.service")
+    List<ServiceCalculationInfoDto> getSumInfoByBundleId(@Param("bundleId") String bundleId);
 }
