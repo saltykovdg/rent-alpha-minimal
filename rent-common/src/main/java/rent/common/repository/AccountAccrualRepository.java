@@ -9,27 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import rent.common.entity.AccountAccrualEntity;
 import rent.common.projection.AccountAccrualBasic;
 
-import java.util.List;
-
 @RepositoryRestResource(
         collectionResourceRel = "account-accruals",
         path = "account-accrual",
         itemResourceRel = "account-accrual",
         excerptProjection = AccountAccrualBasic.class)
 public interface AccountAccrualRepository extends PagingAndSortingRepository<AccountAccrualEntity, String> {
-    @Query("select distinct accountAccrual from AccountAccrualEntity accountAccrual " +
-            "join accountAccrual.accountService accountService " +
-            "join accountAccrual.workingPeriod workingPeriod " +
-            "join accountService.account account " +
-            "where account.id = :accountId order by workingPeriod.dateStart desc")
-    List<AccountAccrualEntity> findByAccountId(@Param("accountId") String accountId);
-
-    @Query("select distinct accountAccrual from AccountAccrualEntity accountAccrual " +
-            "join accountAccrual.accountService accountService " +
-            "join accountAccrual.workingPeriod workingPeriod " +
-            "where accountService.id = :accountServiceId order by workingPeriod.dateStart desc")
-    List<AccountAccrualEntity> findByAccountServiceId(@Param("accountServiceId") String accountServiceId);
-
     @Modifying
     @Transactional
     @Query("delete from AccountAccrualEntity accountAccrual " +

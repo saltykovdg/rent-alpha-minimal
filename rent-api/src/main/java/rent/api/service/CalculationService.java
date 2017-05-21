@@ -10,6 +10,7 @@ import rent.common.dtos.AccountServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
 import rent.common.enums.ParameterType;
+import rent.common.enums.RecalculationType;
 import rent.common.interfaces.IPeriod;
 import rent.common.repository.*;
 
@@ -38,6 +39,7 @@ public class CalculationService {
     private final SystemPropertyService systemPropertyService;
     private final AccountOpeningBalanceRepository accountOpeningBalanceRepository;
     private final AccountPaymentRepository accountPaymentRepository;
+    private final RecalculationTypeRepository recalculationTypeRepository;
 
     @Autowired
     public CalculationService(@Value("${app.calculation.threads.count}") Integer appCalculationThreadsCount,
@@ -49,7 +51,8 @@ public class CalculationService {
                               NormRepository normRepository,
                               SystemPropertyService systemPropertyService,
                               AccountOpeningBalanceRepository accountOpeningBalanceRepository,
-                              AccountPaymentRepository accountPaymentRepository) {
+                              AccountPaymentRepository accountPaymentRepository,
+                              RecalculationTypeRepository recalculationTypeRepository) {
         this.appCalculationThreadsCount = appCalculationThreadsCount;
         this.appLocale = appLocale;
         this.accountRepository = accountRepository;
@@ -60,6 +63,7 @@ public class CalculationService {
         this.systemPropertyService = systemPropertyService;
         this.accountOpeningBalanceRepository = accountOpeningBalanceRepository;
         this.accountPaymentRepository = accountPaymentRepository;
+        this.recalculationTypeRepository = recalculationTypeRepository;
         if (systemPropertyService.getCalculationIsActive()) {
             systemPropertyService.setCalculationActive(false);
         }
@@ -126,14 +130,15 @@ public class CalculationService {
         WorkingPeriodEntity periodStart = workingPeriodRepository.findOne(periodStartId);
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
         WorkingPeriodEntity currentWorkingPeriod = getCurrentWorkingPeriod();
-        List<WorkingPeriodEntity> workingPeriods = workingPeriodRepository.find(periodStart.getDateStart(), periodEnd.getDateStart());
         LocalDate accountDateClose = account.getDateClose();
 
         if (accountDateClose == null || accountDateClose.compareTo(currentWorkingPeriod.getDateStart()) > 0) {
+            RecalculationTypeEntity recalculationTypeAuto = recalculationTypeRepository.findByCode(RecalculationType.AUTO.getCode());
+            List<WorkingPeriodEntity> workingPeriods = workingPeriodRepository.find(periodStart.getDateStart(), periodEnd.getDateStart());
             for (WorkingPeriodEntity workingPeriod : workingPeriods) {
                 List<AccountServiceEntity> accountServicesAll = account.getServices();
                 for (AccountServiceEntity accountService : accountServicesAll) {
-                    deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId());
+                    deleteCalculationsForPeriod(accountService.getId(), currentWorkingPeriod.getId(), workingPeriod.getId(), recalculationTypeAuto);
                 }
                 List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, accountServicesAll);
                 List<AccountServiceCalculationDto> accountCalculations = new ArrayList<>();
@@ -161,7 +166,7 @@ public class CalculationService {
                                 accountServiceCalculationDto.setTariffMeasurementUnit(tariffValue.getMeasurementUnit());
                                 accountServiceCalculationDto.setTariffValue(tariffValue.getValue());
                                 if (!currentWorkingPeriod.getId().equals(workingPeriod.getId())) {
-                                    accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto);
+                                    accountServiceCalculationDto = calculateAccountServiceGivenPreviousRecalculation(workingPeriod, accountServiceCalculationDto, recalculationTypeAuto);
                                 }
                             }
                             if (accountServiceCalculationDto != null) {
@@ -170,15 +175,15 @@ public class CalculationService {
                         }
                     }
                 }
-                saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod);
+                saveAccountCalculations(accountCalculations, currentWorkingPeriod, workingPeriod, recalculationTypeAuto);
             }
         }
     }
 
-    private AccountServiceCalculationDto calculateAccountServiceGivenPreviousRecalculation(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto) {
+    private AccountServiceCalculationDto calculateAccountServiceGivenPreviousRecalculation(WorkingPeriodEntity workingPeriod, AccountServiceCalculationDto accountServiceCalculationDto, RecalculationTypeEntity recalculationType) {
         String accountServiceId = accountServiceCalculationDto.getAccountService().getId();
         Double sumAccruals = accountAccrualRepository.getSumByAccountServiceIdAndWorkingPeriodId(accountServiceId, workingPeriod.getId());
-        Double sumRecalculations = accountRecalculationRepository.getSumByAccountServiceIdAndForWorkingPeriodId(accountServiceId, workingPeriod.getId());
+        Double sumRecalculations = accountRecalculationRepository.getSumByAccountServiceIdAndForWorkingPeriodIdAndRecalculationTypeId(accountServiceId, workingPeriod.getId(), recalculationType.getId());
         Double currentSum = roundHalfUp(accountServiceCalculationDto.getSum());
         if (sumAccruals == null) sumAccruals = 0D;
         if (sumRecalculations == null) sumRecalculations = 0D;
@@ -229,11 +234,16 @@ public class CalculationService {
         return newList;
     }
 
-    private void deleteCalculationsForPeriod(String accountServiceId, String currentWorkingPeriodId, String forWorkingPeriodId) {
+    private void deleteCalculationsForPeriod(String accountServiceId, String currentWorkingPeriodId, String forWorkingPeriodId, RecalculationTypeEntity recalculationType) {
         if (currentWorkingPeriodId.equals(forWorkingPeriodId)) {
             accountAccrualRepository.deleteByAccountServiceIdAndWorkingPeriodId(accountServiceId, currentWorkingPeriodId);
         } else {
-            accountRecalculationRepository.deleteByAccountServiceIdAndWorkingPeriodId(accountServiceId, currentWorkingPeriodId, forWorkingPeriodId);
+            accountRecalculationRepository.deleteByAccountServiceIdAndWorkingPeriodIdAndRecalculationTypeId(
+                    accountServiceId,
+                    currentWorkingPeriodId,
+                    forWorkingPeriodId,
+                    recalculationType.getId()
+            );
         }
     }
 
@@ -412,7 +422,7 @@ public class CalculationService {
         return bigDecimal.setScale(ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod) {
+    private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations, WorkingPeriodEntity currentWorkingPeriod, WorkingPeriodEntity forWorkingPeriod, RecalculationTypeEntity recalculationType) {
         for (AccountServiceCalculationDto accountServiceCalculationDto : accountCalculations) {
             if (currentWorkingPeriod.getId().equals(forWorkingPeriod.getId())) {
                 AccountAccrualEntity accountAccrual = new AccountAccrualEntity();
@@ -428,9 +438,11 @@ public class CalculationService {
                 accountAccrualRepository.save(accountAccrual);
             } else {
                 AccountRecalculationEntity accountRecalculation = new AccountRecalculationEntity();
+                accountRecalculation.setRecalculationType(recalculationType);
                 accountRecalculation.setAccountService(accountServiceCalculationDto.getAccountService());
                 accountRecalculation.setConsumption(roundHalfUp(accountServiceCalculationDto.getConsumption()));
                 accountRecalculation.setValue(roundHalfUp(accountServiceCalculationDto.getSum()));
+                accountRecalculation.setNote("-");
                 accountRecalculation.setWorkingPeriod(currentWorkingPeriod);
                 accountRecalculation.setForWorkingPeriod(forWorkingPeriod);
                 accountRecalculation.setTariff(accountServiceCalculationDto.getTariff());
