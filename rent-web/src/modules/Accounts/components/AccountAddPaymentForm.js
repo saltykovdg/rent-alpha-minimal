@@ -25,7 +25,7 @@ class AccountAddPaymentForm extends EditComponent {
       <Modal
         visible={this.props.formAddPaymentVisible}
         title={this.props.intl.messages.formAddPaymentTitle}
-        okText={this.props.intl.messages.buttonAdd}
+        okText={this.props.intl.messages.buttonAddPayment}
         onOk={this.onOk}
         onCancel={this.onCancel}
         afterClose={this.afterClose}
