@@ -6,6 +6,7 @@ export default {
     currentWorkingPeriodTitle: 'Текущий рабочий период: ',
     workingPeriodsTitle: 'Рабочие периоды',
     workingPeriodFieldTitle: 'Рабочий период',
+    forWorkingPeriodFieldTitle: 'За рабочий период',
 
     // accounts
     accountsTitle: 'Лицевые счета',
@@ -23,7 +24,6 @@ export default {
     closingBalanceTitle: 'Сальдо текущее',
     consumptionTitle: 'Потребление',
     accrualTitle: 'Начисление',
-    recalculationTitle: 'Перерасчет',
 
     // owners
     ownersTitle: 'Собственники',
@@ -171,9 +171,18 @@ export default {
     paymentTitle: 'Оплата',
     paymentsServicesTitle: 'Оплаты по услугам',
     paymentFieldDate: 'Дата оплаты',
-    paymentFieldSum: 'Сумма (руб.)',
     buttonAddPayment: 'Внести оплату',
     formAddPaymentTitle: 'Внести оплату на лицевой счет',
+    paymentValueErrorTitle: 'Оплата должна быть больше нуля!',
+
+    // recalculation
+    recalculationsTitle: 'Перерасчеты',
+    recalculationTitle: 'Перерасчет',
+    recalculationsServicesTitle: 'Перерасчеты по услугам',
+    recalculationFieldDate: 'Дата перерасчета',
+    buttonAddRecalculation: 'Внести перерасчет',
+    formAddRecalculationTitle: 'Внести перерасчет на лицевой счет',
+    recalculationValueErrorTitle: 'Перерасчет должен быть меньше или больше нуля!',
 
     // constants
     constantsTitle: 'Константы',
@@ -289,6 +298,8 @@ export default {
     commonFieldPeriodStart: 'Период С',
     commonFieldPeriodEnd: 'Период ПО',
     commonFieldTotal: 'Итого',
+    commonFieldSum: 'Сумма (руб.)',
+    commonFieldNote: 'Основание',
 
     // operations
     operationsTitle: 'Операции',

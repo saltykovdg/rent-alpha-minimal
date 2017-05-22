@@ -2,6 +2,7 @@ import { call, put, fork, takeLatest, all, take } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import * as AccountPaymentAction from './../actions/AccountPaymentAction';
+import * as AccountRecalculationAction from './../actions/AccountRecalculationAction';
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountPaymentApi from './../api/AccountPaymentApi';
 
@@ -46,9 +47,13 @@ export function* deleteAccountPayment(action) {
     yield put(AccountPaymentAction.deleteAccountPaymentSuccess(action.paymentBundleId));
     yield put(AccountPaymentAction.getAccountPayments(action.accountId));
     if (action.workingPeriodId) {
-      const sagaAction = yield take([AccountPaymentAction.GET_ACCOUNT_PAYMENTS_SUCCESS, AccountPaymentAction.GET_ACCOUNT_PAYMENTS_FAILED, LOCATION_CHANGE]);
+      let sagaAction = yield take([AccountPaymentAction.GET_ACCOUNT_PAYMENTS_SUCCESS, AccountPaymentAction.GET_ACCOUNT_PAYMENTS_FAILED, LOCATION_CHANGE]);
       if (sagaAction.type !== LOCATION_CHANGE) {
         yield put(AccountAction.getAccountCalculations(action.accountId, action.workingPeriodId));
+      }
+      sagaAction = yield take([AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS, AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED, LOCATION_CHANGE]);
+      if (sagaAction.type !== LOCATION_CHANGE) {
+        yield put(AccountRecalculationAction.getAccountRecalculations(action.id));
       }
     }
   } else if (!response.canceled) {

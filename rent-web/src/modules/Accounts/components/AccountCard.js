@@ -154,8 +154,8 @@ class AccountCard extends EditComponent {
     };
     const expandedPaymentRowRender = (record) => {
       const serviceCalculationInfoColumns = [
-        this.getColumn(this.props.intl.messages.serviceFieldName, 'service.name'),
-        this.getColumn(this.props.intl.messages.paymentFieldSum, 'sum'),
+        this.getColumn(messages.serviceFieldName, 'service.name'),
+        this.getColumn(messages.commonFieldSum, 'sum'),
       ];
       let serviceCalculationInfoDataSource = [];
       if (record && record.serviceCalculationInfoList) {
@@ -171,6 +171,38 @@ class AccountCard extends EditComponent {
         <div>
           <Table
             title={() => <h4>{messages.paymentsServicesTitle}</h4>}
+            dataSource={serviceCalculationInfoDataSource}
+            columns={serviceCalculationInfoColumns}
+            pagination={false}
+          />
+        </div>
+      );
+    };
+    const expandedRecalculationRowRender = (record) => {
+      const serviceCalculationInfoColumns = [
+        this.getColumn(messages.serviceFieldName, 'service.name'),
+        this.getColumn(messages.commonFieldSum, 'sum'),
+      ];
+      let serviceCalculationInfoDataSource = [];
+      if (record && record.serviceCalculationInfoList) {
+        serviceCalculationInfoDataSource = record.serviceCalculationInfoList.sort((a, b) => {
+          return a.service.name.localeCompare(b.service.name);
+        });
+        serviceCalculationInfoDataSource.forEach((obj) => {
+          const newObj = obj;
+          newObj.key = Math.random();
+        });
+      }
+      return (
+        <div>
+          <Table
+            title={() => <div>{''}</div>}
+            dataSource={[{ note: record.note }]}
+            columns={[this.getColumn(messages.commonFieldNote, 'note')]}
+            pagination={false}
+          />
+          <Table
+            title={() => <h4>{messages.recalculationsServicesTitle}</h4>}
             dataSource={serviceCalculationInfoDataSource}
             columns={serviceCalculationInfoColumns}
             pagination={false}
@@ -239,7 +271,7 @@ class AccountCard extends EditComponent {
       this.getDateColumn(messages.commonFieldDateEnd, 'dateEnd'),
       this.getActionSimpleColumn('meter', messages.buttonEdit, MeterPath.METER_EDIT),
     ];
-    const getActionPaymentColumn = (onDelete, currentWorkingPeriod) => {
+    const getActionCalculationColumn = (onDelete, currentWorkingPeriod) => {
       return {
         title: messages.tableColumnActions,
         key: 'action',
@@ -257,9 +289,17 @@ class AccountCard extends EditComponent {
     };
     const paymentsColumns = [
       this.getDateTimeColumn(messages.paymentFieldDate, 'date'),
-      this.getColumn(messages.paymentFieldSum, 'sum'),
       this.getColumn(messages.workingPeriodFieldTitle, 'workingPeriod.name'),
-      getActionPaymentColumn(this.props.onDeleteAccountPayment, this.props.currentWorkingPeriod),
+      this.getColumn(messages.commonFieldSum, 'sum'),
+      getActionCalculationColumn(this.props.onDeleteAccountPayment, this.props.currentWorkingPeriod),
+    ];
+    const recalculationsColumns = [
+      this.getDateTimeColumn(messages.recalculationFieldDate, 'date'),
+      this.getColumn(messages.workingPeriodFieldTitle, 'workingPeriod.name'),
+      this.getColumn(messages.forWorkingPeriodFieldTitle, 'forWorkingPeriod.name'),
+      this.getColumn(messages.commonFieldSum, 'sum'),
+      this.getColumn(messages.recalculationTypeFieldName, 'recalculationType.name'),
+      getActionCalculationColumn(this.props.onDeleteAccountRecalculation, this.props.currentWorkingPeriod),
     ];
     let address = '';
     if (object && object.id) {
@@ -289,8 +329,15 @@ class AccountCard extends EditComponent {
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             {baseFields}
             <Row gutter={16}>
-              <Col className="gutter-row" span={12}>
+              <Col className="gutter-row" span={8}>
                 <h1>{titleItem}</h1>
+              </Col>
+              <Col className="gutter-row" span={4}>
+                <FormItem label={' '} colon={false}>
+                  <Button className="full-width" onClick={() => this.props.showFormAddRecalculation()} loading={this.props.isLoadingAddAccountRecalculation}>
+                    <FormattedMessage id="buttonAddRecalculation" />
+                  </Button>
+                </FormItem>
               </Col>
               <Col className="gutter-row" span={4}>
                 <FormItem label={' '} colon={false}>
@@ -308,7 +355,7 @@ class AccountCard extends EditComponent {
               </Col>
               <Col className="gutter-row" span={4}>
                 <Spin spinning={this.props.accountIsCalculating}>
-                  <FormItem label={messages.workingPeriodsTitle}>
+                  <FormItem label={messages.workingPeriodFieldTitle}>
                     {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
                   </FormItem>
                 </Spin>
@@ -395,7 +442,20 @@ class AccountCard extends EditComponent {
                   )
                 }
               </TabPane>
-              <TabPane tab={messages.ownersTitle} key="3">
+              <TabPane tab={messages.recalculationsTitle} key="3">
+                {
+                  this.getTableComponent(
+                    recalculationsColumns,
+                    expandedRecalculationRowRender,
+                    this.props.recalculations,
+                    this.props.isLoadingAccountRecalculations,
+                    this.props.onChangeAccountRecalculationPage,
+                    true,
+                    'small'
+                  )
+                }
+              </TabPane>
+              <TabPane tab={messages.ownersTitle} key="4">
                 <Table
                   className="table-nested"
                   dataSource={ownersDataSource}
@@ -406,7 +466,7 @@ class AccountCard extends EditComponent {
                   expandedRowRender={expandedOwnerRowRender}
                 />
               </TabPane>
-              <TabPane tab={messages.registeredTitle} key="4">
+              <TabPane tab={messages.registeredTitle} key="5">
                 <Table
                   className="table-nested"
                   dataSource={registeredDataSource}
@@ -417,7 +477,7 @@ class AccountCard extends EditComponent {
                   expandedRowRender={expandedRegisteredRowRender}
                 />
               </TabPane>
-              <TabPane tab={messages.metersTitle} key="5">
+              <TabPane tab={messages.metersTitle} key="6">
                 <Table
                   className="table-nested"
                   dataSource={metersDataSource}

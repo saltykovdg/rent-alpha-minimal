@@ -10,6 +10,7 @@ import { rootAccountRegisteredSaga } from './sagas/AccountRegisteredSaga';
 import { rootAccountRegisteredDocumentAttachmentSaga } from './sagas/AccountRegisteredDocumentAttachmentSaga';
 import { rootAccountMeterSaga } from './sagas/AccountMeterSaga';
 import { rootAccountPaymentSaga } from './sagas/AccountPaymentSaga';
+import { rootAccountRecalculationSaga } from './sagas/AccountRecalculationSaga';
 
 // Export Saga
 export default all([
@@ -22,4 +23,5 @@ export default all([
   rootAccountRegisteredDocumentAttachmentSaga,
   rootAccountMeterSaga,
   rootAccountPaymentSaga,
+  rootAccountRecalculationSaga,
 ]);

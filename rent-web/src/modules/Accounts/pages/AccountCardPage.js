@@ -6,11 +6,13 @@ import { injectIntl } from 'react-intl';
 import { ExtendedComponentPage } from './../../../components/ExtendedComponentPage';
 import AccountCard from './../components/AccountCard';
 import AccountAddPaymentForm from './../components/AccountAddPaymentForm';
+import AccountAddRecalculationForm from './../components/AccountAddRecalculationForm';
 import CalculationForm from './../../../components/CalculationForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
 import * as AccountPaymentAction from './../actions/AccountPaymentAction';
+import * as AccountRecalculationAction from './../actions/AccountRecalculationAction';
 
 // Import Selectors
 import {
@@ -35,6 +37,12 @@ import {
   getAccountPaymentIsLoadingList,
 } from './../reducers/AccountPaymentReducer';
 
+import {
+  getAccountRecalculationListData,
+  getAccountRecalculationIsLoadingEdit,
+  getAccountRecalculationIsLoadingList,
+} from './../reducers/AccountRecalculationReducer';
+
 class AccountCardPage extends ExtendedComponentPage {
   componentWillMount() {
     super.componentWillMount();
@@ -46,12 +54,16 @@ class AccountCardPage extends ExtendedComponentPage {
     this.changeWorkingPeriod(this.props.currentWorkingPeriod, false);
     this.initFormCalculation(false);
     this.initFormAddPayment(false);
+    this.initFormAddRecalculation(false);
   }
   initFormCalculation = (visible) => {
     this.setState({ formCalculationVisible: visible });
   }
   initFormAddPayment = (visible) => {
     this.setState({ formAddPaymentVisible: visible });
+  }
+  initFormAddRecalculation = (visible) => {
+    this.setState({ formAddRecalculationVisible: visible });
   }
   showFormCalculation = () => {
     this.initFormCalculation(true);
@@ -94,6 +106,32 @@ class AccountCardPage extends ExtendedComponentPage {
       this.isCurrentWorkingPeriod()
     ));
   }
+  showFormAddRecalculation = () => {
+    this.initFormAddRecalculation(true);
+  }
+  onOkFormAddRecalculation = (accountServiceId, sum, note) => {
+    this.initFormAddRecalculation(false);
+    this.props.dispatch(AccountRecalculationAction.addAccountRecalculation(
+      this.props.id,
+      accountServiceId,
+      sum,
+      note,
+      this.isCurrentWorkingPeriod())
+    );
+  }
+  onCancelFormAddRecalculation = () => {
+    this.initFormAddRecalculation(false);
+  }
+  onChangeAccountRecalculationPage = (page) => {
+    this.props.dispatch(AccountRecalculationAction.getAccountRecalculations(this.props.id, page));
+  };
+  onDeleteAccountRecalculation = (recalculation) => {
+    this.props.dispatch(AccountRecalculationAction.deleteAccountRecalculation(
+      this.props.id,
+      recalculation.bundleId,
+      this.isCurrentWorkingPeriod()
+    ));
+  }
   isCurrentWorkingPeriod = () => {
     let workingPeriodId = null;
     if (this.state.selectedWorkingPeriod.id === this.props.currentWorkingPeriod.id) {
@@ -106,6 +144,7 @@ class AccountCardPage extends ExtendedComponentPage {
     return (
       <div>
         <AccountCard
+          id={this.props.id}
           data={this.props.data}
           calculations={this.props.calculations}
           isLoadingAccountCalculation={this.props.isLoadingAccountCalculation}
@@ -114,7 +153,10 @@ class AccountCardPage extends ExtendedComponentPage {
           isLoadingAccountPayments={this.props.isLoadingAccountPayments}
           isLoadingAddAccountPayment={this.props.isLoadingAddAccountPayment}
           onChangeAccountPaymentPage={this.onChangeAccountPaymentPage}
-          id={this.props.id}
+          recalculations={this.props.recalculations}
+          isLoadingAccountRecalculations={this.props.isLoadingAccountRecalculations}
+          isLoadingAddAccountRecalculation={this.props.isLoadingAddAccountRecalculation}
+          onChangeAccountRecalculationPage={this.onChangeAccountRecalculationPage}
           isLoading={this.props.isLoading}
           isRequestError={this.props.isRequestError}
           workingPeriods={this.props.workingPeriods}
@@ -124,6 +166,8 @@ class AccountCardPage extends ExtendedComponentPage {
           showFormCalculation={this.showFormCalculation}
           onDeleteAccountPayment={this.onDeleteAccountPayment}
           showFormAddPayment={this.showFormAddPayment}
+          onDeleteAccountRecalculation={this.onDeleteAccountRecalculation}
+          showFormAddRecalculation={this.showFormAddRecalculation}
         />
         <CalculationForm
           title={this.props.intl.messages.calculationAccountFormTitle}
@@ -138,6 +182,13 @@ class AccountCardPage extends ExtendedComponentPage {
           onOkFormAddPayment={this.onOkFormAddPayment}
           onCancelFormAddPayment={this.onCancelFormAddPayment}
         />
+        <AccountAddRecalculationForm
+          data={this.props.data}
+          formAddRecalculationVisible={this.state.formAddRecalculationVisible}
+          onOkFormAddRecalculation={this.onOkFormAddRecalculation}
+          onCancelFormAddRecalculation={this.onCancelFormAddRecalculation}
+          currentWorkingPeriod={this.props.currentWorkingPeriod}
+        />
       </div>
     );
   }
@@ -146,6 +197,7 @@ class AccountCardPage extends ExtendedComponentPage {
 // Retrieve data from store as props
 function mapStateToProps(state, props) {
   return {
+    id: props.params.id,
     data: getAccountEditData(state),
     isLoading: getIsLoadingAccounts(state),
     calculations: getAccountCalculationListData(state),
@@ -153,9 +205,11 @@ function mapStateToProps(state, props) {
     payments: getAccountPaymentListData(state),
     isLoadingAccountPayments: getAccountPaymentIsLoadingList(state),
     isLoadingAddAccountPayment: getAccountPaymentIsLoadingEdit(state),
+    recalculations: getAccountRecalculationListData(state),
+    isLoadingAccountRecalculations: getAccountRecalculationIsLoadingList(state),
+    isLoadingAddAccountRecalculation: getAccountRecalculationIsLoadingEdit(state),
     accountIsCalculating: accountIsCalculating(state),
     isRequestError: getIsRequestErrorAccounts(state) || accountIsCalculatingError(state),
-    id: props.params.id,
   };
 }
 

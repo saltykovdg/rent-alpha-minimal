@@ -13,6 +13,7 @@ import * as AccountRegisteredAction from './../actions/AccountRegisteredAction';
 import * as AccountRegisteredDocumentAttachmentAction from './../actions/AccountRegisteredDocumentAttachmentAction';
 import * as AccountMeterAction from './../actions/AccountMeterAction';
 import * as AccountPaymentAction from './../actions/AccountPaymentAction';
+import * as AccountRecalculationAction from './../actions/AccountRecalculationAction';
 import * as ParameterTypeAction from './../../Constants/actions/ParameterTypeAction';
 import * as ServiceAction from './../../Services/actions/ServiceAction';
 import * as DocumentTypeAction from './../../Constants/actions/DocumentTypeAction';
@@ -85,9 +86,13 @@ export function* getAccountCard(action) {
   if (response && !response.error && !response.canceled) {
     yield put(AccountAction.getAccountSuccess(response));
     yield put(AccountAction.getAccountCalculations(action.id, action.workingPeriodId));
-    const sagaAction = yield take([AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS, AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED, LOCATION_CHANGE]);
+    let sagaAction = yield take([AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS, AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED, LOCATION_CHANGE]);
     if (sagaAction.type !== LOCATION_CHANGE) {
       yield put(AccountPaymentAction.getAccountPayments(action.id));
+    }
+    sagaAction = yield take([AccountPaymentAction.GET_ACCOUNT_PAYMENTS_SUCCESS, AccountPaymentAction.GET_ACCOUNT_PAYMENTS_FAILED, LOCATION_CHANGE]);
+    if (sagaAction.type !== LOCATION_CHANGE) {
+      yield put(AccountRecalculationAction.getAccountRecalculations(action.id));
     }
   } else if (!response.canceled) {
     yield put(AccountAction.getAccountFailed(action.id));

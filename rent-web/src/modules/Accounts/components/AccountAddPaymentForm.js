@@ -1,16 +1,27 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import { Form, Modal } from 'antd';
+import { Form, Modal, Alert } from 'antd';
 
 import { EditComponent } from './../../../components/EditComponent';
 
 const FormItem = Form.Item;
 
 class AccountAddPaymentForm extends EditComponent {
+  constructor(props, context) {
+    super(props, context);
+    this.showValueError(false);
+  }
+  showValueError = (visible) => {
+    this.state = { valueError: visible };
+  }
   onOk = () => {
     this.props.form.validateFields((error, values) => {
-      if (!error && values.value > 0) {
-        this.props.onOkFormAddPayment(values.value);
+      if (!error) {
+        if (values.value <= 0) {
+          this.showValueError(true);
+        } else {
+          this.props.onOkFormAddPayment(values.value);
+        }
       }
     });
   };
@@ -19,6 +30,7 @@ class AccountAddPaymentForm extends EditComponent {
   };
   afterClose = () => {
     this.props.form.resetFields();
+    this.showValueError(false);
   }
   render() {
     return (
@@ -33,7 +45,8 @@ class AccountAddPaymentForm extends EditComponent {
         maskClosable={false}
       >
         <Form layout="horizontal">
-          <FormItem label={this.props.intl.messages.paymentFieldSum}>
+          {this.state.valueError ? <Alert message={this.props.intl.messages.paymentValueErrorTitle} type="error" /> : null}
+          <FormItem label={this.props.intl.messages.commonFieldSum}>
             {this.getInputNumberField('value', 0, 0.1)}
           </FormItem>
         </Form>
