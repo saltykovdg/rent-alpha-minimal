@@ -399,6 +399,10 @@ export function* calculateAccount(action) {
     yield put(AccountAction.calculateAccountSuccess(response));
     if (action.workingPeriodId) {
       yield put(AccountAction.getAccountCalculations(action.accountId, action.workingPeriodId));
+      const sagaAction = yield take([AccountAction.GET_ACCOUNT_CALCULATIONS_SUCCESS, AccountAction.GET_ACCOUNT_CALCULATIONS_FAILED, LOCATION_CHANGE]);
+      if (sagaAction.type !== LOCATION_CHANGE) {
+        yield put(AccountRecalculationAction.getAccountRecalculations(action.accountId));
+      }
     }
   } else if (!response.canceled) {
     yield put(AccountAction.calculateAccountFailed());
