@@ -10,6 +10,7 @@ import { ExtendedComponent } from './ExtendedComponent';
 import * as ObjectUtil from './../util/ObjectUtil';
 
 const MAX_INTEGER_VALUE = 2147483647;
+const MIN_INTEGER_VALUE = -2147483648;
 
 class EditComponent extends ExtendedComponent {
   getBaseFormField = (name, value, input) => {
@@ -34,14 +35,14 @@ class EditComponent extends ExtendedComponent {
       }],
     })(!readOnly ? <Input /> : <Input readOnly />);
   };
-  getInputNumberField = (name, value, step = 1, required = true) => {
+  getInputNumberField = (name, value, step = 1, required = true, useNegative = false) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value,
       rules: [{
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(<InputNumber min={0} max={MAX_INTEGER_VALUE} step={step} />);
+    })(<InputNumber min={useNegative ? MIN_INTEGER_VALUE : 0} max={MAX_INTEGER_VALUE} step={step} />);
   };
   getDateField = (name, value, required = true, disabled = false) => {
     return this.props.form.getFieldDecorator(name, {

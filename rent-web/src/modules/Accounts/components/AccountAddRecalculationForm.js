@@ -63,7 +63,7 @@ class AccountAddRecalculationForm extends EditComponent {
             {this.getInputField('note', '')}
           </FormItem>
           <FormItem label={this.props.intl.messages.commonFieldSum}>
-            {this.getInputNumberField('value', 0, 0.1)}
+            {this.getInputNumberField('value', 0, 0.1, true, true)}
           </FormItem>
         </Form>
       </Modal>
