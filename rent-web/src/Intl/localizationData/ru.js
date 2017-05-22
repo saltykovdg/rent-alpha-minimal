@@ -17,6 +17,7 @@ export default {
     editPageCreateAccountTitle: 'Создание лицевого счета',
     editPageEditAccountTitle: 'Редактирование лицевого счета',
     accountCardTitle: 'Карточка лицевого счета',
+    accountDataTitle: 'Данные лицевого счета',
     calculationAccountFormTitle: 'Произвести начисление / перерасчет на ЛС',
 
     calculationsTitle: 'Расчеты',
@@ -173,7 +174,7 @@ export default {
     paymentFieldDate: 'Дата оплаты',
     buttonAddPayment: 'Внести оплату',
     formAddPaymentTitle: 'Внести оплату на лицевой счет',
-    paymentValueErrorTitle: 'Оплата должна быть больше нуля!',
+    paymentValueErrorTitle: 'Сумма оплаты должна быть больше нуля!',
 
     // recalculation
     recalculationsTitle: 'Перерасчеты',
@@ -182,7 +183,7 @@ export default {
     recalculationFieldDate: 'Дата перерасчета',
     buttonAddRecalculation: 'Внести перерасчет',
     formAddRecalculationTitle: 'Внести перерасчет на лицевой счет',
-    recalculationValueErrorTitle: 'Перерасчет должен быть меньше или больше нуля!',
+    recalculationValueErrorTitle: 'Сумма перерасчета должна быть меньше или больше нуля!',
 
     // constants
     constantsTitle: 'Константы',

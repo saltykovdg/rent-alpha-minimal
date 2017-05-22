@@ -326,41 +326,32 @@ class AccountCard extends EditComponent {
           <Breadcrumb.Item>{titleItem}</Breadcrumb.Item>
         </Breadcrumb>
         <Spin spinning={this.props.isLoading}>
+          <h1>{titleItem}</h1>
+          <Spin spinning={this.props.isLoadingAddAccountPayment || this.props.isLoadingAddAccountRecalculation || this.props.accountIsCalculating}>
+            <h2>{this.props.intl.messages.operationsTitle}</h2>
+            <Form layout="inline" className="inline-form">
+              <FormItem>
+                <Button onClick={() => this.props.showFormAddPayment()} loading={this.props.isLoadingAddAccountPayment}>
+                  <FormattedMessage id="buttonAddPayment" />
+                </Button>
+              </FormItem>
+              <FormItem>
+                <Button onClick={() => this.props.showFormAddRecalculation()} loading={this.props.isLoadingAddAccountRecalculation}>
+                  <FormattedMessage id="buttonAddRecalculation" />
+                </Button>
+              </FormItem>
+              <FormItem>
+                <Button onClick={() => this.props.showFormCalculation()} loading={this.props.accountIsCalculating}>
+                  <FormattedMessage id="buttonCalculateAccount" />
+                </Button>
+              </FormItem>
+              <FormItem className="pull-right" label={messages.workingPeriodFieldTitle}>
+                {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
+              </FormItem>
+            </Form>
+          </Spin>
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
-            {baseFields}
-            <Row gutter={16}>
-              <Col className="gutter-row" span={8}>
-                <h1>{titleItem}</h1>
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <FormItem label={' '} colon={false}>
-                  <Button className="full-width" onClick={() => this.props.showFormAddRecalculation()} loading={this.props.isLoadingAddAccountRecalculation}>
-                    <FormattedMessage id="buttonAddRecalculation" />
-                  </Button>
-                </FormItem>
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <FormItem label={' '} colon={false}>
-                  <Button className="full-width" onClick={() => this.props.showFormAddPayment()} loading={this.props.isLoadingAddAccountPayment}>
-                    <FormattedMessage id="buttonAddPayment" />
-                  </Button>
-                </FormItem>
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <FormItem label={' '} colon={false}>
-                  <Button className="full-width" onClick={() => this.props.showFormCalculation()} loading={this.props.accountIsCalculating}>
-                    <FormattedMessage id="buttonCalculateAccount" />
-                  </Button>
-                </FormItem>
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <Spin spinning={this.props.accountIsCalculating}>
-                  <FormItem label={messages.workingPeriodFieldTitle}>
-                    {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
-                  </FormItem>
-                </Spin>
-              </Col>
-            </Row>
+            <h2>{messages.accountDataTitle}</h2>
             <Row gutter={16}>
               <Col className="gutter-row" span={4}>
                 <FormItem label={messages.accountFieldAccountNumber}>
