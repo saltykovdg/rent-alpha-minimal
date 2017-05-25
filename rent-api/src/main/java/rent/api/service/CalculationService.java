@@ -233,7 +233,7 @@ public class CalculationService {
         return (int) ChronoUnit.DAYS.between(serviceStart, serviceEnd.plusDays(1));
     }
 
-    private <T> List<T> getListForPeriod(WorkingPeriodEntity workingPeriod, List<? extends IPeriod> list) {
+    public  <T> List<T> getListForPeriod(WorkingPeriodEntity workingPeriod, List<? extends IPeriod> list) {
         List<T> newList = new ArrayList<>();
         for (IPeriod obj : list) {
             LocalDate dateStart = obj.getDateStart();
@@ -362,7 +362,7 @@ public class CalculationService {
         return accountServiceCalculationDto;
     }
 
-    private Double getAccountTotalAreaForPeriod(AccountEntity account, WorkingPeriodEntity workingPeriod) {
+    public Double getAccountTotalAreaForPeriod(AccountEntity account, WorkingPeriodEntity workingPeriod) {
         Double totalArea = account.getApartment().getTotalArea();
         List<AccountParameterEntity> parameters = getListForPeriod(workingPeriod, account.getParameters());
         for (AccountParameterEntity parameter : parameters) {

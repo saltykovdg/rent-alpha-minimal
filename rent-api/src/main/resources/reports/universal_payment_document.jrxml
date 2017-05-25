@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-05-25T11:05:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="universal_payment_document" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="3c205f08-c653-429c-b5d4-cb8592059683">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="arial" isDefault="true" fontName="Arial" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<parameter name="currentDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01.03.2016"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="currentDateTime" class="java.lang.String">
+		<defaultValueExpression><![CDATA["01.03.2016 13:45:30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Май 2017"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountOwners" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Салтыков Дмитрий Геннадьевич"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountAddress" class="java.lang.String">
+		<defaultValueExpression><![CDATA["мкр. Космонавтов, д. 2, кв. 21"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountTotalArea" class="java.lang.String">
+		<defaultValueExpression><![CDATA["65.3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountLivingArea" class="java.lang.String">
+		<defaultValueExpression><![CDATA["60"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountRegisteredCount" class="java.lang.String">
+		<defaultValueExpression><![CDATA["4"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="accountRoomsCount" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorName" class="java.lang.String">
+		<defaultValueExpression><![CDATA["ООО «Перспектива»"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorINN" class="java.lang.String">
+		<defaultValueExpression><![CDATA["3834013517"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorLegalAddress" class="java.lang.String">
+		<defaultValueExpression><![CDATA["665699, Российская Федерация, Иркутская область, Нижнеилимский район, поселок Янгель микрорайон Звездный, дом 2 кв. 21"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorPhone" class="java.lang.String">
+		<defaultValueExpression><![CDATA["+7 (395) 6667141"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorFax" class="java.lang.String">
+		<defaultValueExpression><![CDATA["+7 (395) 6667141"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorEmail" class="java.lang.String">
+		<defaultValueExpression><![CDATA["-"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contractorWebSite" class="java.lang.String">
+		<defaultValueExpression><![CDATA["перспектива-янгель.рф"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="220" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement key="" style="arial" x="0" y="50" width="230" height="75" uuid="bea4cf28-ba0d-46d5-9512-a0e70e771ae8">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="Arial" size="7"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="8.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["за <b>" + $P{periodName} + " г.</b> (расчетный период)<br/>Ф.И.О. собственника / нанимателя:<b><br/>" + $P{accountOwners} + "</b><br/>Адрес: <b>" + $P{accountAddress} + "</b><br/>Площадь общая / жилая: <b>" + $P{accountTotalArea} + " / " + $P{accountLivingArea} + "</b> кв.м<br/>Кол-во зарегистрированных: <b>" + $P{accountRegisteredCount} + "</b> чел.<br/>Количество комнат: <b>" + $P{accountRoomsCount} + "</b>"
+]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="230" height="10" uuid="a0539e3b-b3a3-4b9b-a04a-075be47b13d4"/>
+				<textElement markup="html">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Раздел 1. <b>Сведения о плательщике и исполнителе услуг</b>]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-10" y="0" width="594" height="30" uuid="64259def-de0d-43ec-aeec-4b06f6de47de"/>
+				<textElement textAlignment="Center" markup="html"/>
+				<textFieldExpression><![CDATA["ПЛАТЕЖНЫЙ ДОКУМЕНТ на дату " + $P{currentDate} + "<br/>для внесения платы за содержание и ремонт жилого помещения и предоставления коммунальных услуг"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" style="arial" x="0" y="125" width="230" height="94" uuid="5dc42b52-3a4a-486d-9480-01ef9efa4946">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="Arial" size="7"/>
+					<paragraph lineSpacing="Fixed" lineSpacingSize="8.0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Наименование исполнителя услуг:<br/>" + $P{contractorName} + "<br/>ИНН: " + $P{contractorINN} + "<br/>Адрес: " + $P{contractorLegalAddress} + "<br/>Телефон, факс: " + $P{contractorPhone} + ", факс " + $P{contractorFax} + "<br/>Адрес электронной почты: " + $P{contractorEmail} + "<br/>Адрес сайта в сети Интернет: " + $P{contractorWebSite}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

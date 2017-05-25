@@ -8,4 +8,8 @@ public interface Constants {
     interface Url {
         String CONTENT = "/content";
     }
+
+    interface Report {
+        String UNIVERSAL_PAYMENT_DOCUMENT = "universal_payment_document.jrxml";
+    }
 }

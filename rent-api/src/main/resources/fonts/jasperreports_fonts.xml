@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+    <fontFamily name="Arial Cyrillic">
+        <normal>fonts/arial/arial_regular.ttf</normal>
+        <bold>fonts/arial/arial_bold.ttf</bold>
+        <italic>fonts/arial/arial_italic</italic>
+        <boldItalic>fonts/arial/arial_bold_italic.ttf</boldItalic>
+        <pdfEncoding>Identity-H</pdfEncoding>
+        <pdfEmbedded>true</pdfEmbedded>
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Arial Cyrillic', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Arial Cyrillic', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+
+    <!--
+        Mapping Java logical fonts, for the sake of HTML export only.
+    -->
+
+    <fontFamily name="Arial">
+        <exportFonts>
+            <export key="net.sf.jasperreports.html">'Arial Cyrillic', Arial, Helvetica, sans-serif</export>
+            <export key="net.sf.jasperreports.xhtml">'Arial Cyrillic', Arial, Helvetica, sans-serif</export>
+        </exportFonts>
+    </fontFamily>
+</fontFamilies>
