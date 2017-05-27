@@ -3,8 +3,12 @@ package rent.api.service;
 import net.sf.jasperreports.engine.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import rent.api.utils.Constants;
+import rent.common.dtos.AccountCalculationDto;
+import rent.common.dtos.ServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.repository.AccountRepository;
 import rent.common.repository.WorkingPeriodRepository;
@@ -26,15 +30,18 @@ public class ReportService {
     private final AccountRepository accountRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final CalculationService calculationService;
+    private final PaymentService paymentService;
     private final DateTimeFormatter dateFormatter;
     private final DateTimeFormatter dateTimeFormatter;
 
     public ReportService(AccountRepository accountRepository,
                          WorkingPeriodRepository workingPeriodRepository,
-                         CalculationService calculationService) {
+                         CalculationService calculationService,
+                         PaymentService paymentService) {
         this.accountRepository = accountRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.calculationService = calculationService;
+        this.paymentService = paymentService;
         this.dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     }
@@ -67,6 +74,8 @@ public class ReportService {
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
         WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
 
+        List<AccountCalculationDto> accountCalculationList = calculationService.getAccountCalculations(accountId, periodStartId);
+
         Map<String, Object> parameters = new HashMap<>();
 
         // section 1 - account
@@ -75,8 +84,8 @@ public class ReportService {
         parameters.put("periodName", periodStart.getName());
         List<AccountOwnerEntity> accountOwnersList = calculationService.getListForPeriod(periodStart, account.getOwners());
         StringBuilder accountOwners = new StringBuilder();
-        for (AccountOwnerEntity accountOwner : accountOwnersList) {
-            accountOwners.append(accountOwners.toString().isEmpty() ? "" : ", ");
+        if (accountOwnersList.size() > 0) {
+            AccountOwnerEntity accountOwner = accountOwnersList.get(0);
             CitizenEntity citizen = accountOwner.getCitizen();
             accountOwners.append(citizen.getLastName()).append(" ").append(citizen.getFirstName()).append(" ").append(citizen.getFatherName());
         }
@@ -102,6 +111,49 @@ public class ReportService {
         parameters.put("contractorFax", contractor.getFax());
         parameters.put("contractorEmail", contractor.getEmail());
         parameters.put("contractorWebSite", contractor.getWebSite());
+
+        // section 2
+        parameters.put("accountNumber", account.getAccountNumber());
+        parameters.put("contractorBankName", contractor.getBankName());
+        parameters.put("contractorBankAddress", contractor.getBankAddress());
+        parameters.put("contractorBankSettlementAccount", contractor.getSettlementAccount());
+        parameters.put("contractorBankIdentificationCode", contractor.getBankIdentificationCode());
+        parameters.put("contractorBankCorrespondentAccount", contractor.getCorrespondentAccount());
+        List<AccountServiceEntity> accountServiceList = calculationService.getListForPeriod(periodStart, account.getServices());
+        StringBuilder accountServices = new StringBuilder();
+        for (AccountServiceEntity accountService : accountServiceList) {
+            accountServices.append(accountServices.toString().isEmpty() ? "" : ", ");
+            ServiceEntity service = accountService.getService();
+            accountServices.append(service.getName());
+        }
+        parameters.put("accountServices", accountServices.toString());
+        Double accountAmountDue = 0D;
+        Double accountOpeningBalance = 0D;
+        Double accountPayments = 0D;
+        for (AccountCalculationDto accountCalculation : accountCalculationList) {
+            Double accrual = accountCalculation.getAccrual();
+            Double recalculation = accountCalculation.getRecalculation();
+            Double payment = accountCalculation.getPayment();
+            accountAmountDue = +calculationService.roundHalfUp(accrual + recalculation - payment);
+            accountOpeningBalance = +accountCalculation.getOpeningBalance();
+            accountPayments = +payment;
+        }
+        parameters.put("accountAmountDue", accountAmountDue > 0 ? accountAmountDue.toString() : "0");
+        parameters.put("accountAmountDebt", accountOpeningBalance > 0 ? accountOpeningBalance.toString() : "0");
+        parameters.put("accountAmountPrepaid", accountOpeningBalance < 0 ? accountOpeningBalance.toString() : "0");
+        parameters.put("accountPayments", accountPayments > 0 ? accountPayments.toString() : "0");
+        String accountLastPaymentDate = "";
+        Page<ServiceCalculationDto> accountPaymentsList = paymentService.getAccountPayments(accountId, new PageRequest(0, 1));
+        if (accountPaymentsList != null) {
+            List<ServiceCalculationDto> list = accountPaymentsList.getContent();
+            if (list.size() > 0) {
+                ServiceCalculationDto serviceCalculationDto = list.get(0);
+                accountLastPaymentDate = serviceCalculationDto.getDate().format(dateFormatter);
+            }
+        }
+        parameters.put("accountLastPaymentDate", accountLastPaymentDate);
+        Double accountTotalPayment = calculationService.roundHalfUp(accountAmountDue + accountOpeningBalance);
+        parameters.put("accountTotalPayment", accountTotalPayment > 0 ? accountTotalPayment.toString() : "0");
 
         JREmptyDataSource jrEmptyDataSource = new JREmptyDataSource();
 
