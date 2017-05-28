@@ -1,6 +1,7 @@
 package rent.api.service;
 
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,12 +17,11 @@ import rent.common.repository.WorkingPeriodRepository;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ReportService {
@@ -33,6 +33,8 @@ public class ReportService {
     private final PaymentService paymentService;
     private final DateTimeFormatter dateFormatter;
     private final DateTimeFormatter dateTimeFormatter;
+    private final DecimalFormat decimalFormat;
+    private final DecimalFormat decimalFormatArea;
 
     public ReportService(AccountRepository accountRepository,
                          WorkingPeriodRepository workingPeriodRepository,
@@ -44,6 +46,8 @@ public class ReportService {
         this.paymentService = paymentService;
         this.dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        this.decimalFormat = new DecimalFormat("0.00");
+        this.decimalFormatArea = new DecimalFormat("#.##");
     }
 
     private void createReport(String reportName, String reportNameDownload, HttpServletResponse response, Map<String, Object> parameters, JRDataSource dataSource) {
@@ -96,8 +100,8 @@ public class ReportService {
         StreetTypeEntity streetType = street.getStreetType();
         String accountAddress = streetType.getNameShort() + " " + street.getName() + ", д. " + building.getHouse() + ", кв. " + apartment.getApartment();
         parameters.put("accountAddress", accountAddress);
-        parameters.put("accountTotalArea", calculationService.getAccountTotalAreaForPeriod(account, periodStart).toString());
-        parameters.put("accountLivingArea", apartment.getLivingArea().toString());
+        parameters.put("accountTotalArea", decimalFormatArea.format(calculationService.getAccountTotalAreaForPeriod(account, periodStart)));
+        parameters.put("accountLivingArea", decimalFormatArea.format(apartment.getLivingArea()));
         List<AccountRegisteredEntity> accountRegisteredList = calculationService.getListForPeriod(periodStart, account.getRegistered());
         parameters.put("accountRegisteredCount", String.valueOf(accountRegisteredList.size()));
         parameters.put("accountRoomsCount", apartment.getRoomsNumber().toString());
@@ -134,14 +138,14 @@ public class ReportService {
             Double accrual = accountCalculation.getAccrual();
             Double recalculation = accountCalculation.getRecalculation();
             Double payment = accountCalculation.getPayment();
-            accountAmountDue = +calculationService.roundHalfUp(accrual + recalculation - payment);
-            accountOpeningBalance = +accountCalculation.getOpeningBalance();
-            accountPayments = +payment;
+            accountAmountDue += calculationService.roundHalfUp(accrual + recalculation - payment);
+            accountOpeningBalance += accountCalculation.getOpeningBalance();
+            accountPayments += payment;
         }
-        parameters.put("accountAmountDue", accountAmountDue > 0 ? accountAmountDue.toString() : "0");
-        parameters.put("accountAmountDebt", accountOpeningBalance > 0 ? accountOpeningBalance.toString() : "0");
-        parameters.put("accountAmountPrepaid", accountOpeningBalance < 0 ? accountOpeningBalance.toString() : "0");
-        parameters.put("accountPayments", accountPayments > 0 ? accountPayments.toString() : "0");
+        parameters.put("accountAmountDue", accountAmountDue > 0 ? decimalFormat.format(accountAmountDue) : "0");
+        parameters.put("accountAmountDebt", accountOpeningBalance > 0 ? decimalFormat.format(accountOpeningBalance) : "0");
+        parameters.put("accountAmountPrepaid", accountOpeningBalance < 0 ? decimalFormat.format(accountOpeningBalance) : "0");
+        parameters.put("accountPayments", accountPayments > 0 ? decimalFormat.format(accountPayments) : "0");
         String accountLastPaymentDate = "";
         Page<ServiceCalculationDto> accountPaymentsList = paymentService.getAccountPayments(accountId, new PageRequest(0, 1));
         if (accountPaymentsList != null) {
@@ -153,13 +157,33 @@ public class ReportService {
         }
         parameters.put("accountLastPaymentDate", accountLastPaymentDate);
         Double accountTotalPayment = calculationService.roundHalfUp(accountAmountDue + accountOpeningBalance);
-        parameters.put("accountTotalPayment", accountTotalPayment > 0 ? accountTotalPayment.toString() : "0");
+        parameters.put("accountTotalPayment", accountTotalPayment > 0 ? decimalFormat.format(accountTotalPayment) : "0");
 
-        JREmptyDataSource jrEmptyDataSource = new JREmptyDataSource();
+        // section 3
+        List<Map<String, ?>> section3DataMap = new ArrayList<>();
+        for (AccountCalculationDto accountCalculation : accountCalculationList) {
+            Map<String, ? super Object> row = new HashMap<>();
+            row.put("serviceName", accountCalculation.getService().getName());
+            row.put("measurementUnitName", accountCalculation.getTariffMeasurementUnit().getName());
+            row.put("consumptionIndividual", accountCalculation.getConsumption());
+            row.put("consumptionCommon", 0D);
+            row.put("tariffValue", accountCalculation.getTariffValue());
+            row.put("accrualSumIndividual", accountCalculation.getAccrual());
+            row.put("accrualSumCommon", 0D);
+            row.put("accrualSum", accountCalculation.getAccrual());
+            row.put("recalculationSum", accountCalculation.getRecalculation());
+            Double totalSum = calculationService.roundHalfUp(accountCalculation.getAccrual() + accountCalculation.getRecalculation());
+            row.put("totalSum", totalSum);
+            row.put("totalSumIndividual", totalSum);
+            row.put("totalSumCommon", 0D);
+            section3DataMap.add(row);
+        }
+
+        JRMapCollectionDataSource section3DataSource = new JRMapCollectionDataSource(section3DataMap);
 
         //test url
         //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
         String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();
-        createReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT, reportNameDownload, response, parameters, jrEmptyDataSource);
+        createReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT, reportNameDownload, response, parameters, section3DataSource);
     }
 }

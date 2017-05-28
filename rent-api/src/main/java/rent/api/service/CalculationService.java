@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import rent.api.utils.Constants;
 import rent.common.dtos.AccountCalculationDto;
 import rent.common.dtos.AccountServiceCalculationDto;
 import rent.common.entity.*;
@@ -28,8 +29,6 @@ import java.util.concurrent.*;
 @Service
 public class CalculationService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final int ROUND_SCALE = 6;
 
     private final Integer appCalculationThreadsCount;
     private final String appLocale;
@@ -430,7 +429,7 @@ public class CalculationService {
 
     public Double roundHalfUp(Double value) {
         BigDecimal bigDecimal = new BigDecimal(value);
-        return bigDecimal.setScale(ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bigDecimal.setScale(Constants.CALCULATION_ROUND_SCALE, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     private void saveAccountCalculations(List<AccountServiceCalculationDto> accountCalculations,

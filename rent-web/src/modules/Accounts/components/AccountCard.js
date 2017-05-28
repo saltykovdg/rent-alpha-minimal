@@ -345,6 +345,11 @@ class AccountCard extends EditComponent {
                   <FormattedMessage id="buttonCalculateAccount" />
                 </Button>
               </FormItem>
+              <FormItem>
+                <Button onClick={() => this.props.showFormReport()}>
+                  <FormattedMessage id="buttonExecuteReportUPD" />
+                </Button>
+              </FormItem>
               <FormItem className="pull-right" label={messages.workingPeriodFieldTitle}>
                 {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
               </FormItem>

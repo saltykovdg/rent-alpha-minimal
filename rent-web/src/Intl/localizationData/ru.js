@@ -19,6 +19,7 @@ export default {
     accountCardTitle: 'Карточка лицевого счета',
     accountDataTitle: 'Данные лицевого счета',
     calculationAccountFormTitle: 'Произвести начисление / перерасчет на ЛС',
+    reportAccountFormTitle: 'Формирование печатной формы УПД',
 
     calculationsTitle: 'Расчеты',
     openingBalanceTitle: 'Сальдо входящее',
@@ -264,6 +265,7 @@ export default {
     buttonSelect: 'Выбрать',
     buttonChange: 'Изменить',
     buttonExecuteCalculation: 'Выполнить расчет',
+    buttonExecuteReportUPD: 'Сформировать УПД',
     buttonCard: 'Карточка',
     buttonCalculateAccount: 'Расчитать ЛС',
     buttonGoToAccountList: 'Перейти к списку ЛС',

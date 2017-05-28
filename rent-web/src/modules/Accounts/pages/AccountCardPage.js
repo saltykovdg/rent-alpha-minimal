@@ -8,6 +8,7 @@ import AccountCard from './../components/AccountCard';
 import AccountAddPaymentForm from './../components/AccountAddPaymentForm';
 import AccountAddRecalculationForm from './../components/AccountAddRecalculationForm';
 import CalculationForm from './../../../components/CalculationForm';
+import ReportForm from './../../../components/ReportForm';
 
 // Import Actions
 import * as AccountAction from './../actions/AccountAction';
@@ -53,11 +54,15 @@ class AccountCardPage extends ExtendedComponentPage {
     }
     this.changeWorkingPeriod(this.props.currentWorkingPeriod, false);
     this.initFormCalculation(false);
+    this.initFormReport(false);
     this.initFormAddPayment(false);
     this.initFormAddRecalculation(false);
   }
   initFormCalculation = (visible) => {
     this.setState({ formCalculationVisible: visible });
+  }
+  initFormReport = (visible) => {
+    this.setState({ formReportVisible: visible });
   }
   initFormAddPayment = (visible) => {
     this.setState({ formAddPaymentVisible: visible });
@@ -79,6 +84,15 @@ class AccountCardPage extends ExtendedComponentPage {
   }
   onCancelFormCalculation = () => {
     this.initFormCalculation(false);
+  }
+  showFormReport = () => {
+    this.initFormReport(true);
+  }
+  onOkFormReport = (object) => {
+    this.initFormReport(false);
+  }
+  onCancelFormReport = () => {
+    this.initFormReport(false);
   }
   showFormAddPayment = () => {
     this.initFormAddPayment(true);
@@ -164,6 +178,7 @@ class AccountCardPage extends ExtendedComponentPage {
           selectedWorkingPeriod={this.state.selectedWorkingPeriod}
           changeWorkingPeriod={this.changeWorkingPeriod}
           showFormCalculation={this.showFormCalculation}
+          showFormReport={this.showFormReport}
           onDeleteAccountPayment={this.onDeleteAccountPayment}
           showFormAddPayment={this.showFormAddPayment}
           onDeleteAccountRecalculation={this.onDeleteAccountRecalculation}
@@ -176,6 +191,15 @@ class AccountCardPage extends ExtendedComponentPage {
           currentWorkingPeriod={this.props.currentWorkingPeriod}
           onOkFormCalculation={this.onOkFormCalculation}
           onCancelFormCalculation={this.onCancelFormCalculation}
+        />
+        <ReportForm
+          accountId={this.props.id}
+          title={this.props.intl.messages.reportAccountFormTitle}
+          formReportVisible={this.state.formReportVisible}
+          workingPeriods={this.props.workingPeriods}
+          currentWorkingPeriod={this.props.currentWorkingPeriod}
+          onOkFormReport={this.onOkFormReport}
+          onCancelFormReport={this.onCancelFormReport}
         />
         <AccountAddPaymentForm
           formAddPaymentVisible={this.state.formAddPaymentVisible}

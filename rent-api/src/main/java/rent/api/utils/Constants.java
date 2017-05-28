@@ -5,6 +5,11 @@ public interface Constants {
 
     String REQUEST_PARAM_FILE = "file";
 
+    /**
+     * точность расчетов, округление до 8-ми знаков после запятой
+     */
+    int CALCULATION_ROUND_SCALE = 8;
+
     interface Url {
         String CONTENT = "/content";
     }
