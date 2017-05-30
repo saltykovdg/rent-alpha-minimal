@@ -50,24 +50,24 @@ public class ReportService {
         this.decimalFormatArea = new DecimalFormat("#.##");
     }
 
-    private void createReport(String reportName, String reportNameDownload, HttpServletResponse response, Map<String, Object> parameters, JRDataSource dataSource) {
-        JasperReport jasperReport;
-        JasperPrint jasperPrint;
-        try {
-            InputStream inputStream = getReportInputStream(reportName);
-            jasperReport = JasperCompileManager.compileReport(inputStream);
-            jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-            response.setContentType("application/x-pdf");
-            response.setHeader("Content-disposition", "attachment; filename=" + reportNameDownload + ".pdf");
-            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
-        } catch (JRException | IOException e) {
-            log.error(e.getMessage(), e);
-        }
+    private JasperReport getJasperReport(String reportName) throws JRException {
+        InputStream inputStream = getReportInputStream(reportName);
+        return JasperCompileManager.compileReport(inputStream);
     }
 
     private InputStream getReportInputStream(String reportName) {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         return classloader.getResourceAsStream("reports/" + reportName);
+    }
+
+    private void exportReportToPdfStream(String reportNameDownload, JasperPrint jasperPrint, HttpServletResponse response) throws JRException {
+        try {
+            response.setContentType("application/x-pdf");
+            response.setHeader("Content-disposition", "attachment; filename=" + reportNameDownload + ".pdf");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     public void getReportUniversalPaymentDocument(HttpServletResponse response, String accountId, String periodStartId, String periodEndId) {
@@ -178,12 +178,23 @@ public class ReportService {
             row.put("totalSumCommon", 0D);
             section3DataMap.add(row);
         }
-
         JRMapCollectionDataSource section3DataSource = new JRMapCollectionDataSource(section3DataMap);
 
         //test url
         //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
-        String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();
-        createReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT, reportNameDownload, response, parameters, section3DataSource);
+
+        try {
+            JasperReport mainReport = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT);
+            JasperReport subReportSection1 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_1);
+
+            parameters.put("subReportSection1", subReportSection1);
+            parameters.put("subReportSection1DataSource", section3DataSource);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, new JREmptyDataSource());
+            String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();
+            exportReportToPdfStream(reportNameDownload, jasperPrint, response);
+        } catch (JRException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
