@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fontFamilies>
     <fontFamily name="Arial Cyrillic">
-        <normal>fonts/arial/arial_regular.ttf</normal>
-        <bold>fonts/arial/arial_bold.ttf</bold>
-        <italic>fonts/arial/arial_italic</italic>
-        <boldItalic>fonts/arial/arial_bold_italic.ttf</boldItalic>
+        <normal>fonts/arial/ArialRegular.ttf</normal>
+        <bold>fonts/arial/ArialBold.ttf</bold>
+        <italic>fonts/arial/ArialItalic</italic>
+        <boldItalic>fonts/arial/ArialBoldItalic.ttf</boldItalic>
         <pdfEncoding>Identity-H</pdfEncoding>
         <pdfEmbedded>true</pdfEmbedded>
         <exportFonts>
