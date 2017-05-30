@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-30T17:31:50 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="universal_payment_document" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="3c205f08-c653-429c-b5d4-cb8592059683">
+<!-- 2017-05-30T19:39:24 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="UniversalPaymentDocument" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="3c205f08-c653-429c-b5d4-cb8592059683">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="arial" isDefault="true" fontName="Arial" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 	<parameter name="currentDate" class="java.lang.String">
@@ -92,8 +92,8 @@
 	<parameter name="accountTotalPayment" class="java.lang.String">
 		<defaultValueExpression><![CDATA["0"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="subReportSection1" class="net.sf.jasperreports.engine.JasperReport"/>
-	<parameter name="subReportSection1DataSource" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
+	<parameter name="subReportSection3" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="subReportSection3DataSource" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -352,8 +352,8 @@
 				<reportElement x="0" y="0" width="575" height="20" uuid="f337db0b-0415-4633-a652-a4fc519b2e1c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<dataSourceExpression><![CDATA[$P{subReportSection1DataSource}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{subReportSection1}]]></subreportExpression>
+				<dataSourceExpression><![CDATA[$P{subReportSection3DataSource}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subReportSection3}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

@@ -185,10 +185,10 @@ public class ReportService {
 
         try {
             JasperReport mainReport = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT);
-            JasperReport subReportSection1 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_1);
+            JasperReport subReportSection3 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_3);
 
-            parameters.put("subReportSection1", subReportSection1);
-            parameters.put("subReportSection1DataSource", section3DataSource);
+            parameters.put("subReportSection3", subReportSection3);
+            parameters.put("subReportSection3DataSource", section3DataSource);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, new JREmptyDataSource());
             String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();

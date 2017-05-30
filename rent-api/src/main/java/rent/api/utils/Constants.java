@@ -16,6 +16,6 @@ public interface Constants {
 
     interface Report {
         String UNIVERSAL_PAYMENT_DOCUMENT = "UniversalPaymentDocument.jrxml";
-        String UNIVERSAL_PAYMENT_DOCUMENT_SECTION_1 = "UniversalPaymentDocumentSection1.jrxml";
+        String UNIVERSAL_PAYMENT_DOCUMENT_SECTION_3 = "UniversalPaymentDocumentSection3.jrxml";
     }
 }
