@@ -18,6 +18,7 @@ import * as AddressAction from './../../Address/AddressActions';
 import * as TariffAction from './../../Tariffs/actions/TariffAction';
 import * as CitizenAction from './../../Citizens/actions/CitizenAction';
 import * as MeterAction from './../../Meters/actions/MeterAction';
+import * as CommonAction from './../../Commons/actions/CommonAction';
 
 // Import Selectors
 import {
@@ -304,6 +305,9 @@ class AccountEditPage extends ExtendedComponentPage {
   onSearchMeters = (service, name, serialNumber, page, size) => {
     this.props.dispatch(MeterAction.findMetersIndividual(service, name, serialNumber, page, size));
   }
+  onDownloadContent = (url) => {
+    this.props.dispatch(CommonAction.downloadContent(url));
+  }
   render() {
     if (!this.props.data) return null;
     const messages = this.props.intl.messages;
@@ -363,6 +367,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteOwnerDocumentAttachment={this.onDeleteOwnerDocumentAttachment}
           onSearchOwner={this.onSearchCitizen}
           clearLocalDataCitizens={this.clearLocalDataCitizens}
+          onDownloadContent={this.onDownloadContent}
         />
         <AccountEditRegisteredForm
           isLoading={this.props.isLoadingCitizen}
@@ -376,6 +381,7 @@ class AccountEditPage extends ExtendedComponentPage {
           onDeleteRegisteredDocumentAttachment={this.onDeleteRegisteredDocumentAttachment}
           onSearchRegistered={this.onSearchCitizen}
           clearLocalDataCitizens={this.clearLocalDataCitizens}
+          onDownloadContent={this.onDownloadContent}
         />
         <EditTiedMeterForm
           title={this.state.meter.id ? messages.editPageEditMeterOnAccountTitle : messages.editPageAddMeterOnAccountTitle}

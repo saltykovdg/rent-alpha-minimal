@@ -9,6 +9,7 @@ import rootCitizensSaga from './modules/Citizens/CitizensSaga';
 import rootNormsSaga from './modules/Norms/NormsSaga';
 import rootMetersSaga from './modules/Meters/MetersSaga';
 import rootOperationsSaga from './modules/Operations/OperationsSaga';
+import rootCommonsSaga from './modules/Commons/CommonsSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     rootNormsSaga,
     rootMetersSaga,
     rootOperationsSaga,
+    rootCommonsSaga,
   ]);
 }

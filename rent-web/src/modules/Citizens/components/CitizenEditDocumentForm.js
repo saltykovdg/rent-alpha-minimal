@@ -48,13 +48,19 @@ class CitizenEditDocumentForm extends EditComponent {
     this.setState({ attachmentsFileNameError: false, activeTab: '1' });
   }
   onViewDocumentAttachment = (attachment) => {
-    let fileUrl = `${process.env.RENT_API_URL}${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
+    let fileUrl = `${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
     if (attachment.file) {
       fileUrl = URL.createObjectURL(attachment.file);
+      const tempLink = document.createElement('a');
+      tempLink.href = fileUrl;
+      tempLink.setAttribute('download', attachment.name);
+      tempLink.setAttribute('target', '_blank');
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+    } else {
+      this.props.onDownloadContent(fileUrl);
     }
-    const otherWindow = window.open();
-    otherWindow.opener = null;
-    otherWindow.location = fileUrl;
   }
   onDeleteDocumentAttachment = (attachment) => {
     this.props.onDeleteDocumentAttachment(this.props.document, attachment);

@@ -11,6 +11,7 @@ import CitizenEditDocumentForm from './../components/CitizenEditDocumentForm';
 
 // Import Actions
 import * as CitizenAction from './../actions/CitizenAction';
+import * as CommonAction from './../../Commons/actions/CommonAction';
 
 // Import Selectors
 import {
@@ -89,6 +90,9 @@ class CitizenEditPage extends ExtendedComponentPage {
     this.props.dispatch(CitizenAction.removeAttachmentFromCitizenDocument(document, attachment));
     this.forceUpdate();
   }
+  onDownloadContent = (url) => {
+    this.props.dispatch(CommonAction.downloadContent(url));
+  }
   render() {
     if (!this.props.data) return null;
     return (
@@ -112,6 +116,7 @@ class CitizenEditPage extends ExtendedComponentPage {
           onCancelFormDocumentEdit={this.onCancelFormDocumentEdit}
           onAddDocumentAttachment={this.onAddDocumentAttachment}
           onDeleteDocumentAttachment={this.onDeleteDocumentAttachment}
+          onDownloadContent={this.onDownloadContent}
         />
       </div>
     );

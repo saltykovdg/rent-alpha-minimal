@@ -65,13 +65,19 @@ class AccountEditOwnerForm extends EditComponent {
     });
   }
   onViewDocumentAttachment = (attachment) => {
-    const otherWindow = window.open();
-    otherWindow.opener = null;
-    let fileUrl = `${process.env.RENT_API_URL}${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
+    let fileUrl = `${process.env.RENT_API_CONTENT_URL}/${attachment.urlLink}`;
     if (attachment.file) {
       fileUrl = URL.createObjectURL(attachment.file);
+      const tempLink = document.createElement('a');
+      tempLink.href = fileUrl;
+      tempLink.setAttribute('download', attachment.name);
+      tempLink.setAttribute('target', '_blank');
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+    } else {
+      this.props.onDownloadContent(fileUrl);
     }
-    otherWindow.location = fileUrl;
   }
   onDeleteOwnerDocumentAttachment = (attachment) => {
     this.props.onDeleteOwnerDocumentAttachment(this.props.owner, attachment);

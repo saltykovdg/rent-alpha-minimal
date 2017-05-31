@@ -58,7 +58,7 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
       let fileName = response.headers['content-file-name'];
       if (!fileName) {
         if (endpoint.indexOf(`${process.env.RENT_API_CONTENT_URL}`) !== -1) {
-          fileName = endpoint.replace(`${process.env.RENT_API_CONTENT_URL}`, '');
+          fileName = endpoint.replace(`${process.env.RENT_API_CONTENT_URL}/`, '');
         } else {
           fileName = guid();
         }
