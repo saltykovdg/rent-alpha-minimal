@@ -107,6 +107,7 @@ export const accountReducer = (state, action) => {
       return prepareEditLoading(state.account.list.data, emptyEditData);
     }
 
+    case AccountAction.DOWNLOAD_ACCOUNT_REPORT_UPD:
     case AccountAction.SAVE_ACCOUNT: {
       return prepareEditLoading(state.account.list.data, state.account.edit.data);
     }
@@ -267,6 +268,13 @@ export const accountReducer = (state, action) => {
       const newObj = state.account.edit.data;
       newObj.meters = newObj.meters.filter(meter => meter.id !== action.meter.id);
       return prepareSuccess(state.account.list.data, newObj);
+    }
+
+    case AccountAction.DOWNLOAD_ACCOUNT_REPORT_UPD_SUCCESS: {
+      return prepareSuccess(state.account.list.data, state.account.edit.data);
+    }
+    case AccountAction.DOWNLOAD_ACCOUNT_REPORT_UPD_FAILED: {
+      return prepareEditFailed(state.account.list.data, state.account.edit.data);
     }
 
     default:
