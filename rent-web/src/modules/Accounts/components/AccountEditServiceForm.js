@@ -37,13 +37,13 @@ class AccountEditServiceForm extends EditComponent {
     let serviceList = null;
     if (this.props.services && this.props.services.content) {
       serviceList = this.props.services.content.map(service => (
-        <Select.Option key={service.id} value={this.getLink(service)}>{service.name}</Select.Option>
+        <Select.Option key={Math.random()} value={this.getLink(service)}>{service.name}</Select.Option>
       ));
     }
     let tariffList = null;
     if (this.props.tariffs && this.props.tariffs.content && this.props.tariffs.content.length > 0) {
       tariffList = this.props.tariffs.content.map(tariff => (
-        <Select.Option key={tariff.id} value={this.getLink(tariff)}>{tariff.name}</Select.Option>
+        <Select.Option key={Math.random()} value={this.getLink(tariff)}>{tariff.name}</Select.Option>
       ));
       if (!this.props.form.getFieldValue('tariff')) {
         object.tariff = this.props.tariffs.content[0];

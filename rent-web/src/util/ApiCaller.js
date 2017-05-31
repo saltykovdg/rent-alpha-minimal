@@ -64,14 +64,18 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
         }
       }
       const blob = new Blob([response.data], { type: 'application/octet-stream' });
-      const blobURL = window.URL.createObjectURL(blob);
-      const tempLink = document.createElement('a');
-      tempLink.href = blobURL;
-      tempLink.setAttribute('download', fileName);
-      tempLink.setAttribute('target', '_blank');
-      document.body.appendChild(tempLink);
-      tempLink.click();
-      document.body.removeChild(tempLink);
+      if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+      } else {
+        const blobURL = window.URL.createObjectURL(blob);
+        const tempLink = document.createElement('a');
+        tempLink.href = blobURL;
+        tempLink.setAttribute('download', fileName);
+        tempLink.setAttribute('target', '_blank');
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
+      }
     }
     return response.data;
   })

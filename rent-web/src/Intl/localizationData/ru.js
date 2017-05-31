@@ -261,6 +261,7 @@ export default {
     buttonAdd: 'Добавить',
     buttonCancel: 'Отмена',
     buttonView: 'Просмотр',
+    buttonDownload: 'Скачать',
     buttonApply: 'Применить',
     buttonSelect: 'Выбрать',
     buttonChange: 'Изменить',
