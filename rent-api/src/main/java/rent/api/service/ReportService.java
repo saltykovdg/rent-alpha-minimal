@@ -243,18 +243,33 @@ public class ReportService {
         }
         JRMapCollectionDataSource section4DataSource = new JRMapCollectionDataSource(section4DataMap);
 
+        // section 5
+        List<Map<String, ?>> section5DataMap = new ArrayList<>();
+        Map<String, ? super Object> row = new HashMap<>();
+        row.put("serviceName", "");
+        row.put("workingPeriod", "");
+        row.put("forWorkingPeriod", "");
+        row.put("sum", null);
+        row.put("note", "");
+        section5DataMap.add(row);
+        JRMapCollectionDataSource section5DataSource = new JRMapCollectionDataSource(section5DataMap);
+
         //test url
         //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
+        //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1&periodEndId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1
 
         try {
             JasperReport mainReport = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT);
             JasperReport subReportSection3 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_3);
             JasperReport subReportSection4 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_4);
+            JasperReport subReportSection5 = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT_SECTION_5);
 
             parameters.put("subReportSection3", subReportSection3);
             parameters.put("subReportSection3DataSource", section3DataSource);
             parameters.put("subReportSection4", subReportSection4);
             parameters.put("subReportSection4DataSource", section4DataSource);
+            parameters.put("subReportSection5", subReportSection5);
+            parameters.put("subReportSection5DataSource", section5DataSource);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, new JREmptyDataSource());
             String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();

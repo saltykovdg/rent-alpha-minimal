@@ -554,12 +554,12 @@ public class DatabasePopulationService {
     private void createServices() {
         if (serviceRepository.count() == 0) {
             log.info("createServices()");
-            ServiceTypeEntity serviceType = serviceTypeRepository.findByNameContainingOrderByName("Жилищьная").get(0);
+            ServiceTypeEntity serviceType = serviceTypeRepository.findByNameContainingOrderByName("Коммунальня").get(0);
             createService(serviceType, "Текущий ремонт");
             createService(serviceType, "Содержание жилья");
             createService(serviceType, "Отопление");
-            createService(serviceType, "Холодная вода");
-            createService(serviceType, "Горячая вода");
+            createService(serviceType, "Холодное водоснабжение");
+            createService(serviceType, "Горячее водоснабжение");
             createService(serviceType, "Водоотведение");
         }
     }
@@ -596,9 +596,9 @@ public class DatabasePopulationService {
                     createTariff(dateStart, calculationTypeTotalArea, measurementUnitArea, 2.5D, service);
                 } else if (service.getName().contains("Отопление")) {
                     createTariff(dateStart, calculationTypeTotalArea, measurementUnitArea, 30.5D, service);
-                } else if (service.getName().contains("Холодная вода")) {
+                } else if (service.getName().contains("Холодное водоснабжение")) {
                     createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 8.5D, service);
-                } else if (service.getName().contains("Горячая вода")) {
+                } else if (service.getName().contains("Горячее водоснабжение")) {
                     createTariff(dateStart, calculationTypeMeterReading, measurementUnitWater, 40.5D, service);
                 } else if (service.getName().contains("Водоотведение")) {
                     createTariff(dateStart, calculationTypeMeterReadingWater, measurementUnitWater, 7.25D, service);
@@ -629,9 +629,9 @@ public class DatabasePopulationService {
             MeasurementUnitEntity measurementUnitWater = measurementUnitRepository.findByNameContainingOrderByName("куб. м").get(0);
             LocalDate dateStart = getFirstWorkingPeriod().getDateStart();
             for (ServiceEntity service : services) {
-                if (service.getName().contains("Холодная вода")) {
+                if (service.getName().contains("Холодное водоснабжение")) {
                     createNorm(dateStart, measurementUnitWater, 7.5D, service);
-                } else if (service.getName().contains("Горячая вода")) {
+                } else if (service.getName().contains("Горячее водоснабжение")) {
                     createNorm(dateStart, measurementUnitWater, 4.5D, service);
                 }
             }
@@ -763,8 +763,8 @@ public class DatabasePopulationService {
         account.setOwners(accountOwners);
 
         List<AccountMeterEntity> accountMeters = new ArrayList<>();
-        accountMeters.add(createAccountMeter(random, dateStart, dateEnd, meterType, getServiceByName(services, "Холодная вода")));
-        accountMeters.add(createAccountMeter(random, dateStart, dateEnd, meterType, getServiceByName(services, "Горячая вода")));
+        accountMeters.add(createAccountMeter(random, dateStart, dateEnd, meterType, getServiceByName(services, "Холодное водоснабжение")));
+        accountMeters.add(createAccountMeter(random, dateStart, dateEnd, meterType, getServiceByName(services, "Горячее водоснабжение")));
         account.setMeters(accountMeters);
 
         accountRepository.save(account);

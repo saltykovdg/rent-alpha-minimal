@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-05-30T20:45:23 -->
+<!-- 2017-05-31T15:01:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="UniversalPaymentDocument" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="3c205f08-c653-429c-b5d4-cb8592059683">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="arial" isDefault="true" fontName="Arial" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
@@ -96,6 +96,8 @@
 	<parameter name="subReportSection3DataSource" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
 	<parameter name="subReportSection4" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="subReportSection4DataSource" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
+	<parameter name="subReportSection5" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="subReportSection5DataSource" class="net.sf.jasperreports.engine.data.JRMapCollectionDataSource"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -363,6 +365,16 @@
 				</reportElement>
 				<dataSourceExpression><![CDATA[$P{subReportSection4DataSource}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{subReportSection4}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="0" y="0" width="575" height="20" uuid="9d414272-a4c8-4f3c-a135-1dc0789fbf7c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$P{subReportSection5DataSource}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{subReportSection5}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
