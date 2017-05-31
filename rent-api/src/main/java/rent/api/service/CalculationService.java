@@ -377,7 +377,7 @@ public class CalculationService {
         return totalArea;
     }
 
-    private List<MeterValueEntity> getMeterValuesForPeriod(MeterEntity meter, WorkingPeriodEntity workingPeriod) {
+    public List<MeterValueEntity> getMeterValuesForPeriod(MeterEntity meter, WorkingPeriodEntity workingPeriod) {
         List<MeterValueEntity> list = new ArrayList<>();
         List<MeterValueEntity> meterValues = meter.getValues();
         for (MeterValueEntity meterValue : meterValues) {
@@ -389,7 +389,7 @@ public class CalculationService {
         return list;
     }
 
-    private List<ServiceEntity> getServicesWaterForPeriod(WorkingPeriodEntity workingPeriod, AccountEntity account, TariffValueEntity tariffValueWater) {
+    public List<ServiceEntity> getServicesWaterForPeriod(WorkingPeriodEntity workingPeriod, AccountEntity account, TariffValueEntity tariffValueWater) {
         List<ServiceEntity> list = new ArrayList<>();
         List<AccountServiceEntity> accountServices = getListForPeriod(workingPeriod, account.getServices());
         for (AccountServiceEntity accountService : accountServices) {
@@ -413,7 +413,7 @@ public class CalculationService {
         return list;
     }
 
-    private Double getNormValueForPeriod(WorkingPeriodEntity workingPeriod, ServiceEntity service) {
+    public Double getNormValueForPeriod(WorkingPeriodEntity workingPeriod, ServiceEntity service) {
         Double value = 0D;
         List<NormEntity> norms = normRepository.findByServiceId(service.getId());
         for (NormEntity norm : norms) {

@@ -11,6 +11,8 @@ import rent.api.utils.Constants;
 import rent.common.dtos.AccountCalculationDto;
 import rent.common.dtos.ServiceCalculationDto;
 import rent.common.entity.*;
+import rent.common.enums.CalculationType;
+import rent.common.repository.AccountAccrualRepository;
 import rent.common.repository.AccountRepository;
 import rent.common.repository.WorkingPeriodRepository;
 
@@ -28,6 +30,7 @@ public class ReportService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final AccountRepository accountRepository;
+    private final AccountAccrualRepository accountAccrualRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final CalculationService calculationService;
     private final PaymentService paymentService;
@@ -37,10 +40,12 @@ public class ReportService {
     private final DecimalFormat decimalFormatArea;
 
     public ReportService(AccountRepository accountRepository,
+                         AccountAccrualRepository accountAccrualRepository,
                          WorkingPeriodRepository workingPeriodRepository,
                          CalculationService calculationService,
                          PaymentService paymentService) {
         this.accountRepository = accountRepository;
+        this.accountAccrualRepository = accountAccrualRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.calculationService = calculationService;
         this.paymentService = paymentService;
@@ -74,6 +79,11 @@ public class ReportService {
         log.debug("createReportUniversalPaymentDocument({}, {}, {})", accountId, periodStartId, periodEndId);
 
         AccountEntity account = accountRepository.findOne(accountId);
+        ApartmentEntity apartment = account.getApartment();
+        BuildingEntity building = apartment.getBuilding();
+        StreetEntity street = building.getStreet();
+        StreetTypeEntity streetType = street.getStreetType();
+
         WorkingPeriodEntity periodStart = workingPeriodRepository.findOne(periodStartId);
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
         WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
@@ -94,10 +104,6 @@ public class ReportService {
             accountOwners.append(citizen.getLastName()).append(" ").append(citizen.getFirstName()).append(" ").append(citizen.getFatherName());
         }
         parameters.put("accountOwners", accountOwners.toString());
-        ApartmentEntity apartment = account.getApartment();
-        BuildingEntity building = apartment.getBuilding();
-        StreetEntity street = building.getStreet();
-        StreetTypeEntity streetType = street.getStreetType();
         String accountAddress = streetType.getNameShort() + " " + street.getName() + ", д. " + building.getHouse() + ", кв. " + apartment.getApartment();
         parameters.put("accountAddress", accountAddress);
         parameters.put("accountTotalArea", decimalFormatArea.format(calculationService.getAccountTotalAreaForPeriod(account, periodStart)));
@@ -182,16 +188,59 @@ public class ReportService {
 
         // section 4
         List<Map<String, ?>> section4DataMap = new ArrayList<>();
-        Map<String, ? super Object> row = new HashMap<>();
-        row.put("serviceName", "");
-        row.put("measurementUnitName", "");
-        row.put("consumptionNormIndividual", null);
-        row.put("consumptionNormCommon", null);
-        row.put("consumptionIndividual", null);
-        row.put("consumptionCommon", null);
-        row.put("consumptionIndividualTotal", null);
-        row.put("consumptionCommonTotal", null);
-        section4DataMap.add(row);
+        List<String> servicesProcessed = new ArrayList<>();
+        for (AccountCalculationDto accountCalculation : accountCalculationList) {
+            TariffEntity tariff = accountCalculation.getTariff();
+            if (tariff == null) continue;
+            List<TariffValueEntity> tariffValues = calculationService.getListForPeriod(periodStart, tariff.getValues());
+            if (tariffValues == null || tariffValues.size() == 0) continue;
+            TariffValueEntity tariffValue = tariffValues.get(0);
+            CalculationTypeEntity calculationType = tariffValue.getCalculationType();
+            if (calculationType.getCode().equals(CalculationType.METER_READING.getCode()) || calculationType.getCode().equals(CalculationType.METER_READING_WATER.getCode())) {
+                ServiceEntity service = accountCalculation.getService();
+                String serviceId = service.getId();
+                if (servicesProcessed.contains(serviceId)) continue;
+                MeasurementUnitEntity measurementUnit = accountCalculation.getTariffMeasurementUnit();
+                Double normValue = 0D;
+                if (calculationType.getCode().equals(CalculationType.METER_READING_WATER.getCode())) {
+                    List<ServiceEntity> servicesWater = calculationService.getServicesWaterForPeriod(periodStart, account, tariffValue);
+                    List<String> servicesWaterProcessed = new ArrayList<>();
+                    for (ServiceEntity serviceWater : servicesWater) {
+                        String serviceWaterId = serviceWater.getId();
+                        if (!servicesWaterProcessed.contains(serviceWaterId)) {
+                            normValue += calculationService.getNormValueForPeriod(periodStart, serviceWater);
+                            servicesWaterProcessed.add(serviceWaterId);
+                        }
+                    }
+                } else {
+                    normValue = calculationService.getNormValueForPeriod(periodStart, service);
+                }
+                Double consumptionIndividual = 0D;
+                List<AccountMeterEntity> accountMeters = calculationService.getListForPeriod(periodStart, account.getMeters());
+                for (AccountMeterEntity accountMeter : accountMeters) {
+                    MeterEntity meter = accountMeter.getMeter();
+                    ServiceEntity meterService = meter.getService();
+                    if (meterService.getId().equals(serviceId)) {
+                        List<MeterValueEntity> meterValues = calculationService.getMeterValuesForPeriod(meter, periodStart);
+                        for (MeterValueEntity meterValue : meterValues) {
+                            consumptionIndividual += meterValue.getConsumption();
+                        }
+                    }
+                }
+                Double consumptionIndividualTotal = accountAccrualRepository.getSumConsumptionByServiceIdAndBuildingIdAndWorkingPeriodId(serviceId, building.getId(), periodStartId);
+                Map<String, ? super Object> row = new HashMap<>();
+                row.put("serviceName", service.getName());
+                row.put("measurementUnitName", measurementUnit.getName());
+                row.put("consumptionNormIndividual", normValue);
+                row.put("consumptionNormCommon", 0D);
+                row.put("consumptionIndividual", consumptionIndividual);
+                row.put("consumptionCommon", 0D);
+                row.put("consumptionIndividualTotal", calculationService.roundHalfUp(consumptionIndividualTotal));
+                row.put("consumptionCommonTotal", 0D);
+                section4DataMap.add(row);
+                servicesProcessed.add(serviceId);
+            }
+        }
         JRMapCollectionDataSource section4DataSource = new JRMapCollectionDataSource(section4DataMap);
 
         //test url

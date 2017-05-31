@@ -41,6 +41,19 @@ public interface AccountAccrualRepository extends PagingAndSortingRepository<Acc
     Double getSumByAccountServiceIdAndWorkingPeriodId(@Param("accountServiceId") String accountServiceId,
                                                       @Param("workingPeriodId") String workingPeriodId);
 
+    @Query("select sum(accountAccrual.consumption) from AccountAccrualEntity accountAccrual" +
+            " join accountAccrual.accountService accountService " +
+            " join accountService.service service " +
+            " join accountService.account account " +
+            " join account.apartment apartment " +
+            " join apartment.building building where " +
+            "service.id = :serviceId and " +
+            "building.id = :buildingId and " +
+            "accountAccrual.workingPeriod.id = :workingPeriodId")
+    Double getSumConsumptionByServiceIdAndBuildingIdAndWorkingPeriodId(@Param("serviceId") String serviceId,
+                                                                       @Param("buildingId") String buildingId,
+                                                                       @Param("workingPeriodId") String workingPeriodId);
+
     @Query("select accountAccrual from AccountAccrualEntity accountAccrual where " +
             "accountAccrual.accountService.id = :accountServiceId and " +
             "accountAccrual.workingPeriod.id = :workingPeriodId")
