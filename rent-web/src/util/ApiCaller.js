@@ -27,7 +27,14 @@ export function cancelAllRequests() {
   sources = sources.filter(source => !removed.includes(source.endpoint));
 }
 
-export function callApi(endpoint, method = 'get', body) {
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+  return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+}
+
+export function callApi(endpoint, method = 'get', body, responseType = '') {
   cancelAllRequests();
 
   const cancelToken = axios.CancelToken;
@@ -44,8 +51,28 @@ export function callApi(endpoint, method = 'get', body) {
       password: 'admin',
     },
     cancelToken: currentSource.token,
+    responseType,
   })
   .then((response) => {
+    if (responseType === 'arraybuffer') {
+      let fileName = response.headers['content-file-name'];
+      if (!fileName) {
+        if (endpoint.indexOf(`${process.env.RENT_API_CONTENT_URL}`) !== -1) {
+          fileName = endpoint.replace(`${process.env.RENT_API_CONTENT_URL}`, '');
+        } else {
+          fileName = guid();
+        }
+      }
+      const blob = new Blob([response.data], { type: 'application/octet-stream' });
+      const blobURL = window.URL.createObjectURL(blob);
+      const tempLink = document.createElement('a');
+      tempLink.href = blobURL;
+      tempLink.setAttribute('download', fileName);
+      tempLink.setAttribute('target', '_blank');
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+    }
     return response.data;
   })
   .catch((thrown) => {
@@ -59,4 +86,8 @@ export function callApi(endpoint, method = 'get', body) {
 
 export function uploadFile(object) {
   return callApi('file/upload', 'post', object);
+}
+
+export function downloadFile(endpoint, method) {
+  return callApi(endpoint, method, null, 'arraybuffer');
 }

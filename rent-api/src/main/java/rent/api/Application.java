@@ -19,6 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 import rent.api.interceptors.LoggingRequestInterceptor;
+import rent.api.utils.Constants;
 import rent.common.entity.*;
 import rent.common.projection.*;
 
@@ -47,6 +48,8 @@ public class Application extends SpringBootServletInitializer {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
+        config.addExposedHeader(Constants.HEADER_CONTENT_FILE_NAME);
+        config.addExposedHeader(Constants.HEADER_CONTENT_DISPOSITION);
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
         config.addAllowedMethod(HttpMethod.PATCH);

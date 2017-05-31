@@ -90,6 +90,11 @@ class AccountCardPage extends ExtendedComponentPage {
   }
   onOkFormReport = (object) => {
     this.initFormReport(false);
+    this.props.dispatch(AccountAction.downloadAccountReportUPD(
+      this.props.id,
+      object.periodStart.id,
+      object.periodEnd.id
+    ));
   }
   onCancelFormReport = () => {
     this.initFormReport(false);

@@ -60,6 +60,10 @@ export const CALCULATE_ACCOUNT = 'CALCULATE_ACCOUNT';
 export const CALCULATE_ACCOUNT_SUCCESS = 'CALCULATE_ACCOUNT_SUCCESS';
 export const CALCULATE_ACCOUNT_FAILED = 'CALCULATE_ACCOUNT_FAILED';
 
+export const DOWNLOAD_ACCOUNT_REPORT_UPD = 'DOWNLOAD_ACCOUNT_REPORT_UPD';
+export const DOWNLOAD_ACCOUNT_REPORT_UPD_SUCCESS = 'DOWNLOAD_ACCOUNT_REPORT_UPD_SUCCESS';
+export const DOWNLOAD_ACCOUNT_REPORT_UPD_FAILED = 'DOWNLOAD_ACCOUNT_REPORT_UPD_FAILED';
+
 export const getAccounts = (page = 0) => {
   return {
     type: GET_ACCOUNTS,
@@ -372,5 +376,24 @@ export const calculateAccountSuccess = (data) => {
 export const calculateAccountFailed = () => {
   return {
     type: CALCULATE_ACCOUNT_FAILED,
+  };
+};
+
+export const downloadAccountReportUPD = (accountId, periodStartId, periodEndId) => {
+  return {
+    type: DOWNLOAD_ACCOUNT_REPORT_UPD,
+    accountId,
+    periodStartId,
+    periodEndId,
+  };
+};
+export const downloadAccountReportUPDSuccess = () => {
+  return {
+    type: DOWNLOAD_ACCOUNT_REPORT_UPD_SUCCESS,
+  };
+};
+export const downloadAccountReportUPDFailed = () => {
+  return {
+    type: DOWNLOAD_ACCOUNT_REPORT_UPD_FAILED,
   };
 };

@@ -37,3 +37,8 @@ export function calculateAccount(accountId, periodStartId, periodEndId) {
   const query = `?accountId=${accountId}&periodStartId=${periodStartId}&periodEndId=${periodEndId}`;
   return ApiCaller.callApi(`calculation/calculate-account${query}`);
 }
+
+export function downloadAccountReportUPD(accountId, periodStartId, periodEndId) {
+  const query = `?accountId=${accountId}&periodStartId=${periodStartId}&periodEndId=${periodEndId}`;
+  return ApiCaller.downloadFile(`report/universal-payment-document${query}`, 'post');
+}

@@ -38,6 +38,7 @@ public class ReportService {
     private final PaymentService paymentService;
     private final DateTimeFormatter dateFormatter;
     private final DateTimeFormatter dateTimeFormatter;
+    private final DateTimeFormatter dateTimeFormatterDownload;
     private final DecimalFormat decimalFormat;
     private final DecimalFormat decimalFormatArea;
 
@@ -55,6 +56,7 @@ public class ReportService {
         this.paymentService = paymentService;
         this.dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        this.dateTimeFormatterDownload = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss");
         this.decimalFormat = new DecimalFormat("0.00");
         this.decimalFormatArea = new DecimalFormat("#.##");
     }
@@ -72,7 +74,8 @@ public class ReportService {
     private void exportReportToPdfStream(String reportNameDownload, JasperPrint jasperPrint, HttpServletResponse response) throws JRException {
         try {
             response.setContentType("application/x-pdf");
-            response.setHeader("Content-disposition", "attachment; filename=" + reportNameDownload + ".pdf");
+            response.setHeader(Constants.HEADER_CONTENT_DISPOSITION, "attachment; filename=" + reportNameDownload + ".pdf");
+            response.setHeader(Constants.HEADER_CONTENT_FILE_NAME, reportNameDownload + ".pdf");
             JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -322,7 +325,7 @@ public class ReportService {
             parameters.put("subReportSection5DataSource", section5DataSource);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, new JREmptyDataSource());
-            String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().toString();
+            String reportNameDownload = "UPD_" + account.getAccountNumber() + "_" + LocalDateTime.now().format(dateTimeFormatterDownload);
             exportReportToPdfStream(reportNameDownload, jasperPrint, response);
         } catch (JRException e) {
             log.error(e.getMessage(), e);

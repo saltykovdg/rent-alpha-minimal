@@ -413,6 +413,19 @@ export function* watchCalculateAccount() {
   yield takeLatest(AccountAction.CALCULATE_ACCOUNT, calculateAccount);
 }
 
+export function* downloadAccountReportUPD(action) {
+  const response = yield call(AccountApi.downloadAccountReportUPD, action.accountId, action.periodStartId, action.periodEndId);
+  if (response && !response.error && !response.canceled) {
+    yield put(AccountAction.downloadAccountReportUPDSuccess());
+  } else if (!response.canceled) {
+    yield put(AccountAction.downloadAccountReportUPDFailed());
+  }
+}
+
+export function* watchDownloadAccountReportUPD() {
+  yield takeLatest(AccountAction.DOWNLOAD_ACCOUNT_REPORT_UPD, downloadAccountReportUPD);
+}
+
 export const rootAccountSaga = all([
   fork(watchGetAccounts),
   fork(watchGetAccount),
@@ -424,4 +437,5 @@ export const rootAccountSaga = all([
   fork(watchFindAccounts),
   fork(watchGetAccountCalculations),
   fork(watchCalculateAccount),
+  fork(watchDownloadAccountReportUPD),
 ]);

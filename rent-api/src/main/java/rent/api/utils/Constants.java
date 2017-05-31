@@ -4,6 +4,8 @@ public interface Constants {
     String PRODUCES_TEXT_HTML_UTF8 = "text/html;charset=UTF-8";
 
     String REQUEST_PARAM_FILE = "file";
+    String HEADER_CONTENT_FILE_NAME = "content-file-name";
+    String HEADER_CONTENT_DISPOSITION = "content-disposition";
 
     /**
      * точность расчетов, округление до 8-ми знаков после запятой
