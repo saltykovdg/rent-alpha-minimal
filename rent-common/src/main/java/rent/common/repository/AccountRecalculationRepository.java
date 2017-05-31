@@ -13,6 +13,7 @@ import rent.common.dtos.ServiceCalculationInfoDto;
 import rent.common.entity.AccountRecalculationEntity;
 import rent.common.projection.AccountRecalculationBasic;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RepositoryRestResource(
@@ -81,4 +82,15 @@ public interface AccountRecalculationRepository extends PagingAndSortingReposito
             "group by accountRecalculation.recalculationType, accountRecalculation.note, accountRecalculation.forWorkingPeriod, accountRecalculation.workingPeriod, accountRecalculation.date, accountRecalculation.bundleId " +
             "order by accountRecalculation.date desc")
     Page<ServiceCalculationDto> getSumByAccountIdPageable(@Param("accountId") String accountId, Pageable p);
+
+    @Query("select accountRecalculation from AccountRecalculationEntity accountRecalculation " +
+            "join accountRecalculation.accountService accountService " +
+            "join accountService.service service " +
+            "join accountRecalculation.workingPeriod workingPeriod " +
+            "join accountService.account account " +
+            "where account.id = :accountId and workingPeriod.dateStart between :dateStart and :dateEnd " +
+            "order by accountRecalculation.date desc, service.name")
+    List<AccountRecalculationEntity> getByAccountIdAndPeriod(@Param("accountId") String accountId,
+                                                             @Param("dateStart") LocalDate dateStart,
+                                                             @Param("dateEnd") LocalDate dateEnd);
 }

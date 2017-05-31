@@ -13,6 +13,7 @@ import rent.common.dtos.ServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
 import rent.common.repository.AccountAccrualRepository;
+import rent.common.repository.AccountRecalculationRepository;
 import rent.common.repository.AccountRepository;
 import rent.common.repository.WorkingPeriodRepository;
 
@@ -31,6 +32,7 @@ public class ReportService {
 
     private final AccountRepository accountRepository;
     private final AccountAccrualRepository accountAccrualRepository;
+    private final AccountRecalculationRepository accountRecalculationRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
     private final CalculationService calculationService;
     private final PaymentService paymentService;
@@ -41,11 +43,13 @@ public class ReportService {
 
     public ReportService(AccountRepository accountRepository,
                          AccountAccrualRepository accountAccrualRepository,
+                         AccountRecalculationRepository accountRecalculationRepository,
                          WorkingPeriodRepository workingPeriodRepository,
                          CalculationService calculationService,
                          PaymentService paymentService) {
         this.accountRepository = accountRepository;
         this.accountAccrualRepository = accountAccrualRepository;
+        this.accountRecalculationRepository = accountRecalculationRepository;
         this.workingPeriodRepository = workingPeriodRepository;
         this.calculationService = calculationService;
         this.paymentService = paymentService;
@@ -75,6 +79,16 @@ public class ReportService {
         }
     }
 
+    /**
+     * test url:
+     * http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
+     * http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1&periodEndId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1
+     *
+     * @param response
+     * @param accountId
+     * @param periodStartId
+     * @param periodEndId
+     */
     public void getReportUniversalPaymentDocument(HttpServletResponse response, String accountId, String periodStartId, String periodEndId) {
         log.debug("createReportUniversalPaymentDocument({}, {}, {})", accountId, periodStartId, periodEndId);
 
@@ -184,6 +198,22 @@ public class ReportService {
             row.put("totalSumCommon", 0D);
             section3DataMap.add(row);
         }
+        if (section3DataMap.isEmpty()) {
+            Map<String, ? super Object> row = new HashMap<>();
+            row.put("serviceName", "");
+            row.put("measurementUnitName", "");
+            row.put("consumptionIndividual", null);
+            row.put("consumptionCommon", null);
+            row.put("tariffValue", null);
+            row.put("accrualSumIndividual", null);
+            row.put("accrualSumCommon", null);
+            row.put("accrualSum", null);
+            row.put("recalculationSum", null);
+            row.put("totalSum", null);
+            row.put("totalSumIndividual", null);
+            row.put("totalSumCommon", null);
+            section3DataMap.add(row);
+        }
         JRMapCollectionDataSource section3DataSource = new JRMapCollectionDataSource(section3DataMap);
 
         // section 4
@@ -241,22 +271,42 @@ public class ReportService {
                 servicesProcessed.add(serviceId);
             }
         }
+        if (section4DataMap.isEmpty()) {
+            Map<String, ? super Object> row = new HashMap<>();
+            row.put("serviceName", "");
+            row.put("measurementUnitName", "");
+            row.put("consumptionNormIndividual", null);
+            row.put("consumptionNormCommon", null);
+            row.put("consumptionIndividual", null);
+            row.put("consumptionCommon", null);
+            row.put("consumptionIndividualTotal", null);
+            row.put("consumptionCommonTotal", null);
+            section4DataMap.add(row);
+        }
         JRMapCollectionDataSource section4DataSource = new JRMapCollectionDataSource(section4DataMap);
 
         // section 5
         List<Map<String, ?>> section5DataMap = new ArrayList<>();
-        Map<String, ? super Object> row = new HashMap<>();
-        row.put("serviceName", "");
-        row.put("workingPeriod", "");
-        row.put("forWorkingPeriod", "");
-        row.put("sum", null);
-        row.put("note", "");
-        section5DataMap.add(row);
+        List<AccountRecalculationEntity> accountRecalculations = accountRecalculationRepository.getByAccountIdAndPeriod(accountId, periodStart.getDateStart(), periodEnd.getDateStart());
+        for (AccountRecalculationEntity accountRecalculation : accountRecalculations) {
+            Map<String, ? super Object> row = new HashMap<>();
+            row.put("serviceName", accountRecalculation.getAccountService().getService().getName());
+            row.put("workingPeriod", accountRecalculation.getWorkingPeriod().getName());
+            row.put("forWorkingPeriod", accountRecalculation.getForWorkingPeriod().getName());
+            row.put("sum", accountRecalculation.getValue());
+            row.put("note", accountRecalculation.getNote());
+            section5DataMap.add(row);
+        }
+        if (section5DataMap.isEmpty()) {
+            Map<String, ? super Object> row = new HashMap<>();
+            row.put("serviceName", "");
+            row.put("workingPeriod", "");
+            row.put("forWorkingPeriod", "");
+            row.put("sum", null);
+            row.put("note", "");
+            section5DataMap.add(row);
+        }
         JRMapCollectionDataSource section5DataSource = new JRMapCollectionDataSource(section5DataMap);
-
-        //test url
-        //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
-        //http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1&periodEndId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1
 
         try {
             JasperReport mainReport = getJasperReport(Constants.Report.UNIVERSAL_PAYMENT_DOCUMENT);
