@@ -82,16 +82,6 @@ public class ReportService {
         }
     }
 
-    /**
-     * test url:
-     * http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=8ecdd221-5a41-4015-9e26-45ad831f6641&periodEndId=8ecdd221-5a41-4015-9e26-45ad831f6641
-     * http://192.168.0.101:8080/report/universal-payment-document?accountId=6b347984-49f6-46b2-9659-307353993af5&periodStartId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1&periodEndId=f45ed4bc-c7e9-4344-8183-09737b3b1cd1
-     *
-     * @param response
-     * @param accountId
-     * @param periodStartId
-     * @param periodEndId
-     */
     public void getReportUniversalPaymentDocument(HttpServletResponse response, String accountId, String periodStartId, String periodEndId) {
         log.debug("createReportUniversalPaymentDocument({}, {}, {})", accountId, periodStartId, periodEndId);
 
@@ -103,7 +93,6 @@ public class ReportService {
 
         WorkingPeriodEntity periodStart = workingPeriodRepository.findOne(periodStartId);
         WorkingPeriodEntity periodEnd = workingPeriodRepository.findOne(periodEndId);
-        WorkingPeriodEntity currentWorkingPeriod = calculationService.getCurrentWorkingPeriod();
 
         List<AccountCalculationDto> accountCalculationList = calculationService.getAccountCalculations(accountId, periodStartId);
 
