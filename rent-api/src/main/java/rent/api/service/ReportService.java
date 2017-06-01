@@ -73,7 +73,7 @@ public class ReportService {
 
     private void exportReportToPdfStream(String reportNameDownload, JasperPrint jasperPrint, HttpServletResponse response) throws JRException {
         try {
-            response.setContentType("application/x-pdf");
+            response.setContentType("application/pdf");
             response.setHeader(Constants.HEADER_CONTENT_DISPOSITION, "attachment; filename=" + reportNameDownload + ".pdf");
             response.setHeader(Constants.HEADER_CONTENT_FILE_NAME, reportNameDownload + ".pdf");
             JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());

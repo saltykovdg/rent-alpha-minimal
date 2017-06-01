@@ -63,18 +63,13 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
           fileName = guid();
         }
       }
-      const blob = new Blob([response.data], { type: 'application/octet-stream' });
+      const contentType = response.headers['content-type'];
+      const blob = new Blob([response.data], { type: contentType });
       if (window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob, fileName);
       } else {
-        const blobURL = window.URL.createObjectURL(blob);
-        const tempLink = document.createElement('a');
-        tempLink.href = blobURL;
-        tempLink.setAttribute('download', fileName);
-        tempLink.setAttribute('target', '_blank');
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        document.body.removeChild(tempLink);
+        const blobUrl = URL.createObjectURL(blob);
+        window.open(blobUrl);
       }
     }
     return response.data;
