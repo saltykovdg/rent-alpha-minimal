@@ -146,7 +146,7 @@ class EditComponent extends ExtendedComponent {
       render(text, record) {
         return (
           <span>
-            <Link onClick={() => onView(record)}><FormattedMessage id="buttonDownload" /></Link>
+            <Link onClick={() => onView(record)}><FormattedMessage id="buttonView" /></Link>
             <span className="ant-divider" />
             <Popconfirm title={messages.confirmDelete} onConfirm={() => onDelete(record)} >
               <Link><FormattedMessage id="buttonDelete" /></Link>
