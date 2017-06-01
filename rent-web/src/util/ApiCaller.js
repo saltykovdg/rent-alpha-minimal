@@ -68,7 +68,8 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
       if (window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob, fileName);
       } else {
-        const blobUrl = URL.createObjectURL(blob);
+        window.URL = window.URL || window.webkitURL;
+        const blobUrl = window.URL.createObjectURL(blob);
         window.open(blobUrl);
       }
     }

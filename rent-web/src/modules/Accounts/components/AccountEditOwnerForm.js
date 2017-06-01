@@ -70,7 +70,8 @@ class AccountEditOwnerForm extends EditComponent {
         const blob = new Blob([attachment.file]);
         window.navigator.msSaveOrOpenBlob(blob, attachment.file.name);
       } else {
-        const blobUrl = URL.createObjectURL(attachment.file);
+        window.URL = window.URL || window.webkitURL;
+        const blobUrl = window.URL.createObjectURL(attachment.file);
         window.open(blobUrl);
       }
     } else {
