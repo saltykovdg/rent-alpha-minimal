@@ -6,6 +6,7 @@ public interface Constants {
     String REQUEST_PARAM_FILE = "file";
     String HEADER_CONTENT_FILE_NAME = "content-file-name";
     String HEADER_CONTENT_DISPOSITION = "content-disposition";
+    String HEADER_AUTHORIZATION = "Authorization";
 
     /**
      * точность расчетов, округление до 8-ми знаков после запятой

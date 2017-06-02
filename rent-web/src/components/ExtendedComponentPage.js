@@ -21,6 +21,10 @@ ExtendedComponentPage.propTypes = {
   data: PropTypes.objectOf(PropTypes.shape),
 };
 
+ExtendedComponentPage.defaultProps = {
+  data: null,
+};
+
 ExtendedComponentPage.contextTypes = {
   router: PropTypes.object,
 };

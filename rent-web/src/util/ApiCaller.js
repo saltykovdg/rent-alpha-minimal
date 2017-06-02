@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as AuthUtil from './AuthUtil';
 
 let sources = [];
 
@@ -35,6 +36,12 @@ function guid() {
 }
 
 export function callApi(endpoint, method = 'get', body, responseType = '') {
+  if (window.authorization) {
+    if (!AuthUtil.checkJWT(window.authorization)) {
+      AuthUtil.logout();
+    }
+  }
+
   cancelAllRequests();
 
   const cancelToken = axios.CancelToken;
@@ -46,42 +53,49 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
     url: `${process.env.RENT_API_URL}/${endpoint}`,
     data: body,
     withCredentials: true,
-    auth: {
-      username: 'admin',
-      password: 'admin',
-    },
     cancelToken: currentSource.token,
     responseType,
+    headers: {
+      authorization: window.authorization,
+    },
   })
-  .then((response) => {
-    if (responseType === 'arraybuffer') {
-      let fileName = response.headers['content-file-name'];
-      if (!fileName) {
-        if (endpoint.indexOf(`${process.env.RENT_API_CONTENT_URL}`) !== -1) {
-          fileName = endpoint.replace(`${process.env.RENT_API_CONTENT_URL}/`, '');
+    .then((response) => {
+      if (responseType === 'arraybuffer') {
+        let fileName = response.headers['content-file-name'];
+        if (!fileName) {
+          if (endpoint.indexOf(`${process.env.RENT_API_CONTENT_URL}`) !== -1) {
+            fileName = endpoint.replace(`${process.env.RENT_API_CONTENT_URL}/`, '');
+          } else {
+            fileName = guid();
+          }
+        }
+        const contentType = response.headers['content-type'];
+        const blob = new Blob([response.data], { type: contentType });
+        if (window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob, fileName);
         } else {
-          fileName = guid();
+          window.URL = window.URL || window.webkitURL;
+          const blobUrl = window.URL.createObjectURL(blob);
+          window.open(blobUrl);
         }
       }
-      const contentType = response.headers['content-type'];
-      const blob = new Blob([response.data], { type: contentType });
-      if (window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, fileName);
-      } else {
-        window.URL = window.URL || window.webkitURL;
-        const blobUrl = window.URL.createObjectURL(blob);
-        window.open(blobUrl);
+      let data = response.data;
+      if (!data) {
+        data = {};
       }
-    }
-    return response.data;
-  })
-  .catch((thrown) => {
-    if (axios.isCancel(thrown)) {
-      return { canceled: true, status: 'canceled' };
-    }
-    const status = thrown && thrown.response && thrown.response.status ? thrown.response.status : 'unknown';
-    return { error: thrown, status };
-  });
+      const authorization = response.headers.authorization;
+      if (authorization) {
+        data.authorization = authorization;
+      }
+      return data;
+    })
+    .catch((thrown) => {
+      if (axios.isCancel(thrown)) {
+        return { canceled: true, status: 'canceled' };
+      }
+      const status = thrown && thrown.response && thrown.response.status ? thrown.response.status : 'unknown';
+      return { error: thrown, status };
+    });
 }
 
 export function uploadFile(object) {

@@ -50,6 +50,7 @@ public class Application extends SpringBootServletInitializer {
         config.addAllowedHeader("*");
         config.addExposedHeader(Constants.HEADER_CONTENT_FILE_NAME);
         config.addExposedHeader(Constants.HEADER_CONTENT_DISPOSITION);
+        config.addExposedHeader(Constants.HEADER_AUTHORIZATION);
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
         config.addAllowedMethod(HttpMethod.PATCH);

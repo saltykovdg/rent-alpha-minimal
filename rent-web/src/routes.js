@@ -20,387 +20,412 @@ import * as CitizenPath from './modules/Citizens/paths/CitizenPath';
 import * as NormPath from './modules/Norms/paths/NormPath';
 import * as MeterPath from './modules/Meters/paths/MeterPath';
 import * as CalculationPath from './modules/Operations/paths/CalculationPath';
+import * as LoginPath from './modules/Security/paths/LoginPath';
+
+import * as AuthUtil from './util/AuthUtil';
+
+const validate = (next, replace, callback) => {
+  const authorization = AuthUtil.getAuthorization();
+  if (!AuthUtil.checkJWT(authorization) && next.location.pathname !== LoginPath.LOGIN) {
+    replace(LoginPath.LOGIN);
+  } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
+    replace('/');
+  }
+  callback();
+};
 
 // react-router setup with code-splitting
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
 export default (
-  <Route path="/" component={App}>
-    <IndexRoute
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/App/pages/WelcomePage').default);
-        });
-      }}
-    />
+  <Route path="/" onEnter={validate}>
+    <Route component={App}>
+      <IndexRoute
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/App/pages/WelcomePage').default);
+          });
+        }}
+      />
 
-    { /* Organization */ }
-    <Route
-      path={OrganizationPath.CONTRACTOR_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Organization/pages/ContractorTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${OrganizationPath.CONTRACTOR_TYPE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Organization/pages/ContractorTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={OrganizationPath.CONTRACTOR_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Organization/pages/ContractorListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${OrganizationPath.CONTRACTOR_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Organization/pages/ContractorEditPage').default);
-        });
-      }}
-    />
+      { /* Organization */ }
+      <Route
+        path={OrganizationPath.CONTRACTOR_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Organization/pages/ContractorTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${OrganizationPath.CONTRACTOR_TYPE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Organization/pages/ContractorTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={OrganizationPath.CONTRACTOR_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Organization/pages/ContractorListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${OrganizationPath.CONTRACTOR_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Organization/pages/ContractorEditPage').default);
+          });
+        }}
+      />
 
-    { /* Address */ }
-    <Route
-      path={AddressPath.STREET_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/StreetTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.STREET_TYPE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/StreetTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={AddressPath.STREET_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/StreetListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.STREET_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/StreetEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={AddressPath.BUILDING_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.BUILDING_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/BuildingEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={AddressPath.APARTMENT_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/ApartmentListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AddressPath.APARTMENT_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Address/pages/ApartmentEditPage').default);
-        });
-      }}
-    />
+      { /* Address */ }
+      <Route
+        path={AddressPath.STREET_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/StreetTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AddressPath.STREET_TYPE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/StreetTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={AddressPath.STREET_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/StreetListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AddressPath.STREET_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/StreetEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={AddressPath.BUILDING_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/BuildingListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AddressPath.BUILDING_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/BuildingEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={AddressPath.APARTMENT_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/ApartmentListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AddressPath.APARTMENT_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Address/pages/ApartmentEditPage').default);
+          });
+        }}
+      />
 
-    { /* Service */ }
-    <Route
-      path={ServiceTypePath.SERVICE_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Services/pages/ServiceTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${ServiceTypePath.SERVICE_TYPE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Services/pages/ServiceTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={ServicePath.SERVICE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Services/pages/ServiceListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${ServicePath.SERVICE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Services/pages/ServiceEditPage').default);
-        });
-      }}
-    />
+      { /* Service */ }
+      <Route
+        path={ServiceTypePath.SERVICE_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Services/pages/ServiceTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${ServiceTypePath.SERVICE_TYPE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Services/pages/ServiceTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={ServicePath.SERVICE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Services/pages/ServiceListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${ServicePath.SERVICE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Services/pages/ServiceEditPage').default);
+          });
+        }}
+      />
 
-    { /* Tariffs */ }
-    <Route
-      path={TariffPath.TARIFF_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Tariffs/pages/TariffListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${TariffPath.TARIFF_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Tariffs/pages/TariffEditPage').default);
-        });
-      }}
-    />
+      { /* Tariffs */ }
+      <Route
+        path={TariffPath.TARIFF_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Tariffs/pages/TariffListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${TariffPath.TARIFF_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Tariffs/pages/TariffEditPage').default);
+          });
+        }}
+      />
 
-    { /* Norms */ }
-    <Route
-      path={NormPath.NORM_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Norms/pages/NormListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${NormPath.NORM_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Norms/pages/NormEditPage').default);
-        });
-      }}
-    />
+      { /* Norms */ }
+      <Route
+        path={NormPath.NORM_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Norms/pages/NormListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${NormPath.NORM_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Norms/pages/NormEditPage').default);
+          });
+        }}
+      />
 
-    { /* Constants */ }
-    <Route
-      path={CalculationTypePath.CALCULATION_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/CalculationTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${CalculationTypePath.CALCULATION_TYPE_EDIT}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/CalculationTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={RecalculationTypePath.RECALCULATION_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/RecalculationTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${RecalculationTypePath.RECALCULATION_TYPE_EDIT}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/RecalculationTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={ParameterTypePath.PARAMETER_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/ParameterTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${ParameterTypePath.PARAMETER_TYPE_EDIT}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/ParameterTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={GenderTypePath.GENDER_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/GenderTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${GenderTypePath.GENDER_TYPE_EDIT}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/GenderTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/MeasurementUnitListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${MeasurementUnitPath.MEASUREMENT_UNIT_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/MeasurementUnitEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={DocumentTypePath.DOCUMENT_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/DocumentTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${DocumentTypePath.DOCUMENT_TYPE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/DocumentTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={RegistrationTypePath.REGISTRATION_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/RegistrationTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${RegistrationTypePath.REGISTRATION_TYPE_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/RegistrationTypeEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={MeterTypePath.METER_TYPE_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/MeterTypeListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${MeterTypePath.METER_TYPE_EDIT}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Constants/pages/MeterTypeEditPage').default);
-        });
-      }}
-    />
+      { /* Constants */ }
+      <Route
+        path={CalculationTypePath.CALCULATION_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/CalculationTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${CalculationTypePath.CALCULATION_TYPE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/CalculationTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={RecalculationTypePath.RECALCULATION_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/RecalculationTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${RecalculationTypePath.RECALCULATION_TYPE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/RecalculationTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={ParameterTypePath.PARAMETER_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/ParameterTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${ParameterTypePath.PARAMETER_TYPE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/ParameterTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={GenderTypePath.GENDER_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/GenderTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${GenderTypePath.GENDER_TYPE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/GenderTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={MeasurementUnitPath.MEASUREMENT_UNIT_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/MeasurementUnitListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${MeasurementUnitPath.MEASUREMENT_UNIT_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/MeasurementUnitEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={DocumentTypePath.DOCUMENT_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/DocumentTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${DocumentTypePath.DOCUMENT_TYPE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/DocumentTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={RegistrationTypePath.REGISTRATION_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/RegistrationTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${RegistrationTypePath.REGISTRATION_TYPE_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/RegistrationTypeEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={MeterTypePath.METER_TYPE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/MeterTypeListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${MeterTypePath.METER_TYPE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Constants/pages/MeterTypeEditPage').default);
+          });
+        }}
+      />
 
-    { /* Accounts */ }
-    <Route
-      path={AccountPath.ACCOUNT_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Accounts/pages/AccountListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AccountPath.ACCOUNT_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Accounts/pages/AccountEditPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${AccountPath.ACCOUNT_CARD}/:id`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Accounts/pages/AccountCardPage').default);
-        });
-      }}
-    />
+      { /* Accounts */ }
+      <Route
+        path={AccountPath.ACCOUNT_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Accounts/pages/AccountListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AccountPath.ACCOUNT_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Accounts/pages/AccountEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${AccountPath.ACCOUNT_CARD}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Accounts/pages/AccountCardPage').default);
+          });
+        }}
+      />
 
-    { /* Citizens */ }
-    <Route
-      path={CitizenPath.CITIZEN_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Citizens/pages/CitizenListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${CitizenPath.CITIZEN_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Citizens/pages/CitizenEditPage').default);
-        });
-      }}
-    />
+      { /* Citizens */ }
+      <Route
+        path={CitizenPath.CITIZEN_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Citizens/pages/CitizenListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${CitizenPath.CITIZEN_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Citizens/pages/CitizenEditPage').default);
+          });
+        }}
+      />
 
-    { /* Meters */ }
-    <Route
-      path={MeterPath.METER_LIST}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Meters/pages/MeterListPage').default);
-        });
-      }}
-    />
-    <Route
-      path={`${MeterPath.METER_EDIT}(/:id)`}
-      getComponent={(nextState, cb) => {
-        require.ensure([], (require) => {
-          cb(null, require('./modules/Meters/pages/MeterEditPage').default);
-        });
-      }}
-    />
+      { /* Meters */ }
+      <Route
+        path={MeterPath.METER_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Meters/pages/MeterListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${MeterPath.METER_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Meters/pages/MeterEditPage').default);
+          });
+        }}
+      />
 
-    { /* Operations */ }
+      { /* Operations */ }
+      <Route
+        path={CalculationPath.CALCULATION}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Operations/pages/CalculationPage').default);
+          });
+        }}
+      />
+    </Route>
+
+    { /* Security */ }
     <Route
-      path={CalculationPath.CALCULATION}
+      path={LoginPath.LOGIN}
       getComponent={(nextState, cb) => {
         require.ensure([], (require) => {
-          cb(null, require('./modules/Operations/pages/CalculationPage').default);
+          cb(null, require('./modules/Security/pages/LoginFormPage').default);
         });
       }}
     />

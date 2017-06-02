@@ -1,8 +1,18 @@
 export default {
   locale: 'ru',
   messages: {
-    headerTitle: 'Квартплата 1.0',
-    headerMenuLogout: 'Выйти',
+    appTitle: 'Квартплата 1.0',
+
+    // security
+    usernameField: 'Имя пользователя',
+    usernameFieldError: 'Введите имя пользователя!',
+    passwordField: 'Пароль',
+    passwordFieldErrorTitle: 'Введите пароль!',
+    rememberMeField: 'Запомнить меня',
+    buttonLogin: 'Войти',
+    buttonLogout: 'Выйти',
+    wrongLoginOrPasswordTitle: 'Неверное имя пользователя или пароль!',
+
     currentWorkingPeriodTitle: 'Текущий рабочий период: ',
     workingPeriodsTitle: 'Рабочие периоды',
     workingPeriodFieldTitle: 'Рабочий период',

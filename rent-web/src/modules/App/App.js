@@ -22,6 +22,8 @@ import {
   getWorkingPeriodIsRequestError,
 } from './../Constants/reducers/WorkingPeriodReducer';
 
+import * as AuthUtil from './../../util/AuthUtil';
+
 class App extends ExtendedComponentPage {
   constructor(props) {
     super(props);
@@ -37,11 +39,13 @@ class App extends ExtendedComponentPage {
   }
   componentWillMount() {
     document.getElementById('root').style.opacity = 1;
-    this.setState({
-      userName: 'Салтыков Д. Г.',
-    });
+    const jwt = JSON.parse(AuthUtil.jwtDetails(AuthUtil.getAuthorization()));
+    this.setState({ userName: jwt.sub });
     this.props.dispatch(WorkingPeriodAction.findWorkingPeriodsByName());
     this.props.dispatch(WorkingPeriodAction.findLastWorkingPeriod());
+  }
+  onLogout = () => {
+    AuthUtil.logout();
   }
   render() {
     let children = null;
@@ -59,6 +63,7 @@ class App extends ExtendedComponentPage {
           currentWorkingPeriod={this.props.currentWorkingPeriod}
           isLoading={this.props.isLoading}
           isRequestError={this.props.isRequestError}
+          onLogout={this.onLogout}
         />
         <div className="main">
           <Sidebar />

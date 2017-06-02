@@ -10,6 +10,7 @@ import rootNormsSaga from './modules/Norms/NormsSaga';
 import rootMetersSaga from './modules/Meters/MetersSaga';
 import rootOperationsSaga from './modules/Operations/OperationsSaga';
 import rootCommonsSaga from './modules/Commons/CommonsSaga';
+import rootSecuritySaga from './modules/Security/SecuritySaga';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga() {
     rootMetersSaga,
     rootOperationsSaga,
     rootCommonsSaga,
+    rootSecuritySaga,
   ]);
 }

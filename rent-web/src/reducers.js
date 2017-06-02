@@ -16,6 +16,7 @@ import citizens from './modules/Citizens/CitizensReducer';
 import norms from './modules/Norms/NormsReducer';
 import meters from './modules/Meters/MetersReducer';
 import operations from './modules/Operations/OperationsReducer';
+import security from './modules/Security/SecurityReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
@@ -31,4 +32,5 @@ export default combineReducers({
   norms,
   meters,
   operations,
+  security,
 });
