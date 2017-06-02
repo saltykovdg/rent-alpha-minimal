@@ -143,4 +143,9 @@ public class UserEntity extends AbstractEntity {
         String fullName = (!StringUtils.isEmpty(lastName) ? lastName : "") + (!StringUtils.isEmpty(firstName) ? (" " + firstName) : "") + (!StringUtils.isEmpty(fatherName) ? (" " + fatherName) : "");
         return fullName.trim();
     }
+
+    public String getFullNameShort() {
+        String fullName = (!StringUtils.isEmpty(lastName) ? lastName : "") + (!StringUtils.isEmpty(firstName) ? (" " + firstName.substring(0, 1) + ".") : "") + (!StringUtils.isEmpty(fatherName) ? (" " + fatherName.substring(0, 1) + ".") : "");
+        return fullName.trim();
+    }
 }

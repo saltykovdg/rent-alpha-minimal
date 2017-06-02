@@ -8,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsUtils;
+import rent.common.repository.UserRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,9 +18,12 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+    private final UserRepository userRepository;
+
+    public JWTLoginFilter(String url, AuthenticationManager authManager, UserRepository userRepository) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -46,6 +50,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException, ServletException {
-        TokenAuthenticationService.addAuthentication(res, auth.getName());
+        TokenAuthenticationService.addAuthentication(res, auth.getName(), userRepository);
     }
 }
