@@ -1,5 +1,3 @@
-import * as LoginPath from './../modules/Security/paths/LoginPath';
-
 export function getAuthorization() {
   let authorization = window.authorization;
   if (!authorization) {
@@ -19,7 +17,7 @@ export function login(authorization, remember) {
 export function logout() {
   window.authorization = null;
   window.localStorage.removeItem('jwt');
-  window.location.href = LoginPath.LOGIN;
+  window.location.href = '/';
 }
 
 export function jwtDetails(authorization) {
