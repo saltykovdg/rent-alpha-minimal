@@ -24,7 +24,6 @@ public class TokenAuthenticationService {
 
     private static final long EXPIRATION_TIME = 86400 * 1000; // 1 days
     private static final String SECRET = "ed748327-9432-4cbb-a35f-bc2bc823cba3";
-    private static final String TOKEN_PREFIX = "Bearer";
 
     static void addAuthentication(HttpServletResponse res, String username) {
         try {
@@ -33,7 +32,7 @@ public class TokenAuthenticationService {
                     .withSubject(username)
                     .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                     .sign(algorithmHS);
-            res.addHeader(Constants.HEADER_AUTHORIZATION, TOKEN_PREFIX + " " + jwt);
+            res.addHeader(Constants.HEADER_AUTHORIZATION, jwt);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
