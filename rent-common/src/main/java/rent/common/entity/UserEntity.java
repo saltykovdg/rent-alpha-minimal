@@ -34,7 +34,6 @@ public class UserEntity extends AbstractEntity {
     private String login;
 
     //пароль
-    @JsonIgnore
     @Column(name = Columns.PASSWORD)
     private String password;
 

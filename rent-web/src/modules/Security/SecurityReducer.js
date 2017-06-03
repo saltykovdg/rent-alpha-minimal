@@ -4,6 +4,14 @@ import {
   getLoginIsRequestError,
 } from './reducers/LoginReducer';
 
+import {
+  userReducer,
+} from './reducers/UserReducer';
+
+import {
+  roleReducer,
+} from './reducers/RoleReducer';
+
 // Initial State
 const data = {
   list: {
@@ -28,11 +36,15 @@ const loginData = {
 
 const initialState = {
   login: loginData,
+  user: data,
+  role: data,
 };
 
 const SecurityReducer = (state = initialState, action) => {
   return {
     login: loginReducer(state, action),
+    user: userReducer(state, action),
+    role: roleReducer(state, action),
   };
 };
 

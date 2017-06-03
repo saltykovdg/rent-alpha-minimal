@@ -7,6 +7,8 @@ import rent.common.entity.UserEntity;
 public interface UserBasic extends AbstractBasic {
     String getLogin();
 
+    String getPassword();
+
     String getFirstName();
 
     String getLastName();
@@ -20,4 +22,8 @@ public interface UserBasic extends AbstractBasic {
     Boolean getOnline();
 
     RoleBasic getRole();
+
+    String getFullName();
+
+    String getFullNameShort();
 }

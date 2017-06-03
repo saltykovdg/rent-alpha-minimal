@@ -15,10 +15,14 @@ public class RoleEntity extends AbstractEntity {
 
     public interface Columns extends AbstractEntity.Columns {
         String NAME = "name";
+        String DESCRIPTION = "description";
     }
 
     @Column(name = Columns.NAME)
     private String name;
+
+    @Column(name = Columns.DESCRIPTION)
+    private String description;
 
     public String getName() {
         return name;
@@ -26,5 +30,13 @@ public class RoleEntity extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -78,7 +78,9 @@ public abstract class AbstractEntity {
     @PreUpdate
     void onPersist() {
         this.setLastModifiedDate(LocalDateTime.now());
-        this.setVersion(this.getVersion() + 1);
+        Long version = this.getVersion();
+        if (version == null) version = 0L;
+        this.setVersion(version + 1);
     }
 
     @Override

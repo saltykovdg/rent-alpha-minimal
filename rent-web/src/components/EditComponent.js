@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import { Input, InputNumber, Select, DatePicker, Popconfirm, Modal } from 'antd';
+import { Input, InputNumber, Select, DatePicker, Popconfirm, Modal, Checkbox } from 'antd';
 import moment from 'moment';
 
 import { ExtendedComponent } from './ExtendedComponent';
@@ -34,6 +34,15 @@ class EditComponent extends ExtendedComponent {
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
     })(!readOnly ? <Input /> : <Input readOnly />);
+  };
+  getPasswordField = (name, value, required = true, readOnly = false) => {
+    return this.props.form.getFieldDecorator(name, {
+      initialValue: value,
+      rules: [{
+        required,
+        message: this.props.intl.messages.fieldIsEmptyError,
+      }],
+    })(!readOnly ? <Input type="password" /> : <Input type="password" readOnly />);
   };
   getInputNumberField = (name, value, step = 1, required = true, useNegative = false) => {
     return this.props.form.getFieldDecorator(name, {
@@ -77,7 +86,7 @@ class EditComponent extends ExtendedComponent {
       </Select>
     );
   };
-  getSelectField = (name, value, values, onChange = () => {}, required = true) => {
+  getSelectField = (name, value, values, onChange = () => {}, required = true, readOnly = false) => {
     return this.props.form.getFieldDecorator(name, {
       initialValue: value ? this.getLink(value) : undefined,
       rules: [{
@@ -92,10 +101,17 @@ class EditComponent extends ExtendedComponent {
         filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={onChange}
         notFoundContent=""
+        disabled={readOnly}
       >
         {values}
       </Select>
     );
+  };
+  getCheckboxField = (name, value, title) => {
+    return this.props.form.getFieldDecorator(name, {
+      valuePropName: 'checked',
+      initialValue: value,
+    })(<Checkbox>{title}</Checkbox>);
   };
   getAttachmentField = (name, value) => {
     return this.props.form.getFieldDecorator(name, {

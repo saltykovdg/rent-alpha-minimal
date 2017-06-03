@@ -23,6 +23,8 @@ import * as CitizenPath from '../../../Citizens/paths/CitizenPath';
 import * as NormPath from '../../../Norms/paths/NormPath';
 import * as MeterPath from '../../../Meters/paths/MeterPath';
 import * as CalculationPath from '../../../Operations/paths/CalculationPath';
+import * as UserPath from '../../../Security/paths/UserPath';
+import * as RolePath from '../../../Security/paths/RolePath';
 
 const SubMenu = Menu.SubMenu;
 const Item = Menu.Item;
@@ -41,6 +43,8 @@ function Sidebar() {
     defaultOpenKey = 'sidebarConstants';
   } else if (location.indexOf('/operations/') !== -1) {
     defaultOpenKey = 'sidebarOperations';
+  } else if (location.indexOf('/security/') !== -1) {
+    defaultOpenKey = 'sidebarSecurity';
   }
 
   return (
@@ -167,6 +171,18 @@ function Sidebar() {
           <Item key={CalculationPath.CALCULATION}>
             <Link to={CalculationPath.CALCULATION}>
               <FormattedMessage id="calculationTitle" />
+            </Link>
+          </Item>
+        </SubMenu>
+        <SubMenu key="sidebarSecurity" title={<FormattedMessage id="securityTitle" />}>
+          <Item key={RolePath.ROLE_LIST}>
+            <Link to={RolePath.ROLE_LIST}>
+              <FormattedMessage id="rolesTitle" />
+            </Link>
+          </Item>
+          <Item key={UserPath.USER_LIST}>
+            <Link to={UserPath.USER_LIST}>
+              <FormattedMessage id="usersTitle" />
             </Link>
           </Item>
         </SubMenu>

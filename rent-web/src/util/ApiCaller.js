@@ -81,7 +81,7 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
         }
       }
       let data = response.data;
-      if (!data) {
+      if (!data && endpoint === 'login') {
         data = {};
       }
       const authorization = response.headers.authorization;

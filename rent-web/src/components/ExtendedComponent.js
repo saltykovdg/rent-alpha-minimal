@@ -39,6 +39,20 @@ class ExtendedComponent extends Component {
   getColumn = (title, name) => {
     return { title, dataIndex: name, key: Math.random() };
   }
+  getCheckboxColumn = (title, name) => {
+    const messages = this.props.intl.messages;
+    return {
+      title,
+      dataIndex: name,
+      key: Math.random(),
+      render(text) {
+        if (text) {
+          return messages.yesTitle;
+        }
+        return messages.noTitle;
+      },
+    };
+  }
   getDateColumn = (title, name) => {
     return {
       title,

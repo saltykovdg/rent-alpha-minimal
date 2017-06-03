@@ -1,7 +1,14 @@
 package rent.common.enums;
 
 public enum RoleType {
+    /**
+     * Администратор
+     */
     ADMIN("ROLE_ADMIN"),
+
+    /**
+     * Пользователь
+     */
     USER("ROLE_USER");
 
     private String name;

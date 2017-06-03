@@ -21,6 +21,8 @@ import * as NormPath from './modules/Norms/paths/NormPath';
 import * as MeterPath from './modules/Meters/paths/MeterPath';
 import * as CalculationPath from './modules/Operations/paths/CalculationPath';
 import * as LoginPath from './modules/Security/paths/LoginPath';
+import * as UserPath from './modules/Security/paths/UserPath';
+import * as RolePath from './modules/Security/paths/RolePath';
 
 import * as AuthUtil from './util/AuthUtil';
 
@@ -416,6 +418,40 @@ export default (
         getComponent={(nextState, cb) => {
           require.ensure([], (require) => {
             cb(null, require('./modules/Operations/pages/CalculationPage').default);
+          });
+        }}
+      />
+
+      { /* Security */ }
+      <Route
+        path={UserPath.USER_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Security/pages/UserListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${UserPath.USER_EDIT}(/:id)`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Security/pages/UserEditPage').default);
+          });
+        }}
+      />
+      <Route
+        path={RolePath.ROLE_LIST}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Security/pages/RoleListPage').default);
+          });
+        }}
+      />
+      <Route
+        path={`${RolePath.ROLE_EDIT}/:id`}
+        getComponent={(nextState, cb) => {
+          require.ensure([], (require) => {
+            cb(null, require('./modules/Security/pages/RoleEditPage').default);
           });
         }}
       />

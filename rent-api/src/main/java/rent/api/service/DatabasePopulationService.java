@@ -146,16 +146,17 @@ public class DatabasePopulationService {
     }
 
     private void createRoles() {
-        createRole(RoleType.ADMIN.getName());
-        createRole(RoleType.USER.getName());
+        createRole(RoleType.ADMIN.getName(), "Администратор");
+        createRole(RoleType.USER.getName(), "Пользователь");
     }
 
-    private void createRole(String name) {
+    private void createRole(String name, String description) {
         RoleEntity role = roleRepository.findByName(name);
         if (role == null) {
             log.info("createRole({})", name);
             role = new RoleEntity();
             role.setName(name);
+            role.setDescription(description);
             roleRepository.save(role);
         }
     }
@@ -176,6 +177,10 @@ public class DatabasePopulationService {
             user.setLogin(login);
             user.setPassword(passwordEncoder.encode(password));
             user.setRole(role);
+            user.setEmail("");
+            user.setLastName("");
+            user.setFirstName("");
+            user.setFatherName("");
             userRepository.save(user);
         }
     }
