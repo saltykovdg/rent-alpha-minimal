@@ -4,18 +4,12 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import rent.api.utils.Constants;
 import rent.common.dtos.AccountCalculationDto;
-import rent.common.dtos.ServiceCalculationDto;
 import rent.common.entity.*;
 import rent.common.enums.CalculationType;
-import rent.common.repository.AccountAccrualRepository;
-import rent.common.repository.AccountRecalculationRepository;
-import rent.common.repository.AccountRepository;
-import rent.common.repository.WorkingPeriodRepository;
+import rent.common.repository.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,8 +28,8 @@ public class ReportService {
     private final AccountAccrualRepository accountAccrualRepository;
     private final AccountRecalculationRepository accountRecalculationRepository;
     private final WorkingPeriodRepository workingPeriodRepository;
+    private final AccountPaymentRepository accountPaymentRepository;
     private final CalculationService calculationService;
-    private final PaymentService paymentService;
     private final DateTimeFormatter dateFormatter;
     private final DateTimeFormatter dateTimeFormatter;
     private final DateTimeFormatter dateTimeFormatterDownload;
@@ -46,14 +40,14 @@ public class ReportService {
                          AccountAccrualRepository accountAccrualRepository,
                          AccountRecalculationRepository accountRecalculationRepository,
                          WorkingPeriodRepository workingPeriodRepository,
-                         CalculationService calculationService,
-                         PaymentService paymentService) {
+                         AccountPaymentRepository accountPaymentRepository,
+                         CalculationService calculationService) {
         this.accountRepository = accountRepository;
         this.accountAccrualRepository = accountAccrualRepository;
         this.accountRecalculationRepository = accountRecalculationRepository;
         this.workingPeriodRepository = workingPeriodRepository;
+        this.accountPaymentRepository = accountPaymentRepository;
         this.calculationService = calculationService;
-        this.paymentService = paymentService;
         this.dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         this.dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
         this.dateTimeFormatterDownload = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss");
@@ -158,16 +152,8 @@ public class ReportService {
         parameters.put("accountAmountDebt", accountOpeningBalance > 0 ? decimalFormat.format(accountOpeningBalance) : "0");
         parameters.put("accountAmountPrepaid", accountOpeningBalance < 0 ? decimalFormat.format(accountOpeningBalance) : "0");
         parameters.put("accountPayments", accountPayments > 0 ? decimalFormat.format(accountPayments) : "0");
-        String accountLastPaymentDate = "";
-        Page<ServiceCalculationDto> accountPaymentsList = paymentService.getAccountPayments(accountId, new PageRequest(0, 1));
-        if (accountPaymentsList != null) {
-            List<ServiceCalculationDto> list = accountPaymentsList.getContent();
-            if (list.size() > 0) {
-                ServiceCalculationDto serviceCalculationDto = list.get(0);
-                accountLastPaymentDate = serviceCalculationDto.getDate().format(dateFormatter);
-            }
-        }
-        parameters.put("accountLastPaymentDate", accountLastPaymentDate);
+        LocalDateTime accountLastPaymentDate = accountPaymentRepository.getLastPaymentDateForPeriod(accountId, periodStartId);
+        parameters.put("accountLastPaymentDate", accountLastPaymentDate != null ? accountLastPaymentDate.format(dateFormatter) : "");
         Double accountTotalPayment = calculationService.roundHalfUp(accountAmountDue + accountOpeningBalance);
         parameters.put("accountTotalPayment", accountTotalPayment > 0 ? decimalFormat.format(accountTotalPayment) : "0");
 

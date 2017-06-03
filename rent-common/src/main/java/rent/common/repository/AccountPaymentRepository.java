@@ -13,6 +13,7 @@ import rent.common.dtos.ServiceCalculationInfoDto;
 import rent.common.entity.AccountPaymentEntity;
 import rent.common.projection.AccountPaymentBasic;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RepositoryRestResource(
@@ -61,4 +62,12 @@ public interface AccountPaymentRepository extends PagingAndSortingRepository<Acc
             "group by accountPayment.workingPeriod, accountPayment.date, accountPayment.bundleId " +
             "order by accountPayment.date desc")
     Page<ServiceCalculationDto> getSumByAccountIdPageable(@Param("accountId") String accountId, Pageable p);
+
+    @Query("select max(accountPayment.date) from AccountPaymentEntity accountPayment " +
+            "join accountPayment.accountService accountService " +
+            "join accountPayment.workingPeriod workingPeriod " +
+            "join accountService.account account " +
+            "where account.id = :accountId and workingPeriod.id = :workingPeriodId")
+    LocalDateTime getLastPaymentDateForPeriod(@Param("accountId") String accountId,
+                                              @Param("workingPeriodId") String workingPeriodId);
 }
