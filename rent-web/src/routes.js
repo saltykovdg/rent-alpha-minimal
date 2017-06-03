@@ -27,6 +27,7 @@ import * as AuthUtil from './util/AuthUtil';
 const validate = (next, replace, callback) => {
   const authorization = AuthUtil.getAuthorization();
   if (!AuthUtil.checkJWT(authorization) && next.location.pathname !== LoginPath.LOGIN) {
+    AuthUtil.logout();
     replace(LoginPath.LOGIN);
   } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
     replace('/');

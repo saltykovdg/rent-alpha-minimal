@@ -39,6 +39,7 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
   if (window.authorization) {
     if (!AuthUtil.checkJWT(window.authorization)) {
       AuthUtil.logout();
+      return {};
     }
   }
 

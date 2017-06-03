@@ -1,3 +1,6 @@
+import { browserHistory } from 'react-router';
+import * as LoginPath from './../modules/Security/paths/LoginPath';
+
 export function getAuthorization() {
   let authorization = window.authorization;
   if (!authorization) {
@@ -17,7 +20,7 @@ export function login(authorization, remember) {
 export function logout() {
   window.authorization = null;
   window.localStorage.removeItem('jwt');
-  window.location.href = '/';
+  browserHistory.push(LoginPath.LOGIN);
 }
 
 export function jwtDetails(authorization) {
