@@ -83,6 +83,10 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
       let data = response.data;
       if (!data && endpoint === 'login') {
         data = {};
+      } else if (data && data.content && data.content.length === 1) {
+        if (!data.content[0].id) {
+          data.content = [];
+        }
       }
       const authorization = response.headers.authorization;
       if (authorization) {
