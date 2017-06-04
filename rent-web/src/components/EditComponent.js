@@ -33,7 +33,7 @@ class EditComponent extends ExtendedComponent {
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(!readOnly ? <Input /> : <Input readOnly />);
+    })(!readOnly ? <Input autoComplete="off" /> : <Input autoComplete="off" readOnly />);
   };
   getPasswordField = (name, value, required = true, readOnly = false) => {
     return this.props.form.getFieldDecorator(name, {
@@ -42,7 +42,7 @@ class EditComponent extends ExtendedComponent {
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(!readOnly ? <Input type="password" /> : <Input type="password" readOnly />);
+    })(!readOnly ? <Input type="password" autoComplete="new-password" /> : <Input type="password" autoComplete="new-password" readOnly />);
   };
   getInputNumberField = (name, value, step = 1, required = true, useNegative = false) => {
     return this.props.form.getFieldDecorator(name, {

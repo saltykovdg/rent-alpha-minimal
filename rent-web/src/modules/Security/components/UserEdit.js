@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button, Form, Spin, Select, Input } from 'antd';
+import { Breadcrumb, Icon, Button, Form, Spin, Select } from 'antd';
 
 import * as UserPath from './../paths/UserPath';
 import { EditComponent } from './../../../components/EditComponent';
@@ -31,7 +31,7 @@ class UserEdit extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         <Spin spinning={this.props.isLoading}>
-          <Form layout="horizontal" onSubmit={this.handleSubmit}>
+          <Form layout="horizontal" onSubmit={this.handleSubmit} autoComplete="off">
             {baseFields}
             <FormItem label={this.props.intl.messages.userFieldLogin}>
               {this.getInputField('login', object.login, true, object.login === 'admin')}
