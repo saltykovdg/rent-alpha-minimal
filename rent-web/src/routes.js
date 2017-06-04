@@ -25,6 +25,7 @@ import * as UserPath from './modules/Security/paths/UserPath';
 import * as RolePath from './modules/Security/paths/RolePath';
 
 import * as AuthUtil from './util/AuthUtil';
+import * as RoleType from './util/RoleType';
 
 const validate = (next, replace, callback) => {
   const authorization = AuthUtil.getAuthorization();
@@ -32,6 +33,12 @@ const validate = (next, replace, callback) => {
     AuthUtil.logout();
     replace(LoginPath.LOGIN);
   } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
+    replace('/');
+  } else if (AuthUtil.getUserRole() !== RoleType.ROLE_ADMIN && (
+             next.location.pathname.indexOf(RolePath.ROLE_EDIT) !== -1 ||
+             next.location.pathname.indexOf(RolePath.ROLE_LIST) !== -1 ||
+             next.location.pathname.indexOf(UserPath.USER_EDIT) !== -1 ||
+             next.location.pathname.indexOf(UserPath.USER_LIST) !== -1)) {
     replace('/');
   }
   callback();

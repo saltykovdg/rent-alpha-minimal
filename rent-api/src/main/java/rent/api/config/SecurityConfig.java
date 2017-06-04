@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import rent.api.security.JWTAuthenticationFilter;
 import rent.api.security.JWTLoginFilter;
 import rent.api.service.CustomUserDetailsService;
+import rent.common.enums.RoleType;
 
 @Configuration
 @EnableWebSecurity
@@ -49,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // allow CORS option calls
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/role", "/role/**").hasRole(RoleType.ADMIN.name())
+                .antMatchers("/user", "/user/**").hasRole(RoleType.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 // We filter the api/login requests

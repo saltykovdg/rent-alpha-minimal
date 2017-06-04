@@ -39,3 +39,13 @@ export function checkJWT(authorization) {
   }
   return isNotExpiredToken;
 }
+
+export function getUserName() {
+  const jwt = JSON.parse(this.jwtDetails(this.getAuthorization()));
+  return jwt.sub;
+}
+
+export function getUserRole() {
+  const jwt = JSON.parse(this.jwtDetails(this.getAuthorization()));
+  return jwt.role;
+}

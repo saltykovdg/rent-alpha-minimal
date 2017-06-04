@@ -39,8 +39,7 @@ class App extends ExtendedComponentPage {
   }
   componentWillMount() {
     document.getElementById('root').style.opacity = 1;
-    const jwt = JSON.parse(AuthUtil.jwtDetails(AuthUtil.getAuthorization()));
-    this.setState({ userName: jwt.sub });
+    this.setState({ userName: AuthUtil.getUserName() });
     this.props.dispatch(WorkingPeriodAction.findWorkingPeriodsByName());
     this.props.dispatch(WorkingPeriodAction.findLastWorkingPeriod());
   }

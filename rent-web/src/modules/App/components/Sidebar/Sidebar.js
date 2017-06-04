@@ -5,6 +5,9 @@ import { Menu } from 'antd';
 
 import './Sidebar.less';
 
+import * as AuthUtil from '../../../../util/AuthUtil';
+import * as RoleType from '../../../../util/RoleType';
+
 import * as AddressPath from '../../../Address/AddressPaths';
 import * as OrganizationPath from '../../../Organization/OrganizationPaths';
 import * as ServiceTypePath from '../../../Services/paths/ServiceTypePath';
@@ -46,6 +49,8 @@ function Sidebar() {
   } else if (location.indexOf('/security/') !== -1) {
     defaultOpenKey = 'sidebarSecurity';
   }
+
+  const visibleSecurity = AuthUtil.getUserRole() === RoleType.ROLE_ADMIN;
 
   return (
     <div className="sidebar">
@@ -174,18 +179,22 @@ function Sidebar() {
             </Link>
           </Item>
         </SubMenu>
-        <SubMenu key="sidebarSecurity" title={<FormattedMessage id="securityTitle" />}>
-          <Item key={RolePath.ROLE_LIST}>
-            <Link to={RolePath.ROLE_LIST}>
-              <FormattedMessage id="rolesTitle" />
-            </Link>
-          </Item>
-          <Item key={UserPath.USER_LIST}>
-            <Link to={UserPath.USER_LIST}>
-              <FormattedMessage id="usersTitle" />
-            </Link>
-          </Item>
-        </SubMenu>
+        {
+          visibleSecurity ?
+            <SubMenu key="sidebarSecurity" title={<FormattedMessage id="securityTitle" />}>
+              <Item key={RolePath.ROLE_LIST}>
+                <Link to={RolePath.ROLE_LIST}>
+                  <FormattedMessage id="rolesTitle" />
+                </Link>
+              </Item>
+              <Item key={UserPath.USER_LIST}>
+                <Link to={UserPath.USER_LIST}>
+                  <FormattedMessage id="usersTitle" />
+                </Link>
+              </Item>
+            </SubMenu>
+            : null
+        }
       </Menu>
     </div>
   );
