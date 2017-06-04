@@ -41,11 +41,19 @@ export function checkJWT(authorization) {
 }
 
 export function getUserName() {
-  const jwt = JSON.parse(this.jwtDetails(this.getAuthorization()));
-  return jwt.sub;
+  const authorization = this.getAuthorization();
+  if (authorization) {
+    const jwt = JSON.parse(this.jwtDetails(authorization));
+    return jwt.sub;
+  }
+  return '';
 }
 
 export function getUserRole() {
-  const jwt = JSON.parse(this.jwtDetails(this.getAuthorization()));
-  return jwt.role;
+  const authorization = this.getAuthorization();
+  if (authorization) {
+    const jwt = JSON.parse(this.jwtDetails(authorization));
+    return jwt.role;
+  }
+  return '';
 }
