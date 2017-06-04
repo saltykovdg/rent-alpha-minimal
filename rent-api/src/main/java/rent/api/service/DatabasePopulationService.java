@@ -28,7 +28,6 @@ public class DatabasePopulationService {
     private final Integer appCreateTestPeriodsCount;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final StreetTypeRepository streetTypeRepository;
     private final CalculationTypeRepository calculationTypeRepository;
     private final MeasurementUnitRepository measurementUnitRepository;
@@ -61,7 +60,6 @@ public class DatabasePopulationService {
                                      @Value("${app.createTestPeriodsCount}") Integer appCreateTestPeriodsCount,
                                      RoleRepository roleRepository,
                                      UserRepository userRepository,
-                                     PasswordEncoder passwordEncoder,
                                      StreetTypeRepository streetTypeRepository,
                                      CalculationTypeRepository calculationTypeRepository,
                                      MeasurementUnitRepository measurementUnitRepository,
@@ -92,7 +90,6 @@ public class DatabasePopulationService {
         this.appCreateTestPeriodsCount = appCreateTestPeriodsCount;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.streetTypeRepository = streetTypeRepository;
         this.calculationTypeRepository = calculationTypeRepository;
         this.measurementUnitRepository = measurementUnitRepository;
@@ -175,7 +172,7 @@ public class DatabasePopulationService {
             user = new UserEntity();
             user.setBlocked(false);
             user.setLogin(login);
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(password);
             user.setRole(role);
             user.setEmail("");
             user.setLastName("");
