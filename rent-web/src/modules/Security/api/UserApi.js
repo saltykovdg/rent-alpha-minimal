@@ -1,7 +1,7 @@
 import * as ApiCaller from '../../../util/ApiCaller';
 
 export function getUsers(page = 0) {
-  return ApiCaller.callApi(`user?page=${page}&sort=name`);
+  return ApiCaller.callApi(`user?page=${page}&sort=name&projection=userMinimal`);
 }
 
 export function getUser(id) {

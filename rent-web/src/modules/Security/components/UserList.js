@@ -35,9 +35,7 @@ class UserList extends ListComponent {
     const columns = [
       this.getColumn(this.props.intl.messages.userFieldLogin, 'login'),
       this.getColumn(this.props.intl.messages.roleFieldName, 'role.description'),
-      this.getColumn(this.props.intl.messages.userFieldLastName, 'lastName'),
-      this.getColumn(this.props.intl.messages.userFieldFirstName, 'firstName'),
-      this.getColumn(this.props.intl.messages.userFieldFatherName, 'fatherName'),
+      this.getColumn(this.props.intl.messages.commonFieldCitizen, 'fullName'),
       this.getColumn(this.props.intl.messages.userFieldEmail, 'email'),
       this.getCheckboxColumn(this.props.intl.messages.userFieldBlocked, 'blocked'),
       this.getActionColumn(UserPath.USER_EDIT),
