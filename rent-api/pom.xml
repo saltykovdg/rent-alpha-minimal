@@ -20,6 +20,7 @@
         <java.version>1.8</java.version>
         <HikariCP.version>2.6.1</HikariCP.version>
         <postgresql.version>9.4.1212</postgresql.version>
+        <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
         <commons-fileupload.version>1.3.2</commons-fileupload.version>
         <jasperreports.version>6.4.0</jasperreports.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -60,6 +61,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
