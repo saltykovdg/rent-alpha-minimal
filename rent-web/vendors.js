@@ -12,5 +12,6 @@ import 'redux';
 import 'redux-saga';
 import 'antd';
 import 'antd/dist/antd.less';
+import 'async-validator';
 import 'moment';
 import 'extend';
