@@ -16,20 +16,20 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       }, {
         test: /\.less$/,
         use: [
           'style-loader',
           'css-loader',
-          'less-loader'
-        ]
+          'less-loader',
+        ],
       }, {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        use: ['url-loader']
-      }
-    ]
+        use: ['url-loader'],
+      },
+    ],
   },
   plugins: [
     new webpack.DllPlugin({
@@ -39,20 +39,20 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
-      }
+      },
     }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
       mangle: false,
       output: {
-        comments: false
+        comments: false,
       },
       compressor: {
-        warnings: false
-      }
+        warnings: false,
+      },
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
-    })
+    }),
   ],
 };

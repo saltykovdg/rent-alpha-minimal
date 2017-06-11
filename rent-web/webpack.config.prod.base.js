@@ -3,58 +3,49 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const DllVendorManifest = require('./build/dll/vendor-manifest.json');
 
 module.exports = {
   entry: {
     main: [
       'babel-polyfill',
-      './src/index.js'
-    ]
+      './src/index.js',
+    ],
   },
   output: {
     path: path.join(__dirname, 'build', 'distr'),
     filename: '[name].[chunkhash].bundle.js',
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components|build)/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       }, {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       }, {
         test: /\.less$/,
         use: [
           'style-loader',
           'css-loader',
-          'less-loader'
-        ]
+          'less-loader',
+        ],
       }, {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         use: ['url-loader']
-      }
-    ]
+      },
+    ],
   },
   plugins: [
     new webpack.DllReferencePlugin({
       context: '.',
-      manifest: require('./build/dll/vendor-manifest.json')
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-        RENT_API_URL: JSON.stringify('/rent-api'),
-        // RENT_API_URL: JSON.stringify('https://xn----7sbaabh1cjl3bff0ad.xn----7sbfggaetrqtqbnpt2pyb.xn--p1ai/rent-api-perspektiva'),
-        // RENT_API_URL: JSON.stringify('https://rent-demo.herokuapp.com'),
-        RENT_API_CONTENT_URL: JSON.stringify('/content'),
-        RENT_API_MAX_FILE_SIZE: JSON.stringify('15728640')
-      }
+      manifest: DllVendorManifest,
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
@@ -84,24 +75,24 @@ module.exports = {
       sourceMap: false,
       mangle: false,
       output: {
-        comments: false
+        comments: false,
       },
       compressor: {
-        warnings: false
-      }
+        warnings: false,
+      },
     }),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
+      minimize: true,
     }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, 'build', 'dll', 'dll.vendor.js'),
-        to: path.join(__dirname, 'build', 'distr')
+        to: path.join(__dirname, 'build', 'distr'),
       },
     ]),
     new HtmlWebpackIncludeAssetsPlugin({
       assets: ['dll.vendor.js'],
-      append: false
-    })
-  ]
+      append: false,
+    }),
+  ],
 };
