@@ -224,7 +224,7 @@ class AccountEditRegisteredForm extends EditComponent {
           <TabPane tab={this.props.intl.messages.registeredOneTitle} key="1">
             {panelSearchVisible ?
               <Form layout="horizontal">
-                {this.state.selectRegisteredError ? <Alert message={this.props.intl.messages.selectRegisteredErrorTitle} type="error" /> : null}
+                {this.state.selectRegisteredError ? <FormItem><Alert message={this.props.intl.messages.selectRegisteredErrorTitle} type="error" /></FormItem> : null}
                 <Row gutter={10}>
                   <Col className="gutter-row" span={8}>
                     <FormItem label={this.props.intl.messages.citizenFieldFirstName}>
@@ -301,7 +301,7 @@ class AccountEditRegisteredForm extends EditComponent {
             }
           </TabPane>
           <TabPane tab={this.props.intl.messages.attachmentsTitle} key="2">
-            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /> : null}
+            {this.state.attachmentsFileNameError ? <FormItem><Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /></FormItem> : null}
             <Button size="small" type="dashed" onClick={() => this.onAddRegisteredDocumentAttachment()}>
               <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
             </Button>

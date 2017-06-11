@@ -55,7 +55,7 @@ class AccountAddRecalculationForm extends EditComponent {
         maskClosable={false}
       >
         <Form layout="horizontal">
-          {this.state.valueError ? <Alert message={this.props.intl.messages.recalculationValueErrorTitle} type="error" /> : null}
+          {this.state.valueError ? <FormItem><Alert message={this.props.intl.messages.recalculationValueErrorTitle} type="error" /></FormItem> : null}
           <FormItem label={this.props.intl.messages.serviceFieldName}>
             {this.getSelectWithSearchField('accountServiceId', null, accountServicesDataSource)}
           </FormItem>

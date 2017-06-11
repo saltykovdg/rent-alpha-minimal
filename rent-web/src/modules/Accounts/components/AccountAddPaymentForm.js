@@ -45,7 +45,7 @@ class AccountAddPaymentForm extends EditComponent {
         maskClosable={false}
       >
         <Form layout="horizontal">
-          {this.state.valueError ? <Alert message={this.props.intl.messages.paymentValueErrorTitle} type="error" /> : null}
+          {this.state.valueError ? <FormItem><Alert message={this.props.intl.messages.paymentValueErrorTitle} type="error" /></FormItem> : null}
           <FormItem label={this.props.intl.messages.commonFieldSum}>
             {this.getInputNumberField('value', 0, 0.1)}
           </FormItem>

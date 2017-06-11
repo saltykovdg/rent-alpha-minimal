@@ -224,7 +224,7 @@ class AccountEditOwnerForm extends EditComponent {
           <TabPane tab={this.props.intl.messages.ownerTitle} key="1">
             {panelSearchVisible ?
               <Form layout="horizontal">
-                {this.state.selectOwnerError ? <Alert message={this.props.intl.messages.selectOwnerErrorTitle} type="error" /> : null}
+                {this.state.selectOwnerError ? <FormItem><Alert message={this.props.intl.messages.selectOwnerErrorTitle} type="error" /></FormItem> : null}
                 <Row gutter={10}>
                   <Col className="gutter-row" span={8}>
                     <FormItem label={this.props.intl.messages.citizenFieldFirstName}>
@@ -325,7 +325,7 @@ class AccountEditOwnerForm extends EditComponent {
             </Form>
           </TabPane>
           <TabPane tab={this.props.intl.messages.attachmentsTitle} key="3">
-            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /> : null}
+            {this.state.attachmentsFileNameError ? <FormItem><Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /></FormItem> : null}
             <Button size="small" type="dashed" onClick={() => this.onAddOwnerDocumentAttachment()}>
               <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
             </Button>

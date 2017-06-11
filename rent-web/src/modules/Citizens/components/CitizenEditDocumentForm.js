@@ -164,7 +164,7 @@ class CitizenEditDocumentForm extends EditComponent {
             </Form>
           </TabPane>
           <TabPane tab={this.props.intl.messages.attachmentsTitle} key="2">
-            {this.state.attachmentsFileNameError ? <Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /> : null}
+            {this.state.attachmentsFileNameError ? <FormItem><Alert message={this.props.intl.messages.addAttachmentFileNameErrorTitle} type="error" /></FormItem> : null}
             <Button size="small" type="dashed" onClick={() => this.onAddDocumentAttachment()}>
               <Icon type="link" /><FormattedMessage id="buttonAddNewAttachment" />
             </Button>

@@ -22,12 +22,12 @@ class LoginForm extends Component {
     return (
       <div className="login-form">
         <Form layout="horizontal" onSubmit={this.handleSubmit}>
-          <FormItem style={this.props.isRequestError ? { 'margin-bottom': '5px', 'line-height': '0px' } : null}>
+          <FormItem style={this.props.isRequestError ? { 'margin-bottom': '5px' } : null}>
             <div className="login-form-title">
               <FormattedMessage id="appTitle" />
             </div>
           </FormItem>
-          {this.props.isRequestError ? <Alert message={messages.wrongLoginOrPasswordTitle} type="error" /> : null}
+          {this.props.isRequestError ? <FormItem style={{ 'margin-bottom': '10px' }}><Alert message={messages.wrongLoginOrPasswordTitle} type="error" /></FormItem> : null}
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: messages.usernameFieldError }],
@@ -51,7 +51,12 @@ class LoginForm extends Component {
                 <FormattedMessage id="rememberMeField" />
               </Checkbox>
             )}
-            <Button type="primary" htmlType="submit" className="login-form-button">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              loading={this.props.isLoading}
+            >
               <FormattedMessage id="buttonLogin" />
             </Button>
           </FormItem>
@@ -66,6 +71,7 @@ LoginForm.propTypes = {
   intl: PropTypes.objectOf(PropTypes.shape),
   onLogin: PropTypes.func,
   isRequestError: PropTypes.any,
+  isLoading: PropTypes.bool,
 };
 
 LoginForm.defaultProps = {
@@ -73,6 +79,7 @@ LoginForm.defaultProps = {
   intl: { messages: {} },
   onLogin: () => {},
   isRequestError: false,
+  isLoading: false,
 };
 
 export default Form.create()(injectIntl(LoginForm));

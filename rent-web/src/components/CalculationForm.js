@@ -58,7 +58,7 @@ class CalculationForm extends EditComponent {
         maskClosable={false}
       >
         <Form layout="horizontal">
-          {this.state.showPeriodError ? <Alert message={this.props.intl.messages.periodStartEndErrorTitle} type="error" /> : null}
+          {this.state.showPeriodError ? <FormItem><Alert message={this.props.intl.messages.periodStartEndErrorTitle} type="error" /></FormItem> : null}
           <Row gutter={16}>
             <Col className="gutter-row" span={12}>
               <FormItem label={this.props.intl.messages.commonFieldPeriodStart}>

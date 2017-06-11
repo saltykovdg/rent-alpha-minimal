@@ -130,7 +130,7 @@ class EditTiedMeterForm extends EditComponent {
       >
         {panelSearchVisible ?
           <Form layout="horizontal">
-            {this.state.selectMeterError ? <Alert message={this.props.intl.messages.selectMeterErrorTitle} type="error" /> : null}
+            {this.state.selectMeterError ? <FormItem><Alert message={this.props.intl.messages.selectMeterErrorTitle} type="error" /></FormItem> : null}
             <Row gutter={10}>
               <Col className="gutter-row" span={12}>
                 <FormItem label={this.props.intl.messages.serviceFieldName}>
