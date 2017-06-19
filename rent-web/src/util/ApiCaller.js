@@ -84,7 +84,7 @@ export function callApi(endpoint, method = 'get', body, responseType = '') {
       if (!data && endpoint === 'login') {
         data = {};
       } else if (data && data.content && data.content.length === 1) {
-        if (!data.content[0].id) {
+        if (!data.content[0].id && !data.content[0].bundleId) {
           data.content = [];
         }
       }
