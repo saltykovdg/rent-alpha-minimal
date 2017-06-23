@@ -94,5 +94,6 @@ module.exports = {
       assets: ['dll.vendor.js'],
       append: false,
     }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
 };
