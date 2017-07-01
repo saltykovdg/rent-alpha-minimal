@@ -9,7 +9,6 @@
     "build:dll": "rimraf build && webpack -p --config webpack.config.dll.js --progress --profile --colors",
     "build": "rimraf build/distr && webpack -p --config webpack.config.prod.local.js --progress --profile --colors",
     "build:heroku": "rimraf build/distr && webpack -p --config webpack.config.prod.heroku.js --progress --profile --colors",
-    "build:perspektiva": "rimraf build/distr && webpack -p --config webpack.config.prod.perspektiva.js --progress --profile --colors",
     "lint": "eslint src"
   },
   "devDependencies": {
