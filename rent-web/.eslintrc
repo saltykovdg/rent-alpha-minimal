@@ -19,12 +19,14 @@
     }
   },
   "rules": {
+    "jsx-a11y/href-no-hash": "off",
     "comma-dangle": [1, "always-multiline"],
     "no-underscore-dangle": 0,
     "max-len": [1, 180, 4],
     "arrow-body-style": [0],
     "react/jsx-no-bind": [0],
     "import/no-unresolved": [0], // Until import plugin supports webpack 2 resolveModules
+    "import/no-extraneous-dependencies": [2, { devDependencies: true }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/no-unused-prop-types": 1
   },

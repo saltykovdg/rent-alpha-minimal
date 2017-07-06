@@ -34,8 +34,8 @@ const validate = (next, replace, callback) => {
     replace(LoginPath.LOGIN);
   } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
     replace('/');
-  } else if (AuthUtil.getUserRole() !== RoleType.ROLE_ADMIN && (
-             next.location.pathname.indexOf(RolePath.ROLE_EDIT) !== -1 ||
+  } else if (AuthUtil.getUserRole() !== RoleType.ROLE_ADMIN &&
+            (next.location.pathname.indexOf(RolePath.ROLE_EDIT) !== -1 ||
              next.location.pathname.indexOf(RolePath.ROLE_LIST) !== -1 ||
              next.location.pathname.indexOf(UserPath.USER_EDIT) !== -1 ||
              next.location.pathname.indexOf(UserPath.USER_LIST) !== -1)) {

@@ -64,29 +64,29 @@ class Calculation extends EditComponent {
         </Breadcrumb>
         <h1>{titleItem}</h1>
         {
-        !calculationIsActive ?
-          <div>
-            <Spin spinning={this.props.isLoading}>
-              <h2><FormattedMessage id="calculationWorkingPeriodTitle" /></h2>
-              <Button label={' '} onClick={() => this.props.showFormCalculation()}>
-                <FormattedMessage id="buttonExecuteCalculations" />
-              </Button>
-              <h2><FormattedMessage id="closeWorkingPeriodTitle" /></h2>
-              <ButtonGroup>
-                <Button type="danger" onClick={() => this.confirmRollbackCurrentWorkingPeriod(this.props)}>
-                  <FormattedMessage id="buttonRollbackCurrentWorkingPeriod" />
+          !calculationIsActive ?
+            <div>
+              <Spin spinning={this.props.isLoading}>
+                <h2><FormattedMessage id="calculationWorkingPeriodTitle" /></h2>
+                <Button label={' '} onClick={() => this.props.showFormCalculation()}>
+                  <FormattedMessage id="buttonExecuteCalculations" />
                 </Button>
-                <Button type="danger" onClick={() => this.confirmCloseWorkingPeriod(this.props)}>
-                  <FormattedMessage id="buttonCloseWorkingPeriod" />
-                </Button>
-              </ButtonGroup>
-            </Spin>
-          </div> :
-          <div>
-            <h2><FormattedMessage id="calculationsExecuteTitle" /></h2>
-            <Progress percent={percentComplete} status="active" />
-          </div>
-      }
+                <h2><FormattedMessage id="closeWorkingPeriodTitle" /></h2>
+                <ButtonGroup>
+                  <Button type="danger" onClick={() => this.confirmRollbackCurrentWorkingPeriod(this.props)}>
+                    <FormattedMessage id="buttonRollbackCurrentWorkingPeriod" />
+                  </Button>
+                  <Button type="danger" onClick={() => this.confirmCloseWorkingPeriod(this.props)}>
+                    <FormattedMessage id="buttonCloseWorkingPeriod" />
+                  </Button>
+                </ButtonGroup>
+              </Spin>
+            </div> :
+            <div>
+              <h2><FormattedMessage id="calculationsExecuteTitle" /></h2>
+              <Progress percent={percentComplete} status="active" />
+            </div>
+        }
       </div>
     );
   }

@@ -21,7 +21,6 @@ class AccountCard extends EditComponent {
     const object = this.props.data;
     const calculations = this.props.calculations;
     const titleItem = <FormattedMessage id="accountCardTitle" />;
-    const baseFields = this.getBaseFields(object);
     let workingPeriodsList = null;
     if (this.props.workingPeriods && this.props.workingPeriods.content) {
       workingPeriodsList = this.props.workingPeriods.content.map(workingPeriod => (

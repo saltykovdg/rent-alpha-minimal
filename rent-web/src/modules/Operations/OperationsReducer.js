@@ -6,8 +6,6 @@ import {
 
 import {
   systemPropertyReducer,
-  getSystemPropertyIsLoading,
-  getSystemPropertyIsRequestError,
 } from './reducers/SystemPropertyReducer';
 
 // Initial State

@@ -66,27 +66,27 @@ class CalculationPage extends ExtendedComponentPage {
   }
   render() {
     return (
-      !this.props.systemProperties ? null :
-      <div>
-        <Calculation
-          showFormCalculation={this.showFormCalculation}
-          onCloseWorkingPeriod={this.onCloseWorkingPeriod}
-          onRollbackCurrentWorkingPeriod={this.onRollbackCurrentWorkingPeriod}
-          isLoading={this.props.isLoading}
-          isRequestError={this.props.isRequestError}
-          systemProperties={this.props.systemProperties}
-          getSystemProperties={this.getSystemProperties}
-          isLoadingSystemProperty={this.isLoadingSystemProperty}
-        />
-        <CalculationForm
-          title={this.props.intl.messages.calculationAccountsFormTitle}
-          formCalculationVisible={this.state.formCalculationVisible}
-          workingPeriods={this.props.workingPeriods}
-          currentWorkingPeriod={this.props.currentWorkingPeriod}
-          onOkFormCalculation={this.onOkFormCalculation}
-          onCancelFormCalculation={this.onCancelFormCalculation}
-        />
-      </div>
+      !this.props.systemProperties ? null
+        : <div>
+          <Calculation
+            showFormCalculation={this.showFormCalculation}
+            onCloseWorkingPeriod={this.onCloseWorkingPeriod}
+            onRollbackCurrentWorkingPeriod={this.onRollbackCurrentWorkingPeriod}
+            isLoading={this.props.isLoading}
+            isRequestError={this.props.isRequestError}
+            systemProperties={this.props.systemProperties}
+            getSystemProperties={this.getSystemProperties}
+            isLoadingSystemProperty={this.isLoadingSystemProperty}
+          />
+          <CalculationForm
+            title={this.props.intl.messages.calculationAccountsFormTitle}
+            formCalculationVisible={this.state.formCalculationVisible}
+            workingPeriods={this.props.workingPeriods}
+            currentWorkingPeriod={this.props.currentWorkingPeriod}
+            onOkFormCalculation={this.onOkFormCalculation}
+            onCancelFormCalculation={this.onCancelFormCalculation}
+          />
+        </div>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Breadcrumb, Icon, Button } from 'antd';
+import { Breadcrumb, Icon } from 'antd';
 
 import * as MeterTypePath from './../paths/MeterTypePath';
 import { ListComponent } from './../../../components/ListComponent';
