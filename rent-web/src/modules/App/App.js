@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { BackTop } from 'antd';
 import { FormattedMessage } from 'react-intl';
 
-import 'antd/dist/antd.less';
 import './App.less';
 
 // Import Actions

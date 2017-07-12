@@ -89,6 +89,10 @@ module.exports = {
         from: path.join(__dirname, 'build', 'dll', 'dll.vendor.js'),
         to: path.join(__dirname, 'build', 'distr'),
       },
+      {
+        from: path.join(__dirname, 'fonts'),
+        to: path.join(__dirname, 'build', 'distr', 'fonts'),
+      },
     ]),
     new HtmlWebpackIncludeAssetsPlugin({
       assets: ['dll.vendor.js'],
