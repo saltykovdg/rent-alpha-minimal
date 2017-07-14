@@ -38,7 +38,11 @@ class App extends ExtendedComponentPage {
   }
   componentWillMount() {
     document.getElementById('root').style.opacity = 1;
-    this.setState({ userName: AuthUtil.getUserName() });
+    try {
+      this.setState({ userName: AuthUtil.getUserName() });
+    } catch (err) {
+      AuthUtil.logout();
+    }
     this.props.dispatch(WorkingPeriodAction.findWorkingPeriodsByName());
     this.props.dispatch(WorkingPeriodAction.findLastWorkingPeriod());
   }

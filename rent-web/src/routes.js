@@ -29,17 +29,21 @@ import * as RoleType from './util/RoleType';
 
 const validate = (next, replace, callback) => {
   const authorization = AuthUtil.getAuthorization();
-  if (!AuthUtil.checkJWT(authorization) && next.location.pathname !== LoginPath.LOGIN) {
+  try {
+    if (!AuthUtil.checkJWT(authorization) && next.location.pathname !== LoginPath.LOGIN) {
+      AuthUtil.logout();
+      replace(LoginPath.LOGIN);
+    } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
+      replace('/');
+    } else if (AuthUtil.getUserRole() !== RoleType.ROLE_ADMIN &&
+              (next.location.pathname.indexOf(RolePath.ROLE_EDIT) !== -1 ||
+              next.location.pathname.indexOf(RolePath.ROLE_LIST) !== -1 ||
+              next.location.pathname.indexOf(UserPath.USER_EDIT) !== -1 ||
+              next.location.pathname.indexOf(UserPath.USER_LIST) !== -1)) {
+      replace('/');
+    }
+  } catch (err) {
     AuthUtil.logout();
-    replace(LoginPath.LOGIN);
-  } else if (AuthUtil.checkJWT(authorization) && next.location.pathname === LoginPath.LOGIN) {
-    replace('/');
-  } else if (AuthUtil.getUserRole() !== RoleType.ROLE_ADMIN &&
-            (next.location.pathname.indexOf(RolePath.ROLE_EDIT) !== -1 ||
-             next.location.pathname.indexOf(RolePath.ROLE_LIST) !== -1 ||
-             next.location.pathname.indexOf(UserPath.USER_EDIT) !== -1 ||
-             next.location.pathname.indexOf(UserPath.USER_LIST) !== -1)) {
-    replace('/');
   }
   callback();
 };
