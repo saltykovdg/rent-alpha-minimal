@@ -36,15 +36,11 @@ function guid() {
 }
 
 export function callApi(endpoint, method = 'get', body, responseType = '') {
-  try {
-    if (window.authorization) {
-      if (!AuthUtil.checkJWT(window.authorization)) {
-        AuthUtil.logout();
-        return {};
-      }
+  if (window.authorization) {
+    if (!AuthUtil.checkJWT(window.authorization)) {
+      AuthUtil.logout();
+      return {};
     }
-  } catch (err) {
-    AuthUtil.logout();
   }
 
   cancelAllRequests();

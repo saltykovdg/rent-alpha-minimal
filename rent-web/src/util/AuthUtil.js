@@ -24,14 +24,21 @@ export function logout() {
 }
 
 export function jwtDetails(authorization) {
-  return atob(authorization.split('.')[1]);
+  let details;
+  try {
+    details = atob(authorization.split('.')[1]);
+  } catch (err) {
+    details = null;
+    logout();
+  }
+  return details;
 }
 
 export function checkJWT(authorization) {
   let isNotExpiredToken = false;
   if (authorization) {
     const jwt = JSON.parse(jwtDetails(authorization));
-    if (jwt.exp < Date.now() / 1000) {
+    if (!jwt || jwt.exp < Date.now() / 1000) {
       isNotExpiredToken = false;
     } else {
       isNotExpiredToken = true;
@@ -42,18 +49,24 @@ export function checkJWT(authorization) {
 
 export function getUserName() {
   const authorization = this.getAuthorization();
+  let username = '';
   if (authorization) {
     const jwt = JSON.parse(this.jwtDetails(authorization));
-    return jwt.sub;
+    if (jwt) {
+      username = jwt.sub;
+    }
   }
-  return '';
+  return username;
 }
 
 export function getUserRole() {
   const authorization = this.getAuthorization();
+  let userRole = '';
   if (authorization) {
     const jwt = JSON.parse(this.jwtDetails(authorization));
-    return jwt.role;
+    if (jwt) {
+      userRole = jwt.role;
+    }
   }
-  return '';
+  return userRole;
 }
