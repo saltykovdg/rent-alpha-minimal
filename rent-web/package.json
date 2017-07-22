@@ -58,7 +58,7 @@
     "axios": "0.16.2",
     "redux": "3.7.2",
     "redux-saga": "0.15.4",
-    "antd": "2.12.1",
+    "antd": "2.12.2",
     "async-validator": "1.7.1",
     "moment": "2.18.1",
     "extend": "3.0.1"
