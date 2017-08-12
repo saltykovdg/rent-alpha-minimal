@@ -32,6 +32,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
     new webpack.DllPlugin({
       path: path.join(__dirname, 'build', 'dll', '[name]-manifest.json'),
       name: '[name]',
