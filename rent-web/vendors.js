@@ -4,7 +4,6 @@ import 'react-router';
 import 'react-router-redux';
 import 'react-redux';
 import 'react-intl';
-import 'prop-types';
 import 'intl';
 import 'intl-locales-supported';
 import 'axios';
