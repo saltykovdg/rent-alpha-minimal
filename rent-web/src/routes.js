@@ -47,8 +47,10 @@ const validate = (next, replace, callback) => {
 };
 
 const onChange = (prevState, nextState, replace, callback) => {
-  NProgress.configure({ showSpinner: false });
-  NProgress.start();
+  if (prevState.location.pathname !== nextState.location.pathname) {
+    NProgress.configure({ showSpinner: false });
+    NProgress.start();
+  }
   callback();
 };
 
