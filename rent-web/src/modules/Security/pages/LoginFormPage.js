@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import NProgress from 'nprogress';
 
 // Import Components
 import LoginForm from './../components/LoginForm';
@@ -30,6 +31,9 @@ class LoginFormPage extends Component {
   }
   componentWillMount() {
     document.getElementById('root').style.opacity = 1;
+  }
+  componentDidMount() {
+    NProgress.done();
   }
   onLogin = (object) => {
     this.props.dispatch(LoginAction.login(object));

@@ -1,11 +1,15 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
+import NProgress from 'nprogress';
 
 class ExtendedComponentPage extends Component {
   componentWillMount() {
     const location = browserHistory.getCurrentLocation();
     browserHistory.replace(location.pathname);
+  }
+  componentDidMount() {
+    NProgress.done();
   }
   getActualPageAfterDelete() {
     let page = this.state.page;

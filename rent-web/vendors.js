@@ -12,3 +12,5 @@ import 'redux-saga';
 import 'antd';
 import 'antd/dist/antd.less';
 import 'extend';
+import 'nprogress';
+import 'nprogress/nprogress.css';

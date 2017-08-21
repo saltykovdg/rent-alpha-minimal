@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BackTop } from 'antd';
 import { FormattedMessage } from 'react-intl';
+import 'nprogress/nprogress.css';
 
 import './App.less';
 

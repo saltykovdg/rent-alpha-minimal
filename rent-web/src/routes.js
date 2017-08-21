@@ -1,5 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import NProgress from 'nprogress';
+
 import App from './modules/App/App';
 
 import * as AddressPath from './modules/Address/AddressPaths';
@@ -44,10 +46,16 @@ const validate = (next, replace, callback) => {
   callback();
 };
 
+const onChange = (prevState, nextState, replace, callback) => {
+  NProgress.configure({ showSpinner: false });
+  NProgress.start();
+  callback();
+};
+
 // react-router setup with code-splitting
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
 export default (
-  <Route path="/" onEnter={validate}>
+  <Route path="/" onEnter={validate} onChange={onChange}>
     <Route component={App}>
       <IndexRoute
         getComponent={(nextState, cb) => {
