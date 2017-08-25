@@ -327,32 +327,35 @@ class AccountCard extends EditComponent {
         <Spin spinning={this.props.isLoading}>
           <h1>{titleItem}</h1>
           <Spin spinning={this.props.isLoadingAddAccountPayment || this.props.isLoadingAddAccountRecalculation || this.props.accountIsCalculating}>
-            <h2>{this.props.intl.messages.operationsTitle}</h2>
-            <Form layout="inline" className="inline-form">
+            <h2>{messages.workingPeriodFieldTitle}</h2>
+            <Form>
               <FormItem>
-                <Button onClick={() => this.props.showFormAddPayment()} loading={this.props.isLoadingAddAccountPayment}>
-                  <FormattedMessage id="buttonAddPayment" />
-                </Button>
-              </FormItem>
-              <FormItem>
-                <Button onClick={() => this.props.showFormAddRecalculation()} loading={this.props.isLoadingAddAccountRecalculation}>
-                  <FormattedMessage id="buttonAddRecalculation" />
-                </Button>
-              </FormItem>
-              <FormItem>
-                <Button onClick={() => this.props.showFormCalculation()} loading={this.props.accountIsCalculating}>
-                  <FormattedMessage id="buttonCalculateAccount" />
-                </Button>
-              </FormItem>
-              <FormItem>
-                <Button onClick={() => this.props.showFormReport()}>
-                  <FormattedMessage id="buttonExecuteReportUPD" />
-                </Button>
-              </FormItem>
-              <FormItem className="pull-right" label={messages.workingPeriodFieldTitle}>
                 {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
               </FormItem>
             </Form>
+            <h2>{messages.operationsTitle}</h2>
+            <Row gutter={10}>
+              <Col className="gutter-row" span={6}>
+                <Button size="large" className="full-width" onClick={() => this.props.showFormAddPayment()} loading={this.props.isLoadingAddAccountPayment}>
+                  <FormattedMessage id="buttonAddPayment" />
+                </Button>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Button size="large" className="full-width" onClick={() => this.props.showFormAddRecalculation()} loading={this.props.isLoadingAddAccountRecalculation}>
+                  <FormattedMessage id="buttonAddRecalculation" />
+                </Button>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Button size="large" className="full-width" onClick={() => this.props.showFormCalculation()} loading={this.props.accountIsCalculating}>
+                  <FormattedMessage id="buttonCalculateAccount" />
+                </Button>
+              </Col>
+              <Col className="gutter-row" span={6}>
+                <Button size="large" className="full-width" onClick={() => this.props.showFormReport()}>
+                  <FormattedMessage id="buttonExecuteReportUPD" />
+                </Button>
+              </Col>
+            </Row>
           </Spin>
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             <h2>{messages.accountDataTitle}</h2>
