@@ -41,6 +41,15 @@ class MeterEdit extends EditComponent {
       this.getDateColumn(this.props.intl.messages.meterFieldDateValue, 'dateValue'),
       this.getActionColumn(this.props.showFormMeterValueEdit, this.props.onDeleteMeterValue),
     ];
+    let meterValuesPagination = false;
+    if (meterValuesDataSource && meterValuesDataSource.length > 5) {
+      meterValuesPagination = {
+        total: meterValuesDataSource.length,
+        pageSize: 5,
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '12', '24'],
+      };
+    }
     return (
       <div>
         <Breadcrumb>
@@ -74,7 +83,7 @@ class MeterEdit extends EditComponent {
               dataSource={meterValuesDataSource}
               columns={meterValuesColumns}
               bordered
-              pagination={false}
+              pagination={meterValuesPagination}
               size="small"
             />
             <FormItem>

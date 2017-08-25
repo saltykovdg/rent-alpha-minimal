@@ -140,13 +140,20 @@ class AccountCard extends EditComponent {
           newObj.key = Math.random();
         });
       }
+      let meterValuesPagination = false;
+      if (meterValuesDataSource && meterValuesDataSource.length > 5) {
+        meterValuesPagination = {
+          total: meterValuesDataSource.length,
+          pageSize: 5,
+        };
+      }
       return (
         <div>
           <Table
             title={() => <h4>{messages.meterValuesTitle}</h4>}
             dataSource={meterValuesDataSource}
             columns={meterValuesColumns}
-            pagination={false}
+            pagination={meterValuesPagination}
           />
         </div>
       );
