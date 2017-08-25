@@ -145,6 +145,7 @@ class AccountCard extends EditComponent {
         meterValuesPagination = {
           total: meterValuesDataSource.length,
           pageSize: 5,
+          size: 'small',
         };
       }
       return (
