@@ -57,7 +57,7 @@
     "axios": "0.16.2",
     "redux": "3.7.2",
     "redux-saga": "0.15.6",
-    "antd": "2.12.8",
+    "antd": "2.13.0",
     "moment": "2.18.1",
     "extend": "3.0.1",
     "nprogress": "0.2.0"
