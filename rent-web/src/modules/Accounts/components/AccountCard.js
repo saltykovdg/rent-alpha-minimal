@@ -335,12 +335,6 @@ class AccountCard extends EditComponent {
         <Spin spinning={this.props.isLoading}>
           <h1>{titleItem}</h1>
           <Spin spinning={this.props.isLoadingAddAccountPayment || this.props.isLoadingAddAccountRecalculation || this.props.accountIsCalculating}>
-            <h2>{messages.workingPeriodFieldTitle}</h2>
-            <Form>
-              <FormItem>
-                {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
-              </FormItem>
-            </Form>
             <h2>{messages.operationsTitle}</h2>
             <Row gutter={10}>
               <Col className="gutter-row" span={6}>
@@ -364,6 +358,12 @@ class AccountCard extends EditComponent {
                 </Button>
               </Col>
             </Row>
+            <h2>{messages.workingPeriodFieldTitle}</h2>
+            <Form>
+              <FormItem>
+                {this.getSelectField('name', workingPeriodsList ? this.props.selectedWorkingPeriod : null, workingPeriodsList, this.changeWorkingPeriod, false)}
+              </FormItem>
+            </Form>
           </Spin>
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
             <h2>{messages.accountDataTitle}</h2>
