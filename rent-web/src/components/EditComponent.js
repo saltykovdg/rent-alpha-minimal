@@ -54,14 +54,25 @@ class EditComponent extends ExtendedComponent {
     })(<InputNumber min={useNegative ? MIN_INTEGER_VALUE : 0} max={MAX_INTEGER_VALUE} step={step} />);
   };
   getDateField = (name, value, required = true, disabled = false) => {
+    const onOpenChange = (status) => {
+      if (!status) {
+        const newVal = {};
+        newVal[name] = this.props.form.getFieldValue(name);
+        if (newVal[name]) {
+          const newValue = newVal[name];
+          newVal[name] = newValue instanceof Object ? moment.utc(newValue.format('YYYY-MM-DD')) : newValue;
+        }
+        this.props.form.setFieldsValue(newVal);
+      }
+    };
     return this.props.form.getFieldDecorator(name, {
-      initialValue: value && !(value instanceof Object) ? moment.utc(value) : (value instanceof Object ? value : null),
+      initialValue: value ? moment.utc(value) : null,
       rules: [{
         type: 'object',
         required,
         message: this.props.intl.messages.fieldIsEmptyError,
       }],
-    })(!disabled ? <DatePicker /> : <DatePicker disabled />);
+    })(!disabled ? <DatePicker onOpenChange={onOpenChange} /> : <DatePicker disabled />);
   };
   getLink = (object) => {
     return ObjectUtil.getLink(object);
